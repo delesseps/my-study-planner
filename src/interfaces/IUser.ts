@@ -4,7 +4,7 @@ enum Urgency {
   chill = "CHILL"
 }
 
-interface IUser {
+export default interface IUser {
   name: string;
   email: string;
   evaluations: {
