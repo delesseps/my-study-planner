@@ -9,12 +9,20 @@ import { createBrowserHistory } from "history";
 import { Router } from "react-router";
 import store from "store";
 
+import { ThemeProvider } from "styled-components";
+
 const history = createBrowserHistory();
+
+const theme = {
+  main: "#00ADB5"
+};
 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </Router>
   </Provider>,
   document.getElementById("root")

@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import styled from "styled-components";
-import { Button } from "antd";
+import SignInForm from "./SignInForm";
 
 const Wrapper = styled.main`
   display: flex;
@@ -9,12 +9,17 @@ const Wrapper = styled.main`
 
 const LeftSection = styled.section`
   flex: 0 0 50%;
-  background-color: blue;
+  height: 100vh;
+  background: linear-gradient(
+    163.41deg,
+    ${props => props.theme.main} 8.66%,
+    rgba(2, 240, 251, 0) 207.55%
+  );
 `;
 
 const RightSection = styled.section`
   flex: 0 0 50%;
-  background-color: gray;
+  background-color: white;
 `;
 
 const SignIn: React.FC = () => {
@@ -22,7 +27,7 @@ const SignIn: React.FC = () => {
     <Wrapper>
       <LeftSection>test</LeftSection>
       <RightSection>
-        <Button type="primary">Sign In</Button>
+        <SignInForm />
       </RightSection>
     </Wrapper>
   );
