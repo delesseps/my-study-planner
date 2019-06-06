@@ -17,7 +17,8 @@ const CSSReset = createGlobalStyle`
   }
 
   body {
-    font-size: 1.4rem;
+    font-size: 1.4rem;    
+    color: ${props => props.theme.fontColors.black}
   }
 `;
 
