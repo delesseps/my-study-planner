@@ -14,7 +14,7 @@ const Wrapper = styled.main`
 
 const LeftSection = styled.section`
   flex: 0 0 45%;
-  height: 100vh;
+  min-height: 100vh;
   padding: 2rem;
   background: linear-gradient(
     163.41deg,
@@ -34,6 +34,7 @@ const StyledLogo = styled(Logo)`
 `;
 
 const RightSection = styled.section`
+  min-height: 100vh;
   flex: 0 0 55%;
   background-color: white;
   padding: 2rem 6rem;

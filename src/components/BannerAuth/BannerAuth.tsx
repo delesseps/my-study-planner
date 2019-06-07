@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import { ReactComponent as LogoSharp } from "assets/logo_sharp.svg";
 import { ReactComponent as Stars } from "assets/stars.svg";
 import { ReactComponent as Check } from "assets/check.svg";
+import { breakpoints } from "styled";
 
 const twinkle = keyframes`
   from {
@@ -37,6 +38,10 @@ const Text = styled.h2`
 const SVGWrapper = styled.div`
   margin: 7rem 0;
   position: relative;
+
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    margin: 4rem 0;
+  }
 
   display: flex;
   flex-direction: column;

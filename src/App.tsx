@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from "react-router";
 import SignIn from "components/SignIn/SignIn";
 import SignUp from "components/SignUp/SignUp";
 import Window404 from "components/404/Window404";
+import { breakpoints } from "styled";
 
 const CSSReset = createGlobalStyle`
   * {
@@ -15,7 +16,11 @@ const CSSReset = createGlobalStyle`
   html {
     font-size: 62.5%; /*1rem = 10px*/
     box-sizing: border-box;
-  }
+
+    @media only screen and (max-width: ${breakpoints.bpLargest}) {
+      font-size: 50%;
+    }
+  }  
 
   body {
     font-size: 1.4rem;    

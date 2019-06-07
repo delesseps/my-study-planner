@@ -6,6 +6,7 @@ import OAuthButtons from "components/OAuthButtons/OAuthButtons";
 import BannerAuth from "components/BannerAuth/BannerAuth";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import { Link } from "react-router-dom";
+import { breakpoints } from "styled";
 
 const Wrapper = styled.main`
   display: flex;
@@ -13,8 +14,8 @@ const Wrapper = styled.main`
 `;
 
 const LeftSection = styled.section`
+  min-height: 100vh;
   flex: 0 0 45%;
-  height: 100vh;
   padding: 2rem;
   background: linear-gradient(
     163.41deg,
@@ -34,6 +35,7 @@ const StyledLogo = styled(Logo)`
 `;
 
 const RightSection = styled.section`
+  min-height: 100vh;
   flex: 0 0 55%;
   background-color: white;
   padding: 2rem 6rem;
@@ -54,6 +56,10 @@ const SignUp = styled.h4`
   font-weight: 400;
   color: ${props => props.theme.fontColors.blackRgba(0.8)};
   margin-top: 9rem;
+
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    margin-top: 5rem;
+  }
 
   & a {
     cursor: pointer;
