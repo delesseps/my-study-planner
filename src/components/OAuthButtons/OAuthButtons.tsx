@@ -19,9 +19,14 @@ const FacebookButton = styled(Button)`
     background-color: #5e6ec7;
     color: #fff;
   }
+
+  &:focus {
+    background-color: #5e6ec7;
+    color: #fff;
+  }
 `;
 
-const OAuthButtons = ({ type }: { type: string }) => {
+const OAuthButtons = ({ type }: { type?: string }) => {
   return (
     <Wrapper>
       <Button type="default" size="large" icon="google" block>

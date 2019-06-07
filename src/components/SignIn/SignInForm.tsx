@@ -37,11 +37,13 @@ interface ISignInFormProps {
 
 const handleSubmit = (e: React.FormEvent, form: WrappedFormUtils): void => {
   e.preventDefault();
-  form.validateFields((err, values: { email: string; password: string }) => {
-    if (!err) {
-      console.log("Received values of form: ", values);
+  form.validateFields(
+    (err, values: { email: string; password: string; remember: Boolean }) => {
+      if (!err) {
+        console.log("Received values of form: ", values);
+      }
     }
-  });
+  );
 };
 
 const SignInForm: React.FC<ISignInFormProps> = ({ form }) => {
@@ -53,7 +55,7 @@ const SignInForm: React.FC<ISignInFormProps> = ({ form }) => {
         <Heading>Welcome back</Heading>
         <SubHeading>Continue where you left off</SubHeading>
       </Form.Item>
-      <Form.Item label="Email">
+      <Form.Item label="E-mail">
         {getFieldDecorator("email", {
           rules: [{ required: true, message: "Please input your email!" }]
         })(
@@ -67,7 +69,7 @@ const SignInForm: React.FC<ISignInFormProps> = ({ form }) => {
         {getFieldDecorator("password", {
           rules: [{ required: true, message: "Please input your Password!" }]
         })(
-          <Input
+          <Input.Password
             prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
             type="password"
             placeholder="Password"

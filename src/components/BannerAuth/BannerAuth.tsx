@@ -1,0 +1,98 @@
+import React from "react";
+import styled, { keyframes } from "styled-components";
+import { ReactComponent as LogoSharp } from "assets/logo_sharp.svg";
+import { ReactComponent as Stars } from "assets/stars.svg";
+import { ReactComponent as Check } from "assets/check.svg";
+
+const twinkle = keyframes`
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.5;
+  }
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: auto;
+  margin-bottom: auto;
+`;
+
+const Text = styled.h2`
+  color: #fff;
+  text-align: center;
+  letter-spacing: 0.4rem;
+  line-height: 4.1rem;
+
+  font-weight: 400;
+`;
+
+const SVGWrapper = styled.div`
+  margin: 7rem 0;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+//Selects a random star and make it twinkle with a specific delay
+const twinkleRandomItem = () => {
+  let styles = "";
+
+  for (let i = 0; i < 20; i++) {
+    styles += `
+      & path:nth-child(${i + 1}) {
+        animation-delay: ${i - 1}s;        
+      }
+    `;
+  }
+
+  return styles;
+};
+
+const StyledStars = styled(Stars)`
+  margin-bottom: -70px;
+  margin-right: 10px;
+
+  & path {
+    animation: ${twinkle} 1.5s ease-in-out infinite;
+    animation-direction: alternate;
+  }
+
+  ${twinkleRandomItem()};
+`;
+
+const StyledCheck = styled(Check)`
+  position: absolute;
+  bottom: 4rem;
+  right: 2rem;
+`;
+
+const BannerAuth: React.FC = () => {
+  return (
+    <Wrapper>
+      <Text>
+        Plan your activities, have fun and <br /> keep those grades up!
+      </Text>
+      <Text>
+        Don’t ever forget a single <br /> homework again!
+      </Text>
+      <SVGWrapper>
+        <StyledStars />
+        <LogoSharp />
+        <StyledCheck />
+      </SVGWrapper>
+      <Text>Continue and get things done!</Text>
+    </Wrapper>
+  );
+};
+
+export default BannerAuth;

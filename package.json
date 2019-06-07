@@ -52,6 +52,7 @@
     "@types/history": "^4.7.2",
     "@types/react-redux": "^7.0.9",
     "@types/react-router": "^5.0.1",
+    "@types/react-router-dom": "^4.3.3",
     "@types/redux-logger": "^3.0.7",
     "@types/styled-components": "^4.1.16"
   }

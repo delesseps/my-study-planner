@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import SignInForm from "./SignInForm";
 import { Divider } from "antd";
 import OAuthButtons from "components/OAuthButtons/OAuthButtons";
 import BannerAuth from "components/BannerAuth/BannerAuth";
 import { ReactComponent as Logo } from "assets/logo.svg";
+import SignUpForm from "./SignUpForm";
 import { Link } from "react-router-dom";
 
 const Wrapper = styled.main`
@@ -50,7 +50,7 @@ const RightSectionWrapper = styled.div`
   align-items: center;
 `;
 
-const SignUp = styled.h4`
+const SignIn = styled.h4`
   font-weight: 400;
   color: ${props => props.theme.fontColors.blackRgba(0.8)};
   margin-top: 9rem;
@@ -65,7 +65,7 @@ const SignUp = styled.h4`
   }
 `;
 
-const SignIn: React.FC = () => {
+const SignUp: React.FC = () => {
   return (
     <Wrapper>
       <LeftSection>
@@ -74,16 +74,16 @@ const SignIn: React.FC = () => {
       </LeftSection>
       <RightSection>
         <RightSectionWrapper>
-          <SignInForm />
+          <SignUpForm />
           <Divider>Or</Divider>
-          <OAuthButtons type="signin" />
-          <SignUp>
-            Don't have an account? <Link to="/signup">Sign Up</Link>
-          </SignUp>
+          <OAuthButtons />
+          <SignIn>
+            Already have an account? <Link to="/signin">Sign In</Link>
+          </SignIn>
         </RightSectionWrapper>
       </RightSection>
     </Wrapper>
   );
 };
 
-export default SignIn;
+export default SignUp;
