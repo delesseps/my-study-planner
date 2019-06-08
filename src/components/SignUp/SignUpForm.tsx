@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { Form, Button, Input, Icon } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import styled from "styled-components";
+import { Dispatch } from "redux";
+import { signUp } from "store/effects";
+import ISignUpCredentials from "interfaces/ISignUpCredentials";
+import { connect } from "react-redux";
 
 const StyledForm = styled(Form)`
   width: 100%;
@@ -18,22 +22,30 @@ const SubHeading = styled.h3`
   color: ${props => props.theme.fontColors.blackRgba(0.6)};
 `;
 
-interface ISignUpFormProps {
-  form: WrappedFormUtils;
-}
-
-const handleSubmit = (e: React.FormEvent, form: WrappedFormUtils): void => {
-  e.preventDefault();
-  form.validateFields((err, values: { email: string; password: string }) => {
-    if (!err) {
-      console.log("Received values of form: ", values);
-    }
-  });
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    signUp: (credentials: ISignUpCredentials) =>
+      dispatch<any>(signUp(credentials))
+  };
 };
 
-const SignUpForm: React.FC<ISignUpFormProps> = ({ form }) => {
+interface ISignUpFormProps {
+  form: WrappedFormUtils;
+  signUp: Function;
+}
+
+const SignUpForm: React.FC<ISignUpFormProps> = ({ form, signUp }) => {
   const { getFieldDecorator } = form;
   const [confirmDirty, setConfirmDirty] = useState<Boolean | any>(false);
+
+  const handleSubmit = (e: React.FormEvent, form: WrappedFormUtils): void => {
+    e.preventDefault();
+    form.validateFields((err, credentials: ISignUpCredentials) => {
+      if (!err) {
+        signUp(credentials);
+      }
+    });
+  };
 
   const handleConfirmBlur = (e: React.BaseSyntheticEvent) => {
     const value = e.target.value;
@@ -141,4 +153,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({ form }) => {
 
 const wrappedSignInForm = Form.create()(SignUpForm);
 
-export default wrappedSignInForm;
+export default connect(
+  null,
+  mapDispatchToProps
+)(wrappedSignInForm);

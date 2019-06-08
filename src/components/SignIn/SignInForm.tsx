@@ -2,6 +2,10 @@ import React from "react";
 import { Form, Button, Input, Icon, Checkbox } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import styled from "styled-components";
+import { Dispatch } from "redux";
+import { signIn } from "store/effects";
+import ISignInCredentials from "interfaces/ISignInCredentials";
+import { connect } from "react-redux";
 
 const StyledForm = styled(Form)`
   width: 100%;
@@ -31,23 +35,37 @@ const ForgotPassword = styled.p`
   }
 `;
 
-interface ISignInFormProps {
-  form: WrappedFormUtils;
-}
-
-const handleSubmit = (e: React.FormEvent, form: WrappedFormUtils): void => {
-  e.preventDefault();
-  form.validateFields(
-    (err, values: { email: string; password: string; remember: Boolean }) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
-      }
-    }
-  );
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    signIn: (credentials: ISignInCredentials) =>
+      dispatch<any>(signIn(credentials))
+  };
 };
 
-const SignInForm: React.FC<ISignInFormProps> = ({ form }) => {
+interface ISignInFormProps {
+  form: WrappedFormUtils;
+  signIn: Function;
+}
+
+const SignInForm: React.FC<ISignInFormProps> = ({ form, signIn }) => {
   const { getFieldDecorator } = form;
+
+  const handleSubmit = (e: React.FormEvent, form: WrappedFormUtils): void => {
+    e.preventDefault();
+    form.validateFields(
+      /**
+       * @TODO: Apply remember to interface
+       */
+      (
+        err,
+        credentials: { email: string; password: string; remember: Boolean }
+      ) => {
+        if (!err) {
+          signIn(credentials);
+        }
+      }
+    );
+  };
 
   return (
     <StyledForm layout="vertical" onSubmit={e => handleSubmit(e, form)}>
@@ -96,4 +114,7 @@ const SignInForm: React.FC<ISignInFormProps> = ({ form }) => {
 
 const wrappedSignInForm = Form.create()(SignInForm);
 
-export default wrappedSignInForm;
+export default connect(
+  null,
+  mapDispatchToProps
+)(wrappedSignInForm);

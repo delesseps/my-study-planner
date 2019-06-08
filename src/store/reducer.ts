@@ -16,6 +16,12 @@ export const initialState: ApplicationState = {
 
 const reducer = (state = initialState, action: ApplicationAction) => {
   switch (action.type) {
+    /**
+     *
+     * Sign in reducers
+     *
+     */
+
     case "signInRequest":
       return {
         ...state,
@@ -32,6 +38,34 @@ const reducer = (state = initialState, action: ApplicationAction) => {
         user: action.user
       };
     case "signInError":
+      return {
+        ...state,
+        loading: {
+          user: false
+        }
+      };
+
+    /**
+     *
+     * Sign up reducers
+     *
+     * */
+    case "signUpRequest":
+      return {
+        ...state,
+        loading: {
+          user: true
+        }
+      };
+    case "signUpSuccess":
+      return {
+        ...state,
+        loading: {
+          user: false
+        },
+        user: action.user
+      };
+    case "signUpError":
       return {
         ...state,
         loading: {

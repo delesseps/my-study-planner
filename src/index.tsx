@@ -12,13 +12,17 @@ import store from "store";
 import { ThemeProvider } from "styled-components";
 import { theme } from "styled";
 
+import { CookiesProvider } from "react-cookie";
+
 const history = createBrowserHistory();
 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <ThemeProvider theme={theme}>
-        <App />
+        <CookiesProvider>
+          <App />
+        </CookiesProvider>
       </ThemeProvider>
     </Router>
   </Provider>,
