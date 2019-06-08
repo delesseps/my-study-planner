@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button, Input, Icon, Checkbox } from "antd";
+import { Form, Button, Input, Icon } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import styled from "styled-components";
 
@@ -16,19 +16,6 @@ const Heading = styled.h1`
 const SubHeading = styled.h3`
   font-weight: 600;
   color: ${props => props.theme.fontColors.blackRgba(0.6)};
-`;
-
-const OptionsWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ForgotPassword = styled.p`
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 interface ISignUpFormProps {
@@ -83,6 +70,16 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({ form }) => {
         <SubHeading>
           Enter your details and start your journey with us
         </SubHeading>
+      </Form.Item>
+      <Form.Item label="Full name">
+        {getFieldDecorator("name", {
+          rules: [{ required: true, message: "Please input your full name!" }]
+        })(
+          <Input
+            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+            placeholder="John Doe"
+          />
+        )}
       </Form.Item>
       <Form.Item label="E-mail">
         {getFieldDecorator("email", {

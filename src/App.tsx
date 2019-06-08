@@ -1,10 +1,13 @@
 import React from "react";
 import { createGlobalStyle } from "styled-components";
 import { Switch, Route, Redirect } from "react-router";
-import SignIn from "components/SignIn/SignIn";
-import SignUp from "components/SignUp/SignUp";
-import Window404 from "components/404/Window404";
+import Home from "./Home";
+import Loading from "components/Loading/Loading";
 import { breakpoints } from "styled";
+
+const SignIn = React.lazy(() => import("components/SignIn/SignIn"));
+const SignUp = React.lazy(() => import("components/SignUp/SignUp"));
+const Window404 = React.lazy(() => import("components/404/Window404"));
 
 const CSSReset = createGlobalStyle`
   * {
@@ -24,7 +27,8 @@ const CSSReset = createGlobalStyle`
 
   body {
     font-size: 1.4rem;    
-    color: ${props => props.theme.fontColors.black}
+    color: ${props => props.theme.fontColors.black};
+    background-color: ${props => props.theme.backgroundColor};
   }
 `;
 
@@ -32,12 +36,15 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <CSSReset />
-      <Switch>
-        <Route path="/signin" exact component={SignIn} />
-        <Route path="/signup" exact component={SignUp} />
-        <Route path="/404" exact component={Window404} />
-        <Redirect to="/404" />
-      </Switch>
+      <React.Suspense fallback={<Loading />}>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/signin" exact component={SignIn} />
+          <Route path="/signup" exact component={SignUp} />
+          <Route path="/404" exact component={Window404} />
+          <Redirect to="/404" />
+        </Switch>
+      </React.Suspense>
     </div>
   );
 };

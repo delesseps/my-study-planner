@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Divider } from "antd";
 import OAuthButtons from "components/OAuthButtons/OAuthButtons";
 import BannerAuth from "components/BannerAuth/BannerAuth";
+import FadeIn from "components/FadeIn/FadeIn";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import SignUpForm from "./SignUpForm";
 import { Link } from "react-router-dom";
@@ -68,22 +69,24 @@ const SignIn = styled.h4`
 
 const SignUp: React.FC = () => {
   return (
-    <Wrapper>
-      <LeftSection>
-        <StyledLogo />
-        <BannerAuth />
-      </LeftSection>
-      <RightSection>
-        <RightSectionWrapper>
-          <SignUpForm />
-          <Divider>Or</Divider>
-          <OAuthButtons />
-          <SignIn>
-            Already have an account? <Link to="/signin">Sign In</Link>
-          </SignIn>
-        </RightSectionWrapper>
-      </RightSection>
-    </Wrapper>
+    <FadeIn>
+      <Wrapper>
+        <LeftSection>
+          <StyledLogo />
+          <BannerAuth />
+        </LeftSection>
+        <RightSection>
+          <RightSectionWrapper>
+            <SignUpForm />
+            <Divider>Or</Divider>
+            <OAuthButtons />
+            <SignIn>
+              Already have an account? <Link to="/signin">Sign In</Link>
+            </SignIn>
+          </RightSectionWrapper>
+        </RightSection>
+      </Wrapper>
+    </FadeIn>
   );
 };
 

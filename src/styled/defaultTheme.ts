@@ -7,7 +7,8 @@ const theme: DefaultTheme = {
   fontColors: {
     black: "#272727",
     blackRgba: (alpha: number): string => `rgba(39, 39, 39, ${alpha})`
-  }
+  },
+  backgroundColor: "#FAFAFA"
 };
 
 export default theme;

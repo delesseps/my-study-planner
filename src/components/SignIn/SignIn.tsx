@@ -6,6 +6,7 @@ import OAuthButtons from "components/OAuthButtons/OAuthButtons";
 import BannerAuth from "components/BannerAuth/BannerAuth";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import { Link } from "react-router-dom";
+import FadeIn from "components/FadeIn/FadeIn";
 import { breakpoints } from "styled";
 
 const Wrapper = styled.main`
@@ -73,22 +74,24 @@ const SignUp = styled.h4`
 
 const SignIn: React.FC = () => {
   return (
-    <Wrapper>
-      <LeftSection>
-        <StyledLogo />
-        <BannerAuth />
-      </LeftSection>
-      <RightSection>
-        <RightSectionWrapper>
-          <SignInForm />
-          <Divider>Or</Divider>
-          <OAuthButtons type="signin" />
-          <SignUp>
-            Don't have an account? <Link to="/signup">Sign Up</Link>
-          </SignUp>
-        </RightSectionWrapper>
-      </RightSection>
-    </Wrapper>
+    <FadeIn>
+      <Wrapper>
+        <LeftSection>
+          <StyledLogo />
+          <BannerAuth />
+        </LeftSection>
+        <RightSection>
+          <RightSectionWrapper>
+            <SignInForm />
+            <Divider>Or</Divider>
+            <OAuthButtons type="signin" />
+            <SignUp>
+              Don't have an account? <Link to="/signup">Sign Up</Link>
+            </SignUp>
+          </RightSectionWrapper>
+        </RightSection>
+      </Wrapper>
+    </FadeIn>
   );
 };
 

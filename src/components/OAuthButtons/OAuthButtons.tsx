@@ -12,17 +12,19 @@ const Wrapper = styled.div`
 `;
 
 const FacebookButton = styled(Button)`
-  background-color: #3f51b5; /*Facebook trademark color*/
-  color: #fff;
-
-  &:hover {
-    background-color: #5e6ec7;
+  && {
+    background-color: #3f51b5; /*Facebook trademark color*/
     color: #fff;
-  }
 
-  &:focus {
-    background-color: #5e6ec7;
-    color: #fff;
+    &:hover {
+      background-color: #5e6ec7;
+      color: #fff;
+    }
+
+    &:focus {
+      background-color: #5e6ec7;
+      color: #fff;
+    }
   }
 `;
 
