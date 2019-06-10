@@ -5,26 +5,25 @@ import * as serviceWorker from "./serviceWorker";
 
 import { Provider } from "react-redux";
 
-import { createBrowserHistory } from "history";
-import { Router } from "react-router";
-import store from "store";
+import { ConnectedRouter } from "connected-react-router";
+import configureStore, { history } from "store";
 
 import { ThemeProvider } from "styled-components";
 import { theme } from "styled";
 
 import { CookiesProvider } from "react-cookie";
 
-const history = createBrowserHistory();
+const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={history}>
+    <ConnectedRouter history={history}>
       <ThemeProvider theme={theme}>
         <CookiesProvider>
           <App />
         </CookiesProvider>
       </ThemeProvider>
-    </Router>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById("root")
 );

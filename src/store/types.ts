@@ -1,19 +1,22 @@
 import { Action } from "redux";
 import IUser from "interfaces/IUser";
+import { RouterState } from "connected-react-router";
 
 /**
  *
  * States interfaces
  *
  */
-
 export interface LoadingState {
   user: boolean;
 }
 
 export interface ApplicationState {
-  loading: LoadingState;
-  user: IUser;
+  router?: RouterState;
+  reducer: {
+    loading: LoadingState;
+    user: IUser;
+  };
 }
 
 /**
@@ -52,10 +55,31 @@ export interface SignUpError extends Action {
   type: "signUpError";
 }
 
+/**
+ *
+ * Get user interfaces
+ *
+ */
+export interface RequestUserPending extends Action {
+  type: "requestUserPending";
+}
+
+export interface RequestUserSuccess extends Action {
+  type: "requestUserSuccess";
+  user: IUser;
+}
+
+export interface RequestUserError extends Action {
+  type: "requestUserError";
+}
+
 export type ApplicationAction =
   | SignInRequest
   | SignInSuccess
   | SignInError
   | SignUpRequest
   | SignUpError
-  | SignUpSuccess;
+  | SignUpSuccess
+  | RequestUserPending
+  | RequestUserSuccess
+  | RequestUserError;

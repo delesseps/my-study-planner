@@ -1,16 +1,21 @@
 import { ApplicationState, ApplicationAction } from "./types";
+import { combineReducers } from "redux";
+import { History } from "history";
+import { connectRouter } from "connected-react-router";
 
 export const initialState: ApplicationState = {
-  loading: {
-    user: false
-  },
-  user: {
-    name: "",
-    email: "",
-    evaluations: [],
-    homework: [],
-    todos: [],
-    semesters: []
+  reducer: {
+    loading: {
+      user: false
+    },
+    user: {
+      name: "",
+      email: "",
+      evaluations: [],
+      homework: [],
+      todos: [],
+      semesters: []
+    }
   }
 };
 
@@ -72,7 +77,40 @@ const reducer = (state = initialState, action: ApplicationAction) => {
           user: false
         }
       };
+    /**
+     *
+     * Get user reducers
+     *
+     * */
+    case "requestUserPending":
+      return {
+        ...state,
+        loading: {
+          user: true
+        }
+      };
+    case "requestUserSuccess":
+      return {
+        ...state,
+        loading: {
+          user: false
+        },
+        user: action.user
+      };
+    case "requestUserError":
+      return {
+        ...state,
+        loading: {
+          user: false
+        }
+      };
+    default:
+      return state;
   }
 };
 
-export default reducer;
+export default (history: History) =>
+  combineReducers({
+    router: connectRouter(history),
+    reducer
+  });

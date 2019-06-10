@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from "react-router";
 import Home from "./Home";
 import Loading from "components/Loading/Loading";
 import { breakpoints } from "styled";
+import { withCookies, Cookies } from "react-cookie";
 
 const SignIn = React.lazy(() => import("components/SignIn/SignIn"));
 const SignUp = React.lazy(() => import("components/SignUp/SignUp"));
@@ -32,15 +33,47 @@ const CSSReset = createGlobalStyle`
   }
 `;
 
-const App: React.FC = () => {
+const App = ({ cookies }: { cookies: Cookies }) => {
   return (
     <div className="App">
       <CSSReset />
       <React.Suspense fallback={<Loading />}>
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/signin" exact component={SignIn} />
-          <Route path="/signup" exact component={SignUp} />
+          <Route path="/" exact render={() => <Redirect to="/dashboard" />} />
+          <Route
+            path="/dashboard"
+            render={props => {
+              console.log("aasdasd");
+
+              return cookies.get("IS_LOGGED_IN") ? (
+                <Home />
+              ) : (
+                <Redirect to="/signin" />
+              );
+            }}
+          />
+          <Route
+            path="/signin"
+            exact
+            render={props =>
+              cookies.get("IS_LOGGED_IN") ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <SignIn />
+              )
+            }
+          />
+          <Route
+            path="/signup"
+            exact
+            render={props =>
+              cookies.get("IS_LOGGED_IN") ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <SignUp />
+              )
+            }
+          />
           <Route path="/404" exact component={Window404} />
           <Redirect to="/404" />
         </Switch>
@@ -49,4 +82,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default withCookies(App);

@@ -2,13 +2,17 @@ import { agent } from "api";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import ISignInCredentials from "interfaces/ISignInCredentials";
 
-const api = ({ email, password }: ISignInCredentials): AxiosRequestConfig => ({
+const api = ({
+  email,
+  password,
+  remember
+}: ISignInCredentials): AxiosRequestConfig => ({
   url: "/auth/signin",
   method: "post",
-  withCredentials: true,
   data: {
     email,
-    password
+    password,
+    remember
   }
 });
 

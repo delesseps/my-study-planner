@@ -4,7 +4,10 @@ import {
   SignInError,
   SignUpRequest,
   SignUpSuccess,
-  SignUpError
+  SignUpError,
+  RequestUserPending,
+  RequestUserSuccess,
+  RequestUserError
 } from "./types";
 import IUser from "interfaces/IUser";
 
@@ -44,4 +47,23 @@ export const signUpSuccess = (user: IUser): SignUpSuccess => ({
 
 export const signUpError = (): SignUpError => ({
   type: "signUpError"
+});
+
+/**
+ *
+ * Get user actions
+ *
+ */
+
+export const requestUserPending = (): RequestUserPending => ({
+  type: "requestUserPending"
+});
+
+export const requestUserSuccess = (user: IUser): RequestUserSuccess => ({
+  type: "requestUserSuccess",
+  user
+});
+
+export const requestUserError = (): RequestUserError => ({
+  type: "requestUserError"
 });

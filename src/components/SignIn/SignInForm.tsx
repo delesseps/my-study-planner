@@ -52,19 +52,11 @@ const SignInForm: React.FC<ISignInFormProps> = ({ form, signIn }) => {
 
   const handleSubmit = (e: React.FormEvent, form: WrappedFormUtils): void => {
     e.preventDefault();
-    form.validateFields(
-      /**
-       * @TODO: Apply remember to interface
-       */
-      (
-        err,
-        credentials: { email: string; password: string; remember: Boolean }
-      ) => {
-        if (!err) {
-          signIn(credentials);
-        }
+    form.validateFields((err, credentials: ISignInCredentials) => {
+      if (!err) {
+        signIn(credentials);
       }
-    );
+    });
   };
 
   return (

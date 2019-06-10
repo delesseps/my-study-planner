@@ -9,7 +9,6 @@ const api = ({
 }: ISignUpCredentials): AxiosRequestConfig => ({
   url: "/auth/signup",
   method: "post",
-  withCredentials: true,
   data: {
     name,
     email,
