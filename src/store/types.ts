@@ -1,12 +1,17 @@
 import { Action } from "redux";
 import IUser from "interfaces/IUser";
 import { RouterState } from "connected-react-router";
+import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
 
 /**
  *
  * States interfaces
  *
  */
+export interface ErrorState {
+  user?: { message: string, state: boolean, status: number};
+}
+
 export interface LoadingState {
   user: boolean;
 }
@@ -15,6 +20,7 @@ export interface ApplicationState {
   router?: RouterState;
   reducer: {
     loading: LoadingState;
+    error?: ErrorState
     user: IUser;
   };
 }
@@ -35,6 +41,7 @@ export interface SignInSuccess extends Action {
 
 export interface SignInError extends Action {
   type: "signInError";
+  error: IAxiosErrorResponse;
 }
 
 /**
@@ -52,7 +59,8 @@ export interface SignUpSuccess extends Action {
 }
 
 export interface SignUpError extends Action {
-  type: "signUpError";
+  type: "signUpError";  
+  error: IAxiosErrorResponse;
 }
 
 /**
@@ -71,6 +79,7 @@ export interface RequestUserSuccess extends Action {
 
 export interface RequestUserError extends Action {
   type: "requestUserError";
+  error: IAxiosErrorResponse;
 }
 
 export type ApplicationAction =

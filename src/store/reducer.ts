@@ -47,6 +47,13 @@ const reducer = (state = initialState, action: ApplicationAction) => {
         ...state,
         loading: {
           user: false
+        },
+        error: {
+          user: {
+            message: action.error.data.errors.message, 
+            status: action.error.status,
+            state: true
+          }
         }
       };
 
@@ -75,6 +82,13 @@ const reducer = (state = initialState, action: ApplicationAction) => {
         ...state,
         loading: {
           user: false
+        },
+        error: {
+          user: {
+            message: action.error.data.errors.message, 
+            status: action.error.status,
+            state: true
+          }
         }
       };
     /**
@@ -102,6 +116,13 @@ const reducer = (state = initialState, action: ApplicationAction) => {
         ...state,
         loading: {
           user: false
+        },
+        error: {
+          user: {
+            message: action.error.data.errors.message, 
+            status: action.error.status,
+            state: true
+          }
         }
       };
     default:

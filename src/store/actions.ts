@@ -10,6 +10,7 @@ import {
   RequestUserError
 } from "./types";
 import IUser from "interfaces/IUser";
+import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
 
 /**
  *
@@ -26,8 +27,9 @@ export const signInSuccess = (user: IUser): SignInSuccess => ({
   user
 });
 
-export const signInError = (): SignInError => ({
-  type: "signInError"
+export const signInError = (error : IAxiosErrorResponse ): SignInError => ({
+  type: "signInError",  
+  error
 });
 
 /**
@@ -45,8 +47,9 @@ export const signUpSuccess = (user: IUser): SignUpSuccess => ({
   user
 });
 
-export const signUpError = (): SignUpError => ({
-  type: "signUpError"
+export const signUpError = (error : IAxiosErrorResponse ): SignUpError => ({
+  type: "signUpError", 
+  error
 });
 
 /**
@@ -64,6 +67,7 @@ export const requestUserSuccess = (user: IUser): RequestUserSuccess => ({
   user
 });
 
-export const requestUserError = (): RequestUserError => ({
-  type: "requestUserError"
+export const requestUserError = (error : IAxiosErrorResponse ): RequestUserError => ({
+  type: "requestUserError", 
+  error
 });

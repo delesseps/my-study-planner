@@ -20,6 +20,7 @@ import ISignInCredentials from "interfaces/ISignInCredentials";
 import ISignUpCredentials from "interfaces/ISignUpCredentials";
 
 import { Cookies } from "react-cookie";
+import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
 
 type Effect = ThunkAction<any, ApplicationState, any, ApplicationAction>;
 
@@ -39,7 +40,7 @@ export const signIn = (credentials: ISignInCredentials): Effect => dispatch => {
         dispatch<any>(push("/dashboard"));
       }
     )
-    .catch(() => dispatch(signInError()));
+    .catch(({response} : {response: IAxiosErrorResponse}) => dispatch(signInError(response)));
 };
 
 export const signUp = (credentials: ISignUpCredentials): Effect => dispatch => {
@@ -54,7 +55,7 @@ export const signUp = (credentials: ISignUpCredentials): Effect => dispatch => {
         dispatch<any>(push("/dashboard"));
       }
     )
-    .catch(() => dispatch(signUpError()));
+    .catch(({response} : {response: IAxiosErrorResponse}) => dispatch(signUpError(response)));
 };
 
 export const requestUser = (): Effect => dispatch => {
@@ -65,5 +66,5 @@ export const requestUser = (): Effect => dispatch => {
     .then(({ data }: { data: { user: IUser } }) => {
       dispatch(requestUserSuccess(data.user));
     })
-    .catch(() => dispatch(requestUserError()));
+    .catch(({response} : {response: IAxiosErrorResponse}) => dispatch(requestUserError(response)));
 };

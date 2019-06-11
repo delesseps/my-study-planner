@@ -7,6 +7,7 @@ import { signUp } from "store/effects";
 import ISignUpCredentials from "interfaces/ISignUpCredentials";
 import { connect } from "react-redux";
 import { breakpoints } from 'styled';
+import { ApplicationState } from "store/types";
 
 const StyledForm = styled(Form)`
   width: 100%;
@@ -29,6 +30,12 @@ const SubHeading = styled.h3`
   color: ${props => props.theme.fontColors.blackRgba(0.6)};
 `;
 
+const mapStateToProps = (state: ApplicationState) => {
+  return {
+    loading: state.reducer.loading.user
+  }
+}
+
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     signUp: (credentials: ISignUpCredentials) =>
@@ -39,9 +46,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 interface ISignUpFormProps {
   form: WrappedFormUtils;
   signUp: Function;
+  loading: boolean;
 }
 
-const SignUpForm: React.FC<ISignUpFormProps> = ({ form, signUp }) => {
+const SignUpForm: React.FC<ISignUpFormProps> = ({ form, signUp, loading }) => {
   const { getFieldDecorator } = form;
   const [confirmDirty, setConfirmDirty] = useState<Boolean | any>(false);
 
@@ -150,7 +158,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({ form, signUp }) => {
         )}
       </Form.Item>
       <Form.Item>
-        <Button type="primary" size="large" htmlType="submit">
+        <Button loading={loading} type="primary" size="large" htmlType="submit">
           Sign Up
         </Button>
       </Form.Item>
@@ -161,6 +169,6 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({ form, signUp }) => {
 const wrappedSignInForm = Form.create()(SignUpForm);
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(wrappedSignInForm);
