@@ -26,6 +26,10 @@ const LeftSection = styled.section`
 
   display: flex;
   flex-direction: column;
+
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    padding: 2rem;
+  }
 `;
 
 const StyledLogo = styled(Logo)`
@@ -33,6 +37,10 @@ const StyledLogo = styled(Logo)`
   width: 5rem;
   height: 5rem;
   cursor: pointer;
+
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    margin-bottom: 3rem;
+  }
 `;
 
 const RightSection = styled.section`
@@ -43,6 +51,10 @@ const RightSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    padding: 3rem 0;
+  }
 `;
 
 const RightSectionWrapper = styled.div`

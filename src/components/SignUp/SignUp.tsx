@@ -7,6 +7,7 @@ import FadeIn from "components/FadeIn/FadeIn";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import SignUpForm from "./SignUpForm";
 import { Link } from "react-router-dom";
+import { breakpoints } from "styled";
 
 const Wrapper = styled.main`
   display: flex;
@@ -14,8 +15,8 @@ const Wrapper = styled.main`
 `;
 
 const LeftSection = styled.section`
-  flex: 0 0 45%;
   min-height: 100vh;
+  flex: 0 0 45%;
   padding: 2rem;
   background: linear-gradient(
     163.41deg,
@@ -25,6 +26,10 @@ const LeftSection = styled.section`
 
   display: flex;
   flex-direction: column;
+
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    padding: 2rem;
+  }
 `;
 
 const StyledLogo = styled(Logo)`
@@ -32,6 +37,10 @@ const StyledLogo = styled(Logo)`
   width: 5rem;
   height: 5rem;
   cursor: pointer;
+
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    margin-bottom: 3rem;
+  }
 `;
 
 const RightSection = styled.section`
@@ -42,6 +51,14 @@ const RightSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    padding: 3rem 0;
+
+    & .ant-divider.ant-divider-horizontal {
+      margin: 0;
+    }
+  }
 `;
 
 const RightSectionWrapper = styled.div`
@@ -56,6 +73,10 @@ const SignIn = styled.h4`
   font-weight: 400;
   color: ${props => props.theme.fontColors.blackRgba(0.8)};
   margin-top: 9rem;
+
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    margin-top: 5rem;
+  }
 
   & a {
     cursor: pointer;

@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   align-items: center;
 
   margin-top: auto;
-  margin-bottom: auto;
+  margin-bottom: auto;  
 `;
 
 const Text = styled.h2`
@@ -33,6 +33,7 @@ const Text = styled.h2`
   line-height: 4.1rem;
 
   font-weight: 400;
+  
 `;
 
 const SVGWrapper = styled.div`
@@ -63,9 +64,22 @@ const twinkleRandomItem = () => {
   return styles;
 };
 
+const StyledLogoSharp = styled(LogoSharp)`
+  width: 40rem;
+
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    width: 33rem;
+  }
+`;
+
 const StyledStars = styled(Stars)`
   margin-bottom: -70px;
   margin-right: 10px;
+  width: 53rem;
+
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    width: 45rem;
+  }
 
   & path {
     animation: ${twinkle} 1.5s ease-in-out infinite;
@@ -77,8 +91,14 @@ const StyledStars = styled(Stars)`
 
 const StyledCheck = styled(Check)`
   position: absolute;
-  bottom: 4rem;
-  right: 2rem;
+  bottom: 1rem;
+  right: -2rem;
+
+  width: 16rem;
+  height: 12rem;
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    bottom: 2rem;
+  }  
 `;
 
 const BannerAuth: React.FC = () => {
@@ -92,7 +112,7 @@ const BannerAuth: React.FC = () => {
       </Text>
       <SVGWrapper>
         <StyledStars />
-        <LogoSharp />
+        <StyledLogoSharp />
         <StyledCheck />
       </SVGWrapper>
       <Text>Continue and get things done!</Text>

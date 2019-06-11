@@ -6,9 +6,16 @@ import { Dispatch } from "redux";
 import { signIn } from "store/effects";
 import ISignInCredentials from "interfaces/ISignInCredentials";
 import { connect } from "react-redux";
+import { breakpoints } from 'styled';
 
 const StyledForm = styled(Form)`
   width: 100%;
+
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    & .ant-form-item {
+      margin-bottom: 0.8rem;
+    }
+  }
 `;
 
 const Heading = styled.h1`
