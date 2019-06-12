@@ -8,6 +8,7 @@ export const initialState: ApplicationState = {
     loading: {
       user: false
     },
+    error: {},
     user: {
       name: "",
       email: "",
@@ -49,8 +50,8 @@ const reducer = (state = initialState, action: ApplicationAction) => {
           user: false
         },
         error: {
-          user: {
-            message: action.error.data.errors.message, 
+          signIn: {
+            message: action.error.data.errors.message,
             status: action.error.status,
             state: true
           }
@@ -84,8 +85,8 @@ const reducer = (state = initialState, action: ApplicationAction) => {
           user: false
         },
         error: {
-          user: {
-            message: action.error.data.errors.message, 
+          signUp: {
+            message: action.error.data.errors.message,
             status: action.error.status,
             state: true
           }
@@ -119,7 +120,7 @@ const reducer = (state = initialState, action: ApplicationAction) => {
         },
         error: {
           user: {
-            message: action.error.data.errors.message, 
+            message: action.error.data.errors.message,
             status: action.error.status,
             state: true
           }

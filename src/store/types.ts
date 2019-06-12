@@ -2,6 +2,7 @@ import { Action } from "redux";
 import IUser from "interfaces/IUser";
 import { RouterState } from "connected-react-router";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
+import IRequestError from "interfaces/IRequestError";
 
 /**
  *
@@ -9,7 +10,9 @@ import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
  *
  */
 export interface ErrorState {
-  user?: { message: string, state: boolean, status: number};
+  signIn?: IRequestError;
+  signUp?: IRequestError;
+  user?: IRequestError;
 }
 
 export interface LoadingState {
@@ -20,7 +23,7 @@ export interface ApplicationState {
   router?: RouterState;
   reducer: {
     loading: LoadingState;
-    error?: ErrorState
+    error: ErrorState;
     user: IUser;
   };
 }
@@ -59,7 +62,7 @@ export interface SignUpSuccess extends Action {
 }
 
 export interface SignUpError extends Action {
-  type: "signUpError";  
+  type: "signUpError";
   error: IAxiosErrorResponse;
 }
 

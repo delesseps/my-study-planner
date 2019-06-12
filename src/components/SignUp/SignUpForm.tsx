@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { Form, Button, Input, Icon } from "antd";
+import { Form, Button, Input, Icon, Alert } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import styled from "styled-components";
 import { Dispatch } from "redux";
 import { signUp } from "store/effects";
 import ISignUpCredentials from "interfaces/ISignUpCredentials";
 import { connect } from "react-redux";
-import { breakpoints } from 'styled';
+import { breakpoints } from "styled";
 import { ApplicationState } from "store/types";
+import IRequestError from "interfaces/IRequestError";
+import FadeIn from "components/FadeIn/FadeIn";
 
 const StyledForm = styled(Form)`
   width: 100%;
@@ -32,9 +34,10 @@ const SubHeading = styled.h3`
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
-    loading: state.reducer.loading.user
-  }
-}
+    loading: state.reducer.loading.user,
+    error: state.reducer.error.signUp
+  };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
@@ -47,9 +50,15 @@ interface ISignUpFormProps {
   form: WrappedFormUtils;
   signUp: Function;
   loading: boolean;
+  error: IRequestError;
 }
 
-const SignUpForm: React.FC<ISignUpFormProps> = ({ form, signUp, loading }) => {
+const SignUpForm: React.FC<ISignUpFormProps> = ({
+  form,
+  signUp,
+  loading,
+  error
+}) => {
   const { getFieldDecorator } = form;
   const [confirmDirty, setConfirmDirty] = useState<Boolean | any>(false);
 
@@ -98,9 +107,26 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({ form, signUp, loading }) => {
           Enter your details and start your journey with us
         </SubHeading>
       </Form.Item>
+      {error && (
+        <FadeIn>
+          <Form.Item>
+            <Alert
+              message="User already exists. Please try again with a different email."
+              type="error"
+              showIcon
+            />
+          </Form.Item>
+        </FadeIn>
+      )}
       <Form.Item label="Full name">
         {getFieldDecorator("name", {
-          rules: [{ required: true, message: "Please input your full name!" }]
+          rules: [
+            { required: true, message: "Please input your full name!" },
+            {
+              type: "email",
+              message: "The input is not valid E-mail!"
+            }
+          ]
         })(
           <Input
             prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}

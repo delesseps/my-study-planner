@@ -1,13 +1,15 @@
 import React from "react";
-import { Form, Button, Input, Icon, Checkbox } from "antd";
+import { Form, Button, Input, Icon, Checkbox, Alert } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import styled from "styled-components";
 import { Dispatch } from "redux";
 import { signIn } from "store/effects";
 import ISignInCredentials from "interfaces/ISignInCredentials";
 import { connect } from "react-redux";
-import { breakpoints } from 'styled';
+import { breakpoints } from "styled";
 import { ApplicationState } from "store/types";
+import IRequestError from "interfaces/IRequestError";
+import FadeIn from "components/FadeIn/FadeIn";
 
 const StyledForm = styled(Form)`
   width: 100%;
@@ -45,9 +47,10 @@ const ForgotPassword = styled.p`
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
-    loading: state.reducer.loading.user
-  }
-}
+    loading: state.reducer.loading.user,
+    error: state.reducer.error.signIn
+  };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
@@ -59,10 +62,16 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 interface ISignInFormProps {
   form: WrappedFormUtils;
   signIn: Function;
-  loading:boolean;
+  loading: boolean;
+  error: IRequestError;
 }
 
-const SignInForm: React.FC<ISignInFormProps> = ({ form, signIn, loading }) => {
+const SignInForm: React.FC<ISignInFormProps> = ({
+  form,
+  signIn,
+  loading,
+  error
+}) => {
   const { getFieldDecorator } = form;
 
   const handleSubmit = (e: React.FormEvent, form: WrappedFormUtils): void => {
@@ -80,9 +89,26 @@ const SignInForm: React.FC<ISignInFormProps> = ({ form, signIn, loading }) => {
         <Heading>Welcome back</Heading>
         <SubHeading>Continue where you left off</SubHeading>
       </Form.Item>
+      {error && (
+        <FadeIn>
+          <Form.Item>
+            <Alert
+              message="Incorrect e-mail or password."
+              type="error"
+              showIcon
+            />
+          </Form.Item>
+        </FadeIn>
+      )}
       <Form.Item label="E-mail">
         {getFieldDecorator("email", {
-          rules: [{ required: true, message: "Please input your email!" }]
+          rules: [
+            { required: true, message: "Please input your email!" },
+            {
+              type: "email",
+              message: "The input is not valid E-mail!"
+            }
+          ]
         })(
           <Input
             prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
