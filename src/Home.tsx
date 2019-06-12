@@ -5,6 +5,8 @@ import { Dispatch } from "redux";
 import { requestUser } from "store/effects";
 import { connect } from "react-redux";
 import { ApplicationState } from "store/types";
+import styled from "styled-components";
+import Sidebar from "components/Sidebar/Sidebar";
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
@@ -19,8 +21,19 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   };
 };
 
+const Wrapper = styled.main`
+  display: flex;
+`;
+
+const Sider = styled.section`
+  flex: 0 0 12%;
+`;
+
+const Content = styled.section`
+  flex: 0 0 1;
+`;
+
 interface IHomeProps {
-  history?: History;
   requestUser: Function;
 }
 
@@ -31,7 +44,12 @@ const Home: React.FC<IHomeProps> = ({ requestUser }) => {
 
   return (
     <FadeIn>
-      <div>Home</div>
+      <Wrapper>
+        <Sider>
+          <Sidebar />
+        </Sider>
+        <Content>hey</Content>
+      </Wrapper>
     </FadeIn>
   );
 };

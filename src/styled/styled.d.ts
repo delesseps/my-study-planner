@@ -10,5 +10,6 @@ declare module "styled-components" {
       blackRgba: Function;
     };
     backgroundColor: string;
+    sidebarBackgroundColor: string;
   }
 }

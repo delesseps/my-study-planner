@@ -8,7 +8,8 @@ const theme: DefaultTheme = {
     black: "#272727",
     blackRgba: (alpha: number): string => `rgba(39, 39, 39, ${alpha})`
   },
-  backgroundColor: "#FAFAFA"
+  backgroundColor: "#FAFAFA",
+  sidebarBackgroundColor: "#F7F7F7"
 };
 
 export default theme;

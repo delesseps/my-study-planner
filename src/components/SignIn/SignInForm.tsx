@@ -131,7 +131,7 @@ const SignInForm: React.FC<ISignInFormProps> = ({
         <OptionsWrapper>
           {getFieldDecorator("remember", {
             valuePropName: "checked",
-            initialValue: true
+            initialValue: false
           })(<Checkbox>Remember me</Checkbox>)}
           <ForgotPassword>Forgot password?</ForgotPassword>
         </OptionsWrapper>
