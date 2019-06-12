@@ -7,6 +7,7 @@ enum Urgency {
 export default interface IUser {
   name: string;
   email: string;
+  role: string;
   evaluations: {
     subject: String;
     evaluationType: String;

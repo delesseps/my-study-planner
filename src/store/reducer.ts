@@ -12,6 +12,7 @@ export const initialState: ApplicationState = {
     user: {
       name: "",
       email: "",
+      role: "",
       evaluations: [],
       homework: [],
       todos: [],

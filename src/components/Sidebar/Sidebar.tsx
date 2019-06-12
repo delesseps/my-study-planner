@@ -98,7 +98,9 @@ const StyledIcon = styled(Icon)`
 
 const Text = styled.p`
   text-transform: uppercase;
+  text-align: center;
   font-size: 1.2rem;
+
   font-weight: 500;
   color: ${props => props.theme.fontColors.blackRgba(0.8)};
 

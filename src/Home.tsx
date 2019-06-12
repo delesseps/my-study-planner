@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { History } from "history";
 import FadeIn from "components/FadeIn/FadeIn";
 import { Dispatch } from "redux";
 import { requestUser } from "store/effects";
@@ -7,6 +6,7 @@ import { connect } from "react-redux";
 import { ApplicationState } from "store/types";
 import styled from "styled-components";
 import Sidebar from "components/Sidebar/Sidebar";
+import TopBar from "components/TopBar/TopBar";
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
@@ -26,11 +26,12 @@ const Wrapper = styled.main`
 `;
 
 const Sider = styled.section`
-  flex: 0 0 12%;
+  flex: 0 0 8%;
 `;
 
 const Content = styled.section`
-  flex: 0 0 1;
+  flex: 0 0 92%;
+  padding: 4rem 6rem;
 `;
 
 interface IHomeProps {
@@ -48,7 +49,9 @@ const Home: React.FC<IHomeProps> = ({ requestUser }) => {
         <Sider>
           <Sidebar />
         </Sider>
-        <Content>hey</Content>
+        <Content>
+          <TopBar />
+        </Content>
       </Wrapper>
     </FadeIn>
   );
