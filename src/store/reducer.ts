@@ -6,7 +6,9 @@ import { connectRouter } from "connected-react-router";
 export const initialState: ApplicationState = {
   reducer: {
     loading: {
-      user: false
+      signIn: false,
+      signUp: false,
+      user: true
     },
     error: {},
     user: {
@@ -33,14 +35,14 @@ const reducer = (state = initialState, action: ApplicationAction) => {
       return {
         ...state,
         loading: {
-          user: true
+          signIn: true
         }
       };
     case "signInSuccess":
       return {
         ...state,
         loading: {
-          user: false
+          signIn: false
         },
         user: action.user
       };
@@ -48,7 +50,7 @@ const reducer = (state = initialState, action: ApplicationAction) => {
       return {
         ...state,
         loading: {
-          user: false
+          signIn: false
         },
         error: {
           signIn: {
@@ -68,14 +70,14 @@ const reducer = (state = initialState, action: ApplicationAction) => {
       return {
         ...state,
         loading: {
-          user: true
+          signUp: true
         }
       };
     case "signUpSuccess":
       return {
         ...state,
         loading: {
-          user: false
+          signUp: false
         },
         user: action.user
       };
@@ -83,7 +85,7 @@ const reducer = (state = initialState, action: ApplicationAction) => {
       return {
         ...state,
         loading: {
-          user: false
+          signUp: false
         },
         error: {
           signUp: {
@@ -100,10 +102,7 @@ const reducer = (state = initialState, action: ApplicationAction) => {
      * */
     case "requestUserPending":
       return {
-        ...state,
-        loading: {
-          user: true
-        }
+        ...state
       };
     case "requestUserSuccess":
       return {

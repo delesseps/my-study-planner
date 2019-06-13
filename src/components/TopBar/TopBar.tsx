@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "assets/logo.svg";
-import { Icon, Avatar } from "antd";
+import { Icon, Avatar, Dropdown, Menu, Skeleton } from "antd";
 import { ApplicationState } from "store/types";
 import { connect } from "react-redux";
 
@@ -48,19 +48,21 @@ const UserInfoBox = styled.div`
   margin-left: 1.5rem;
 `;
 
-const NameCaretWrapper = styled.div`
+const NameCaretWrapper = styled(Dropdown)`
   display: flex;
   align-items: center;
-  & i {
-    margin-top: 0.5rem;
-    font-size: 1.2rem;
-  }
 `;
 
 const Name = styled.p`
   font-weight: 500;
-  margin: 0 0.4rem 0 0;
   font-size: 1.6rem;
+  margin: 0;
+  cursor: pointer;
+
+  & i {
+    margin-left: 0.4rem;
+    font-size: 1.2rem;
+  }
 
   color: ${props => props.theme.fontColors.blackRgba(0.9)};
 `;
@@ -69,23 +71,61 @@ const Role = styled.p`
   font-weight: 500;
   letter-spacing: 1px;
   margin: 0;
+  font-size: 1.4rem;
 
   color: ${props => props.theme.fontColors.blackRgba(0.6)};
 `;
 
+const MenuButton = styled.a`
+  & i {
+    margin-right: 2rem;
+  }
+`;
+
+const StyledSkeleton = styled(Skeleton)`
+  &&& .ant-skeleton-paragraph {
+    margin-top: 0;
+  }
+`;
+
 const mapStateToProps = (state: ApplicationState) => {
   return {
+    loading: state.reducer.loading.user,
     name: state.reducer.user.name,
     role: state.reducer.user.role
   };
 };
 
 interface ITopBarProps {
+  loading: boolean;
   name: string;
   role: string;
 }
 
-const TopBar: React.FC<ITopBarProps> = ({ name, role }) => {
+const TopBar: React.FC<ITopBarProps> = ({ loading, name, role }) => {
+  const userOptions = (
+    <Menu>
+      <Menu.Item>
+        <MenuButton>
+          <Icon type="user" />
+          Profile
+        </MenuButton>
+      </Menu.Item>
+      <Menu.Item>
+        <MenuButton>
+          <Icon type="setting" />
+          Preferences
+        </MenuButton>
+      </Menu.Item>
+      <Menu.Item>
+        <MenuButton>
+          <Icon type="logout" />
+          Logout
+        </MenuButton>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <Wrapper>
       <LogoBox>
@@ -96,11 +136,18 @@ const TopBar: React.FC<ITopBarProps> = ({ name, role }) => {
         <StyledIcon type="bell" />
         <Avatar shape="square" size={60} icon="user" />
         <UserInfoBox>
-          <NameCaretWrapper>
-            <Name>{name}</Name>
-            <Icon type="caret-down" />
-          </NameCaretWrapper>
-          <Role>{role === "user" ? "Student" : "Administrator"}</Role>
+          <StyledSkeleton
+            loading={loading}
+            title={{ width: 120 }}
+            paragraph={{ rows: 1, width: 60 }}
+          >
+            <NameCaretWrapper placement="bottomRight" overlay={userOptions}>
+              <Name>
+                {name} <Icon type="caret-down" />
+              </Name>
+            </NameCaretWrapper>
+            <Role>{role === "user" ? "Student" : "Administrator"}</Role>
+          </StyledSkeleton>
         </UserInfoBox>
       </UserBox>
     </Wrapper>

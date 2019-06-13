@@ -34,7 +34,7 @@ const SubHeading = styled.h3`
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
-    loading: state.reducer.loading.user,
+    loading: state.reducer.loading.signUp,
     error: state.reducer.error.signUp
   };
 };

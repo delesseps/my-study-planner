@@ -47,7 +47,7 @@ const ForgotPassword = styled.p`
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
-    loading: state.reducer.loading.user,
+    loading: state.reducer.loading.signIn,
     error: state.reducer.error.signIn
   };
 };

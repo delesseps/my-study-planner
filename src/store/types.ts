@@ -16,6 +16,8 @@ export interface ErrorState {
 }
 
 export interface LoadingState {
+  signIn: boolean;
+  signUp: boolean;
   user: boolean;
 }
 
