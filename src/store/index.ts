@@ -17,7 +17,8 @@ export const initialState: ApplicationState = {
     loading: {
       signIn: false,
       signUp: false,
-      user: true
+      user: true,
+      signOut: false
     },
     error: {},
     user: {

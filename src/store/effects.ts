@@ -9,11 +9,19 @@ import {
   signUpSuccess,
   requestUserPending,
   requestUserSuccess,
-  requestUserError
+  requestUserError,
+  signOutRequest,
+  signOutSuccess,
+  signOutError
 } from "./actions";
 import { push } from "connected-react-router";
 
-import { signInService, signUpService, requestUserService } from "services";
+import {
+  signInService,
+  signUpService,
+  requestUserService,
+  signOutService
+} from "services";
 
 import IUser from "interfaces/IUser";
 import ISignInCredentials from "interfaces/ISignInCredentials";
@@ -21,6 +29,7 @@ import ISignUpCredentials from "interfaces/ISignUpCredentials";
 
 import { Cookies } from "react-cookie";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
+import { AxiosResponse } from "axios";
 
 type Effect = ThunkAction<any, ApplicationState, any, ApplicationAction>;
 
@@ -71,5 +80,20 @@ export const requestUser = (): Effect => dispatch => {
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       dispatch(requestUserError(response))
+    );
+};
+
+export const signOut = (): Effect => dispatch => {
+  const cookies = new Cookies();
+  dispatch(signOutRequest());
+
+  return signOutService()
+    .then((response: AxiosResponse) => {
+      dispatch(signOutSuccess());
+      cookies.remove("IS_LOGGED_IN");
+      dispatch<any>(push("/signin"));
+    })
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      dispatch(signOutError(response))
     );
 };

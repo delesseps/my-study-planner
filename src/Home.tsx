@@ -1,23 +1,24 @@
 import React, { useEffect } from "react";
 import FadeIn from "components/FadeIn/FadeIn";
 import { Dispatch } from "redux";
-import { requestUser } from "store/effects";
+import { requestUser, signOut } from "store/effects";
 import { connect } from "react-redux";
 import { ApplicationState } from "store/types";
 import styled from "styled-components";
 import Sidebar from "components/Sidebar/Sidebar";
 import TopBar from "components/TopBar/TopBar";
+import IRequestError from "interfaces/IRequestError";
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
-    isLoading: state.reducer.loading,
-    user: state.reducer.user
+    error: state.reducer.error.user
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    requestUser: () => dispatch<any>(requestUser())
+    requestUser: () => dispatch<any>(requestUser()),
+    signOut: () => dispatch<any>(signOut())
   };
 };
 
@@ -36,12 +37,18 @@ const Content = styled.section`
 
 interface IHomeProps {
   requestUser: Function;
+  signOut: Function;
+  error: IRequestError | undefined;
 }
 
-const Home: React.FC<IHomeProps> = ({ requestUser }) => {
+const Home: React.FC<IHomeProps> = ({ error, requestUser, signOut }) => {
   useEffect(() => {
     requestUser();
   }, [requestUser]);
+
+  useEffect(() => {
+    if (error && error.status === 401) signOut();
+  }, [error, signOut]);
 
   return (
     <FadeIn>

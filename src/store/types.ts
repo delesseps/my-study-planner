@@ -13,11 +13,13 @@ export interface ErrorState {
   signIn?: IRequestError;
   signUp?: IRequestError;
   user?: IRequestError;
+  signOut?: IRequestError;
 }
 
 export interface LoadingState {
   signIn: boolean;
   signUp: boolean;
+  signOut: boolean;
   user: boolean;
 }
 
@@ -89,6 +91,25 @@ export interface RequestUserError extends Action {
   error: IAxiosErrorResponse;
 }
 
+/**
+ *
+ * Sign out interfaces
+ *
+ */
+
+export interface SignOutRequest extends Action {
+  type: "signOutRequest";
+}
+
+export interface SignOutSuccess extends Action {
+  type: "signOutSuccess";
+}
+
+export interface SignOutError extends Action {
+  type: "signOutError";
+  error: IAxiosErrorResponse;
+}
+
 export type ApplicationAction =
   | SignInRequest
   | SignInSuccess
@@ -98,4 +119,7 @@ export type ApplicationAction =
   | SignUpSuccess
   | RequestUserPending
   | RequestUserSuccess
-  | RequestUserError;
+  | RequestUserError
+  | SignOutRequest
+  | SignOutSuccess
+  | SignOutError;

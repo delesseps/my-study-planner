@@ -4,6 +4,8 @@ import { ReactComponent as Logo } from "assets/logo.svg";
 import { Icon, Avatar, Dropdown, Menu, Skeleton } from "antd";
 import { ApplicationState } from "store/types";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { signOut } from "store/effects";
 
 const Wrapper = styled.section`
   display: flex;
@@ -96,13 +98,24 @@ const mapStateToProps = (state: ApplicationState) => {
   };
 };
 
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    signOut: () => dispatch<any>(signOut())
+  };
+};
+
 interface ITopBarProps {
   loading: boolean;
   name: string;
   role: string;
+  signOut: Function;
 }
 
-const TopBar: React.FC<ITopBarProps> = ({ loading, name, role }) => {
+const TopBar: React.FC<ITopBarProps> = ({ loading, name, role, signOut }) => {
+  const handleSignOut = () => {
+    signOut();
+  };
+
   const userOptions = (
     <Menu>
       <Menu.Item>
@@ -118,7 +131,7 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, name, role }) => {
         </MenuButton>
       </Menu.Item>
       <Menu.Item>
-        <MenuButton>
+        <MenuButton onClick={handleSignOut}>
           <Icon type="logout" />
           Logout
         </MenuButton>
@@ -156,5 +169,5 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, name, role }) => {
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(TopBar);

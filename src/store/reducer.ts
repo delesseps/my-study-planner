@@ -8,7 +8,8 @@ const initialState: ReducerState = {
   loading: {
     signIn: false,
     signUp: false,
-    user: true
+    user: true,
+    signOut: false
   },
   error: {},
   user: {
@@ -94,10 +95,36 @@ const reducer = (state = initialState, action: ApplicationAction) => {
       });
     case "requestUserError":
       return produce(state, draft => {
-        draft.loading.signIn = false;
+        draft.loading.user = false;
         draft.error = {
           ...draft.error,
           user: {
+            message: action.error.data.errors.message,
+            status: action.error.status,
+            state: true
+          }
+        };
+      });
+    /**
+     *
+     * Sign out reducers
+     *
+     */
+    case "signOutRequest":
+      return produce(state, draft => {
+        draft.loading.signOut = true;
+      });
+    case "signOutSuccess":
+      return produce(state, draft => {
+        draft.loading.signOut = false;
+        draft.user = initialState.user;
+      });
+    case "signOutError":
+      return produce(state, draft => {
+        draft.loading.signOut = false;
+        draft.error = {
+          ...draft.error,
+          signOut: {
             message: action.error.data.errors.message,
             status: action.error.status,
             state: true
