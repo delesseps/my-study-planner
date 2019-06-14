@@ -21,13 +21,15 @@ export interface LoadingState {
   user: boolean;
 }
 
+export interface ReducerState {
+  loading: LoadingState;
+  error: ErrorState;
+  user: IUser;
+}
+
 export interface ApplicationState {
   router?: RouterState;
-  reducer: {
-    loading: LoadingState;
-    error: ErrorState;
-    user: IUser;
-  };
+  reducer: ReducerState;
 }
 
 /**

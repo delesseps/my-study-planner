@@ -40,7 +40,9 @@ export const signIn = (credentials: ISignInCredentials): Effect => dispatch => {
         dispatch<any>(push("/dashboard"));
       }
     )
-    .catch(({response} : {response: IAxiosErrorResponse}) => dispatch(signInError(response)));
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      dispatch(signInError(response))
+    );
 };
 
 export const signUp = (credentials: ISignUpCredentials): Effect => dispatch => {
@@ -55,16 +57,19 @@ export const signUp = (credentials: ISignUpCredentials): Effect => dispatch => {
         dispatch<any>(push("/dashboard"));
       }
     )
-    .catch(({response} : {response: IAxiosErrorResponse}) => dispatch(signUpError(response)));
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      dispatch(signUpError(response))
+    );
 };
 
 export const requestUser = (): Effect => dispatch => {
-  console.log("aaa");
   dispatch(requestUserPending());
 
   return requestUserService()
     .then(({ data }: { data: { user: IUser } }) => {
       dispatch(requestUserSuccess(data.user));
     })
-    .catch(({response} : {response: IAxiosErrorResponse}) => dispatch(requestUserError(response)));
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      dispatch(requestUserError(response))
+    );
 };
