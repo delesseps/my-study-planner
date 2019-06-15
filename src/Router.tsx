@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 import { Switch, Route, Redirect } from "react-router";
 import App from "./App";
 import Loading from "components/Loading/Loading";

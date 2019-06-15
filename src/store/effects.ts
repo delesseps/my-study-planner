@@ -89,8 +89,8 @@ export const signOut = (): Effect => dispatch => {
 
   return signOutService()
     .then((response: AxiosResponse) => {
-      dispatch(signOutSuccess());
       cookies.remove("IS_LOGGED_IN");
+      dispatch(signOutSuccess());
       dispatch<any>(push("/signin"));
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
