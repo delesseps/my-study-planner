@@ -36,7 +36,7 @@ const fadeInUpText = keyframes`
 
 const Wrapper = styled.nav`
   background-color: ${props => props.theme.sidebarBackgroundColor};
-  min-height: 100vh;
+  height: 100%;
   border-right: 2px solid ${props => props.theme.fontColors.blackRgba(0.1)};
 
   display: flex;

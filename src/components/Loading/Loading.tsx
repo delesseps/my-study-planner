@@ -21,9 +21,11 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  width: 100%;
-  min-height: 100vh;
   background-color: ${props => props.theme.backgroundColor};
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   & > div {
     animation: ${fadeInUp} 0.8s;

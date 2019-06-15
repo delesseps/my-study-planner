@@ -38,6 +38,7 @@ const reducer = (state = initialState, action: ApplicationAction) => {
     case "signInSuccess":
       return produce(state, draft => {
         draft.loading.signIn = false;
+        draft.error = {};
         draft.user = action.user;
       });
     case "signInError":
@@ -65,11 +66,12 @@ const reducer = (state = initialState, action: ApplicationAction) => {
     case "signUpSuccess":
       return produce(state, draft => {
         draft.loading.signUp = false;
+        draft.error = {};
         draft.user = action.user;
       });
     case "signUpError":
       return produce(state, draft => {
-        draft.loading.signIn = false;
+        draft.loading.signUp = false;
         draft.error = {
           ...draft.error,
           signUp: {

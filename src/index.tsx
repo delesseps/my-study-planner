@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import Router from "./Router";
 import * as serviceWorker from "./serviceWorker";
 
 import { Provider } from "react-redux";
@@ -20,7 +20,7 @@ ReactDOM.render(
     <ConnectedRouter history={history}>
       <ThemeProvider theme={theme}>
         <CookiesProvider>
-          <App />
+          <Router />
         </CookiesProvider>
       </ThemeProvider>
     </ConnectedRouter>
