@@ -3,7 +3,7 @@
   <img src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000" />
 </p>
 
-> Organize your homework, evaluations, and to-dos with your friends
+> Organize your homework, evaluations, and to-dos with your friends!!!
 
 ## Install
 
@@ -25,7 +25,7 @@ npm test
 
 ## Author
 
-👤 **Jose Felix - Programmer and designer**
+👤 **Jose Felix - Programmer and Designer**
 
 - Github: [@jfelix61](https://github.com/Jfelix61)
 
