@@ -37,7 +37,10 @@ const fadeInUpText = keyframes`
 const Wrapper = styled.nav`
   background-color: ${props => props.theme.sidebarBackgroundColor};
   height: 100%;
+  width: 8%;
   border-right: 2px solid ${props => props.theme.fontColors.blackRgba(0.1)};
+
+  position: fixed;
 
   display: flex;
   flex-direction: column;
@@ -51,12 +54,12 @@ const Wrapper = styled.nav`
   & .active {
     & p {
       display: initial;
-      animation: ${fadeInUpText} ease-out 0.5s;
+      animation: ${fadeInUpText} ease-out 0.3s;
       margin-bottom: -1.3rem;
     }
 
     & i {
-      animation: ${fadeInUp} ease-out 0.5s;
+      animation: ${fadeInUp} ease-out 0.3s;
     }
 
     position: relative;
@@ -69,7 +72,7 @@ const Wrapper = styled.nav`
     height: 100%;
     border-right: 0.5rem solid ${props => props.theme.colors.main};
 
-    animation: ${fadeIn} 1s;
+    animation: ${fadeIn} 0.5s;
   }
 
   & p {

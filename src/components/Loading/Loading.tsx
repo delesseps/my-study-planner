@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: ${props => props.theme.backgroundColor};
+  background-color: transparent;
   position: absolute;
   top: 50%;
   left: 50%;
