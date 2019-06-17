@@ -1,17 +1,28 @@
+/**
+ *
+ * @TODO:
+ * - Make component responsive
+ *
+ */
+
 import React from "react";
 import styled from "styled-components";
 import { Calendar } from "antd";
 import Counter from "./panels/Counter/Counter";
 import FadeIn from "components/FadeIn/FadeIn";
 import { breakpoints } from "styled";
+import Evaluation from "./panels/Evaluation/Evaluation";
+import Homework from "./panels/Homework/Homework";
+import ToDo from "./panels/ToDo/ToDo";
+import RecommendedActions from "./panels/RecommendedActions/RecommendedActions";
 
 const HomeSchedule = React.lazy(() => import("./HomeSchedule"));
 
-const panelTheme = `background-color: #fff; border-radius: 4px; padding: 2rem 2.6rem;`;
+const panelTheme = `background-color: #fff; border-radius: 4px;`;
 
 const Wrapper = styled.section`
   display: grid;
-  margin-top: 8rem;
+  margin-top: 6rem;
   grid-gap: 3rem;
   grid-template-areas:
     "left right ractions"
@@ -24,6 +35,9 @@ const CounterPanelLeft = styled.div`
   box-shadow: ${props => props.theme.shadow1};
   height: 13rem;
   position: relative;
+
+  padding: 2rem 2.6rem;
+
   ${panelTheme};
 
   grid-area: left;
@@ -35,17 +49,9 @@ const CounterPanelRight = styled.div`
   height: 13rem;
   position: relative;
 
+  padding: 2rem 2.6rem;
+
   grid-area: right;
-`;
-
-const RecommendedActionsPanel = styled.div`
-  ${panelTheme};
-  box-shadow: ${props => props.theme.shadow1};
-  height: 30rem;
-  overflow-y: auto;
-
-  grid-area: ractions;
-  grid-row: auto;
 `;
 
 const CalendarPanel = styled.div`
@@ -63,6 +69,8 @@ const CalendarPanel = styled.div`
 const HomeSchedulePanel = styled.div`
   height: 48.9rem;
   margin-top: -17rem;
+  padding: 2rem 2.6rem;
+
   grid-area: schedule;
 
   ${panelTheme};
@@ -74,8 +82,24 @@ const HomeSchedulePanel = styled.div`
   }
 `;
 
+const RecommendedActionsPanel = styled.div`
+  ${panelTheme};
+  box-shadow: ${props => props.theme.shadow1};
+  height: 30rem;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  grid-area: ractions;
+  grid-row: auto;
+`;
+
 const ToDoPanel = styled.div`
   ${panelTheme};
+
+  display: flex;
+  flex-direction: column;
 
   box-shadow: ${props => props.theme.shadow1};
   min-height: 30rem;
@@ -88,6 +112,9 @@ const ToDoPanel = styled.div`
 const HomeworkPanel = styled.div`
   ${panelTheme};
 
+  display: flex;
+  flex-direction: column;
+
   box-shadow: ${props => props.theme.shadow1};
   min-height: 30rem;
 
@@ -98,6 +125,9 @@ const HomeworkPanel = styled.div`
 
 const EvaluationPanel = styled.div`
   ${panelTheme};
+
+  display: flex;
+  flex-direction: column;
 
   box-shadow: ${props => props.theme.shadow1};
   min-height: 30rem;
@@ -121,13 +151,23 @@ const Home: React.FC = props => {
         <HomeSchedulePanel>
           <HomeSchedule />
         </HomeSchedulePanel>
-        <ToDoPanel />
 
-        <HomeworkPanel />
+        <ToDoPanel>
+          <ToDo />
+        </ToDoPanel>
 
-        <EvaluationPanel />
+        <HomeworkPanel>
+          <Homework />
+        </HomeworkPanel>
 
-        <RecommendedActionsPanel />
+        <EvaluationPanel>
+          <Evaluation />
+        </EvaluationPanel>
+
+        <RecommendedActionsPanel>
+          <RecommendedActions />
+        </RecommendedActionsPanel>
+
         <CalendarPanel>
           <Calendar fullscreen={false} />
         </CalendarPanel>

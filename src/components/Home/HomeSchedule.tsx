@@ -27,9 +27,7 @@ const HomeSchedule: React.FC = props => {
       selectable
       localizer={localizer}
       events={events}
-      scrollToTime={new Date(1970, 1, 1, 6)}
       defaultView={"week"}
-      defaultDate={new Date(2015, 3, 12)}
       onSelectEvent={event => alert(event.title)}
     />
   );
