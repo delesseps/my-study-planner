@@ -32,10 +32,10 @@ const OAuthButtons = ({ type }: { type?: string }) => {
   return (
     <Wrapper>
       <Button type="default" size="large" icon="google" block>
-        {type === "signin" ? "Sign in with Google" : "Sign up with Google"}
+        <a href="http://localhost:3000/api/auth/google">{type === "signin" ? "Sign in with Google" : "Sign up with Google"}</a>
       </Button>
       <FacebookButton type="default" size="large" icon="facebook" block>
-        {type === "signin" ? "Sign in with Facebook" : "Sign up with Facebook"}
+        <a>{type === "signin" ? "Sign in with Facebook" : "Sign up with Facebook"}</a>
       </FacebookButton>
     </Wrapper>
   );
