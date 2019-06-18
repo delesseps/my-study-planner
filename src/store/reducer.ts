@@ -16,6 +16,7 @@ const initialState: ReducerState = {
     name: "",
     email: "",
     role: "",
+    picture: "",
     evaluations: [],
     homework: [],
     todos: [],

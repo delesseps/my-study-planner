@@ -1,5 +1,4 @@
 import React from "react";
-import IEvaluation from "interfaces/IEvaluation";
 import styled from "styled-components";
 import { Empty } from "antd";
 

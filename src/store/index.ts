@@ -24,6 +24,7 @@ export const initialState: ApplicationState = {
     user: {
       name: "",
       email: "",
+      picture: "",
       role: "",
       evaluations: [],
       homework: [],

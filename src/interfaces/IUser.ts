@@ -12,6 +12,7 @@ export default interface IUser {
   name: string;
   email: string;
   role: string;
+  picture: string;
   evaluations: IEvaluation[];
   todos: IToDo[];
   homework: IHomework[];

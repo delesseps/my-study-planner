@@ -34,18 +34,12 @@ import { AxiosResponse } from "axios";
 type Effect = ThunkAction<any, ApplicationState, any, ApplicationAction>;
 
 export const signIn = (credentials: ISignInCredentials): Effect => dispatch => {
-  const cookies = new Cookies();
   dispatch(signInRequest());
 
   return signInService(credentials)
     .then(
       ({ data }: { data: { user: IUser; expiresIn: number | undefined } }) => {
         dispatch(signInSuccess(data.user));
-
-        cookies.set("IS_LOGGED_IN", true, {
-          maxAge: data.expiresIn
-        });
-
         dispatch<any>(push("/dashboard"));
       }
     )
@@ -55,14 +49,12 @@ export const signIn = (credentials: ISignInCredentials): Effect => dispatch => {
 };
 
 export const signUp = (credentials: ISignUpCredentials): Effect => dispatch => {
-  const cookies = new Cookies();
   dispatch(signUpRequest());
 
   return signUpService(credentials)
     .then(
       ({ data }: { data: { user: IUser; expiresIn: number | undefined } }) => {
         dispatch(signUpSuccess(data.user));
-        cookies.set("IS_LOGGED_IN", true);
         dispatch<any>(push("/dashboard"));
       }
     )

@@ -94,7 +94,8 @@ const mapStateToProps = (state: ApplicationState) => {
   return {
     loading: state.reducer.loading.user,
     name: state.reducer.user.name,
-    role: state.reducer.user.role
+    role: state.reducer.user.role,
+    picture: state.reducer.user.picture
   };
 };
 
@@ -109,9 +110,16 @@ interface ITopBarProps {
   name: string;
   role: string;
   signOut: Function;
+  picture: string;
 }
 
-const TopBar: React.FC<ITopBarProps> = ({ loading, name, role, signOut }) => {
+const TopBar: React.FC<ITopBarProps> = ({
+  loading,
+  name,
+  role,
+  signOut,
+  picture
+}) => {
   const handleSignOut = () => {
     signOut();
   };
@@ -147,7 +155,7 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, name, role, signOut }) => {
       </LogoBox>
       <UserBox>
         <StyledIcon type="bell" />
-        <Avatar shape="square" size={60} icon="user" />
+        <Avatar shape="square" size={60} icon="user" src={picture} />
         <UserInfoBox>
           <StyledSkeleton
             loading={loading}
