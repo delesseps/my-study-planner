@@ -21,6 +21,11 @@ const initialState: ReducerState = {
     homework: [],
     todos: [],
     semesters: []
+  },
+  drawer: {
+    evaluation: false,
+    homework: false,
+    toDo: false
   }
 };
 
@@ -133,6 +138,23 @@ const reducer = (state = initialState, action: ApplicationAction) => {
             state: true
           }
         };
+      });
+    /**
+     *
+     * Drawers reducers
+     *
+     */
+    case "evaluationDrawer":
+      return produce(state, draft => {
+        draft.drawer.evaluation = !state.drawer.evaluation;
+      });
+    case "homeworkDrawer":
+      return produce(state, draft => {
+        draft.drawer.homework = !state.drawer.homework;
+      });
+    case "toDoDrawer":
+      return produce(state, draft => {
+        draft.drawer.toDo = !state.drawer.toDo;
       });
     default:
       return state;

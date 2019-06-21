@@ -3,7 +3,9 @@ import IEvaluation from "interfaces/IEvaluation";
 import styled from "styled-components";
 import { Button, Empty } from "antd";
 import { ApplicationState } from "store/types";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
+import AddEvaluation from "components/drawers/AddEvaluation/AddEvaluation";
+import { evaluationDrawer } from "store/actions";
 
 const Header = styled.div`
   padding: 1.5rem 2rem;
@@ -17,7 +19,7 @@ const Title = styled.h3`
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 0.5rem;
+  margin: 0;
 
   color: ${props => props.theme.fontColors.blackRgba(0.8)};
 `;
@@ -41,24 +43,25 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    evaluations: state.reducer.user.evaluations
-  };
-};
-
 interface IEvaluationProps {
   evaluations: IEvaluation[];
 }
 
-const Evaluation: React.FunctionComponent<IEvaluationProps> = ({
-  evaluations
-}) => {
+const Evaluation: React.FC<IEvaluationProps> = ({ evaluations }) => {
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(evaluationDrawer());
+  };
+
   return (
     <React.Fragment>
       <Header>
         <Title>Evaluations</Title>
-        <Button type="primary">NEW EVALUATION</Button>
+        <Button onClick={handleClick} type="primary">
+          NEW EVALUATION
+        </Button>
+        <AddEvaluation />
       </Header>
       <Content>
         {evaluations.length ? (
@@ -69,6 +72,12 @@ const Evaluation: React.FunctionComponent<IEvaluationProps> = ({
       </Content>
     </React.Fragment>
   );
+};
+
+const mapStateToProps = (state: ApplicationState) => {
+  return {
+    evaluations: state.reducer.user.evaluations
+  };
 };
 
 export default connect(

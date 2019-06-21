@@ -10,7 +10,10 @@ import {
   RequestUserError,
   SignOutRequest,
   SignOutSuccess,
-  SignOutError
+  SignOutError,
+  EvaluationDrawer,
+  HomeworkDrawer,
+  ToDoDrawer
 } from "./types";
 import IUser from "interfaces/IUser";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
@@ -94,4 +97,21 @@ export const signOutSuccess = (): SignOutSuccess => ({
 export const signOutError = (error: IAxiosErrorResponse): SignOutError => ({
   type: "signOutError",
   error
+});
+
+/**
+ *
+ * Drawer interfaces
+ *
+ */
+export const evaluationDrawer = (): EvaluationDrawer => ({
+  type: "evaluationDrawer"
+});
+
+export const homeworkDrawer = (): HomeworkDrawer => ({
+  type: "homeworkDrawer"
+});
+
+export const toDoDrawer = (): ToDoDrawer => ({
+  type: "toDoDrawer"
 });

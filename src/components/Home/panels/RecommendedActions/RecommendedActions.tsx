@@ -14,7 +14,7 @@ const Title = styled.h3`
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 0.5rem;
+  margin: 0;
 
   color: ${props => props.theme.fontColors.blackRgba(0.8)};
 `;

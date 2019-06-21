@@ -23,10 +23,17 @@ export interface LoadingState {
   user: boolean;
 }
 
+export interface DrawerState {
+  evaluation: boolean;
+  homework: boolean;
+  toDo: boolean;
+}
+
 export interface ReducerState {
   loading: LoadingState;
   error: ErrorState;
   user: IUser;
+  drawer: DrawerState;
 }
 
 export interface ApplicationState {
@@ -110,6 +117,23 @@ export interface SignOutError extends Action {
   error: IAxiosErrorResponse;
 }
 
+/**
+ *
+ * Drawer interfaces
+ *
+ */
+export interface EvaluationDrawer extends Action {
+  type: "evaluationDrawer";
+}
+
+export interface HomeworkDrawer extends Action {
+  type: "homeworkDrawer";
+}
+
+export interface ToDoDrawer extends Action {
+  type: "toDoDrawer";
+}
+
 export type ApplicationAction =
   | SignInRequest
   | SignInSuccess
@@ -122,4 +146,7 @@ export type ApplicationAction =
   | RequestUserError
   | SignOutRequest
   | SignOutSuccess
-  | SignOutError;
+  | SignOutError
+  | EvaluationDrawer
+  | HomeworkDrawer
+  | ToDoDrawer;

@@ -30,6 +30,11 @@ export const initialState: ApplicationState = {
       homework: [],
       todos: [],
       semesters: []
+    },
+    drawer: {
+      evaluation: false,
+      homework: false,
+      toDo: false
     }
   }
 };
