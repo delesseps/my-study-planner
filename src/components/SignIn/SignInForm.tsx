@@ -96,6 +96,7 @@ const SignInForm: React.FC<ISignInFormProps> = ({
               message="Incorrect e-mail or password."
               type="error"
               showIcon
+              closable
             />
           </Form.Item>
         </FadeIn>

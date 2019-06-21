@@ -114,6 +114,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
               message="User already exists. Please try again with a different email."
               type="error"
               showIcon
+              closable
             />
           </Form.Item>
         </FadeIn>

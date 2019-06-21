@@ -10,6 +10,7 @@ import TopBar from "components/TopBar/TopBar";
 import IRequestError from "interfaces/IRequestError";
 import { Switch, Route } from "react-router";
 import Loading from "components/Loading/Loading";
+import { breakpoints } from "styled";
 
 const Home = React.lazy(() => import("components/Home/Home"));
 const Schedule = React.lazy(() => import("components/Schedule/Schedule"));
@@ -47,6 +48,10 @@ const Content = styled.section`
   padding: 4rem 6rem;
 
   position: relative;
+
+  @media only screen and (max-width: ${breakpoints.bpLargest}) {
+    padding: 4rem 4rem;
+  }
 `;
 
 interface IHomeProps {
