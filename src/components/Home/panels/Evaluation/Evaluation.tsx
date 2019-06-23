@@ -6,6 +6,7 @@ import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import AddEvaluation from "components/drawers/AddEvaluation/AddEvaluation";
 import { evaluationDrawer } from "store/actions";
+import EvaluationCard from "components/cards/EvaluationCard/EvaluationCard";
 
 const Header = styled.div`
   padding: 1.5rem 2rem;
@@ -65,7 +66,7 @@ const Evaluation: React.FC<IEvaluationProps> = ({ evaluations }) => {
       </Header>
       <Content>
         {evaluations.length ? (
-          "Content"
+          <EvaluationCard />
         ) : (
           <StyledEmpty description="No Evaluations" />
         )}

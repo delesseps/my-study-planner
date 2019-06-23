@@ -90,21 +90,6 @@ const StyledSkeleton = styled(Skeleton)`
   }
 `;
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    loading: state.reducer.loading.user,
-    name: state.reducer.user.name,
-    role: state.reducer.user.role,
-    picture: state.reducer.user.picture
-  };
-};
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    signOut: () => dispatch<any>(signOut())
-  };
-};
-
 interface ITopBarProps {
   loading: boolean;
   name: string;
@@ -173,6 +158,21 @@ const TopBar: React.FC<ITopBarProps> = ({
       </UserBox>
     </Wrapper>
   );
+};
+
+const mapStateToProps = (state: ApplicationState) => {
+  return {
+    loading: state.reducer.loading.user,
+    name: state.reducer.user.name,
+    role: state.reducer.user.role,
+    picture: state.reducer.user.picture
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    signOut: () => dispatch<any>(signOut())
+  };
 };
 
 export default connect(

@@ -10,7 +10,7 @@ import {
   Button
 } from "antd";
 import moment from "moment";
-import { WrappedFormUtils } from "antd/lib/form/Form";
+import { FormComponentProps } from "antd/lib/form/Form";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import { evaluationDrawer } from "store/actions";
@@ -20,8 +20,7 @@ import IEvaluation from "interfaces/IEvaluation";
 const { Option } = Select;
 const { TextArea } = Input;
 
-interface IAddEvaluationProps {
-  form: WrappedFormUtils;
+interface IAddEvaluationProps extends FormComponentProps {
   visible: boolean;
   loading: boolean;
 }
