@@ -12,7 +12,10 @@ import {
   requestUserError,
   signOutRequest,
   signOutSuccess,
-  signOutError
+  signOutError,
+  addEvaluationRequest,
+  addEvaluationSuccess,
+  addEvaluationError
 } from "./actions";
 import { push } from "connected-react-router";
 
@@ -20,7 +23,8 @@ import {
   signInService,
   signUpService,
   requestUserService,
-  signOutService
+  signOutService,
+  evaluationService
 } from "services";
 
 import IUser from "interfaces/IUser";
@@ -30,6 +34,7 @@ import ISignUpCredentials from "interfaces/ISignUpCredentials";
 import { Cookies } from "react-cookie";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
 import { AxiosResponse } from "axios";
+import IEvaluation from "interfaces/IEvaluation";
 
 type Effect = ThunkAction<any, ApplicationState, any, ApplicationAction>;
 
@@ -37,12 +42,10 @@ export const signIn = (credentials: ISignInCredentials): Effect => dispatch => {
   dispatch(signInRequest());
 
   return signInService(credentials)
-    .then(
-      ({ data }: { data: { user: IUser; expiresIn: number | undefined } }) => {
-        dispatch(signInSuccess(data.user));
-        dispatch<any>(push("/dashboard"));
-      }
-    )
+    .then(({ data }: { data: { user: IUser } }) => {
+      dispatch(signInSuccess(data.user));
+      dispatch<any>(push("/dashboard"));
+    })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       dispatch(signInError(response))
     );
@@ -52,12 +55,10 @@ export const signUp = (credentials: ISignUpCredentials): Effect => dispatch => {
   dispatch(signUpRequest());
 
   return signUpService(credentials)
-    .then(
-      ({ data }: { data: { user: IUser; expiresIn: number | undefined } }) => {
-        dispatch(signUpSuccess(data.user));
-        dispatch<any>(push("/dashboard"));
-      }
-    )
+    .then(({ data }: { data: { user: IUser } }) => {
+      dispatch(signUpSuccess(data.user));
+      dispatch<any>(push("/dashboard"));
+    })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       dispatch(signUpError(response))
     );
@@ -87,5 +88,17 @@ export const signOut = (): Effect => dispatch => {
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       dispatch(signOutError(response))
+    );
+};
+
+export const addEvaluation = (evaluation: IEvaluation): Effect => dispatch => {
+  dispatch(addEvaluationRequest());
+
+  return evaluationService(evaluation)
+    .then(({ data }: { data: { evaluation: IEvaluation } }) =>
+      dispatch<any>(addEvaluationSuccess(data.evaluation))
+    )
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      dispatch(addEvaluationError(response))
     );
 };

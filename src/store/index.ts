@@ -18,7 +18,10 @@ export const initialState: ApplicationState = {
       signIn: false,
       signUp: false,
       user: true,
-      signOut: false
+      signOut: false,
+      evaluation: false,
+      homework: false,
+      toDo: false
     },
     error: {},
     user: {

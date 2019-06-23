@@ -14,6 +14,8 @@ import { WrappedFormUtils } from "antd/lib/form/Form";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import { evaluationDrawer } from "store/actions";
+import { addEvaluation } from "store/effects";
+import IEvaluation from "interfaces/IEvaluation";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -21,21 +23,22 @@ const { TextArea } = Input;
 interface IAddEvaluationProps {
   form: WrappedFormUtils;
   visible: boolean;
+  loading: boolean;
 }
 
-const AddEvaluation: React.FC<IAddEvaluationProps> = ({ form, visible }) => {
+const AddEvaluation: React.FC<IAddEvaluationProps> = ({
+  form,
+  visible,
+  loading
+}) => {
   const { getFieldDecorator } = form;
   const dispatch = useDispatch();
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    form.validateFieldsAndScroll((err, values) => {
+    form.validateFieldsAndScroll((err, values: IEvaluation) => {
       if (!err) {
-        /**
-         *
-         * @Todo: ADD Evaluation through effect
-         *
-         */
+        dispatch(addEvaluation(values));
       }
     });
   };
@@ -46,14 +49,19 @@ const AddEvaluation: React.FC<IAddEvaluationProps> = ({ form, visible }) => {
 
   const disabledDate = (current: any) => {
     // Can not select days before today and today
-    return current && current < moment().endOf("day");
+    return current < moment().endOf("day");
   };
 
   return (
-    <Drawer title="Add new evaluation" onClose={onClose} visible={visible}>
+    <Drawer
+      destroyOnClose={true}
+      title="Add new evaluation"
+      onClose={onClose}
+      visible={visible}
+    >
       <Form onSubmit={handleSubmit} layout="vertical">
         <Form.Item label={<span>Course name</span>}>
-          {getFieldDecorator("courseName", {
+          {getFieldDecorator("subject", {
             rules: [
               {
                 required: true,
@@ -68,8 +76,8 @@ const AddEvaluation: React.FC<IAddEvaluationProps> = ({ form, visible }) => {
             rules: [{ required: true, message: "Please select an evaluation!" }]
           })(
             <Select placeholder="Select an evaluation type">
-              <Option value="Quiz">Quiz</Option>
-              <Option value="Test">Test</Option>
+              <Option value="quiz">Quiz</Option>
+              <Option value="test">Test</Option>
             </Select>
           )}
         </Form.Item>
@@ -114,7 +122,7 @@ const AddEvaluation: React.FC<IAddEvaluationProps> = ({ form, visible }) => {
           )}
         </Form.Item>
         <Form.Item label="Date">
-          {getFieldDecorator("datePicker", {
+          {getFieldDecorator("date", {
             rules: [
               {
                 type: "object",
@@ -125,7 +133,7 @@ const AddEvaluation: React.FC<IAddEvaluationProps> = ({ form, visible }) => {
           })(<DatePicker disabledDate={disabledDate} />)}
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={loading}>
             Add Evaluation
           </Button>
         </Form.Item>
@@ -138,7 +146,8 @@ const wrappedAddEvaluation = Form.create()(AddEvaluation);
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
-    visible: state.reducer.drawer.evaluation
+    visible: state.reducer.drawer.evaluation,
+    loading: state.reducer.loading.evaluation
   };
 };
 

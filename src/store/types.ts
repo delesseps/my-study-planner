@@ -3,6 +3,7 @@ import IUser from "interfaces/IUser";
 import { RouterState } from "connected-react-router";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
 import IRequestError from "interfaces/IRequestError";
+import IEvaluation from "interfaces/IEvaluation";
 
 /**
  *
@@ -14,6 +15,7 @@ export interface ErrorState {
   signUp?: IRequestError;
   user?: IRequestError;
   signOut?: IRequestError;
+  evaluation?: IRequestError;
 }
 
 export interface LoadingState {
@@ -21,6 +23,9 @@ export interface LoadingState {
   signUp: boolean;
   signOut: boolean;
   user: boolean;
+  evaluation: boolean;
+  homework: boolean;
+  toDo: boolean;
 }
 
 export interface DrawerState {
@@ -134,6 +139,25 @@ export interface ToDoDrawer extends Action {
   type: "toDoDrawer";
 }
 
+/**
+ *
+ * Add evaluation interfaces
+ *
+ */
+export interface AddEvaluationRequest {
+  type: "addEvaluationRequest";
+}
+
+export interface AddEvaluationSuccess {
+  type: "addEvaluationSuccess";
+  evaluation: IEvaluation;
+}
+
+export interface AddEvaluationError {
+  type: "addEvaluationError";
+  error: IAxiosErrorResponse;
+}
+
 export type ApplicationAction =
   | SignInRequest
   | SignInSuccess
@@ -149,4 +173,7 @@ export type ApplicationAction =
   | SignOutError
   | EvaluationDrawer
   | HomeworkDrawer
-  | ToDoDrawer;
+  | ToDoDrawer
+  | AddEvaluationRequest
+  | AddEvaluationSuccess
+  | AddEvaluationError;

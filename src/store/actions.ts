@@ -13,10 +13,14 @@ import {
   SignOutError,
   EvaluationDrawer,
   HomeworkDrawer,
-  ToDoDrawer
+  ToDoDrawer,
+  AddEvaluationRequest,
+  AddEvaluationSuccess,
+  AddEvaluationError
 } from "./types";
 import IUser from "interfaces/IUser";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
+import IEvaluation from "interfaces/IEvaluation";
 
 /**
  *
@@ -114,4 +118,28 @@ export const homeworkDrawer = (): HomeworkDrawer => ({
 
 export const toDoDrawer = (): ToDoDrawer => ({
   type: "toDoDrawer"
+});
+
+/**
+ *
+ * Add evaluation interfaces
+ *
+ */
+
+export const addEvaluationRequest = (): AddEvaluationRequest => ({
+  type: "addEvaluationRequest"
+});
+
+export const addEvaluationSuccess = (
+  evaluation: IEvaluation
+): AddEvaluationSuccess => ({
+  type: "addEvaluationSuccess",
+  evaluation
+});
+
+export const addEvaluationError = (
+  error: IAxiosErrorResponse
+): AddEvaluationError => ({
+  type: "addEvaluationError",
+  error
 });

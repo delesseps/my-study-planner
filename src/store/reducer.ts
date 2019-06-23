@@ -9,7 +9,10 @@ const initialState: ReducerState = {
     signIn: false,
     signUp: false,
     user: true,
-    signOut: false
+    signOut: false,
+    evaluation: false,
+    homework: false,
+    toDo: false
   },
   error: {},
   user: {
@@ -155,6 +158,33 @@ const reducer = (state = initialState, action: ApplicationAction) => {
     case "toDoDrawer":
       return produce(state, draft => {
         draft.drawer.toDo = !state.drawer.toDo;
+      });
+    /**
+     *
+     * Add Evaluation reducers
+     *
+     */
+    case "addEvaluationRequest":
+      return produce(state, draft => {
+        draft.loading.evaluation = true;
+      });
+    case "addEvaluationSuccess":
+      return produce(state, draft => {
+        draft.loading.evaluation = false;
+        draft.drawer.evaluation = false;
+        draft.user.evaluations.push(action.evaluation);
+      });
+    case "addEvaluationError":
+      return produce(state, draft => {
+        draft.loading.evaluation = false;
+        draft.error = {
+          ...draft.error,
+          evaluation: {
+            message: action.error.data.errors.message,
+            status: action.error.status,
+            state: true
+          }
+        };
       });
     default:
       return state;
