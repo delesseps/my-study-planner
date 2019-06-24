@@ -103,6 +103,7 @@ const ToDoPanel = styled.div`
 
   box-shadow: ${props => props.theme.shadow1};
   min-height: 30rem;
+  max-height: 60rem;
 
   overflow-y: auto;
 
@@ -117,6 +118,7 @@ const HomeworkPanel = styled.div`
 
   box-shadow: ${props => props.theme.shadow1};
   min-height: 30rem;
+  max-height: 60rem;
 
   overflow-y: auto;
 
@@ -131,6 +133,7 @@ const EvaluationPanel = styled.div`
 
   box-shadow: ${props => props.theme.shadow1};
   min-height: 30rem;
+  max-height: 60rem;
 
   overflow-y: auto;
 

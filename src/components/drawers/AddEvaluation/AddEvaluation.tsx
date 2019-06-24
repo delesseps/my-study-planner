@@ -4,10 +4,10 @@ import {
   Form,
   DatePicker,
   Input,
-  Select,
   Tooltip,
   Icon,
-  Button
+  Button,
+  Radio
 } from "antd";
 import moment from "moment";
 import { FormComponentProps } from "antd/lib/form/Form";
@@ -17,7 +17,6 @@ import { evaluationDrawer } from "store/actions";
 import { addEvaluation } from "store/effects";
 import IEvaluation from "interfaces/IEvaluation";
 
-const { Option } = Select;
 const { TextArea } = Input;
 
 interface IAddEvaluationProps extends FormComponentProps {
@@ -57,6 +56,7 @@ const AddEvaluation: React.FC<IAddEvaluationProps> = ({
       title="Add new evaluation"
       onClose={onClose}
       visible={visible}
+      width={300}
     >
       <Form onSubmit={handleSubmit} layout="vertical">
         <Form.Item label={<span>Course name</span>}>
@@ -74,10 +74,10 @@ const AddEvaluation: React.FC<IAddEvaluationProps> = ({
           {getFieldDecorator("evaluationType", {
             rules: [{ required: true, message: "Please select an evaluation!" }]
           })(
-            <Select placeholder="Select an evaluation type">
-              <Option value="quiz">Quiz</Option>
-              <Option value="test">Test</Option>
-            </Select>
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value="quiz">Quiz</Radio.Button>
+              <Radio.Button value="test">Test</Radio.Button>
+            </Radio.Group>
           )}
         </Form.Item>
         <Form.Item
@@ -98,11 +98,11 @@ const AddEvaluation: React.FC<IAddEvaluationProps> = ({
               }
             ]
           })(
-            <Select placeholder="Select the urgency">
-              <Option value="chill">Chill</Option>
-              <Option value="normal">Normal</Option>
-              <Option value="important">Important</Option>
-            </Select>
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value="chill">Chill</Radio.Button>
+              <Radio.Button value="normal">Normal</Radio.Button>
+              <Radio.Button value="important">Important</Radio.Button>
+            </Radio.Group>
           )}
         </Form.Item>
         <Form.Item label={<span>Description</span>}>

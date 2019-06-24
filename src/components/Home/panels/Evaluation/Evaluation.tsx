@@ -66,7 +66,13 @@ const Evaluation: React.FC<IEvaluationProps> = ({ evaluations }) => {
       </Header>
       <Content>
         {evaluations.length ? (
-          <EvaluationCard />
+          evaluations
+            .sort(
+              (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+            )
+            .map(evaluation => (
+              <EvaluationCard key={evaluation._id} evaluation={evaluation} />
+            ))
         ) : (
           <StyledEmpty description="No Evaluations" />
         )}

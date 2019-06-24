@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { Icon, Badge, Avatar } from "antd";
-import { ApplicationState } from "store/types";
-import { connect } from "react-redux";
+import IEvaluation from "interfaces/IEvaluation";
+import { setDate } from "utils";
+import moment from "moment";
 
 const Wrapper = styled.div`
   padding: 0.8rem 2rem;
@@ -35,6 +36,10 @@ const AssignmentTitle = styled.h3`
   color: ${props => props.theme.fontColors.blackRgba(0.8)};
 `;
 
+const EvaluationType = styled.span`
+  text-transform: capitalize;
+`;
+
 const AssignmentPriority = styled.h5`
   display: flex;
   align-items: center;
@@ -45,7 +50,7 @@ const AssignmentPriority = styled.h5`
 const Actions = styled.div`
   display: flex;
   align-items: center;
-  & > *:first-child {
+  & > *:not(:last-child) {
     margin-right: 1.5rem;
   }
 `;
@@ -91,48 +96,45 @@ const Clock = styled(Icon)`
 `;
 
 interface IEvaluationCardProps {
-  picture: string;
+  evaluation: IEvaluation;
 }
 
 const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
-  picture
+  evaluation
 }) => {
   return (
     <Wrapper>
       <MainInfo>
         <Assignment>
-          <AssignmentTitle>Quiz: Matemática Discreta</AssignmentTitle>
+          <AssignmentTitle>
+            <EvaluationType>{evaluation.evaluationType}</EvaluationType>:{" "}
+            {evaluation.subject}
+          </AssignmentTitle>
           <AssignmentPriority>
             <Badge color="red" />
-            High Priority
+            {/* @TODO: Add urgency util function */}
+            {evaluation.urgency}
           </AssignmentPriority>
         </Assignment>
         <Actions>
+          <StyledIcon type="check" />
           <StyledIcon type="edit" />
           <StyledIcon type="delete" />
         </Actions>
       </MainInfo>
       <OtherInfo>
         <User>
-          <Avatar size={30} icon="user" src={picture} />
-          <UserName>José Félix</UserName>
+          <Avatar size={30} icon="user" src={evaluation.createdBy.picture} />
+          <UserName>{evaluation.createdBy.name}</UserName>
         </User>
         <Date>
           <Clock type="clock-circle" />
-          This Friday
+          {/* @TODO: Add time util function */}
+          {setDate(moment(evaluation.date))}
         </Date>
       </OtherInfo>
     </Wrapper>
   );
 };
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    picture: state.reducer.user.picture
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  null
-)(EvaluationCard);
+export default EvaluationCard;
