@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Icon, Badge, Avatar } from "antd";
+import { Icon, Badge, Avatar, Modal } from "antd";
 import IEvaluation from "interfaces/IEvaluation";
-import { setDate } from "utils";
+import { setDate, determinePriority, determineColor } from "utils";
 import moment from "moment";
 
 const Wrapper = styled.div`
@@ -95,6 +95,51 @@ const Clock = styled(Icon)`
   margin-right: 0.7rem;
 `;
 
+const ViewMore = styled.span`
+  cursor: pointer;
+  color: ${props => props.theme.colors.main};
+  margin-left: 0.5rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const ModalTime = styled.h5`
+  letter-spacing: 1px;
+  display: flex;
+  font-weight: 400;
+  align-items: center;
+  color: rgba(27, 27, 27, 0.8);
+  margin: 1rem 0;
+`;
+
+const openDescriptionModal = (evaluation: IEvaluation) => {
+  if (!evaluation.description) evaluation.description = ""; //Check if description is null and reassign it as an empty string
+
+  Modal.info({
+    title: ` ${evaluation.evaluationType[0].toUpperCase() +
+      evaluation.evaluationType.substring(1)}: ${evaluation.subject}`,
+    content: (
+      <div>
+        <ModalTime>
+          <Clock type="clock-circle" />
+          {setDate(moment(evaluation.date))}
+        </ModalTime>
+        <p>
+          Description: <br />
+          {evaluation.description.length === 0 ? (
+            <em>No Description</em>
+          ) : (
+            evaluation.description
+          )}
+        </p>
+      </div>
+    ),
+    onOk() {}
+  });
+};
+
 interface IEvaluationCardProps {
   evaluation: IEvaluation;
 }
@@ -102,6 +147,10 @@ interface IEvaluationCardProps {
 const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
   evaluation
 }) => {
+  const handleViewMoreClick = () => {
+    openDescriptionModal(evaluation);
+  };
+
   return (
     <Wrapper>
       <MainInfo>
@@ -111,9 +160,9 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
             {evaluation.subject}
           </AssignmentTitle>
           <AssignmentPriority>
-            <Badge color="red" />
+            <Badge color={determineColor(evaluation.urgency)} />
             {/* @TODO: Add urgency util function */}
-            {evaluation.urgency}
+            {determinePriority(evaluation.urgency)}
           </AssignmentPriority>
         </Assignment>
         <Actions>
@@ -129,8 +178,8 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
         </User>
         <Date>
           <Clock type="clock-circle" />
-          {/* @TODO: Add time util function */}
-          {setDate(moment(evaluation.date))}
+          {setDate(moment(evaluation.date))} |{" "}
+          <ViewMore onClick={handleViewMoreClick}> View More</ViewMore>
         </Date>
       </OtherInfo>
     </Wrapper>

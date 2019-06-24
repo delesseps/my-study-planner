@@ -56,17 +56,3 @@ export default function setDate(momentDate: Moment) {
     }
   }
 }
-
-/*export const sortByDate = (array, isHomework = false) => {
-  let result;
-
-  isHomework
-    ? (result = array.sort(function(a, b) {
-        return new Date(a.dueDate) - new Date(b.dueDate);
-      }))
-    : (result = array.sort(function(a, b) {
-        return new Date(a.date) - new Date(b.date);
-      }));
-
-  return result;
-};*/

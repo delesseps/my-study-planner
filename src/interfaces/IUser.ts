@@ -3,9 +3,9 @@ import IToDo from "./IToDo";
 import IEvaluation from "./IEvaluation";
 
 export enum Urgency {
-  important = "IMPORTANT",
-  moderate = "MODERATE",
-  chill = "CHILL"
+  important = "important",
+  normal = "normal",
+  chill = "chill"
 }
 
 export default interface IUser {
