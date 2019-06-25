@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Button, Empty } from "antd";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
-import AddEvaluation from "components/drawers/AddEvaluation/AddEvaluation";
+import EvaluationDrawer from "components/drawers/EvaluationDrawer/EvaluationDrawer";
 import { evaluationDrawer } from "store/actions";
 import EvaluationCard from "components/cards/EvaluationCard/EvaluationCard";
 
@@ -62,11 +62,12 @@ const Evaluation: React.FC<IEvaluationProps> = ({ evaluations }) => {
         <Button onClick={handleClick} type="primary">
           NEW EVALUATION
         </Button>
-        <AddEvaluation />
+        <EvaluationDrawer />
       </Header>
       <Content>
         {evaluations.length ? (
           evaluations
+            .slice()
             .sort(
               (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
             )

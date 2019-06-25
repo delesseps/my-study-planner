@@ -1,9 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { Icon, Badge, Avatar, Modal } from "antd";
+import { Icon, Badge, Avatar, Modal, Divider } from "antd";
 import IEvaluation from "interfaces/IEvaluation";
 import { setDate, determinePriority, determineColor } from "utils";
 import moment from "moment";
+
+const EvaluationDrawer = React.lazy(() =>
+  import("components/drawers/EvaluationDrawer/EvaluationDrawer")
+);
 
 const Wrapper = styled.div`
   padding: 0.8rem 2rem;
@@ -36,7 +40,7 @@ const AssignmentTitle = styled.h3`
   color: ${props => props.theme.fontColors.blackRgba(0.8)};
 `;
 
-const EvaluationType = styled.span`
+const Capitalize = styled.span`
   text-transform: capitalize;
 `;
 
@@ -106,35 +110,57 @@ const ViewMore = styled.span`
 `;
 
 const ModalTime = styled.h5`
-  letter-spacing: 1px;
   display: flex;
   font-weight: 400;
   align-items: center;
   color: rgba(27, 27, 27, 0.8);
-  margin: 1rem 0;
+  margin: 0;
+`;
+
+const ModalTitle = styled.h3`
+  letter-spacing: 0.5px;
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.7rem;
+  color: rgba(27, 27, 27, 0.8);
+`;
+
+const ModalTitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ModalContent = styled.p`
+  margin-top: 1.3rem;
+  line-height: 3rem;
 `;
 
 const openDescriptionModal = (evaluation: IEvaluation) => {
   if (!evaluation.description) evaluation.description = ""; //Check if description is null and reassign it as an empty string
 
   Modal.info({
-    title: ` ${evaluation.evaluationType[0].toUpperCase() +
-      evaluation.evaluationType.substring(1)}: ${evaluation.subject}`,
-    content: (
-      <div>
+    title: (
+      <ModalTitleWrapper>
+        <ModalTitle>
+          <Capitalize>{evaluation.evaluationType}</Capitalize>:{" "}
+          {evaluation.subject}
+        </ModalTitle>
         <ModalTime>
           <Clock type="clock-circle" />
           {setDate(moment(evaluation.date))}
         </ModalTime>
-        <p>
-          Description: <br />
-          {evaluation.description.length === 0 ? (
-            <em>No Description</em>
-          ) : (
-            evaluation.description
-          )}
-        </p>
-      </div>
+      </ModalTitleWrapper>
+    ),
+    content: (
+      <ModalContent>
+        Description: <br />
+        {evaluation.description.length === 0 ? (
+          <em>No Description</em>
+        ) : (
+          evaluation.description
+        )}
+      </ModalContent>
     ),
     onOk() {}
   });
@@ -153,10 +179,11 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
 
   return (
     <Wrapper>
+      <EvaluationDrawer evaluation={evaluation} />
       <MainInfo>
         <Assignment>
           <AssignmentTitle>
-            <EvaluationType>{evaluation.evaluationType}</EvaluationType>:{" "}
+            <Capitalize>{evaluation.evaluationType}</Capitalize>:{" "}
             {evaluation.subject}
           </AssignmentTitle>
           <AssignmentPriority>
@@ -178,7 +205,7 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
         </User>
         <Date>
           <Clock type="clock-circle" />
-          {setDate(moment(evaluation.date))} |{" "}
+          {setDate(moment(evaluation.date))} <Divider type="vertical" />
           <ViewMore onClick={handleViewMoreClick}> View More</ViewMore>
         </Date>
       </OtherInfo>

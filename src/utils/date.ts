@@ -26,16 +26,17 @@ function isTomorrow(momentDate: Moment) {
   return momentDate.isSame(TOMMORROW, "d");
 }
 
-function isSameWeek(momentDate: Moment) {
+function isSameMonth(momentDate: Moment) {
+  return momentDate.isSame(REFERENCE, "month");
+}
+
+export function isThisWeek(momentDate: Moment) {
   return momentDate.isBetween(
     REFERENCE.clone().startOf("week"),
     REFERENCE.clone().endOf("week")
   );
 }
 
-function isSameMonth(momentDate: Moment) {
-  return momentDate.isSame(REFERENCE, "month");
-}
 
 export default function setDate(momentDate: Moment) {
   if (isToday(momentDate)) {
@@ -46,7 +47,7 @@ export default function setDate(momentDate: Moment) {
     return "Was " + momentDate.format("dddd DD MMMM YYYY"); // Returns date as 'Was Friday 1 February 2019'
   } else if (isTomorrow(momentDate)) {
     return "Tomorrow";
-  } else if (isSameWeek(momentDate)) {
+  } else if (isThisWeek(momentDate)) {
     return "This " + momentDate.format("dddd"); // Returns date as 'This Friday'
   } else {
     if (isSameMonth(momentDate)) {

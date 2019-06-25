@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import IUser from "interfaces/IUser";
 import { ApplicationState } from "store/types";
 import { connect } from "react-redux";
 import styled from "styled-components";
+import { isThisWeek } from "utils";
+import moment from 'moment';
 
 const Header = styled.div`
   display: flex;
@@ -38,27 +40,36 @@ const Count = styled.h1`
   color: ${props => props.theme.fontColors.blackRgba(0.8)};
 `;
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    user: state.reducer.user
-  };
-};
-
 interface ICounterProps {
   homework?: boolean;
   user: IUser;
 }
 
 const Counter: React.FC<ICounterProps> = ({ user, homework }) => {
+  const [evaluationCount, setEvaluationCount] = useState(0); 
+
+  useEffect(() => {
+    //Gets amount of evaluations this week
+    setEvaluationCount(user.evaluations.filter(evaluation =>
+      isThisWeek(moment(evaluation.date))
+    ).length); 
+  }, [user.evaluations])
+
   return (
     <>
       <Header>
         <Title>{homework ? "Homework" : "Evaluations"}</Title>
         <Subtitle>This week</Subtitle>
       </Header>
-      <Count>{homework ? user.homework.length : user.evaluations.length}</Count>
+      <Count>{homework ? user.homework.length : evaluationCount}</Count>
     </>
   );
+};
+
+const mapStateToProps = (state: ApplicationState) => {
+  return {
+    user: state.reducer.user
+  };
 };
 
 export default connect(

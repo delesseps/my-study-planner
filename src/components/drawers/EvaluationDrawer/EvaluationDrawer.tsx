@@ -19,15 +19,17 @@ import IEvaluation from "interfaces/IEvaluation";
 
 const { TextArea } = Input;
 
-interface IAddEvaluationProps extends FormComponentProps {
+interface IEvaluationDrawerProps extends FormComponentProps {
   visible: boolean;
   loading: boolean;
+  evaluation?: IEvaluation;
 }
 
-const AddEvaluation: React.FC<IAddEvaluationProps> = ({
+const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
   form,
   visible,
-  loading
+  loading,
+  evaluation
 }) => {
   const { getFieldDecorator } = form;
   const dispatch = useDispatch();
@@ -53,7 +55,7 @@ const AddEvaluation: React.FC<IAddEvaluationProps> = ({
   return (
     <Drawer
       destroyOnClose={true}
-      title="Add new evaluation"
+      title={evaluation ? "Edit evaluation" : "Add new evaluation"}
       onClose={onClose}
       visible={visible}
       width={300}
@@ -68,7 +70,7 @@ const AddEvaluation: React.FC<IAddEvaluationProps> = ({
                 whitespace: true
               }
             ]
-          })(<Input />)}
+          })(<Input value={evaluation ? evaluation.subject : ""} />)}
         </Form.Item>
         <Form.Item label="Evaluation">
           {getFieldDecorator("evaluationType", {
@@ -98,7 +100,10 @@ const AddEvaluation: React.FC<IAddEvaluationProps> = ({
               }
             ]
           })(
-            <Radio.Group buttonStyle="solid">
+            <Radio.Group
+              value={evaluation ? evaluation.urgency : ""}
+              buttonStyle="solid"
+            >
               <Radio.Button value="chill">Chill</Radio.Button>
               <Radio.Button value="normal">Normal</Radio.Button>
               <Radio.Button value="important">Important</Radio.Button>
@@ -115,6 +120,7 @@ const AddEvaluation: React.FC<IAddEvaluationProps> = ({
             ]
           })(
             <TextArea
+              value={evaluation ? evaluation.description : ""}
               placeholder="Input details about the evaluation. E.g. pages to read, good sources, ..."
               autosize
             />
@@ -129,11 +135,16 @@ const AddEvaluation: React.FC<IAddEvaluationProps> = ({
                 message: "Please select time!"
               }
             ]
-          })(<DatePicker disabledDate={disabledDate} />)}
+          })(
+            <DatePicker
+              value={evaluation ? moment(evaluation.date) : undefined}
+              disabledDate={disabledDate}
+            />
+          )}
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
-            Add Evaluation
+            {evaluation ? "Edit Evaluation" : "Add Evaluation"}
           </Button>
         </Form.Item>
       </Form>
@@ -141,7 +152,9 @@ const AddEvaluation: React.FC<IAddEvaluationProps> = ({
   );
 };
 
-const wrappedAddEvaluation = Form.create()(AddEvaluation);
+const wrappedEvaluationDrawer = Form.create<IEvaluationDrawerProps>()(
+  EvaluationDrawer
+);
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
@@ -153,4 +166,4 @@ const mapStateToProps = (state: ApplicationState) => {
 export default connect(
   mapStateToProps,
   null
-)(wrappedAddEvaluation);
+)(wrappedEvaluationDrawer);

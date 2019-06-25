@@ -11,7 +11,7 @@ import { Calendar } from "antd";
 import Counter from "./panels/Counter/Counter";
 import FadeIn from "components/FadeIn/FadeIn";
 import { breakpoints } from "styled";
-import Evaluation from "./panels/Evaluation/Evaluation";
+import Evaluation from "./panels/EvaluationPanel/EvaluationPanel";
 import Homework from "./panels/Homework/Homework";
 import ToDo from "./panels/ToDo/ToDo";
 import RecommendedActions from "./panels/RecommendedActions/RecommendedActions";
