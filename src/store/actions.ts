@@ -19,7 +19,10 @@ import {
   EvaluationDrawer,
   EditEvaluationRequest,
   EditEvaluationSuccess,
-  EditEvaluationError
+  EditEvaluationError,
+  DeleteEvaluationError,
+  DeleteEvaluationRequest,
+  DeleteEvaluationSuccess
 } from "./types";
 import IUser from "interfaces/IUser";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
@@ -170,5 +173,29 @@ export const editEvaluationError = (
   error: IAxiosErrorResponse
 ): EditEvaluationError => ({
   type: "editEvaluationError",
+  error
+});
+
+/**
+ *
+ * Delete evaluation interfaces
+ *
+ */
+
+export const deleteEvaluationRequest = (): DeleteEvaluationRequest => ({
+  type: "deleteEvaluationRequest"
+});
+
+export const deleteEvaluationSuccess = (
+  index: number
+): DeleteEvaluationSuccess => ({
+  type: "deleteEvaluationSuccess",
+  index
+});
+
+export const deleteEvaluationError = (
+  error: IAxiosErrorResponse
+): DeleteEvaluationError => ({
+  type: "deleteEvaluationError",
   error
 });

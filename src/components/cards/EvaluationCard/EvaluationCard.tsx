@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Icon, Badge, Avatar, Modal, Divider } from "antd";
+import { Icon, Badge, Avatar, Modal, Divider, Popconfirm } from "antd";
 import IEvaluation from "interfaces/IEvaluation";
 import { setDate, determinePriority, determineColor } from "utils";
 import moment from "moment";
+import { useDispatch } from "react-redux";
+import { deleteEvaluation, editEvaluation } from "store/effects";
 
 const EvaluationDrawer = React.lazy(() =>
   import("components/drawers/EvaluationDrawer/EvaluationDrawer")
@@ -62,6 +64,11 @@ const Actions = styled.div`
 const StyledIcon = styled(Icon)`
   cursor: pointer;
   font-size: 1.9rem;
+  transition: 0.1s;
+
+  &:hover {
+    color: ${props => props.theme.colors.main};
+  }
 `;
 
 const OtherInfo = styled.div`
@@ -176,6 +183,7 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
   index
 }) => {
   const [visibleEdit, setVisibleEdit] = useState(false);
+  const dispatch = useDispatch();
 
   const handleViewMoreClick = () => {
     openDescriptionModal(evaluation);
@@ -183,6 +191,15 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
 
   const handleEditClick = () => {
     setVisibleEdit(true);
+  };
+
+  const handleDeleteClick = () => {
+    dispatch(deleteEvaluation(evaluation._id, index));
+  };
+
+  const handleDoneClick = () => {
+    evaluation.done = true;
+    dispatch(editEvaluation(evaluation, index));
   };
 
   return (
@@ -205,9 +222,18 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
           </AssignmentPriority>
         </Assignment>
         <Actions>
-          <StyledIcon type="check" />
+          <StyledIcon onClick={handleDoneClick} type="check" />
           <StyledIcon onClick={handleEditClick} type="edit" />
-          <StyledIcon type="delete" />
+          <Popconfirm
+            title="Are you sure delete this evaluation?"
+            arrowPointAtCenter={true}
+            placement="topRight"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={handleDeleteClick}
+          >
+            <StyledIcon type="delete" />
+          </Popconfirm>
         </Actions>
       </MainInfo>
       <OtherInfo>

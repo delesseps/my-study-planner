@@ -18,7 +18,10 @@ import {
   addEvaluationError,
   editEvaluationSuccess,
   editEvaluationError,
-  editEvaluationRequest
+  editEvaluationRequest,
+  deleteEvaluationRequest,
+  deleteEvaluationSuccess,
+  deleteEvaluationError
 } from "./actions";
 import { push } from "connected-react-router";
 
@@ -28,7 +31,8 @@ import {
   requestUserService,
   signOutService,
   evaluationService,
-  requestEditEvaluation
+  requestEditEvaluation,
+  requestDeleteEvaluation
 } from "services";
 
 import IUser from "interfaces/IUser";
@@ -110,16 +114,31 @@ export const addEvaluation = (evaluation: IEvaluation): Effect => dispatch => {
 export const editEvaluation = (
   evaluation: IEvaluation,
   index: number,
-  setVisibleEdit: Function
+  setVisibleEdit?: Function
 ): Effect => dispatch => {
   dispatch(editEvaluationRequest());
 
   return requestEditEvaluation(evaluation)
     .then(({ data }: { data: { evaluation: IEvaluation } }) => {
       dispatch<any>(editEvaluationSuccess(data.evaluation, index));
-      setVisibleEdit(false);
+      setVisibleEdit && setVisibleEdit(false);
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       dispatch(editEvaluationError(response))
+    );
+};
+
+export const deleteEvaluation = (
+  id: string,
+  index: number
+): Effect => dispatch => {
+  dispatch(deleteEvaluationRequest());
+
+  return requestDeleteEvaluation(id)
+    .then(({ data }: { data: { evaluation: IEvaluation } }) =>
+      dispatch<any>(deleteEvaluationSuccess(index))
+    )
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      dispatch(deleteEvaluationError(response))
     );
 };

@@ -50,6 +50,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           values._id = evaluation._id;
           return dispatch(editEvaluation(values, index, setVisibleEdit));
         }
+
         dispatch(addEvaluation(values));
       }
     });
@@ -151,7 +152,12 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           })(<DatePicker disabledDate={disabledDate} />)}
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={loading}
+            disabled={loading}
+          >
             {evaluation ? "Edit Evaluation" : "Add Evaluation"}
           </Button>
         </Form.Item>

@@ -4,7 +4,7 @@ import { ApplicationState } from "store/types";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { isThisWeek } from "utils";
-import moment from 'moment';
+import moment from "moment";
 
 const Header = styled.div`
   display: flex;
@@ -46,14 +46,16 @@ interface ICounterProps {
 }
 
 const Counter: React.FC<ICounterProps> = ({ user, homework }) => {
-  const [evaluationCount, setEvaluationCount] = useState(0); 
+  const [evaluationCount, setEvaluationCount] = useState(0);
 
   useEffect(() => {
     //Gets amount of evaluations this week
-    setEvaluationCount(user.evaluations.filter(evaluation =>
-      isThisWeek(moment(evaluation.date))
-    ).length); 
-  }, [user.evaluations])
+    setEvaluationCount(
+      user.evaluations.filter(
+        evaluation => isThisWeek(moment(evaluation.date)) && !evaluation.done
+      ).length
+    );
+  }, [user.evaluations]);
 
   return (
     <>

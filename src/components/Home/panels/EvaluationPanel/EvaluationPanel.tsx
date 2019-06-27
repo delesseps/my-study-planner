@@ -65,19 +65,17 @@ const Evaluation: React.FC<IEvaluationProps> = ({ evaluations }) => {
         <EvaluationDrawer />
       </Header>
       <Content>
-        {evaluations.length ? (
-          evaluations
-            .slice()
-            .sort(
-              (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-            )
-            .map((evaluation, i) => (
-              <EvaluationCard
-                index={i}
-                key={evaluation._id}
-                evaluation={evaluation}
-              />
-            ))
+        {evaluations.filter(evaluation => !evaluation.done).length ? (
+          evaluations.map(
+            (evaluation, i) =>
+              !evaluation.done && (
+                <EvaluationCard
+                  index={i}
+                  key={evaluation._id}
+                  evaluation={evaluation}
+                />
+              )
+          )
         ) : (
           <StyledEmpty description="No Evaluations" />
         )}

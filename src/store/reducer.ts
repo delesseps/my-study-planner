@@ -173,6 +173,9 @@ const reducer = (state = initialState, action: ApplicationAction) => {
         draft.loading.evaluation = false;
         draft.drawer.evaluation = false;
         draft.user.evaluations.push(action.evaluation);
+        draft.user.evaluations.sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
       });
     case "addEvaluationError":
       return produce(state, draft => {
@@ -203,6 +206,28 @@ const reducer = (state = initialState, action: ApplicationAction) => {
     case "editEvaluationError":
       return produce(state, draft => {
         draft.loading.evaluation = false;
+        draft.error = {
+          ...draft.error,
+          evaluation: {
+            message: action.error.data.errors.message,
+            status: action.error.status,
+            state: true
+          }
+        };
+      });
+    /**
+     *
+     * Delete Evaluation reducers
+     *
+     */
+    case "deleteEvaluationRequest":
+      return state;
+    case "deleteEvaluationSuccess":
+      return produce(state, draft => {
+        draft.user.evaluations.splice(action.index, 1);
+      });
+    case "deleteEvaluationError":
+      return produce(state, draft => {
         draft.error = {
           ...draft.error,
           evaluation: {

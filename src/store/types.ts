@@ -178,6 +178,25 @@ export interface EditEvaluationError {
   error: IAxiosErrorResponse;
 }
 
+/**
+ *
+ * Delete evaluation interfaces
+ *
+ */
+export interface DeleteEvaluationRequest {
+  type: "deleteEvaluationRequest";
+}
+
+export interface DeleteEvaluationSuccess {
+  type: "deleteEvaluationSuccess";
+  index: number;
+}
+
+export interface DeleteEvaluationError {
+  type: "deleteEvaluationError";
+  error: IAxiosErrorResponse;
+}
+
 export type ApplicationAction =
   | SignInRequest
   | SignInSuccess
@@ -199,4 +218,7 @@ export type ApplicationAction =
   | AddEvaluationError
   | EditEvaluationRequest
   | EditEvaluationSuccess
-  | EditEvaluationError;
+  | EditEvaluationError
+  | DeleteEvaluationRequest
+  | DeleteEvaluationSuccess
+  | DeleteEvaluationError;
