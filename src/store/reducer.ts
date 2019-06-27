@@ -186,6 +186,32 @@ const reducer = (state = initialState, action: ApplicationAction) => {
           }
         };
       });
+    /**
+     *
+     * Edit Evaluation reducers
+     *
+     */
+    case "editEvaluationRequest":
+      return produce(state, draft => {
+        draft.loading.evaluation = true;
+      });
+    case "editEvaluationSuccess":
+      return produce(state, draft => {
+        draft.loading.evaluation = false;
+        draft.user.evaluations[action.index] = action.evaluation;
+      });
+    case "editEvaluationError":
+      return produce(state, draft => {
+        draft.loading.evaluation = false;
+        draft.error = {
+          ...draft.error,
+          evaluation: {
+            message: action.error.data.errors.message,
+            status: action.error.status,
+            state: true
+          }
+        };
+      });
     default:
       return state;
   }

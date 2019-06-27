@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Icon, Badge, Avatar, Modal, Divider } from "antd";
 import IEvaluation from "interfaces/IEvaluation";
@@ -168,18 +168,31 @@ const openDescriptionModal = (evaluation: IEvaluation) => {
 
 interface IEvaluationCardProps {
   evaluation: IEvaluation;
+  index: number;
 }
 
 const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
-  evaluation
+  evaluation,
+  index
 }) => {
+  const [visibleEdit, setVisibleEdit] = useState(false);
+
   const handleViewMoreClick = () => {
     openDescriptionModal(evaluation);
   };
 
+  const handleEditClick = () => {
+    setVisibleEdit(true);
+  };
+
   return (
     <Wrapper>
-      <EvaluationDrawer evaluation={evaluation} />
+      <EvaluationDrawer
+        visibleEdit={visibleEdit}
+        setVisibleEdit={setVisibleEdit}
+        evaluation={evaluation}
+        index={index}
+      />
       <MainInfo>
         <Assignment>
           <AssignmentTitle>
@@ -188,13 +201,12 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
           </AssignmentTitle>
           <AssignmentPriority>
             <Badge color={determineColor(evaluation.urgency)} />
-            {/* @TODO: Add urgency util function */}
             {determinePriority(evaluation.urgency)}
           </AssignmentPriority>
         </Assignment>
         <Actions>
           <StyledIcon type="check" />
-          <StyledIcon type="edit" />
+          <StyledIcon onClick={handleEditClick} type="edit" />
           <StyledIcon type="delete" />
         </Actions>
       </MainInfo>

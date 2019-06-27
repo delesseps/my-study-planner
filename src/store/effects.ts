@@ -15,7 +15,10 @@ import {
   signOutError,
   addEvaluationRequest,
   addEvaluationSuccess,
-  addEvaluationError
+  addEvaluationError,
+  editEvaluationSuccess,
+  editEvaluationError,
+  editEvaluationRequest
 } from "./actions";
 import { push } from "connected-react-router";
 
@@ -24,7 +27,8 @@ import {
   signUpService,
   requestUserService,
   signOutService,
-  evaluationService
+  evaluationService,
+  requestEditEvaluation
 } from "services";
 
 import IUser from "interfaces/IUser";
@@ -100,5 +104,22 @@ export const addEvaluation = (evaluation: IEvaluation): Effect => dispatch => {
     )
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       dispatch(addEvaluationError(response))
+    );
+};
+
+export const editEvaluation = (
+  evaluation: IEvaluation,
+  index: number,
+  setVisibleEdit: Function
+): Effect => dispatch => {
+  dispatch(editEvaluationRequest());
+
+  return requestEditEvaluation(evaluation)
+    .then(({ data }: { data: { evaluation: IEvaluation } }) => {
+      dispatch<any>(editEvaluationSuccess(data.evaluation, index));
+      setVisibleEdit(false);
+    })
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      dispatch(editEvaluationError(response))
     );
 };

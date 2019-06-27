@@ -11,12 +11,15 @@ import {
   SignOutRequest,
   SignOutSuccess,
   SignOutError,
-  EvaluationDrawer,
   HomeworkDrawer,
   ToDoDrawer,
   AddEvaluationRequest,
   AddEvaluationSuccess,
-  AddEvaluationError
+  AddEvaluationError,
+  EvaluationDrawer,
+  EditEvaluationRequest,
+  EditEvaluationSuccess,
+  EditEvaluationError
 } from "./types";
 import IUser from "interfaces/IUser";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
@@ -141,5 +144,31 @@ export const addEvaluationError = (
   error: IAxiosErrorResponse
 ): AddEvaluationError => ({
   type: "addEvaluationError",
+  error
+});
+
+/**
+ *
+ * Edit evaluation interfaces
+ *
+ */
+
+export const editEvaluationRequest = (): EditEvaluationRequest => ({
+  type: "editEvaluationRequest"
+});
+
+export const editEvaluationSuccess = (
+  evaluation: IEvaluation,
+  index: number
+): EditEvaluationSuccess => ({
+  type: "editEvaluationSuccess",
+  evaluation,
+  index
+});
+
+export const editEvaluationError = (
+  error: IAxiosErrorResponse
+): EditEvaluationError => ({
+  type: "editEvaluationError",
   error
 });

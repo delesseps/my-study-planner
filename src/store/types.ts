@@ -158,6 +158,26 @@ export interface AddEvaluationError {
   error: IAxiosErrorResponse;
 }
 
+/**
+ *
+ * Edit evaluation interfaces
+ *
+ */
+export interface EditEvaluationRequest {
+  type: "editEvaluationRequest";
+}
+
+export interface EditEvaluationSuccess {
+  type: "editEvaluationSuccess";
+  evaluation: IEvaluation;
+  index: number;
+}
+
+export interface EditEvaluationError {
+  type: "editEvaluationError";
+  error: IAxiosErrorResponse;
+}
+
 export type ApplicationAction =
   | SignInRequest
   | SignInSuccess
@@ -176,4 +196,7 @@ export type ApplicationAction =
   | ToDoDrawer
   | AddEvaluationRequest
   | AddEvaluationSuccess
-  | AddEvaluationError;
+  | AddEvaluationError
+  | EditEvaluationRequest
+  | EditEvaluationSuccess
+  | EditEvaluationError;

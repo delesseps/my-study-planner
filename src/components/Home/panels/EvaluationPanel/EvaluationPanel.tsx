@@ -71,8 +71,12 @@ const Evaluation: React.FC<IEvaluationProps> = ({ evaluations }) => {
             .sort(
               (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
             )
-            .map(evaluation => (
-              <EvaluationCard key={evaluation._id} evaluation={evaluation} />
+            .map((evaluation, i) => (
+              <EvaluationCard
+                index={i}
+                key={evaluation._id}
+                evaluation={evaluation}
+              />
             ))
         ) : (
           <StyledEmpty description="No Evaluations" />

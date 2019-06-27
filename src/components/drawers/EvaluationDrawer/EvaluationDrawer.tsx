@@ -13,23 +13,31 @@ import moment from "moment";
 import { FormComponentProps } from "antd/lib/form/Form";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
-import { evaluationDrawer } from "store/actions";
-import { addEvaluation } from "store/effects";
+import { addEvaluation, editEvaluation } from "store/effects";
 import IEvaluation from "interfaces/IEvaluation";
+import { evaluationDrawer } from "store/actions";
 
 const { TextArea } = Input;
 
 interface IEvaluationDrawerProps extends FormComponentProps {
   visible: boolean;
   loading: boolean;
+
+  //Edit optional Props
+  visibleEdit?: boolean;
   evaluation?: IEvaluation;
+  setVisibleEdit?: Function;
+  index?: number;
 }
 
 const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
   form,
   visible,
+  visibleEdit,
+  setVisibleEdit,
   loading,
-  evaluation
+  evaluation,
+  index
 }) => {
   const { getFieldDecorator } = form;
   const dispatch = useDispatch();
@@ -38,18 +46,22 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
     e.preventDefault();
     form.validateFieldsAndScroll((err, values: IEvaluation) => {
       if (!err) {
+        if (evaluation && setVisibleEdit && typeof index === "number") {
+          values._id = evaluation._id;
+          return dispatch(editEvaluation(values, index, setVisibleEdit));
+        }
         dispatch(addEvaluation(values));
       }
     });
   };
 
   const onClose = () => {
-    dispatch(evaluationDrawer());
+    setVisibleEdit ? setVisibleEdit(false) : dispatch(evaluationDrawer());
   };
 
   const disabledDate = (current: any) => {
     // Can not select days before today and today
-    return current < moment().endOf("day");
+    return current < moment().startOf("day");
   };
 
   return (
@@ -57,12 +69,13 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
       destroyOnClose={true}
       title={evaluation ? "Edit evaluation" : "Add new evaluation"}
       onClose={onClose}
-      visible={visible}
+      visible={evaluation ? visibleEdit : visible}
       width={300}
     >
       <Form onSubmit={handleSubmit} layout="vertical">
         <Form.Item label={<span>Course name</span>}>
           {getFieldDecorator("subject", {
+            initialValue: evaluation && evaluation.subject,
             rules: [
               {
                 required: true,
@@ -70,10 +83,11 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
                 whitespace: true
               }
             ]
-          })(<Input value={evaluation ? evaluation.subject : ""} />)}
+          })(<Input />)}
         </Form.Item>
         <Form.Item label="Evaluation">
           {getFieldDecorator("evaluationType", {
+            initialValue: evaluation && evaluation.evaluationType,
             rules: [{ required: true, message: "Please select an evaluation!" }]
           })(
             <Radio.Group buttonStyle="solid">
@@ -93,6 +107,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           }
         >
           {getFieldDecorator("urgency", {
+            initialValue: evaluation && evaluation.urgency,
             rules: [
               {
                 required: true,
@@ -100,10 +115,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
               }
             ]
           })(
-            <Radio.Group
-              value={evaluation ? evaluation.urgency : ""}
-              buttonStyle="solid"
-            >
+            <Radio.Group buttonStyle="solid">
               <Radio.Button value="chill">Chill</Radio.Button>
               <Radio.Button value="normal">Normal</Radio.Button>
               <Radio.Button value="important">Important</Radio.Button>
@@ -112,6 +124,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
         </Form.Item>
         <Form.Item label={<span>Description</span>}>
           {getFieldDecorator("description", {
+            initialValue: evaluation && evaluation.description,
             rules: [
               {
                 required: false,
@@ -120,7 +133,6 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
             ]
           })(
             <TextArea
-              value={evaluation ? evaluation.description : ""}
               placeholder="Input details about the evaluation. E.g. pages to read, good sources, ..."
               autosize
             />
@@ -128,6 +140,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
         </Form.Item>
         <Form.Item label="Date">
           {getFieldDecorator("date", {
+            initialValue: evaluation && moment(evaluation.date),
             rules: [
               {
                 type: "object",
@@ -135,12 +148,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
                 message: "Please select time!"
               }
             ]
-          })(
-            <DatePicker
-              value={evaluation ? moment(evaluation.date) : undefined}
-              disabledDate={disabledDate}
-            />
-          )}
+          })(<DatePicker disabledDate={disabledDate} />)}
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
