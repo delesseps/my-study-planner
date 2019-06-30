@@ -47,15 +47,24 @@ interface ICounterProps {
 
 const Counter: React.FC<ICounterProps> = ({ user, homework }) => {
   const [evaluationCount, setEvaluationCount] = useState(0);
+  const [homeworkCount, setHomeworkCount] = useState(0);
 
   useEffect(() => {
-    //Gets amount of evaluations this week
+    //Get amount of evaluations this week
     setEvaluationCount(
       user.evaluations.filter(
         evaluation => isThisWeek(moment(evaluation.date)) && !evaluation.done
       ).length
     );
-  }, [user.evaluations]);
+
+    //Get amount of homework this week
+    setHomeworkCount(
+      user.homework.filter(
+        currHomework =>
+          isThisWeek(moment(currHomework.date)) && !currHomework.done
+      ).length
+    );
+  }, [user.homework, user.evaluations]);
 
   return (
     <>
@@ -63,7 +72,7 @@ const Counter: React.FC<ICounterProps> = ({ user, homework }) => {
         <Title>{homework ? "Homework" : "Evaluations"}</Title>
         <Subtitle>This week</Subtitle>
       </Header>
-      <Count>{homework ? user.homework.length : evaluationCount}</Count>
+      <Count>{homework ? homeworkCount : evaluationCount}</Count>
     </>
   );
 };

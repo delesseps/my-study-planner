@@ -22,11 +22,21 @@ import {
   EditEvaluationError,
   DeleteEvaluationError,
   DeleteEvaluationRequest,
-  DeleteEvaluationSuccess
+  DeleteEvaluationSuccess,
+  AddHomeworkRequest,
+  AddHomeworkSuccess,
+  AddHomeworkError,
+  EditHomeworkRequest,
+  EditHomeworkSuccess,
+  EditHomeworkError,
+  DeleteHomeworkRequest,
+  DeleteHomeworkSuccess,
+  DeleteHomeworkError
 } from "./types";
 import IUser from "interfaces/IUser";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
 import IEvaluation from "interfaces/IEvaluation";
+import IHomework from "interfaces/IHomework";
 
 /**
  *
@@ -197,5 +207,79 @@ export const deleteEvaluationError = (
   error: IAxiosErrorResponse
 ): DeleteEvaluationError => ({
   type: "deleteEvaluationError",
+  error
+});
+
+/**
+ *
+ * Add homework interfaces
+ *
+ */
+
+export const addHomeworkRequest = (): AddHomeworkRequest => ({
+  type: "addHomeworkRequest"
+});
+
+export const addHomeworkSuccess = (
+  Homework: IHomework
+): AddHomeworkSuccess => ({
+  type: "addHomeworkSuccess",
+  Homework
+});
+
+export const addHomeworkError = (
+  error: IAxiosErrorResponse
+): AddHomeworkError => ({
+  type: "addHomeworkError",
+  error
+});
+
+/**
+ *
+ * Edit homework interfaces
+ *
+ */
+
+export const editHomeworkRequest = (): EditHomeworkRequest => ({
+  type: "editHomeworkRequest"
+});
+
+export const editHomeworkSuccess = (
+  homework: IHomework,
+  index: number
+): EditHomeworkSuccess => ({
+  type: "editHomeworkSuccess",
+  homework,
+  index
+});
+
+export const editHomeworkError = (
+  error: IAxiosErrorResponse
+): EditHomeworkError => ({
+  type: "editHomeworkError",
+  error
+});
+
+/**
+ *
+ * Delete homework interfaces
+ *
+ */
+
+export const deleteHomeworkRequest = (): DeleteHomeworkRequest => ({
+  type: "deleteHomeworkRequest"
+});
+
+export const deleteHomeworkSuccess = (
+  index: number
+): DeleteHomeworkSuccess => ({
+  type: "deleteHomeworkSuccess",
+  index
+});
+
+export const deleteHomeworkError = (
+  error: IAxiosErrorResponse
+): DeleteHomeworkError => ({
+  type: "deleteHomeworkError",
   error
 });

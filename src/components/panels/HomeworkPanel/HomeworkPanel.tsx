@@ -2,8 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { Button, Empty } from "antd";
 import { ApplicationState } from "store/types";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import IHomework from "interfaces/IHomework";
+import { homeworkDrawer } from "store/actions";
+import HomeworkDrawer from "components/drawers/HomeworkDrawer/HomeworkDrawer";
+import HomeworkCard from "components/cards/HomeworkCard/HomeworkCard";
 
 const Header = styled.div`
   padding: 1.5rem 2rem;
@@ -52,15 +55,31 @@ interface IHomeworkProps {
 }
 
 const Homework: React.FunctionComponent<IHomeworkProps> = ({ homework }) => {
+  const dispatch = useDispatch();
+
+  const handleClick = () => dispatch(homeworkDrawer());
+
   return (
     <React.Fragment>
       <Header>
         <Title>Homework</Title>
-        <Button type="primary">NEW HOMEWORK</Button>
+        <Button onClick={handleClick} type="primary">
+          NEW HOMEWORK
+        </Button>
+        <HomeworkDrawer />
       </Header>
       <Content>
-        {homework.length ? (
-          "Content"
+        {homework.filter(currHomework => !currHomework.done).length ? (
+          homework.map(
+            (currHomework, i) =>
+              !currHomework.done && (
+                <HomeworkCard
+                  index={i}
+                  key={currHomework._id}
+                  homework={currHomework}
+                />
+              )
+          )
         ) : (
           <StyledEmpty description="No Homework" />
         )}

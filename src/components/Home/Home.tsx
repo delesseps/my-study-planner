@@ -7,16 +7,18 @@
 
 import React from "react";
 import styled from "styled-components";
-import { Calendar } from "antd";
-import Counter from "./panels/Counter/Counter";
 import FadeIn from "components/FadeIn/FadeIn";
 import { breakpoints } from "styled";
-import Evaluation from "./panels/EvaluationPanel/EvaluationPanel";
-import Homework from "./panels/Homework/Homework";
-import ToDo from "./panels/ToDo/ToDo";
-import RecommendedActions from "./panels/RecommendedActions/RecommendedActions";
+import CounterPanel from "components/panels/CounterPanel/CounterPanel";
+import EvaluationPanel from "components/panels/EvaluationPanel/EvaluationPanel";
+import HomeworkPanel from "components/panels/HomeworkPanel/HomeworkPanel";
+import ToDoPanel from "components/panels/ToDoPanel/ToDoPanel";
+import RecommendedActionsPanel from "components/panels/RecommendedActionsPanel/RecommendedActionsPanel";
+import CalendarPanel from "components/panels/CalendarPanel/CalendarPanel";
 
-const HomeSchedule = React.lazy(() => import("./HomeSchedule"));
+const HomeSchedulePanel = React.lazy(() =>
+  import("../panels/HomeSchedulePanel/HomeSchedulePanel")
+);
 
 const panelTheme = `background-color: #fff; border-radius: 4px;`;
 
@@ -54,7 +56,7 @@ const CounterPanelRight = styled.div`
   grid-area: right;
 `;
 
-const CalendarPanel = styled.div`
+const CalendarPanelWrapper = styled.div`
   max-height: 40rem;
   align-self: start;
 
@@ -66,7 +68,7 @@ const CalendarPanel = styled.div`
   grid-row: auto;
 `;
 
-const HomeSchedulePanel = styled.div`
+const HomeSchedulePanelWrapper = styled.div`
   height: 48.9rem;
   margin-top: -17rem;
   padding: 2rem 2.6rem;
@@ -82,7 +84,7 @@ const HomeSchedulePanel = styled.div`
   }
 `;
 
-const RecommendedActionsPanel = styled.div`
+const RecommendedActionsPanelWrapper = styled.div`
   ${panelTheme};
   box-shadow: ${props => props.theme.shadow1};
   height: 30rem;
@@ -95,7 +97,7 @@ const RecommendedActionsPanel = styled.div`
   grid-row: auto;
 `;
 
-const ToDoPanel = styled.div`
+const ToDoPanelWrapper = styled.div`
   ${panelTheme};
 
   display: flex;
@@ -110,7 +112,7 @@ const ToDoPanel = styled.div`
   grid-area: todo;
 `;
 
-const HomeworkPanel = styled.div`
+const HomeworkPanelWrapper = styled.div`
   ${panelTheme};
 
   display: flex;
@@ -125,7 +127,7 @@ const HomeworkPanel = styled.div`
   grid-area: homework;
 `;
 
-const EvaluationPanel = styled.div`
+const EvaluationPanelWrapper = styled.div`
   ${panelTheme};
 
   display: flex;
@@ -145,35 +147,35 @@ const Home: React.FC = props => {
     <FadeIn>
       <Wrapper>
         <CounterPanelLeft>
-          <Counter homework />
+          <CounterPanel homework />
         </CounterPanelLeft>
         <CounterPanelRight>
-          <Counter />
+          <CounterPanel />
         </CounterPanelRight>
 
-        <HomeSchedulePanel>
-          <HomeSchedule />
-        </HomeSchedulePanel>
+        <HomeSchedulePanelWrapper>
+          <HomeSchedulePanel />
+        </HomeSchedulePanelWrapper>
 
-        <ToDoPanel>
-          <ToDo />
-        </ToDoPanel>
+        <ToDoPanelWrapper>
+          <ToDoPanel />
+        </ToDoPanelWrapper>
 
-        <HomeworkPanel>
-          <Homework />
-        </HomeworkPanel>
+        <HomeworkPanelWrapper>
+          <HomeworkPanel />
+        </HomeworkPanelWrapper>
 
-        <EvaluationPanel>
-          <Evaluation />
-        </EvaluationPanel>
+        <EvaluationPanelWrapper>
+          <EvaluationPanel />
+        </EvaluationPanelWrapper>
 
-        <RecommendedActionsPanel>
-          <RecommendedActions />
-        </RecommendedActionsPanel>
+        <RecommendedActionsPanelWrapper>
+          <RecommendedActionsPanel />
+        </RecommendedActionsPanelWrapper>
 
-        <CalendarPanel>
-          <Calendar fullscreen={false} />
-        </CalendarPanel>
+        <CalendarPanelWrapper>
+          <CalendarPanel />
+        </CalendarPanelWrapper>
       </Wrapper>
     </FadeIn>
   );

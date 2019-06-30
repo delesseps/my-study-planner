@@ -237,6 +237,84 @@ const reducer = (state = initialState, action: ApplicationAction) => {
           }
         };
       });
+    /**
+     *
+     * Add homework reducers
+     *
+     */
+    case "addHomeworkRequest":
+      return produce(state, draft => {
+        draft.loading.homework = true;
+      });
+    case "addHomeworkSuccess":
+      return produce(state, draft => {
+        draft.loading.homework = false;
+        draft.drawer.homework = false;
+        draft.user.homework.push(action.Homework);
+        draft.user.homework.sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
+      });
+    case "addHomeworkError":
+      return produce(state, draft => {
+        draft.loading.homework = false;
+        draft.error = {
+          ...draft.error,
+          homework: {
+            message: action.error.data.errors.message,
+            status: action.error.status,
+            state: true
+          }
+        };
+      });
+    /**
+     *
+     * Edit Homework reducers
+     *
+     */
+    case "editHomeworkRequest":
+      return produce(state, draft => {
+        draft.loading.homework = true;
+      });
+    case "editHomeworkSuccess":
+      return produce(state, draft => {
+        draft.loading.homework = false;
+        draft.user.homework[action.index] = action.homework;
+      });
+    case "editHomeworkError":
+      return produce(state, draft => {
+        draft.loading.homework = false;
+        draft.error = {
+          ...draft.error,
+          homework: {
+            message: action.error.data.errors.message,
+            status: action.error.status,
+            state: true
+          }
+        };
+      });
+    /**
+     *
+     * Delete homework reducers
+     *
+     */
+    case "deleteHomeworkRequest":
+      return state;
+    case "deleteHomeworkSuccess":
+      return produce(state, draft => {
+        draft.user.homework.splice(action.index, 1);
+      });
+    case "deleteHomeworkError":
+      return produce(state, draft => {
+        draft.error = {
+          ...draft.error,
+          homework: {
+            message: action.error.data.errors.message,
+            status: action.error.status,
+            state: true
+          }
+        };
+      });
     default:
       return state;
   }

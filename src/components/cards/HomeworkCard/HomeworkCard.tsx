@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Icon, Badge, Avatar, Divider, Popconfirm, Tooltip } from "antd";
-import IEvaluation from "interfaces/IEvaluation";
 import { setDate, determinePriority, determineColor } from "utils";
 import moment from "moment";
 import { useDispatch } from "react-redux";
-import { deleteEvaluation, editEvaluation } from "store/effects";
-import EvaluationDescriptionModal from "components/modals/EvaluationDescriptionModal/EvaluationDescriptionModal";
+import { deleteHomework, editHomework } from "store/effects";
+import IHomework from "interfaces/IHomework";
+import HomeworkDescriptionModal from "components/modals/HomeworkDescriptionModal/HomeworkDescriptionModal";
 
-const EvaluationDrawer = React.lazy(() =>
-  import("components/drawers/EvaluationDrawer/EvaluationDrawer")
+const HomeworkDrawer = React.lazy(() =>
+  import("components/drawers/HomeworkDrawer/HomeworkDrawer")
 );
 
 const Wrapper = styled.div`
@@ -41,10 +41,6 @@ const AssignmentTitle = styled.h3`
   font-weight: 500;
   font-size: 1.7rem;
   color: ${props => props.theme.fontColors.blackRgba(0.8)};
-`;
-
-const Capitalize = styled.span`
-  text-transform: capitalize;
 `;
 
 const AssignmentPriority = styled.h5`
@@ -117,20 +113,20 @@ const ViewMore = styled.span`
   }
 `;
 
-interface IEvaluationCardProps {
-  evaluation: IEvaluation;
+interface IHomeworkCardProps {
+  homework: IHomework;
   index: number;
 }
 
-const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
-  evaluation,
+const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
+  homework,
   index
 }) => {
   const [visibleEdit, setVisibleEdit] = useState(false);
   const dispatch = useDispatch();
 
   const handleViewMoreClick = () => {
-    EvaluationDescriptionModal(evaluation);
+    HomeworkDescriptionModal(homework);
   };
 
   const handleEditClick = () => {
@@ -138,31 +134,28 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
   };
 
   const handleDeleteClick = () => {
-    dispatch(deleteEvaluation(evaluation._id, index));
+    dispatch(deleteHomework(homework._id, index));
   };
 
   const handleDoneClick = () => {
-    evaluation.done = true;
-    dispatch(editEvaluation(evaluation, index));
+    homework.done = true;
+    dispatch(editHomework(homework, index));
   };
 
   return (
     <Wrapper>
-      <EvaluationDrawer
+      <HomeworkDrawer
         visibleEdit={visibleEdit}
         setVisibleEdit={setVisibleEdit}
-        evaluation={evaluation}
+        homework={homework}
         index={index}
       />
       <MainInfo>
         <Assignment>
-          <AssignmentTitle>
-            <Capitalize>{evaluation.evaluationType}</Capitalize>:{" "}
-            {evaluation.subject}
-          </AssignmentTitle>
+          <AssignmentTitle>{homework.subject}</AssignmentTitle>
           <AssignmentPriority>
-            <Badge color={determineColor(evaluation.urgency)} />
-            {determinePriority(evaluation.urgency)}
+            <Badge color={determineColor(homework.urgency)} />
+            {determinePriority(homework.urgency)}
           </AssignmentPriority>
         </Assignment>
         <Actions>
@@ -175,7 +168,7 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
           </Tooltip>
 
           <Popconfirm
-            title="Are you sure delete this evaluation?"
+            title="Are you sure delete this homework?"
             arrowPointAtCenter={true}
             placement="topRight"
             okText="Yes"
@@ -188,12 +181,12 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
       </MainInfo>
       <OtherInfo>
         <User>
-          <Avatar size={30} icon="user" src={evaluation.createdBy.picture} />
-          <UserName>{evaluation.createdBy.name}</UserName>
+          <Avatar size={30} icon="user" src={homework.createdBy.picture} />
+          <UserName>{homework.createdBy.name}</UserName>
         </User>
         <Date>
           <Clock type="clock-circle" />
-          {setDate(moment(evaluation.date))} <Divider type="vertical" />
+          {setDate(moment(homework.date))} <Divider type="vertical" />
           <ViewMore onClick={handleViewMoreClick}> View More</ViewMore>
         </Date>
       </OtherInfo>
@@ -201,4 +194,4 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
   );
 };
 
-export default EvaluationCard;
+export default HomeworkCard;

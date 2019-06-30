@@ -4,6 +4,7 @@ import { RouterState } from "connected-react-router";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
 import IRequestError from "interfaces/IRequestError";
 import IEvaluation from "interfaces/IEvaluation";
+import IHomework from "interfaces/IHomework";
 
 /**
  *
@@ -16,6 +17,7 @@ export interface ErrorState {
   user?: IRequestError;
   signOut?: IRequestError;
   evaluation?: IRequestError;
+  homework?: IRequestError;
 }
 
 export interface LoadingState {
@@ -197,6 +199,64 @@ export interface DeleteEvaluationError {
   error: IAxiosErrorResponse;
 }
 
+/**
+ *
+ * Add homework interfaces
+ *
+ */
+export interface AddHomeworkRequest {
+  type: "addHomeworkRequest";
+}
+
+export interface AddHomeworkSuccess {
+  type: "addHomeworkSuccess";
+  Homework: IHomework;
+}
+
+export interface AddHomeworkError {
+  type: "addHomeworkError";
+  error: IAxiosErrorResponse;
+}
+
+/**
+ *
+ * Edit homework interfaces
+ *
+ */
+export interface EditHomeworkRequest {
+  type: "editHomeworkRequest";
+}
+
+export interface EditHomeworkSuccess {
+  type: "editHomeworkSuccess";
+  homework: IHomework;
+  index: number;
+}
+
+export interface EditHomeworkError {
+  type: "editHomeworkError";
+  error: IAxiosErrorResponse;
+}
+
+/**
+ *
+ * Delete homework interfaces
+ *
+ */
+export interface DeleteHomeworkRequest {
+  type: "deleteHomeworkRequest";
+}
+
+export interface DeleteHomeworkSuccess {
+  type: "deleteHomeworkSuccess";
+  index: number;
+}
+
+export interface DeleteHomeworkError {
+  type: "deleteHomeworkError";
+  error: IAxiosErrorResponse;
+}
+
 export type ApplicationAction =
   | SignInRequest
   | SignInSuccess
@@ -221,4 +281,13 @@ export type ApplicationAction =
   | EditEvaluationError
   | DeleteEvaluationRequest
   | DeleteEvaluationSuccess
-  | DeleteEvaluationError;
+  | DeleteEvaluationError
+  | AddHomeworkRequest
+  | AddHomeworkSuccess
+  | AddHomeworkError
+  | EditHomeworkRequest
+  | EditHomeworkSuccess
+  | EditHomeworkError
+  | DeleteHomeworkRequest
+  | DeleteHomeworkSuccess
+  | DeleteHomeworkError;

@@ -21,7 +21,16 @@ import {
   editEvaluationRequest,
   deleteEvaluationRequest,
   deleteEvaluationSuccess,
-  deleteEvaluationError
+  deleteEvaluationError,
+  addHomeworkRequest,
+  addHomeworkSuccess,
+  addHomeworkError,
+  editHomeworkRequest,
+  editHomeworkSuccess,
+  editHomeworkError,
+  deleteHomeworkRequest,
+  deleteHomeworkSuccess,
+  deleteHomeworkError
 } from "./actions";
 import { push } from "connected-react-router";
 
@@ -32,7 +41,10 @@ import {
   signOutService,
   evaluationService,
   requestEditEvaluation,
-  requestDeleteEvaluation
+  requestDeleteEvaluation,
+  homeworkService,
+  requestEditHomework,
+  requestDeleteHomework
 } from "services";
 
 import IUser from "interfaces/IUser";
@@ -43,9 +55,13 @@ import { Cookies } from "react-cookie";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
 import { AxiosResponse } from "axios";
 import IEvaluation from "interfaces/IEvaluation";
+import IHomework from "interfaces/IHomework";
 
 type Effect = ThunkAction<any, ApplicationState, any, ApplicationAction>;
 
+////////////
+//  Auth //
+//////////
 export const signIn = (credentials: ISignInCredentials): Effect => dispatch => {
   dispatch(signInRequest());
 
@@ -99,6 +115,9 @@ export const signOut = (): Effect => dispatch => {
     );
 };
 
+//////////////////
+//  EVALUATIONS //
+//////////////////
 export const addEvaluation = (evaluation: IEvaluation): Effect => dispatch => {
   dispatch(addEvaluationRequest());
 
@@ -140,5 +159,52 @@ export const deleteEvaluation = (
     )
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       dispatch(deleteEvaluationError(response))
+    );
+};
+
+////////////////
+//  Homework //
+///////////////
+export const addHomework = (homework: IHomework): Effect => dispatch => {
+  dispatch(addHomeworkRequest());
+
+  return homeworkService(homework)
+    .then(({ data }: { data: { homework: IHomework } }) =>
+      dispatch<any>(addHomeworkSuccess(data.homework))
+    )
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      dispatch(addHomeworkError(response))
+    );
+};
+
+export const editHomework = (
+  homework: IHomework,
+  index: number,
+  setVisibleEdit?: Function
+): Effect => dispatch => {
+  dispatch(editHomeworkRequest());
+
+  return requestEditHomework(homework)
+    .then(({ data }: { data: { homework: IHomework } }) => {
+      dispatch<any>(editHomeworkSuccess(data.homework, index));
+      setVisibleEdit && setVisibleEdit(false);
+    })
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      dispatch(editHomeworkError(response))
+    );
+};
+
+export const deleteHomework = (
+  id: string,
+  index: number
+): Effect => dispatch => {
+  dispatch(deleteHomeworkRequest());
+
+  return requestDeleteHomework(id)
+    .then(({ data }: { data: { homework: IHomework } }) =>
+      dispatch<any>(deleteHomeworkSuccess(index))
+    )
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      dispatch(deleteHomeworkError(response))
     );
 };
