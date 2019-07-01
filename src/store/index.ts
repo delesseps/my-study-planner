@@ -21,7 +21,8 @@ export const initialState: ApplicationState = {
       signOut: false,
       evaluation: false,
       homework: false,
-      toDo: false
+      toDo: false,
+      uploadProfilePicture: false
     },
     error: {},
     user: {

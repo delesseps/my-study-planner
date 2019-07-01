@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import { Icon, Avatar, Dropdown, Menu, Skeleton } from "antd";
 import { ApplicationState } from "store/types";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import { connect, useDispatch } from "react-redux";
 import { signOut } from "store/effects";
+import UserProfileModal from "components/modals/UserProfileModal/UserProfileModal";
+import IUser from "interfaces/IUser";
 
 const Wrapper = styled.section`
   display: flex;
@@ -92,27 +93,25 @@ const StyledSkeleton = styled(Skeleton)`
 
 interface ITopBarProps {
   loading: boolean;
-  name: string;
-  role: string;
-  signOut: Function;
-  picture: string;
+  user: IUser;
 }
 
-const TopBar: React.FC<ITopBarProps> = ({
-  loading,
-  name,
-  role,
-  signOut,
-  picture
-}) => {
+const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
+  const dispatch = useDispatch();
+  const [visible, setVisible] = useState(false);
+
   const handleSignOut = () => {
-    signOut();
+    dispatch(signOut());
+  };
+
+  const handleProfileClick = () => {
+    setVisible(true);
   };
 
   const userOptions = (
     <Menu>
       <Menu.Item>
-        <MenuButton>
+        <MenuButton onClick={handleProfileClick}>
           <Icon type="user" />
           Profile
         </MenuButton>
@@ -134,13 +133,14 @@ const TopBar: React.FC<ITopBarProps> = ({
 
   return (
     <Wrapper>
+      <UserProfileModal user={user} visible={visible} setVisible={setVisible} />
       <LogoBox>
         <StyledLogo />
         <Title>My Study Planner</Title>
       </LogoBox>
       <UserBox>
         <StyledIcon type="bell" />
-        <Avatar shape="square" size={60} icon="user" src={picture} />
+        <Avatar shape="square" size={60} icon="user" src={user.picture} />
         <UserInfoBox>
           <StyledSkeleton
             loading={loading}
@@ -149,10 +149,10 @@ const TopBar: React.FC<ITopBarProps> = ({
           >
             <NameCaretWrapper placement="bottomRight" overlay={userOptions}>
               <Name>
-                {name} <Icon type="caret-down" />
+                {user.name} <Icon type="caret-down" />
               </Name>
             </NameCaretWrapper>
-            <Role>{role === "user" ? "Student" : "Administrator"}</Role>
+            <Role>{user.role === "user" ? "Student" : "Administrator"}</Role>
           </StyledSkeleton>
         </UserInfoBox>
       </UserBox>
@@ -163,19 +163,11 @@ const TopBar: React.FC<ITopBarProps> = ({
 const mapStateToProps = (state: ApplicationState) => {
   return {
     loading: state.reducer.loading.user,
-    name: state.reducer.user.name,
-    role: state.reducer.user.role,
-    picture: state.reducer.user.picture
-  };
-};
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    signOut: () => dispatch<any>(signOut())
+    user: state.reducer.user
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(TopBar);

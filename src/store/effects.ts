@@ -30,7 +30,10 @@ import {
   editHomeworkError,
   deleteHomeworkRequest,
   deleteHomeworkSuccess,
-  deleteHomeworkError
+  deleteHomeworkError,
+  uploadPictureRequest,
+  uploadPictureSuccess,
+  uploadPictureError
 } from "./actions";
 import { push } from "connected-react-router";
 
@@ -44,7 +47,8 @@ import {
   requestDeleteEvaluation,
   homeworkService,
   requestEditHomework,
-  requestDeleteHomework
+  requestDeleteHomework,
+  uploadProfilePictureService
 } from "services";
 
 import IUser from "interfaces/IUser";
@@ -56,11 +60,15 @@ import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
 import { AxiosResponse } from "axios";
 import IEvaluation from "interfaces/IEvaluation";
 import IHomework from "interfaces/IHomework";
+import { message } from "antd";
 
 type Effect = ThunkAction<any, ApplicationState, any, ApplicationAction>;
 
+const noConnectionToServer = () =>
+  message.error("Unable to connect to server. Please reload");
+
 ////////////
-//  Auth //
+//  AUTH //
 //////////
 export const signIn = (credentials: ISignInCredentials): Effect => dispatch => {
   dispatch(signInRequest());
@@ -71,7 +79,7 @@ export const signIn = (credentials: ISignInCredentials): Effect => dispatch => {
       dispatch<any>(push("/dashboard"));
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      dispatch(signInError(response))
+      response ? dispatch(signInError(response)) : noConnectionToServer()
     );
 };
 
@@ -84,19 +92,7 @@ export const signUp = (credentials: ISignUpCredentials): Effect => dispatch => {
       dispatch<any>(push("/dashboard"));
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      dispatch(signUpError(response))
-    );
-};
-
-export const requestUser = (): Effect => dispatch => {
-  dispatch(requestUserPending());
-
-  return requestUserService()
-    .then(({ data }: { data: { user: IUser } }) => {
-      dispatch(requestUserSuccess(data.user));
-    })
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      dispatch(requestUserError(response))
+      response ? dispatch(signUpError(response)) : noConnectionToServer()
     );
 };
 
@@ -111,7 +107,35 @@ export const signOut = (): Effect => dispatch => {
       dispatch<any>(push("/signin"));
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      dispatch(signOutError(response))
+      response ? dispatch(signOutError(response)) : noConnectionToServer()
+    );
+};
+
+////////////
+//  USER //
+///////////
+
+export const requestUser = (): Effect => dispatch => {
+  dispatch(requestUserPending());
+
+  return requestUserService()
+    .then(({ data }: { data: { user: IUser } }) => {
+      dispatch(requestUserSuccess(data.user));
+    })
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      response ? dispatch(requestUserError(response)) : noConnectionToServer()
+    );
+};
+
+export const uploadProfilePicture = (image: string): Effect => dispatch => {
+  dispatch(uploadPictureRequest());
+
+  return uploadProfilePictureService(image)
+    .then(({ data }: { data: { imageUrl: string } }) => {
+      dispatch(uploadPictureSuccess(data.imageUrl));
+    })
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      response ? dispatch(uploadPictureError(response)) : noConnectionToServer()
     );
 };
 
@@ -126,7 +150,7 @@ export const addEvaluation = (evaluation: IEvaluation): Effect => dispatch => {
       dispatch<any>(addEvaluationSuccess(data.evaluation))
     )
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      dispatch(addEvaluationError(response))
+      response ? dispatch(addEvaluationError(response)) : noConnectionToServer()
     );
 };
 
@@ -143,7 +167,9 @@ export const editEvaluation = (
       setVisibleEdit && setVisibleEdit(false);
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      dispatch(editEvaluationError(response))
+      response
+        ? dispatch(editEvaluationError(response))
+        : noConnectionToServer()
     );
 };
 
@@ -158,7 +184,9 @@ export const deleteEvaluation = (
       dispatch<any>(deleteEvaluationSuccess(index))
     )
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      dispatch(deleteEvaluationError(response))
+      response
+        ? dispatch(deleteEvaluationError(response))
+        : noConnectionToServer()
     );
 };
 
@@ -173,7 +201,7 @@ export const addHomework = (homework: IHomework): Effect => dispatch => {
       dispatch<any>(addHomeworkSuccess(data.homework))
     )
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      dispatch(addHomeworkError(response))
+      response ? dispatch(addHomeworkError(response)) : noConnectionToServer()
     );
 };
 
@@ -190,7 +218,7 @@ export const editHomework = (
       setVisibleEdit && setVisibleEdit(false);
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      dispatch(editHomeworkError(response))
+      response ? dispatch(editHomeworkError(response)) : noConnectionToServer()
     );
 };
 
@@ -205,6 +233,8 @@ export const deleteHomework = (
       dispatch<any>(deleteHomeworkSuccess(index))
     )
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      dispatch(deleteHomeworkError(response))
+      response
+        ? dispatch(deleteHomeworkError(response))
+        : noConnectionToServer()
     );
 };

@@ -18,6 +18,7 @@ export interface ErrorState {
   signOut?: IRequestError;
   evaluation?: IRequestError;
   homework?: IRequestError;
+  upload?: IRequestError;
 }
 
 export interface LoadingState {
@@ -25,6 +26,7 @@ export interface LoadingState {
   signUp: boolean;
   signOut: boolean;
   user: boolean;
+  uploadProfilePicture: boolean;
   evaluation: boolean;
   homework: boolean;
   toDo: boolean;
@@ -210,7 +212,7 @@ export interface AddHomeworkRequest {
 
 export interface AddHomeworkSuccess {
   type: "addHomeworkSuccess";
-  Homework: IHomework;
+  homework: IHomework;
 }
 
 export interface AddHomeworkError {
@@ -257,6 +259,25 @@ export interface DeleteHomeworkError {
   error: IAxiosErrorResponse;
 }
 
+/**
+ *
+ * User profile picture interfaces
+ *
+ */
+export interface UploadProfilePictureRequest {
+  type: "uploadProfilePictureRequest";
+}
+
+export interface UploadProfilePictureSuccess {
+  type: "uploadProfilePictureSuccess";
+  imageUrl: string;
+}
+
+export interface UploadProfilePictureError {
+  type: "uploadProfilePictureError";
+  error: IAxiosErrorResponse;
+}
+
 export type ApplicationAction =
   | SignInRequest
   | SignInSuccess
@@ -290,4 +311,7 @@ export type ApplicationAction =
   | EditHomeworkError
   | DeleteHomeworkRequest
   | DeleteHomeworkSuccess
-  | DeleteHomeworkError;
+  | DeleteHomeworkError
+  | UploadProfilePictureRequest
+  | UploadProfilePictureSuccess
+  | UploadProfilePictureError;

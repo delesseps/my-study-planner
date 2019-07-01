@@ -12,7 +12,8 @@ const initialState: ReducerState = {
     signOut: false,
     evaluation: false,
     homework: false,
-    toDo: false
+    toDo: false,
+    uploadProfilePicture: false
   },
   error: {},
   user: {
@@ -250,7 +251,7 @@ const reducer = (state = initialState, action: ApplicationAction) => {
       return produce(state, draft => {
         draft.loading.homework = false;
         draft.drawer.homework = false;
-        draft.user.homework.push(action.Homework);
+        draft.user.homework.push(action.homework);
         draft.user.homework.sort(
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
@@ -309,6 +310,32 @@ const reducer = (state = initialState, action: ApplicationAction) => {
         draft.error = {
           ...draft.error,
           homework: {
+            message: action.error.data.errors.message,
+            status: action.error.status,
+            state: true
+          }
+        };
+      });
+    /**
+     *
+     * Upload profile picture reducers
+     *
+     */
+    case "uploadProfilePictureRequest":
+      return produce(state, draft => {
+        draft.loading.uploadProfilePicture = true;
+      });
+    case "uploadProfilePictureSuccess":
+      return produce(state, draft => {
+        draft.loading.uploadProfilePicture = false;
+        draft.user.picture = action.imageUrl;
+      });
+    case "uploadProfilePictureError":
+      return produce(state, draft => {
+        draft.loading.uploadProfilePicture = false;
+        draft.error = {
+          ...draft.error,
+          upload: {
             message: action.error.data.errors.message,
             status: action.error.status,
             state: true

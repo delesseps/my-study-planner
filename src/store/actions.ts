@@ -31,7 +31,10 @@ import {
   EditHomeworkError,
   DeleteHomeworkRequest,
   DeleteHomeworkSuccess,
-  DeleteHomeworkError
+  DeleteHomeworkError,
+  UploadProfilePictureRequest,
+  UploadProfilePictureError,
+  UploadProfilePictureSuccess
 } from "./types";
 import IUser from "interfaces/IUser";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
@@ -221,10 +224,10 @@ export const addHomeworkRequest = (): AddHomeworkRequest => ({
 });
 
 export const addHomeworkSuccess = (
-  Homework: IHomework
+  homework: IHomework
 ): AddHomeworkSuccess => ({
   type: "addHomeworkSuccess",
-  Homework
+  homework
 });
 
 export const addHomeworkError = (
@@ -281,5 +284,28 @@ export const deleteHomeworkError = (
   error: IAxiosErrorResponse
 ): DeleteHomeworkError => ({
   type: "deleteHomeworkError",
+  error
+});
+
+/**
+ *
+ * User profile picture actions
+ *
+ */
+export const uploadPictureRequest = (): UploadProfilePictureRequest => ({
+  type: "uploadProfilePictureRequest"
+});
+
+export const uploadPictureSuccess = (
+  imageUrl: string
+): UploadProfilePictureSuccess => ({
+  type: "uploadProfilePictureSuccess",
+  imageUrl
+});
+
+export const uploadPictureError = (
+  error: IAxiosErrorResponse
+): UploadProfilePictureError => ({
+  type: "uploadProfilePictureError",
   error
 });
