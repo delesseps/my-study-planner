@@ -11,7 +11,11 @@ import { UploadFile } from "antd/lib/upload/interface";
 const StyledUpload = styled(Upload)`
   cursor: pointer;
 
-  &:hover ~ i {
+  && > div {
+    margin: 0;
+  }
+
+  &&:hover ~ i {
     opacity: 1;
   }
 `;

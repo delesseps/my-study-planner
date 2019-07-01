@@ -41,9 +41,13 @@ const UserBox = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  && {
+  &&& {
     transition: 0.2s;
     opacity: 0;
+    color: ${props => props.theme.fontColors.blackRgba(0.8)};
+    font-size: 2.5rem;
+    bottom: -15px;
+    top: initial;
   }
 `;
 
@@ -142,14 +146,7 @@ const UserProfileModal: React.FunctionComponent<IUserProfileModalProps> = ({
       <Background>&nbsp;</Background>
       <Wrapper>
         <UserBox>
-          <Badge
-            count={
-              <StyledIcon
-                type="edit"
-                style={{ fontSize: 25, color: "black" }}
-              />
-            }
-          >
+          <Badge count={<StyledIcon type="edit" />}>
             <UploadPicture />
           </Badge>
           <Name>{user.name}</Name>

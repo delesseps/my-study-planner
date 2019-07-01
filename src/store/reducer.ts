@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 import { History } from "history";
 import { connectRouter } from "connected-react-router";
 import produce from "immer";
+import { message } from "antd";
 
 const initialState: ReducerState = {
   loading: {
@@ -172,11 +173,11 @@ const reducer = (state = initialState, action: ApplicationAction) => {
     case "addEvaluationSuccess":
       return produce(state, draft => {
         draft.loading.evaluation = false;
-        draft.drawer.evaluation = false;
         draft.user.evaluations.push(action.evaluation);
         draft.user.evaluations.sort(
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
+        draft.drawer.evaluation = false;
       });
     case "addEvaluationError":
       return produce(state, draft => {
@@ -250,11 +251,11 @@ const reducer = (state = initialState, action: ApplicationAction) => {
     case "addHomeworkSuccess":
       return produce(state, draft => {
         draft.loading.homework = false;
-        draft.drawer.homework = false;
         draft.user.homework.push(action.homework);
         draft.user.homework.sort(
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
+        draft.drawer.homework = false;
       });
     case "addHomeworkError":
       return produce(state, draft => {
@@ -333,6 +334,9 @@ const reducer = (state = initialState, action: ApplicationAction) => {
     case "uploadProfilePictureError":
       return produce(state, draft => {
         draft.loading.uploadProfilePicture = false;
+        message.error(
+          "An error has occurred. Please try gain with the same picture or another. "
+        );
         draft.error = {
           ...draft.error,
           upload: {
