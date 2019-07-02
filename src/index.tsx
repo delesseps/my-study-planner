@@ -1,28 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Router from "./Router";
+
 import * as serviceWorker from "./serviceWorker";
 
 import { Provider } from "react-redux";
 
 import { ConnectedRouter } from "connected-react-router";
 import configureStore, { history } from "store";
-
-import { ThemeProvider } from "styled-components";
-import { theme } from "styled";
-
-import { CookiesProvider } from "react-cookie";
+import App from "App";
 
 const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <ThemeProvider theme={theme}>
-        <CookiesProvider>
-          <Router />
-        </CookiesProvider>
-      </ThemeProvider>
+      <App />
     </ConnectedRouter>
   </Provider>,
   document.getElementById("root")

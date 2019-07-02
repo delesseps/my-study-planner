@@ -7,6 +7,7 @@ import { connect, useDispatch } from "react-redux";
 import { signOut } from "store/effects";
 import UserProfileModal from "components/modals/UserProfileModal/UserProfileModal";
 import IUser from "interfaces/IUser";
+import { Link } from "react-router-dom";
 
 const Wrapper = styled.section`
   display: flex;
@@ -42,6 +43,10 @@ const UserBox = styled.div`
 const StyledIcon = styled(Icon)`
   font-size: 2.3rem;
   margin-right: 3.5rem;
+
+  && {
+    color: ${props => props.theme.fontColors.blackRgba(0.8)};
+  }
 `;
 
 const UserInfoBox = styled.div`
@@ -85,6 +90,23 @@ const MenuButton = styled.a`
   }
 `;
 
+const MenuButtonLink = styled.p`
+  margin: 0;
+  & i {
+    margin-right: 2rem;
+  }
+`;
+
+const StyledLink = styled(Link)`
+  & > a {
+    color: inherit;
+
+    &:hover {
+      color: inherit;
+    }
+  }
+`;
+
 const StyledSkeleton = styled(Skeleton)`
   &&& .ant-skeleton-paragraph {
     margin-top: 0;
@@ -117,10 +139,12 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
         </MenuButton>
       </Menu.Item>
       <Menu.Item>
-        <MenuButton>
-          <Icon type="setting" />
-          Preferences
-        </MenuButton>
+        <StyledLink to="/dashboard/preferences">
+          <MenuButtonLink>
+            <Icon type="setting" />
+            Preferences
+          </MenuButtonLink>
+        </StyledLink>
       </Menu.Item>
       <Menu.Item>
         <MenuButton onClick={handleSignOut}>

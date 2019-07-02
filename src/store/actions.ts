@@ -34,12 +34,16 @@ import {
   DeleteHomeworkError,
   UploadProfilePictureRequest,
   UploadProfilePictureError,
-  UploadProfilePictureSuccess
+  UploadProfilePictureSuccess,
+  UserConfigRequest,
+  UserConfigSuccess,
+  UserConfigError
 } from "./types";
 import IUser from "interfaces/IUser";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
 import IEvaluation from "interfaces/IEvaluation";
 import IHomework from "interfaces/IHomework";
+import IUserConfig from "interfaces/IUserConfig";
 
 /**
  *
@@ -307,5 +311,26 @@ export const uploadPictureError = (
   error: IAxiosErrorResponse
 ): UploadProfilePictureError => ({
   type: "uploadProfilePictureError",
+  error
+});
+
+/**
+ *
+ * User config actions
+ *
+ */
+export const userConfigRequest = (): UserConfigRequest => ({
+  type: "userConfigRequest"
+});
+
+export const userConfigSuccess = (config: IUserConfig): UserConfigSuccess => ({
+  type: "userConfigSuccess",
+  config
+});
+
+export const userConfigError = (
+  error: IAxiosErrorResponse
+): UserConfigError => ({
+  type: "userConfigError",
   error
 });

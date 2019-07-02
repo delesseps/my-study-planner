@@ -6,6 +6,33 @@ import IEvaluation from "interfaces/IEvaluation";
 import { Moment } from "moment";
 import IHomework from "interfaces/IHomework";
 import { toTitleCase } from "utils";
+import styled from "styled-components";
+
+const Wrapper = styled.span`
+  & .ant-fullcalendar-last-month-cell .ant-fullcalendar-value,
+  .ant-fullcalendar-next-month-btn-day .ant-fullcalendar-value {
+    color: ${props => props.theme.fontColors.blackRgba(0.6)};
+  }
+
+  & .ant-select-selection {
+    background-color: ${props => props.theme.panelBackgroundColor};
+    color: ${props => props.theme.fontColors.black};
+  }
+
+  & i {
+    color: ${props => props.theme.fontColors.black};
+  }
+`;
+
+const Value = styled.div`
+  && {
+    color: ${props => props.theme.fontColors.black};
+
+    &:hover {
+      background-color: #91b1ad;
+    }
+  }
+`;
 
 interface ICalendarPanelProps {
   evaluations: IEvaluation[];
@@ -110,23 +137,24 @@ const CalendarPanel: React.FC<ICalendarPanelProps> = ({
 
     return (
       <div className="ant-fullcalendar-date">
-        <div className="ant-fullcalendar-value">{value.date()}</div>
+        <Value className="ant-fullcalendar-value">{value.date()}</Value>
         <div className="ant-fullcalendar-content" />
       </div>
     );
   };
 
   return (
-    <Calendar dateFullCellRender={dateFullCellRender} fullscreen={false} />
+    <Wrapper>
+      <Calendar dateFullCellRender={dateFullCellRender} fullscreen={false} />
+    </Wrapper>
   );
 };
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    evaluations: state.reducer.user.evaluations,
-    homework: state.reducer.user.homework
-  };
-};
+const mapStateToProps = (state: ApplicationState) => ({
+  evaluations: state.reducer.user.evaluations,
+  homework: state.reducer.user.homework,
+  config: state.reducer.user.configuration
+});
 
 export default connect(
   mapStateToProps,

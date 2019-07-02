@@ -22,6 +22,9 @@ const initialState: ReducerState = {
     email: "",
     role: "",
     picture: "",
+    configuration: {
+      darkMode: false
+    },
     evaluations: [],
     homework: [],
     todos: [],
@@ -340,6 +343,31 @@ const reducer = (state = initialState, action: ApplicationAction) => {
         draft.error = {
           ...draft.error,
           upload: {
+            message: action.error.data.errors.message,
+            status: action.error.status,
+            state: true
+          }
+        };
+      });
+    /**
+     *
+     * User config reducers
+     *
+     */
+    case "userConfigRequest":
+      return state;
+    case "userConfigSuccess":
+      return produce(state, draft => {
+        draft.user.configuration = action.config;
+      });
+    case "userConfigError":
+      return produce(state, draft => {
+        message.error(
+          "An error has occurred. Please try refreshing the page. "
+        );
+        draft.error = {
+          ...draft.error,
+          config: {
             message: action.error.data.errors.message,
             status: action.error.status,
             state: true

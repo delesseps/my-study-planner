@@ -11,6 +11,7 @@ declare module "styled-components" {
     };
     backgroundColor: string;
     sidebarBackgroundColor: string;
+    panelBackgroundColor: string;
     shadow1: string;
   }
 }

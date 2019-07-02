@@ -5,6 +5,10 @@ import styled from "styled-components";
 import UploadPicture from "components/UploadPicture/UploadPicture";
 
 const StyledModal = styled(Modal)`
+  & .ant-modal-content {
+    background-color: ${props => props.theme.backgroundColor};
+  }
+
   & .ant-modal-close-icon {
     color: rgba(255, 255, 255, 0.8);
     transition: 0.15s;

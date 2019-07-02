@@ -20,7 +20,7 @@ const HomeSchedulePanel = React.lazy(() =>
   import("../panels/HomeSchedulePanel/HomeSchedulePanel")
 );
 
-const panelTheme = `background-color: #fff; border-radius: 4px;`;
+const panelTheme = `border-radius: 4px;`;
 
 const Wrapper = styled.section`
   display: grid;
@@ -39,6 +39,7 @@ const CounterPanelLeft = styled.div`
   position: relative;
 
   padding: 2rem 2.6rem;
+  background-color: ${props => props.theme.panelBackgroundColor};
 
   ${panelTheme};
 
@@ -50,6 +51,7 @@ const CounterPanelRight = styled.div`
   box-shadow: ${props => props.theme.shadow1};
   height: 13rem;
   position: relative;
+  background-color: ${props => props.theme.panelBackgroundColor};
 
   padding: 2rem 2.6rem;
 
@@ -63,6 +65,7 @@ const CalendarPanelWrapper = styled.div`
   background-color: #fff;
   border-radius: 4px;
   box-shadow: ${props => props.theme.shadow1};
+  background-color: ${props => props.theme.panelBackgroundColor};
 
   grid-area: calendar;
   grid-row: auto;
@@ -72,6 +75,7 @@ const HomeSchedulePanelWrapper = styled.div`
   height: 48.9rem;
   margin-top: -17rem;
   padding: 2rem 2.6rem;
+  background-color: ${props => props.theme.panelBackgroundColor};
 
   grid-area: schedule;
 
@@ -89,6 +93,7 @@ const RecommendedActionsPanelWrapper = styled.div`
   box-shadow: ${props => props.theme.shadow1};
   height: 30rem;
   overflow-y: auto;
+  background-color: ${props => props.theme.panelBackgroundColor};
 
   display: flex;
   flex-direction: column;
@@ -102,6 +107,7 @@ const ToDoPanelWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
+  background-color: ${props => props.theme.panelBackgroundColor};
 
   box-shadow: ${props => props.theme.shadow1};
   min-height: 30rem;
@@ -117,6 +123,7 @@ const HomeworkPanelWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
+  background-color: ${props => props.theme.panelBackgroundColor};
 
   box-shadow: ${props => props.theme.shadow1};
   min-height: 30rem;
@@ -132,6 +139,7 @@ const EvaluationPanelWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
+  background-color: ${props => props.theme.panelBackgroundColor};
 
   box-shadow: ${props => props.theme.shadow1};
   min-height: 30rem;

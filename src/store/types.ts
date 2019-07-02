@@ -5,6 +5,7 @@ import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
 import IRequestError from "interfaces/IRequestError";
 import IEvaluation from "interfaces/IEvaluation";
 import IHomework from "interfaces/IHomework";
+import IUserConfig from "interfaces/IUserConfig";
 
 /**
  *
@@ -19,6 +20,7 @@ export interface ErrorState {
   evaluation?: IRequestError;
   homework?: IRequestError;
   upload?: IRequestError;
+  config?: IRequestError;
 }
 
 export interface LoadingState {
@@ -278,6 +280,25 @@ export interface UploadProfilePictureError {
   error: IAxiosErrorResponse;
 }
 
+/**
+ *
+ * User config interfaces
+ *
+ */
+export interface UserConfigRequest {
+  type: "userConfigRequest";
+}
+
+export interface UserConfigSuccess {
+  type: "userConfigSuccess";
+  config: IUserConfig;
+}
+
+export interface UserConfigError {
+  type: "userConfigError";
+  error: IAxiosErrorResponse;
+}
+
 export type ApplicationAction =
   | SignInRequest
   | SignInSuccess
@@ -314,4 +335,7 @@ export type ApplicationAction =
   | DeleteHomeworkError
   | UploadProfilePictureRequest
   | UploadProfilePictureSuccess
-  | UploadProfilePictureError;
+  | UploadProfilePictureError
+  | UserConfigRequest
+  | UserConfigSuccess
+  | UserConfigError;

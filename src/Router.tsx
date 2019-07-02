@@ -1,10 +1,13 @@
 import React from "react";
 import { createGlobalStyle } from "styled-components";
 import { Switch, Route, Redirect } from "react-router";
-import App from "./App";
+import Dashboard from "./Dashboard";
 import Loading from "components/Loading/Loading";
 import { breakpoints } from "styled";
-import { withCookies, Cookies } from "react-cookie";
+import { Cookies, withCookies } from "react-cookie";
+
+import { connect } from "react-redux";
+import { ApplicationState } from "store/types";
 
 const SignIn = React.lazy(() => import("components/SignIn/SignIn"));
 const SignUp = React.lazy(() => import("components/SignUp/SignUp"));
@@ -27,9 +30,9 @@ const CSSReset = createGlobalStyle`
   }  
 
   body {
-    font-size: 1.4rem;    
-    color: ${props => props.theme.fontColors.black};
-    background-color: ${props => props.theme.backgroundColor};
+    font-size: 1.4rem;      
+    background-color: ${props => props.theme.backgroundColor};    
+    color: ${props => props.theme.fontColors.blackRgba(0.8)};    
   }
 
   *::-webkit-scrollbar {
@@ -62,7 +65,7 @@ const Router = ({ cookies }: { cookies: Cookies }) => {
             path="/dashboard"
             render={props => {
               return cookies.get("IS_LOGGED_IN") ? (
-                <App />
+                <Dashboard />
               ) : (
                 <Redirect to="/signin" />
               );
@@ -98,4 +101,11 @@ const Router = ({ cookies }: { cookies: Cookies }) => {
   );
 };
 
-export default withCookies(Router);
+const mapStateToProps = (state: ApplicationState) => ({
+  error: state.reducer.error.user
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(withCookies(Router));

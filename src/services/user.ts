@@ -1,5 +1,18 @@
 import { agent } from "api";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
+import IUserConfig from "interfaces/IUserConfig";
+
+const userConfigApi = (config: IUserConfig): AxiosRequestConfig => ({
+  url: "/user/config",
+  method: "patch",
+  data: {
+    config
+  }
+});
+
+export const userConfigService = (
+  config: IUserConfig
+): Promise<AxiosResponse> => agent.request(userConfigApi(config));
 
 const uploadProfilePictureApi = (image: string): AxiosRequestConfig => ({
   url: "/user/upload_profile_picture",

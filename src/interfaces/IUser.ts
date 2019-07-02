@@ -1,6 +1,7 @@
 import IHomework from "./IHomework";
 import IToDo from "./IToDo";
 import IEvaluation from "./IEvaluation";
+import IUserConfig from "./IUserConfig";
 
 export enum Urgency {
   important = "important",
@@ -13,6 +14,7 @@ export default interface IUser {
   email: string;
   role: string;
   picture: string;
+  configuration: IUserConfig;
   evaluations: IEvaluation[];
   todos: IToDo[];
   homework: IHomework[];

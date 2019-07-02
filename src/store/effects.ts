@@ -33,7 +33,10 @@ import {
   deleteHomeworkError,
   uploadPictureRequest,
   uploadPictureSuccess,
-  uploadPictureError
+  uploadPictureError,
+  userConfigRequest,
+  userConfigSuccess,
+  userConfigError
 } from "./actions";
 import { push } from "connected-react-router";
 
@@ -48,7 +51,8 @@ import {
   homeworkService,
   requestEditHomework,
   requestDeleteHomework,
-  uploadProfilePictureService
+  uploadProfilePictureService,
+  userConfigService
 } from "services";
 
 import IUser from "interfaces/IUser";
@@ -61,6 +65,7 @@ import { AxiosResponse } from "axios";
 import IEvaluation from "interfaces/IEvaluation";
 import IHomework from "interfaces/IHomework";
 import { message } from "antd";
+import IUserConfig from "interfaces/IUserConfig";
 
 type Effect = ThunkAction<any, ApplicationState, any, ApplicationAction>;
 
@@ -103,8 +108,8 @@ export const signOut = (): Effect => dispatch => {
   return signOutService()
     .then((response: AxiosResponse) => {
       cookies.remove("IS_LOGGED_IN");
-      dispatch(signOutSuccess());
       dispatch<any>(push("/signin"));
+      dispatch(signOutSuccess());
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       response ? dispatch(signOutError(response)) : noConnectionToServer()
@@ -136,6 +141,18 @@ export const uploadProfilePicture = (image: string): Effect => dispatch => {
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       response ? dispatch(uploadPictureError(response)) : noConnectionToServer()
+    );
+};
+
+export const updateUserConfig = (config: IUserConfig): Effect => dispatch => {
+  dispatch(userConfigRequest());
+
+  return userConfigService(config)
+    .then(({ data }: { data: { config: IUserConfig } }) => {
+      dispatch(userConfigSuccess(data.config));
+    })
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      response ? dispatch(userConfigError(response)) : noConnectionToServer()
     );
 };
 
