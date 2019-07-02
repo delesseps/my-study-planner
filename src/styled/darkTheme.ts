@@ -8,9 +8,9 @@ const theme: DefaultTheme = {
     black: "#fff",
     blackRgba: (alpha: number): string => `rgba(255, 255, 255, ${alpha})`
   },
-  backgroundColor: "#303030",
-  sidebarBackgroundColor: "#424242",
-  panelBackgroundColor: "#424242",
+  backgroundColor: "#424242",
+  sidebarBackgroundColor: "#303030",
+  panelBackgroundColor: "#303030",
   shadow1: "0px 4px 12px rgba(0, 0, 0, 0.1);"
 };
 
