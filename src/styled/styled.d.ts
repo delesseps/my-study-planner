@@ -6,12 +6,14 @@ declare module "styled-components" {
       main: string;
     };
     fontColors: {
-      black: string;
-      blackRgba: Function;
+      text: string;
+      textRgba: Function;
     };
     backgroundColor: string;
     sidebarBackgroundColor: string;
     panelBackgroundColor: string;
+    scrollbarBackgroundColor: string;
+    bigCalendarCurrentDay: string;
     shadow1: string;
   }
 }

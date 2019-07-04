@@ -7,7 +7,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid ${props => props.theme.fontColors.blackRgba(0.1)};
+  border-bottom: 1px solid ${props => props.theme.fontColors.textRgba(0.1)};
 `;
 
 const Title = styled.h3`
@@ -16,7 +16,7 @@ const Title = styled.h3`
   letter-spacing: 1px;
   margin: 0;
 
-  color: ${props => props.theme.fontColors.blackRgba(0.8)};
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const Content = styled.div`

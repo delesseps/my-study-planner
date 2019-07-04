@@ -13,18 +13,21 @@ const ModalTime = styled.h5`
   margin: 0;
 `;
 
+const ModalTitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const ModalTitle = styled.h3`
   letter-spacing: 0.5px;
   margin: 0;
   font-weight: 500;
   font-size: 1.7rem;
   color: rgba(27, 27, 27, 0.8);
-`;
 
-const ModalTitleWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  width: 26rem;
+  word-wrap: break-word;
 `;
 
 const ModalContent = styled.p`

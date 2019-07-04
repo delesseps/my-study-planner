@@ -24,12 +24,12 @@ const StyledForm = styled(Form)`
 const Heading = styled.h1`
   font-weight: bold;
   font-size: 3.6rem;
-  color: ${props => props.theme.fontColors.black};
+  color: ${props => props.theme.fontColors.text};
 `;
 
 const SubHeading = styled.h3`
   font-weight: 600;
-  color: ${props => props.theme.fontColors.blackRgba(0.6)};
+  color: ${props => props.theme.fontColors.textRgba(0.6)};
 `;
 
 const OptionsWrapper = styled.div`

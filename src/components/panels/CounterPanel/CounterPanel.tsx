@@ -17,7 +17,7 @@ const Title = styled.h3`
   letter-spacing: 2px;
   margin-bottom: 0.5rem;
 
-  color: ${props => props.theme.fontColors.blackRgba(0.8)};
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const Subtitle = styled.h5`
@@ -25,7 +25,7 @@ const Subtitle = styled.h5`
   letter-spacing: 1px;
   margin-bottom: 0rem;
 
-  color: ${props => props.theme.fontColors.blackRgba(0.5)};
+  color: ${props => props.theme.fontColors.textRgba(0.5)};
 `;
 
 const Count = styled.h1`
@@ -37,7 +37,7 @@ const Count = styled.h1`
   bottom: 0;
   right: 2rem;
 
-  color: ${props => props.theme.fontColors.blackRgba(0.8)};
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
 `;
 
 interface ICounterProps {

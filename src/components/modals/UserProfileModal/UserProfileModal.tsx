@@ -48,7 +48,7 @@ const StyledIcon = styled(Icon)`
   &&& {
     transition: 0.2s;
     opacity: 0;
-    color: ${props => props.theme.fontColors.blackRgba(0.8)};
+    color: ${props => props.theme.fontColors.textRgba(0.8)};
     font-size: 2.5rem;
     bottom: -15px;
     top: initial;
@@ -62,7 +62,7 @@ const Name = styled.h2`
   text-align: center;
   margin-top: 1rem;
 
-  color: ${props => props.theme.fontColors.blackRgba(0.8)};
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const Role = styled.p`
@@ -72,7 +72,7 @@ const Role = styled.p`
   font-size: 1.4rem;
   text-align: center;
 
-  color: ${props => props.theme.fontColors.blackRgba(0.6)};
+  color: ${props => props.theme.fontColors.textRgba(0.6)};
 `;
 
 const CounterRow = styled.div`
@@ -98,7 +98,7 @@ const Count = styled.h1`
 
   right: 2rem;
 
-  color: ${props => props.theme.fontColors.blackRgba(0.8)};
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const Assignment = styled.p`
@@ -108,7 +108,7 @@ const Assignment = styled.p`
   font-size: 1.4rem;
   text-align: center;
 
-  color: ${props => props.theme.fontColors.blackRgba(0.6)};
+  color: ${props => props.theme.fontColors.textRgba(0.6)};
 `;
 
 interface IUserProfileModalProps {

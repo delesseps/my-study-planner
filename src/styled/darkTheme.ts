@@ -5,12 +5,14 @@ const theme: DefaultTheme = {
     main: "#00ADB5"
   },
   fontColors: {
-    black: "#fff",
-    blackRgba: (alpha: number): string => `rgba(255, 255, 255, ${alpha})`
+    text: "#fff",
+    textRgba: (alpha: number): string => `rgba(255, 255, 255, ${alpha})`
   },
   backgroundColor: "#424242",
   sidebarBackgroundColor: "#303030",
   panelBackgroundColor: "#303030",
+  scrollbarBackgroundColor: "#303030",
+  bigCalendarCurrentDay: "#6f6c6c",
   shadow1: "0px 4px 12px rgba(0, 0, 0, 0.1);"
 };
 

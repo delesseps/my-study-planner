@@ -9,28 +9,14 @@ import { toTitleCase } from "utils";
 import styled from "styled-components";
 
 const Wrapper = styled.span`
-  & .ant-fullcalendar-last-month-cell .ant-fullcalendar-value,
-  .ant-fullcalendar-next-month-btn-day .ant-fullcalendar-value {
-    color: ${props => props.theme.fontColors.blackRgba(0.6)};
-  }
-
-  & .ant-select-selection {
-    background-color: ${props => props.theme.panelBackgroundColor};
-    color: ${props => props.theme.fontColors.black};
-  }
-
   & i {
-    color: ${props => props.theme.fontColors.black};
+    color: ${props => props.theme.fontColors.text};
   }
 `;
 
 const Value = styled.div`
   && {
-    color: ${props => props.theme.fontColors.black};
-
-    &:hover {
-      background-color: #91b1ad;
-    }
+    color: ${props => props.theme.fontColors.text};
   }
 `;
 
@@ -50,7 +36,7 @@ const CalendarPanel: React.FC<ICalendarPanelProps> = ({
       return (
         evaluationDate.getDate() === value.date() &&
         evaluationDate.getMonth() === value.month() &&
-        evaluation.done
+        !evaluation.done
       );
     });
 
@@ -122,14 +108,14 @@ const CalendarPanel: React.FC<ICalendarPanelProps> = ({
       return (
         <Popover content={popoverContent}>
           <div className="ant-fullcalendar-date">
-            <div
+            <Value
               style={{
                 boxShadow: "0 0 0 1px #f9ca24 inset"
               }}
               className="ant-fullcalendar-value"
             >
               {value.date()}
-            </div>
+            </Value>
             <div className="ant-fullcalendar-content" />
           </div>
         </Popover>

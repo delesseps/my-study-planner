@@ -27,7 +27,7 @@ const Title = styled.h4`
   margin: 0;
   margin-bottom: 1rem;
 
-  color: ${props => props.theme.fontColors.blackRgba(0.8)};
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const StyledList = styled(List)`
@@ -36,11 +36,11 @@ const StyledList = styled(List)`
 `;
 
 const Name = styled.span`
-  color: ${props => props.theme.fontColors.blackRgba(0.8)};
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const Description = styled.span`
-  color: ${props => props.theme.fontColors.blackRgba(0.6)};
+  color: ${props => props.theme.fontColors.textRgba(0.6)};
 `;
 
 interface IPreferencesProps {

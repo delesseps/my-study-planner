@@ -38,7 +38,7 @@ const Wrapper = styled.nav`
   background-color: ${props => props.theme.sidebarBackgroundColor};
   height: 100%;
   width: 8%;
-  border-right: 2px solid ${props => props.theme.fontColors.blackRgba(0.1)};
+  border-right: 2px solid ${props => props.theme.fontColors.textRgba(0.1)};
 
   position: fixed;
 
@@ -95,7 +95,7 @@ const StyledIcon = styled(Icon)`
   margin-bottom: 0.7rem;
 
   & svg {
-    fill: ${props => props.theme.fontColors.blackRgba(0.8)};
+    fill: ${props => props.theme.fontColors.textRgba(0.8)};
   }
 `;
 
@@ -105,7 +105,7 @@ const Text = styled.p`
   font-size: 1.2rem;
 
   font-weight: 500;
-  color: ${props => props.theme.fontColors.blackRgba(0.8)};
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
 
   margin: 0;
 `;

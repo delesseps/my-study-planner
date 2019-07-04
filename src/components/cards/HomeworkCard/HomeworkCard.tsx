@@ -14,7 +14,7 @@ const HomeworkDrawer = React.lazy(() =>
 
 const Wrapper = styled.div`
   padding: 0.8rem 2rem;
-  border: 0.7px solid ${props => props.theme.fontColors.blackRgba(0.15)};
+  border: 0.7px solid ${props => props.theme.fontColors.textRgba(0.15)};
   border-radius: 5px;
 
   display: flex;
@@ -40,13 +40,13 @@ const AssignmentTitle = styled.h3`
   letter-spacing: 0.5px;
   font-weight: 500;
   font-size: 1.7rem;
-  color: ${props => props.theme.fontColors.blackRgba(0.8)};
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const AssignmentPriority = styled.h5`
   display: flex;
   align-items: center;
-  color: ${props => props.theme.fontColors.blackRgba(0.5)};
+  color: ${props => props.theme.fontColors.textRgba(0.5)};
   margin: 0;
 `;
 
@@ -84,7 +84,7 @@ const UserName = styled.h5`
   font-weight: bold;
   font-size: 1.2rem;
   align-items: center;
-  color: ${props => props.theme.fontColors.blackRgba(0.6)};
+  color: ${props => props.theme.fontColors.textRgba(0.6)};
   margin: 0;
   margin-left: 0.7rem;
 `;
@@ -94,7 +94,7 @@ const Date = styled.h5`
   display: flex;
   font-weight: 400;
   align-items: center;
-  color: ${props => props.theme.fontColors.blackRgba(0.8)};
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
   margin: 0;
 `;
 

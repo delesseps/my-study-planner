@@ -32,7 +32,7 @@ const Title = styled.h2`
   font-weight: 400;
   letter-spacing: 1px;
 
-  color: ${props => props.theme.fontColors.blackRgba(0.8)};
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const UserBox = styled.div`
@@ -45,7 +45,7 @@ const StyledIcon = styled(Icon)`
   margin-right: 3.5rem;
 
   && {
-    color: ${props => props.theme.fontColors.blackRgba(0.8)};
+    color: ${props => props.theme.fontColors.textRgba(0.8)};
   }
 `;
 
@@ -72,7 +72,7 @@ const Name = styled.p`
     font-size: 1.2rem;
   }
 
-  color: ${props => props.theme.fontColors.blackRgba(0.9)};
+  color: ${props => props.theme.fontColors.textRgba(0.9)};
 `;
 
 const Role = styled.p`
@@ -81,7 +81,7 @@ const Role = styled.p`
   margin: 0;
   font-size: 1.4rem;
 
-  color: ${props => props.theme.fontColors.blackRgba(0.6)};
+  color: ${props => props.theme.fontColors.textRgba(0.6)};
 `;
 
 const MenuButton = styled.a`
