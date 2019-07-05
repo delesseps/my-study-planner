@@ -14,6 +14,7 @@ declare module "styled-components" {
     panelBackgroundColor: string;
     scrollbarBackgroundColor: string;
     bigCalendarCurrentDay: string;
+    hoverColor: string;
     shadow1: string;
   }
 }

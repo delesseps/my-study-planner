@@ -29,7 +29,7 @@ const Wrapper = styled.main`
 `;
 
 const Sider = styled.section`
-  flex: 0 0 8%;
+  flex: 1;
   min-height: 100vh;
 `;
 

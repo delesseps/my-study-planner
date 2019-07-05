@@ -13,6 +13,7 @@ const theme: DefaultTheme = {
   panelBackgroundColor: "#fff",
   scrollbarBackgroundColor: "#fff",
   bigCalendarCurrentDay: "#eaf6ff",
+  hoverColor: "#dcf5f2",
   shadow1: "0px 4px 12px rgba(0, 0, 0, 0.1);"
 };
 

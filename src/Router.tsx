@@ -32,16 +32,26 @@ const CSSReset = createGlobalStyle`
   body {
     font-size: 1.4rem;      
     background-color: ${props => props.theme.backgroundColor};    
-    color: ${props => props.theme.fontColors.textRgba(0.65)};    
+    color: ${props => props.theme.fontColors.textRgba(0.65)} ;    
 
     /*ANTD OVERRIDES*/
-    & .ant-fullcalendar-column-header-inner, .ant-fullcalendar-value {
+    & .ant-fullcalendar-column-header-inner, .ant-fullcalendar-value, .ant-popover-message  {
       color: ${props => props.theme.fontColors.textRgba(0.65)};
     }
 
+     & .ant-calendar-header a {
+      color: ${props => props.theme.fontColors.textRgba(0.65)} !important;
+     }
+
     & .ant-fullcalendar-last-month-cell .ant-fullcalendar-value,
-    .ant-fullcalendar-next-month-btn-day .ant-fullcalendar-value {
+    .ant-fullcalendar-next-month-btn-day .ant-fullcalendar-value, 
+    .ant-calendar-disabled-cell .ant-calendar-date, 
+    .ant-calendar-next-month-btn-day .ant-calendar-date {
       color: ${props => props.theme.fontColors.textRgba(0.25)};
+    }
+
+    & .ant-calendar-disabled-cell .ant-calendar-date {
+      background-color: ${props => props.theme.backgroundColor};
     }
 
     & .ant-select-selection, .ant-radio-button-wrapper {
@@ -49,13 +59,78 @@ const CSSReset = createGlobalStyle`
       color: ${props => props.theme.fontColors.text};
     }
 
+    & .ant-drawer-content, .ant-drawer-header, .ant-input, .ant-select-dropdown, 
+    .ant-dropdown-menu, .ant-popover-inner, .ant-modal-content, .ant-calendar{
+      background-color: ${props => props.theme.panelBackgroundColor};          
+    }
+
+    & .has-error .ant-input {
+      background-color: ${props => props.theme.panelBackgroundColor};   
+
+      &:hover {
+        background-color: ${props => props.theme.panelBackgroundColor};   
+      } 
+    }
+
+    & .ant-drawer-title, .ant-form-item-required > label, .ant-form-item-label > label, 
+    .ant-input, .ant-select-dropdown-menu-item,.ant-dropdown-menu-item > a, .ant-drawer-close,
+    .ant-modal-confirm-body .ant-modal-confirm-title h3, .ant-modal-confirm-body .ant-modal-confirm-title h5, 
+    .ant-modal-confirm-content p, .ant-calendar-body, .ant-calendar-date, .ant-calendar-picker div > i{
+      color: ${props => props.theme.fontColors.textRgba(0.85)};
+    }
+
+    & .ant-drawer-close {
+      color: ${props => props.theme.fontColors.textRgba(0.65)};
+
+      &:hover { 
+       color: ${props => props.theme.fontColors.text};
+      }
+    }
+
+    & .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled), .ant-select-dropdown-menu-item-selected {
+      background-color: ${props => props.theme.hoverColor};
+    }
+
+    & .ant-fullcalendar-value, .ant-dropdown-menu-item, 
+    .ant-select-dropdown-menu-item:not(.ant-select-dropdown-menu-item-disabled), 
+    .ant-calendar-date {
+      &:hover {
+        background-color: ${props => props.theme.hoverColor};
+      }
+    }
+
+    & .ant-popover-buttons button:first-child  {
+      background-color: transparent;
+      color: ${props => props.theme.fontColors.textRgba(0.85)};
+
+      &:hover {
+        color: ${props => props.theme.colors.main};
+      }
+    }
+
+    & .ant-calendar-picker-clear {
+      background-color: ${props => props.theme.panelBackgroundColor};   
+
+      &:hover {
+        color: ${props => props.theme.colors.main};
+      }
+    }
+
     /*REACT-BIG-CALENDAR OVERRIDES*/
     & .rbc-today {
       background-color: ${props => props.theme.bigCalendarCurrentDay};
     }
 
-    & .rbc-active {
-      background: none;
+    & .rbc-toolbar .rbc-btn-group .rbc-active {      
+      color: ${props => props.theme.colors.main}; 
+
+      &:hover, &:focus {
+        color: ${props => props.theme.colors.main}; 
+      }
+    }
+
+    & .rbc-toolbar button {
+      color: ${props => props.theme.fontColors.textRgba(0.85)};
     }
   }
 
