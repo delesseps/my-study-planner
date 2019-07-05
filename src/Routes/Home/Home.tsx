@@ -17,7 +17,7 @@ import RecommendedActionsPanel from "components/panels/RecommendedActionsPanel/R
 import CalendarPanel from "components/panels/CalendarPanel/CalendarPanel";
 
 const HomeSchedulePanel = React.lazy(() =>
-  import("../panels/HomeSchedulePanel/HomeSchedulePanel")
+  import("../../components/panels/HomeSchedulePanel/HomeSchedulePanel")
 );
 
 const panelTheme = `border-radius: 4px;`;

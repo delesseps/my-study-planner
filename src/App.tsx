@@ -8,17 +8,22 @@ import { ApplicationState } from "store/types";
 import IUserConfig from "interfaces/IUserConfig";
 import { connect } from "react-redux";
 
+import { ConnectedRouter } from "connected-react-router";
+import { history } from "store";
+
 interface IAppProps {
   config: IUserConfig;
 }
 
 const App: React.FunctionComponent<IAppProps> = ({ config }) => {
   return (
-    <ThemeProvider theme={config.darkMode ? darkTheme : lightTheme}>
-      <CookiesProvider>
-        <Router />
-      </CookiesProvider>
-    </ThemeProvider>
+    <ConnectedRouter history={history}>
+      <ThemeProvider theme={config.darkMode ? darkTheme : lightTheme}>
+        <CookiesProvider>
+          <Router />
+        </CookiesProvider>
+      </ThemeProvider>
+    </ConnectedRouter>
   );
 };
 

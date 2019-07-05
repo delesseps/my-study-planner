@@ -5,7 +5,7 @@ import OAuthButtons from "components/OAuthButtons/OAuthButtons";
 import BannerAuth from "components/BannerAuth/BannerAuth";
 import FadeIn from "components/FadeIn/FadeIn";
 import { ReactComponent as Logo } from "assets/logo.svg";
-import SignUpForm from "./SignUpForm";
+import SignUpForm from "components/SignUpForm/SignUpForm";
 import { Link } from "react-router-dom";
 import { breakpoints } from "styled";
 

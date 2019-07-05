@@ -9,8 +9,8 @@ import { Cookies, withCookies } from "react-cookie";
 import { connect } from "react-redux";
 import { ApplicationState } from "store/types";
 
-const SignIn = React.lazy(() => import("components/SignIn/SignIn"));
-const SignUp = React.lazy(() => import("components/SignUp/SignUp"));
+const SignIn = React.lazy(() => import("Routes/SignIn/SignIn"));
+const SignUp = React.lazy(() => import("Routes/SignUp/SignUp"));
 const Window404 = React.lazy(() => import("components/404/Window404"));
 
 const CSSReset = createGlobalStyle`

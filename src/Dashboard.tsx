@@ -12,12 +12,12 @@ import { Switch, Route } from "react-router";
 import Loading from "components/Loading/Loading";
 import { breakpoints } from "styled";
 
-const Home = React.lazy(() => import("components/Home/Home"));
-const Schedule = React.lazy(() => import("components/Schedule/Schedule"));
+const Home = React.lazy(() => import("Routes/Home/Home"));
+const Schedule = React.lazy(() => import("Routes/Schedule/Schedule"));
 const FriendsClasses = React.lazy(() =>
-  import("components/FriendsClasses/FriendsClasses")
+  import("Routes/FriendsClasses/FriendsClasses")
 );
-const Grades = React.lazy(() => import("components/Grades/Grades"));
+const Grades = React.lazy(() => import("Routes/Grades/Grades"));
 const Intranet = React.lazy(() => import("components/Intranet/Intranet"));
 const Preferences = React.lazy(() =>
   import("components/Preferences/Preferences")

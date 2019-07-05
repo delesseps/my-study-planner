@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import SignInForm from "./SignInForm";
+import SignInForm from "components/SignInForm/SignInForm";
 import { Divider } from "antd";
 import OAuthButtons from "components/OAuthButtons/OAuthButtons";
 import BannerAuth from "components/BannerAuth/BannerAuth";
