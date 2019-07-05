@@ -32,7 +32,7 @@ const CSSReset = createGlobalStyle`
   body {
     font-size: 1.4rem;      
     background-color: ${props => props.theme.backgroundColor};    
-    color: ${props => props.theme.fontColors.textRgba(0.65)} ;    
+    color: ${props => props.theme.fontColors.textRgba(0.65)} !important;      
 
     /*ANTD OVERRIDES*/
     & .ant-fullcalendar-column-header-inner, .ant-fullcalendar-value, .ant-popover-message  {
