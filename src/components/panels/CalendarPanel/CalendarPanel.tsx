@@ -20,6 +20,10 @@ const Value = styled.div`
   }
 `;
 
+const BadgeTitle = styled.span`
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
+`;
+
 interface ICalendarPanelProps {
   evaluations: IEvaluation[];
   homework: IHomework[];
@@ -96,7 +100,7 @@ const CalendarPanel: React.FC<ICalendarPanelProps> = ({
             >
               <Badge
                 status={status}
-                text={`${assignmentType}: ${item.subject}`}
+                text={<BadgeTitle>{assignmentType}: {item.subject}</BadgeTitle>}
               />
             </li>
           );

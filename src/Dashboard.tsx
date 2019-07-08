@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import FadeIn from "components/FadeIn/FadeIn";
-import { Dispatch } from "redux";
-import { requestUser, signOut } from "store/effects";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { ApplicationState } from "store/types";
 import styled from "styled-components";
 import Sidebar from "components/Sidebar/Sidebar";
@@ -11,16 +9,17 @@ import IRequestError from "interfaces/IRequestError";
 import { Switch, Route } from "react-router";
 import Loading from "components/Loading/Loading";
 import { breakpoints } from "styled";
+import { requestUser, signOut } from "store/effects";
 
-const Home = React.lazy(() => import("Routes/Home/Home"));
-const Schedule = React.lazy(() => import("Routes/Schedule/Schedule"));
+const Home = React.lazy(() => import("routes/Home/Home"));
+const Schedule = React.lazy(() => import("routes/Schedule/Schedule"));
 const FriendsClasses = React.lazy(() =>
-  import("Routes/FriendsClasses/FriendsClasses")
+  import("routes/FriendsClasses/FriendsClasses")
 );
-const Grades = React.lazy(() => import("Routes/Grades/Grades"));
+const Grades = React.lazy(() => import("routes/Grades/Grades"));
 const Intranet = React.lazy(() => import("components/Intranet/Intranet"));
 const Preferences = React.lazy(() =>
-  import("components/Preferences/Preferences")
+  import("routes/Preferences/Preferences")
 );
 
 const Wrapper = styled.main`
@@ -43,24 +42,22 @@ const Content = styled.section`
     padding: 4rem 4rem;
   }
 `;
-interface IDashboardProps {
-  requestUser: Function;
-  signOut: Function;
+interface IDashboardProps {  
   error: IRequestError | undefined;
 }
 
 const Dashboard: React.FC<IDashboardProps> = ({
-  error,
-  requestUser,
-  signOut
+  error
 }) => {
-  useEffect(() => {
-    requestUser();
-  }, [requestUser]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (error && error.status === 401) signOut();
-  }, [error, signOut]);
+    dispatch(requestUser());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (error && error.status === 401) dispatch(signOut());
+  }, [error, dispatch]);
 
   return (
     <FadeIn>
@@ -95,20 +92,10 @@ const Dashboard: React.FC<IDashboardProps> = ({
   );
 };
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    error: state.reducer.error.user
-  };
-};
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    requestUser: () => dispatch<any>(requestUser()),
-    signOut: () => dispatch<any>(signOut())
-  };
-};
+const mapStateToProps = (state: ApplicationState) => ({
+  error: state.reducer.error.user
+});
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(Dashboard);
