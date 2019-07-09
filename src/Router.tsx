@@ -54,13 +54,13 @@ const CSSReset = createGlobalStyle`
       background-color: ${props => props.theme.backgroundColor};
     }
 
-    & .ant-select-selection, .ant-radio-button-wrapper {
+    & .ant-select-selection, .ant-radio-button-wrapper, .ant-calendar-date-input-wrap .ant-calendar-input {
       background-color: ${props => props.theme.panelBackgroundColor};
       color: ${props => props.theme.fontColors.text};
     }
 
     & .ant-drawer-content, .ant-drawer-header, .ant-input, .ant-select-dropdown, 
-    .ant-dropdown-menu, .ant-popover-inner, .ant-modal-content, .ant-calendar{
+    .ant-dropdown-menu, .ant-popover-inner, .ant-modal-content, .ant-calendar {
       background-color: ${props => props.theme.panelBackgroundColor};          
     }
 

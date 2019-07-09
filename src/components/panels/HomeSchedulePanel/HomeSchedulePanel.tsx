@@ -14,14 +14,14 @@ import HomeworkDescriptionModal from "components/modals/HomeworkDescriptionModal
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
-function determineColor(urgency: Urgency) {
+function determineColor(urgency: Urgency, alpha = 1) {
   switch (urgency) {
     case "chill":
-      return "#52c41a";
+      return `rgba(82, 196, 26, ${alpha})`;
     case "normal":
-      return "#fadb14";
+      return `rgba(250, 219, 20, ${alpha})`;
     case "important":
-      return "#f5222d";
+      return `rgba(245, 34, 45, ${alpha})`;
     default:
   }
 }
@@ -38,7 +38,7 @@ const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = ({
   const [events, setEvents] = useState<IScheduleEvent[]>([]);
 
   useEffect(() => {
-    //adds and normalizes evaluations which are not done to events
+    //Adds and normalizes evaluations which are not done to events
     const filteredEvaluations: IScheduleEvent[] = evaluations
       .filter(evaluation => !evaluation.done)
       .map(evaluation => ({
@@ -53,7 +53,7 @@ const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = ({
         evaluation
       }));
 
-    //adds and normalizes homework which are not done to events
+    //Adds and normalizes homework which are not done to events
     const filteredHomework: IScheduleEvent[] = homework
       .filter(currHomework => !currHomework.done)
       .map(currHomework => ({
@@ -81,7 +81,10 @@ const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = ({
         if (event.homework) HomeworkDescriptionModal(event.homework);
       }}
       eventPropGetter={event => ({
-        style: { backgroundColor: determineColor(event.urgency) }
+        style: {
+          backgroundColor: determineColor(event.urgency, 0.8),
+          border: `2px solid ${determineColor(event.urgency)}`
+        }
       })}
     />
   );

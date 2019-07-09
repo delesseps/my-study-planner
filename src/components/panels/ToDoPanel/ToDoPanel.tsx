@@ -2,8 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { Button, Empty } from "antd";
 import { ApplicationState } from "store/types";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import IToDo from "interfaces/IToDo";
+import { toDoDrawer } from "store/actions";
+import ToDoDrawer from "components/drawers/ToDoDrawer/ToDoDrawer";
 
 const Header = styled.div`
   padding: 1.5rem 2rem;
@@ -52,11 +54,20 @@ interface IEvaluationProps {
 }
 
 const ToDo: React.FunctionComponent<IEvaluationProps> = ({ todos }) => {
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(toDoDrawer());
+  };
+
   return (
     <React.Fragment>
       <Header>
         <Title>To-Dos</Title>
-        <Button type="primary">NEW TO-DO</Button>
+        <Button onClick={handleClick} type="primary">
+          NEW TO-DO
+        </Button>
+        <ToDoDrawer />
       </Header>
       <Content>
         {todos.length ? "Content" : <StyledEmpty description="No To-Dos" />}

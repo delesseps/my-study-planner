@@ -107,9 +107,9 @@ export const signOut = (): Effect => dispatch => {
 
   return signOutService()
     .then((response: AxiosResponse) => {
-      cookies.remove("IS_LOGGED_IN", {path: '/'});
+      cookies.remove("IS_LOGGED_IN", { path: "/" });
       dispatch(signOutSuccess());
-      dispatch<any>(push("/signin"));      
+      dispatch<any>(push("/signin"));
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       response ? dispatch(signOutError(response)) : noConnectionToServer()
@@ -134,10 +134,12 @@ export const requestUser = (): Effect => dispatch => {
 
 export const uploadProfilePicture = (image: string): Effect => dispatch => {
   dispatch(uploadPictureRequest());
+  const hide = message.loading("Uploading picture...", 0);
 
   return uploadProfilePictureService(image)
     .then(({ data }: { data: { imageUrl: string } }) => {
       dispatch(uploadPictureSuccess(data.imageUrl));
+      hide();
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       response ? dispatch(uploadPictureError(response)) : noConnectionToServer()
@@ -181,7 +183,7 @@ export const editEvaluation = (
   return requestEditEvaluation(evaluation)
     .then(({ data }: { data: { evaluation: IEvaluation } }) => {
       setVisibleEdit && setVisibleEdit(false);
-      dispatch<any>(editEvaluationSuccess(data.evaluation, index));      
+      dispatch<any>(editEvaluationSuccess(data.evaluation, index));
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       response
@@ -232,7 +234,7 @@ export const editHomework = (
   return requestEditHomework(homework)
     .then(({ data }: { data: { homework: IHomework } }) => {
       setVisibleEdit && setVisibleEdit(false);
-      dispatch<any>(editHomeworkSuccess(data.homework, index));      
+      dispatch<any>(editHomeworkSuccess(data.homework, index));
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       response ? dispatch(editHomeworkError(response)) : noConnectionToServer()

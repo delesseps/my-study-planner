@@ -112,6 +112,7 @@ const reducer = (state = initialState, action: ApplicationAction) => {
     case "requestUserError":
       return produce(state, draft => {
         draft.loading.user = false;
+        message.error("Could not get user. Please reload.");
         draft.error = {
           ...draft.error,
           user: {
@@ -138,6 +139,7 @@ const reducer = (state = initialState, action: ApplicationAction) => {
     case "signOutError":
       return produce(state, draft => {
         draft.loading.signOut = false;
+        message.error("Could not sign out. Please reload.");
         draft.error = {
           ...draft.error,
           signOut: {
@@ -181,10 +183,14 @@ const reducer = (state = initialState, action: ApplicationAction) => {
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
         draft.drawer.evaluation = false;
+        message.success("Successfully added evaluation!");
       });
     case "addEvaluationError":
       return produce(state, draft => {
         draft.loading.evaluation = false;
+        message.error(
+          "Could not add evaluation. Please reload or try again later."
+        );
         draft.error = {
           ...draft.error,
           evaluation: {
@@ -207,10 +213,14 @@ const reducer = (state = initialState, action: ApplicationAction) => {
       return produce(state, draft => {
         draft.loading.evaluation = false;
         draft.user.evaluations[action.index] = action.evaluation;
+        message.success("Successfully edited evaluation!");
       });
     case "editEvaluationError":
       return produce(state, draft => {
         draft.loading.evaluation = false;
+        message.error(
+          "Could not edit evaluation. Please reload or try again later."
+        );
         draft.error = {
           ...draft.error,
           evaluation: {
@@ -230,9 +240,14 @@ const reducer = (state = initialState, action: ApplicationAction) => {
     case "deleteEvaluationSuccess":
       return produce(state, draft => {
         draft.user.evaluations.splice(action.index, 1);
+        message.success("Successfully deleted evaluation!");
       });
+
     case "deleteEvaluationError":
       return produce(state, draft => {
+        message.error(
+          "Could not delete evaluation. Please reload or try again later."
+        );
         draft.error = {
           ...draft.error,
           evaluation: {
@@ -259,10 +274,14 @@ const reducer = (state = initialState, action: ApplicationAction) => {
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
         draft.drawer.homework = false;
+        message.success("Successfully added homework!");
       });
     case "addHomeworkError":
       return produce(state, draft => {
         draft.loading.homework = false;
+        message.error(
+          "Could not add homework. Please reload or try again later."
+        );
         draft.error = {
           ...draft.error,
           homework: {
@@ -285,10 +304,14 @@ const reducer = (state = initialState, action: ApplicationAction) => {
       return produce(state, draft => {
         draft.loading.homework = false;
         draft.user.homework[action.index] = action.homework;
+        message.success("Successfully edited homework!");
       });
     case "editHomeworkError":
       return produce(state, draft => {
         draft.loading.homework = false;
+        message.error(
+          "Could not edit homework. Please reload or try again later."
+        );
         draft.error = {
           ...draft.error,
           homework: {
@@ -308,9 +331,14 @@ const reducer = (state = initialState, action: ApplicationAction) => {
     case "deleteHomeworkSuccess":
       return produce(state, draft => {
         draft.user.homework.splice(action.index, 1);
+        message.success("Successfully deleted homework!");
       });
     case "deleteHomeworkError":
       return produce(state, draft => {
+        message.error(
+          "Could not delete homework. Please reload or try again later."
+        );
+
         draft.error = {
           ...draft.error,
           homework: {
@@ -333,6 +361,7 @@ const reducer = (state = initialState, action: ApplicationAction) => {
       return produce(state, draft => {
         draft.loading.uploadProfilePicture = false;
         draft.user.picture = action.imageUrl;
+        message.success("Successfully changed profile picture!");
       });
     case "uploadProfilePictureError":
       return produce(state, draft => {
@@ -362,9 +391,7 @@ const reducer = (state = initialState, action: ApplicationAction) => {
       });
     case "userConfigError":
       return produce(state, draft => {
-        message.error(
-          "An error has occurred. Please try refreshing the page. "
-        );
+        message.error("An error has occurred. Please try refreshing the page.");
         draft.error = {
           ...draft.error,
           config: {
