@@ -27,7 +27,7 @@ const initialState: ReducerState = {
     },
     evaluations: [],
     homework: [],
-    todos: [],
+    toDos: [],
     semesters: []
   },
   drawer: {

@@ -16,7 +16,7 @@ export default interface IUser {
   picture: string;
   configuration: IUserConfig;
   evaluations: IEvaluation[];
-  todos: IToDo[];
+  toDos: IToDo[];
   homework: IHomework[];
   semesters: {
     _id: String;

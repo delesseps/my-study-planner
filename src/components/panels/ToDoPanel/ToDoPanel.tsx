@@ -43,17 +43,12 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    todos: state.reducer.user.todos
-  };
-};
 
 interface IEvaluationProps {
-  todos: IToDo[];
+  toDos: IToDo[];
 }
 
-const ToDo: React.FunctionComponent<IEvaluationProps> = ({ todos }) => {
+const ToDo: React.FunctionComponent<IEvaluationProps> = ({ toDos }) => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
@@ -70,11 +65,15 @@ const ToDo: React.FunctionComponent<IEvaluationProps> = ({ todos }) => {
         <ToDoDrawer />
       </Header>
       <Content>
-        {todos.length ? "Content" : <StyledEmpty description="No To-Dos" />}
+        {toDos.length ? "Content" : <StyledEmpty description="No To-Dos" />}
       </Content>
     </React.Fragment>
   );
 };
+
+const mapStateToProps = (state: ApplicationState) => ({
+  toDos: state.reducer.user.toDos
+});
 
 export default connect(
   mapStateToProps,

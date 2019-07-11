@@ -35,7 +35,7 @@ export const initialState: ApplicationState = {
       },
       evaluations: [],
       homework: [],
-      todos: [],
+      toDos: [],
       semesters: []
     },
     drawer: {

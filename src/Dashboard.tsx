@@ -66,8 +66,7 @@ const Dashboard: React.FC<IDashboardProps> = ({
           <Sidebar />
         </Sider>
         <Content>
-          <TopBar />
-
+          <TopBar />         
           <React.Suspense fallback={<Loading />}>
             <Switch>
               <Route path="/dashboard" exact component={Home} />
