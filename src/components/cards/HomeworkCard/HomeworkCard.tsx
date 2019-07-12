@@ -168,7 +168,7 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
           </Tooltip>
 
           <Popconfirm
-            title="Are you sure delete this homework?"
+            title="Are you sure to delete this homework?"
             arrowPointAtCenter={true}
             placement="topRight"
             okText="Yes"

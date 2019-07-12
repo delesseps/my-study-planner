@@ -175,7 +175,7 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
           </Tooltip>
 
           <Popconfirm
-            title="Are you sure delete this evaluation?"
+            title="Are you sure to delete this evaluation?"
             arrowPointAtCenter={true}
             placement="topRight"
             okText="Yes"

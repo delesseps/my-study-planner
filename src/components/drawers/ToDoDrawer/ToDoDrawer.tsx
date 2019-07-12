@@ -4,7 +4,8 @@ import { FormComponentProps } from "antd/lib/form/Form";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import { toDoDrawer } from "store/actions";
-import IHomework from "interfaces/IHomework";
+import { addToDo } from "store/effects";
+import IToDo from "interfaces/IToDo";
 
 interface IToDoDrawerProps extends FormComponentProps {
   visible: boolean;
@@ -18,8 +19,9 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({ form, visible, loading }) => {
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    form.validateFieldsAndScroll((err, values: IHomework) => {
+    form.validateFieldsAndScroll((err, values: IToDo) => {
       if (!err) {
+        dispatch(addToDo(values));
       }
     });
   };

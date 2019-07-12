@@ -213,7 +213,9 @@ const reducer = (state = initialState, action: ApplicationAction) => {
       return produce(state, draft => {
         draft.loading.evaluation = false;
         draft.user.evaluations[action.index] = action.evaluation;
-        message.success("Successfully edited evaluation!");
+        action.evaluation.done
+          ? message.success("Great Job!")
+          : message.success("Successfully edited evaluation!");
       });
     case "editEvaluationError":
       return produce(state, draft => {
@@ -304,7 +306,9 @@ const reducer = (state = initialState, action: ApplicationAction) => {
       return produce(state, draft => {
         draft.loading.homework = false;
         draft.user.homework[action.index] = action.homework;
-        message.success("Successfully edited homework!");
+        action.homework.done
+          ? message.success("Great Job!")
+          : message.success("Successfully edited homework!");
       });
     case "editHomeworkError":
       return produce(state, draft => {
@@ -395,6 +399,97 @@ const reducer = (state = initialState, action: ApplicationAction) => {
         draft.error = {
           ...draft.error,
           config: {
+            message: action.error.data.errors.message,
+            status: action.error.status,
+            state: true
+          }
+        };
+      });
+
+    /**
+     *
+     * Add to-do reducers
+     *
+     */
+    case "addToDoRequest":
+      return produce(state, draft => {
+        draft.loading.toDo = true;
+      });
+    case "addToDoSuccess":
+      return produce(state, draft => {
+        draft.loading.toDo = false;
+        draft.user.toDos.push(action.toDo);
+        draft.drawer.toDo = false;
+        message.success("Successfully added to-do!");
+      });
+    case "addToDoError":
+      return produce(state, draft => {
+        draft.loading.toDo = false;
+        message.error("Could not add to-do. Please reload or try again later.");
+        draft.error = {
+          ...draft.error,
+          toDo: {
+            message: action.error.data.errors.message,
+            status: action.error.status,
+            state: true
+          }
+        };
+      });
+
+    /**
+     *
+     * Edit Homework reducers
+     *
+     */
+    case "editToDoRequest":
+      return produce(state, draft => {
+        draft.loading.toDo = true;
+      });
+    case "editToDoSuccess":
+      return produce(state, draft => {
+        draft.loading.toDo = false;
+        draft.user.toDos[action.index] = action.toDo;
+        action.toDo.done
+          ? message.success("Great Job!")
+          : message.success("Successfully edited to-do!");
+      });
+    case "editToDoError":
+      return produce(state, draft => {
+        draft.loading.toDo = false;
+        message.error(
+          "Could not edit to-do. Please reload or try again later."
+        );
+        draft.error = {
+          ...draft.error,
+          toDo: {
+            message: action.error.data.errors.message,
+            status: action.error.status,
+            state: true
+          }
+        };
+      });
+
+    /**
+     *
+     * Delete to-D=do reducers
+     *
+     */
+    case "deleteToDoRequest":
+      return state;
+    case "deleteToDoSuccess":
+      return produce(state, draft => {
+        draft.user.toDos.splice(action.index, 1);
+        message.success("Successfully deleted to-do!");
+      });
+    case "deleteToDoError":
+      return produce(state, draft => {
+        message.error(
+          "Could not delete to-do. Please reload or try again later."
+        );
+
+        draft.error = {
+          ...draft.error,
+          toDo: {
             message: action.error.data.errors.message,
             status: action.error.status,
             state: true

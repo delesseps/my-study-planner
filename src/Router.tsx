@@ -64,6 +64,11 @@ const CSSReset = createGlobalStyle`
       background-color: ${props => props.theme.panelBackgroundColor};          
     }
 
+    & .ant-popover-placement-top > .ant-popover-content .ant-popover-arrow {
+      border-bottom-color: ${props => props.theme.panelBackgroundColor};
+      border-right-color: ${props => props.theme.panelBackgroundColor};
+    }
+
     & .has-error .ant-input {
       background-color: ${props => props.theme.panelBackgroundColor};   
 
@@ -114,6 +119,10 @@ const CSSReset = createGlobalStyle`
       &:hover {
         color: ${props => props.theme.colors.main};
       }
+    }
+
+    & .ant-checkbox-inner {
+      background-color: transparent;
     }
 
     /*REACT-BIG-CALENDAR OVERRIDES*/

@@ -6,6 +6,7 @@ import IRequestError from "interfaces/IRequestError";
 import IEvaluation from "interfaces/IEvaluation";
 import IHomework from "interfaces/IHomework";
 import IUserConfig from "interfaces/IUserConfig";
+import IToDo from "interfaces/IToDo";
 
 /**
  *
@@ -19,6 +20,7 @@ export interface ErrorState {
   signOut?: IRequestError;
   evaluation?: IRequestError;
   homework?: IRequestError;
+  toDo?: IRequestError;
   upload?: IRequestError;
   config?: IRequestError;
 }
@@ -299,6 +301,64 @@ export interface UserConfigError {
   error: IAxiosErrorResponse;
 }
 
+/**
+ *
+ * Add homework interfaces
+ *
+ */
+export interface AddToDoRequest {
+  type: "addToDoRequest";
+}
+
+export interface AddToDoSuccess {
+  type: "addToDoSuccess";
+  toDo: IToDo;
+}
+
+export interface AddToDoError {
+  type: "addToDoError";
+  error: IAxiosErrorResponse;
+}
+
+/**
+ *
+ * Edit to-do interfaces
+ *
+ */
+export interface EditToDoRequest {
+  type: "editToDoRequest";
+}
+
+export interface EditToDoSuccess {
+  type: "editToDoSuccess";
+  toDo: IToDo;
+  index: number;
+}
+
+export interface EditToDoError {
+  type: "editToDoError";
+  error: IAxiosErrorResponse;
+}
+
+/**
+ *
+ * Delete homework interfaces
+ *
+ */
+export interface DeleteToDoRequest {
+  type: "deleteToDoRequest";
+}
+
+export interface DeleteToDoSuccess {
+  type: "deleteToDoSuccess";
+  index: number;
+}
+
+export interface DeleteToDoError {
+  type: "deleteToDoError";
+  error: IAxiosErrorResponse;
+}
+
 export type ApplicationAction =
   | SignInRequest
   | SignInSuccess
@@ -333,6 +393,15 @@ export type ApplicationAction =
   | DeleteHomeworkRequest
   | DeleteHomeworkSuccess
   | DeleteHomeworkError
+  | AddToDoRequest
+  | AddToDoSuccess
+  | AddToDoError
+  | EditToDoRequest
+  | EditToDoSuccess
+  | EditToDoError
+  | DeleteToDoRequest
+  | DeleteToDoSuccess
+  | DeleteToDoError
   | UploadProfilePictureRequest
   | UploadProfilePictureSuccess
   | UploadProfilePictureError

@@ -36,7 +36,16 @@ import {
   uploadPictureError,
   userConfigRequest,
   userConfigSuccess,
-  userConfigError
+  userConfigError,
+  addToDoRequest,
+  addToDoSuccess,
+  addToDoError,
+  deleteToDoRequest,
+  deleteToDoSuccess,
+  deleteToDoError,
+  editToDoRequest,
+  editToDoSuccess,
+  editToDoError
 } from "./actions";
 import { push } from "connected-react-router";
 
@@ -52,7 +61,10 @@ import {
   requestEditHomework,
   requestDeleteHomework,
   uploadProfilePictureService,
-  userConfigService
+  userConfigService,
+  toDoService,
+  requestDeleteToDo,
+  requestEditToDo
 } from "services";
 
 import IUser from "interfaces/IUser";
@@ -66,6 +78,7 @@ import IEvaluation from "interfaces/IEvaluation";
 import IHomework from "interfaces/IHomework";
 import { message } from "antd";
 import IUserConfig from "interfaces/IUserConfig";
+import IToDo from "interfaces/IToDo";
 
 type Effect = ThunkAction<any, ApplicationState, any, ApplicationAction>;
 
@@ -255,5 +268,44 @@ export const deleteHomework = (
       response
         ? dispatch(deleteHomeworkError(response))
         : noConnectionToServer()
+    );
+};
+
+//////////////
+//  To-Dos //
+/////////////
+export const addToDo = (toDo: IToDo): Effect => dispatch => {
+  dispatch(addToDoRequest());
+
+  return toDoService(toDo)
+    .then(({ data }: { data: { toDo: IToDo } }) =>
+      dispatch<any>(addToDoSuccess(data.toDo))
+    )
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      response ? dispatch(addToDoError(response)) : noConnectionToServer()
+    );
+};
+
+export const editToDo = (toDo: IToDo, index: number): Effect => dispatch => {
+  dispatch(editToDoRequest());
+
+  return requestEditToDo(toDo)
+    .then(({ data }: { data: { toDo: IToDo } }) => {
+      dispatch<any>(editToDoSuccess(data.toDo, index));
+    })
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      response ? dispatch(editToDoError(response)) : noConnectionToServer()
+    );
+};
+
+export const deleteToDo = (id: string, index: number): Effect => dispatch => {
+  dispatch(deleteToDoRequest());
+
+  return requestDeleteToDo(id)
+    .then(({ data }: { data: { toDo: IToDo } }) =>
+      dispatch<any>(deleteToDoSuccess(index))
+    )
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      response ? dispatch(deleteToDoError(response)) : noConnectionToServer()
     );
 };

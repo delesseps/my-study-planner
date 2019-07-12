@@ -6,6 +6,7 @@ import { connect, useDispatch } from "react-redux";
 import IToDo from "interfaces/IToDo";
 import { toDoDrawer } from "store/actions";
 import ToDoDrawer from "components/drawers/ToDoDrawer/ToDoDrawer";
+import ToDoCard from "components/cards/ToDoCard/ToDoCard";
 
 const Header = styled.div`
   padding: 1.5rem 2rem;
@@ -30,10 +31,6 @@ const Content = styled.div`
   flex-direction: column;
   align-items: center;
   flex: 1;
-
-  & > *:not(:last-child) {
-    margin-bottom: 1.5rem;
-  }
 `;
 
 const StyledEmpty = styled(Empty)`
@@ -42,7 +39,6 @@ const StyledEmpty = styled(Empty)`
     margin-bottom: auto;
   }
 `;
-
 
 interface IEvaluationProps {
   toDos: IToDo[];
@@ -65,7 +61,14 @@ const ToDo: React.FunctionComponent<IEvaluationProps> = ({ toDos }) => {
         <ToDoDrawer />
       </Header>
       <Content>
-        {toDos.length ? "Content" : <StyledEmpty description="No To-Dos" />}
+        {toDos.filter(toDo => !toDo.done).length ? (
+          toDos.map(
+            (toDo, i) =>
+              !toDo.done && <ToDoCard index={i} key={toDo._id} toDo={toDo} />
+          )
+        ) : (
+          <StyledEmpty description="No To-Dos" />
+        )}
       </Content>
     </React.Fragment>
   );

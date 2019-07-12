@@ -37,13 +37,23 @@ import {
   UploadProfilePictureSuccess,
   UserConfigRequest,
   UserConfigSuccess,
-  UserConfigError
+  UserConfigError,
+  AddToDoRequest,
+  AddToDoSuccess,
+  AddToDoError,
+  DeleteToDoRequest,
+  DeleteToDoSuccess,
+  DeleteToDoError,
+  EditToDoRequest,
+  EditToDoSuccess,
+  EditToDoError
 } from "./types";
 import IUser from "interfaces/IUser";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
 import IEvaluation from "interfaces/IEvaluation";
 import IHomework from "interfaces/IHomework";
 import IUserConfig from "interfaces/IUserConfig";
+import IToDo from "interfaces/IToDo";
 
 /**
  *
@@ -332,5 +342,71 @@ export const userConfigError = (
   error: IAxiosErrorResponse
 ): UserConfigError => ({
   type: "userConfigError",
+  error
+});
+
+/**
+ *
+ * Add ToDo interfaces
+ *
+ */
+
+export const addToDoRequest = (): AddToDoRequest => ({
+  type: "addToDoRequest"
+});
+
+export const addToDoSuccess = (toDo: IToDo): AddToDoSuccess => ({
+  type: "addToDoSuccess",
+  toDo
+});
+
+export const addToDoError = (error: IAxiosErrorResponse): AddToDoError => ({
+  type: "addToDoError",
+  error
+});
+
+/**
+ *
+ * Edit to-do interfaces
+ *
+ */
+
+export const editToDoRequest = (): EditToDoRequest => ({
+  type: "editToDoRequest"
+});
+
+export const editToDoSuccess = (
+  toDo: IToDo,
+  index: number
+): EditToDoSuccess => ({
+  type: "editToDoSuccess",
+  toDo,
+  index
+});
+
+export const editToDoError = (error: IAxiosErrorResponse): EditToDoError => ({
+  type: "editToDoError",
+  error
+});
+
+/**
+ *
+ * Delete ToDo interfaces
+ *
+ */
+
+export const deleteToDoRequest = (): DeleteToDoRequest => ({
+  type: "deleteToDoRequest"
+});
+
+export const deleteToDoSuccess = (index: number): DeleteToDoSuccess => ({
+  type: "deleteToDoSuccess",
+  index
+});
+
+export const deleteToDoError = (
+  error: IAxiosErrorResponse
+): DeleteToDoError => ({
+  type: "deleteToDoError",
   error
 });
