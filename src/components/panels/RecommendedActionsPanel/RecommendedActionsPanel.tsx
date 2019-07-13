@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Empty } from "antd";
+import { ApplicationState } from "store/types";
+import { connect } from "react-redux";
+import IUser from "interfaces/IUser";
+import { determinePriorityNumber, determinePriorityDateNumber } from "utils";
+import moment from "moment";
+import RecommendedActionCard from "components/cards/RecommendedActionCard/RecommendedActionCard";
+import IEvaluation from "interfaces/IEvaluation";
+import IHomework from "interfaces/IHomework";
 
 const Header = styled.div`
   padding: 1.5rem 2rem;
@@ -25,10 +33,6 @@ const Content = styled.div`
   flex-direction: column;
   align-items: center;
   flex: 1;
-
-  & > *:not(:last-child) {
-    margin-bottom: 1.5rem;
-  }
 `;
 
 const StyledEmpty = styled(Empty)`
@@ -38,17 +42,57 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-const RecommendedActions: React.FC = props => {
+interface IRecommendedActionsPanelProps {
+  user: IUser;
+}
+
+const RecommendedActionsPanel: React.FC<IRecommendedActionsPanelProps> = ({
+  user
+}) => {
+  const [recommendedActions, setRecommendedActions] = useState<any>([]);
+
+  useEffect(() => {
+    const userAssignments = [...user.evaluations, ...user.homework];
+
+    const sortedUserAssignments = userAssignments.sort(
+      (a, b) =>
+        determinePriorityNumber(b.urgency) +
+        determinePriorityDateNumber(moment(b.date)) -
+        (determinePriorityNumber(a.urgency) +
+          determinePriorityDateNumber(moment(a.date)))
+    );
+
+    setRecommendedActions(sortedUserAssignments);
+  }, [user.evaluations, user.homework, user.toDos]);
+
   return (
     <React.Fragment>
       <Header>
         <Title>Recommended Actions</Title>
       </Header>
       <Content>
-        <StyledEmpty description="No Recomendations" />
+        {recommendedActions.filter(
+          (assignment: IEvaluation | IHomework) => !assignment.done
+        ).length ? (
+          recommendedActions.map(
+            (assignment: IEvaluation | IHomework) =>
+              !assignment.done && (
+                <RecommendedActionCard
+                  key={assignment._id}
+                  assignment={assignment}
+                />
+              )
+          )
+        ) : (
+          <StyledEmpty description="No Recomendations" />
+        )}
       </Content>
     </React.Fragment>
   );
 };
 
-export default RecommendedActions;
+const mapStateToProps = (state: ApplicationState) => ({
+  user: state.reducer.user
+});
+
+export default connect(mapStateToProps)(RecommendedActionsPanel);

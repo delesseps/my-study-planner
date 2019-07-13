@@ -10,6 +10,7 @@ import { Switch, Route } from "react-router";
 import Loading from "components/Loading/Loading";
 import { breakpoints } from "styled";
 import { requestUser, signOut } from "store/effects";
+import { initializePush } from "firebase/initialize";
 
 const Home = React.lazy(() => import("routes/Home/Home"));
 const Schedule = React.lazy(() => import("routes/Schedule/Schedule"));
@@ -18,9 +19,7 @@ const FriendsClasses = React.lazy(() =>
 );
 const Grades = React.lazy(() => import("routes/Grades/Grades"));
 const Intranet = React.lazy(() => import("components/Intranet/Intranet"));
-const Preferences = React.lazy(() =>
-  import("routes/Preferences/Preferences")
-);
+const Preferences = React.lazy(() => import("routes/Preferences/Preferences"));
 
 const Wrapper = styled.main`
   display: flex;
@@ -42,14 +41,16 @@ const Content = styled.section`
     padding: 4rem 4rem;
   }
 `;
-interface IDashboardProps {  
+interface IDashboardProps {
   error: IRequestError | undefined;
 }
 
-const Dashboard: React.FC<IDashboardProps> = ({
-  error
-}) => {
+const Dashboard: React.FC<IDashboardProps> = ({ error }) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    initializePush();
+  }, []);
 
   useEffect(() => {
     dispatch(requestUser());
@@ -66,7 +67,7 @@ const Dashboard: React.FC<IDashboardProps> = ({
           <Sidebar />
         </Sider>
         <Content>
-          <TopBar />         
+          <TopBar />
           <React.Suspense fallback={<Loading />}>
             <Switch>
               <Route path="/dashboard" exact component={Home} />
@@ -95,6 +96,4 @@ const mapStateToProps = (state: ApplicationState) => ({
   error: state.reducer.error.user
 });
 
-export default connect(
-  mapStateToProps
-)(Dashboard);
+export default connect(mapStateToProps)(Dashboard);

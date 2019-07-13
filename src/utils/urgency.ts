@@ -12,19 +12,6 @@ export default function determinePriority(urgency: Urgency) {
   }
 }
 
-export function determinePriorityNumber(urgency: Urgency) {
-  switch (urgency) {
-    case "chill":
-      return 1;
-    case "normal":
-      return 2;
-    case "important":
-      return 3;
-    default:
-      return 0;
-  }
-}
-
 export function determineColor(urgency: Urgency) {
   switch (urgency) {
     case "chill":

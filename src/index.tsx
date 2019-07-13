@@ -9,7 +9,22 @@ import { Provider } from "react-redux";
 
 import configureStore from "store";
 
+import * as firebase from "firebase/app";
+import firebaseConfig from "./firebase/firebaseConfig";
+
 const store = configureStore();
+firebase.initializeApp(firebaseConfig);
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("./firebase-messaging-sw.js")
+    .then(function(registration) {
+      console.log("Registration successful, scope is:", registration.scope);
+    })
+    .catch(function(err) {
+      console.log("Service worker registration failed, error:", err);
+    });
+}
 
 ReactDOM.render(
   <Provider store={store}>
