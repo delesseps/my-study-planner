@@ -1,6 +1,7 @@
 import * as firebase from "firebase/app";
 import "firebase/messaging";
 import { notification } from "antd";
+import { notifierService } from "services";
 
 export function initializePush() {
   const messaging = firebase.messaging();
@@ -16,7 +17,7 @@ export function initializePush() {
       return messaging.getToken();
     })
     .then(token => {
-      console.log("FCM Token:", token);
+      notifierService(token as string);
     })
     .catch(error => {
       if (error.code === "messaging/permission-blocked") {
@@ -30,7 +31,7 @@ export function initializePush() {
     messaging
       .getToken()
       .then(refreshedToken => {
-        console.log("Token refreshed.");
+        notifierService(refreshedToken as string);
       })
       .catch(err => {
         console.log("Unable to retrieve refreshed token ", err);
