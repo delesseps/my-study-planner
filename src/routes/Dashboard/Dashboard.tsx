@@ -18,7 +18,6 @@ const FriendsClasses = React.lazy(() =>
   import("routes/FriendsClasses/FriendsClasses")
 );
 const Grades = React.lazy(() => import("routes/Grades/Grades"));
-const Intranet = React.lazy(() => import("components/Intranet/Intranet"));
 const Preferences = React.lazy(() => import("routes/Preferences/Preferences"));
 
 const Wrapper = styled.main`
@@ -71,7 +70,6 @@ const Dashboard: React.FC<IDashboardProps> = ({ error }) => {
           <React.Suspense fallback={<Loading />}>
             <Switch>
               <Route path="/dashboard" exact component={Home} />
-              <Route path="/dashboard/intranet" exact component={Intranet} />
               <Route path="/dashboard/grades" exact component={Grades} />
               <Route
                 path="/dashboard/friends-classes"

@@ -23,7 +23,16 @@ messaging.setBackgroundMessageHandler(function(payload) {
       }
     })
     .then(() => {
-      return registration.showNotification("my notification title");
+      let notificationTitle = "My Study Planner";
+      let notificationOptions = {
+        body: payload.data.content,
+        icon: "/favicon.ico"
+      };
+
+      return self.registration.showNotification(
+        notificationTitle,
+        notificationOptions
+      );
     });
   return promiseChain;
 });

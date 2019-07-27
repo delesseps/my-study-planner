@@ -116,11 +116,7 @@ const Sidebar: React.FC = props => {
       <Item activeClassName="active" to="/dashboard" exact>
         <StyledIcon type="home" />
         <Text>Home</Text>
-      </Item>
-      <Item activeClassName="active" to="/dashboard/intranet">
-        <StyledIcon type="compass" />
-        <Text>Intranet</Text>
-      </Item>
+      </Item>     
       <Item activeClassName="active" to="/dashboard/grades">
         <StyledIcon type="bar-chart" />
         <Text>Grades</Text>

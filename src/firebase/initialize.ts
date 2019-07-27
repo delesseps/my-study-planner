@@ -40,8 +40,8 @@ export function initializePush() {
 
   messaging.onMessage(payload => {
     notification.info({
-      message: "Notification Title",
-      description: "aaa"
+      message: "Notification",
+      description: payload.data.content
     });
   });
 }

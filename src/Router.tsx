@@ -1,7 +1,7 @@
 import React from "react";
 import { createGlobalStyle } from "styled-components";
 import { Switch, Route, Redirect } from "react-router";
-import Dashboard from "./Dashboard";
+import Dashboard from "./routes/Dashboard/Dashboard";
 import Loading from "components/Loading/Loading";
 import { breakpoints } from "styled";
 import { Cookies, withCookies } from "react-cookie";
