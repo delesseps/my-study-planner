@@ -1,11 +1,11 @@
 import React from "react";
 import { mount } from "enzyme";
 
-import Window404 from "./Window404";
+import Route404 from "./Route404";
 
-describe("Window404", () => {
+describe("Route404", () => {
   it("should render correctly", () => {
-    const component = mount(<Window404 />);
+    const component = mount(<Route404 />);
 
     expect(component).toMatchSnapshot();
   });

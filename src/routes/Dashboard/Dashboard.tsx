@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Sidebar from "components/Sidebar/Sidebar";
 import TopBar from "components/TopBar/TopBar";
 import IRequestError from "interfaces/IRequestError";
-import { Switch, Route } from "react-router";
+import { Switch, Route, Redirect } from "react-router";
 import Loading from "components/Loading/Loading";
 import { breakpoints } from "styled";
 import { requestUser, signOut } from "store/effects";
@@ -19,6 +19,7 @@ const FriendsClasses = React.lazy(() =>
 );
 const Grades = React.lazy(() => import("routes/Grades/Grades"));
 const Preferences = React.lazy(() => import("routes/Preferences/Preferences"));
+const Section404 = React.lazy(() => import("components/Section404/Section404"));
 
 const Wrapper = styled.main`
   display: flex;
@@ -82,6 +83,7 @@ const Dashboard: React.FC<IDashboardProps> = ({ error }) => {
                 exact
                 component={Preferences}
               />
+              <Redirect to="/dashboard" />
             </Switch>
           </React.Suspense>
         </Content>

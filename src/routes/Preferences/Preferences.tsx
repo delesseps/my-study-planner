@@ -33,6 +33,10 @@ const Title = styled.h4`
 const StyledList = styled(List)`
   min-width: 100%;
   background-color: ${props => props.theme.panelBackgroundColor};
+
+  &:not(:last-child) {
+    margin-bottom: 3rem;
+  }
 `;
 
 const Name = styled.span`
@@ -47,10 +51,12 @@ interface IPreferencesProps {
   config: IUserConfig;
 }
 
-const settings = [
+const appereanceSettings = [
   {
     name: "Dark Mode",
-    description: "Make My Study Planner cooler for your eyes."
+    description: "Make My Study Planner cooler for your eyes.",
+    action: "DARK_MODE",
+    configProperty: "darkMode"
   }
 ];
 
@@ -79,13 +85,13 @@ const Preferences: React.FunctionComponent<IPreferencesProps> = ({
       <StyledList
         bordered
         itemLayout="horizontal"
-        dataSource={settings}
+        dataSource={appereanceSettings}
         renderItem={(setting: any) => (
           <List.Item
             actions={[
               <Switch
-                checked={config.darkMode}
-                onChange={handleChange("DARK_MODE")}
+                checked={config[setting.configProperty]}
+                onChange={handleChange(setting.action)}
               />
             ]}
           >

@@ -8,10 +8,11 @@ import { Cookies, withCookies } from "react-cookie";
 
 import { connect } from "react-redux";
 import { ApplicationState } from "store/types";
+import IUserConfig from "interfaces/IUserConfig";
 
 const SignIn = React.lazy(() => import("routes/SignIn/SignIn"));
 const SignUp = React.lazy(() => import("routes/SignUp/SignUp"));
-const Window404 = React.lazy(() => import("components/404/Window404"));
+const Window404 = React.lazy(() => import("routes/Route404/Route404"));
 
 const CSSReset = createGlobalStyle`
   * {
@@ -31,7 +32,7 @@ const CSSReset = createGlobalStyle`
 
   body {
     font-size: 1.4rem;      
-    background-color: ${props => props.theme.backgroundColor};    
+    background-color: ${props => props.theme.backgroundColor} !important;    
     color: ${props => props.theme.fontColors.textRgba(0.65)} !important;      
 
     /*ANTD OVERRIDES*/
@@ -162,9 +163,12 @@ const CSSReset = createGlobalStyle`
   *::-webkit-scrollbar-button {display:none}
 `;
 
-const Router = ({ cookies }: { cookies: Cookies }) => {
-  console.log(cookies);
+interface IRouterProps {
+  cookies: Cookies;
+  config: IUserConfig;
+}
 
+const Router: React.FC<IRouterProps> = ({ cookies, config }) => {
   return (
     <React.Fragment>
       <CSSReset />
@@ -203,7 +207,13 @@ const Router = ({ cookies }: { cookies: Cookies }) => {
               )
             }
           />
-          <Route path="/404" exact component={Window404} />
+          <Route
+            path="/404"
+            exact
+            render={() =>
+              config.darkMode ? <Window404 white /> : <Window404 />
+            }
+          />
           <Redirect to="/404" />
         </Switch>
       </React.Suspense>
@@ -212,7 +222,7 @@ const Router = ({ cookies }: { cookies: Cookies }) => {
 };
 
 const mapStateToProps = (state: ApplicationState) => ({
-  error: state.reducer.error.user
+  config: state.reducer.user.configuration
 });
 
 export default connect(
