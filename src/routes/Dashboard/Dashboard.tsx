@@ -19,7 +19,6 @@ const FriendsClasses = React.lazy(() =>
 );
 const Grades = React.lazy(() => import("routes/Grades/Grades"));
 const Preferences = React.lazy(() => import("routes/Preferences/Preferences"));
-const Section404 = React.lazy(() => import("components/Section404/Section404"));
 
 const Wrapper = styled.main`
   display: flex;
