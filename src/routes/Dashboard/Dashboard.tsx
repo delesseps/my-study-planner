@@ -11,6 +11,8 @@ import Loading from "components/Loading/Loading";
 import { breakpoints } from "styled";
 import { requestUser, signOut } from "store/effects";
 import { initializePush } from "firebase/initialize";
+import IUser from "interfaces/IUser";
+import { Alert } from "antd";
 
 const Home = React.lazy(() => import("routes/Home/Home"));
 const Schedule = React.lazy(() => import("routes/Schedule/Schedule"));
@@ -23,6 +25,14 @@ const Preferences = React.lazy(() => import("routes/Preferences/Preferences"));
 const Wrapper = styled.main`
   display: flex;
   background-color: ${props => props.theme.backgroundColor};
+`;
+
+const EmailVerificationError = styled(Alert)`
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
 `;
 
 const Sider = styled.section`
@@ -42,9 +52,10 @@ const Content = styled.section`
 `;
 interface IDashboardProps {
   error: IRequestError | undefined;
+  user: IUser;
 }
 
-const Dashboard: React.FC<IDashboardProps> = ({ error }) => {
+const Dashboard: React.FC<IDashboardProps> = ({ error, user }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -66,6 +77,13 @@ const Dashboard: React.FC<IDashboardProps> = ({ error }) => {
           <Sidebar />
         </Sider>
         <Content>
+          {!user.verified && (
+            <EmailVerificationError
+              message="Check your email and activate your account!"
+              banner
+              closable
+            />
+          )}
           <TopBar />
           <React.Suspense fallback={<Loading />}>
             <Switch>
@@ -92,6 +110,7 @@ const Dashboard: React.FC<IDashboardProps> = ({ error }) => {
 };
 
 const mapStateToProps = (state: ApplicationState) => ({
+  user: state.reducer.user,
   error: state.reducer.error.user
 });
 

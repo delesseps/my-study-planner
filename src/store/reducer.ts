@@ -22,6 +22,7 @@ const initialState: ReducerState = {
     email: "",
     role: "",
     picture: "",
+    verified: true,
     configuration: {
       darkMode: false
     },

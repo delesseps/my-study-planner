@@ -30,6 +30,7 @@ export const initialState: ApplicationState = {
       email: "",
       picture: "",
       role: "",
+      verified: true,
       configuration: {
         darkMode: false
       },

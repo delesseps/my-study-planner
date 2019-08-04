@@ -15,6 +15,7 @@ export default interface IUser {
   role: string;
   picture: string;
   configuration: IUserConfig;
+  verified: boolean;
   evaluations: IEvaluation[];
   toDos: IToDo[];
   homework: IHomework[];
