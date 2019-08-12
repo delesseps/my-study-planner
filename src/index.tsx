@@ -9,11 +9,7 @@ import { Provider } from "react-redux";
 
 import configureStore from "store";
 
-import * as firebase from "firebase/app";
-import firebaseConfig from "./firebase/firebaseConfig";
-
 const store = configureStore();
-firebase.initializeApp(firebaseConfig);
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker

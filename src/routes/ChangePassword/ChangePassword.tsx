@@ -3,7 +3,7 @@ import { ReactComponent as Logo } from "assets/logo.svg";
 import { ReactComponent as ChangePasswordDone } from "assets/change_password_done.svg";
 import styled from "styled-components";
 import { FormComponentProps, WrappedFormUtils } from "antd/lib/form/Form";
-import { Form, Button, Input, Icon, Alert, message } from "antd";
+import { Form, Button, Input, Icon, message } from "antd";
 import FadeIn from "components/FadeIn/FadeIn";
 import { Link, match } from "react-router-dom";
 import Loading from "components/Loading/Loading";
@@ -17,7 +17,6 @@ const Wrapper = styled.main`
   align-items: center;
 
   padding: 4rem 0;
-
   min-height: 100vh;
 
   background-color: ${props => props.theme.colors.main};
@@ -43,10 +42,6 @@ const Title = styled.h1`
   font-weight: 600;
   margin-bottom: 0;
   color: white;
-`;
-
-const StyledError = styled(Alert)`
-  margin-bottom: 1rem;
 `;
 
 const Card = styled.div`
@@ -111,24 +106,24 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
   const [loading, setLoading] = React.useState(true);
   const [success, setSuccess] = React.useState(false);
 
-  const confirmToken = async () => {
-    try {
-      const response = await recoverPasswordTokenConfirmation(
-        match.params.token
-      );
-
-      if (!response) {
-        throw new Error(response);
-      }
-
-      setLoading(false);
-    } catch (e) {
-      message.error("Invalid link");
-      dispatch(push("/forgot_password"));
-    }
-  };
-
   React.useEffect(() => {
+    const confirmToken = async () => {
+      try {
+        const response = await recoverPasswordTokenConfirmation(
+          match.params.token
+        );
+
+        if (!response) {
+          throw new Error(response);
+        }
+
+        setLoading(false);
+      } catch (e) {
+        message.error("Invalid link");
+        dispatch(push("/forgot_password"));
+      }
+    };
+
     confirmToken();
   }, []);
 

@@ -121,6 +121,7 @@ export const signOut = (): Effect => dispatch => {
   return signOutService()
     .then((response: AxiosResponse) => {
       cookies.remove("IS_LOGGED_IN", { path: "/" });
+
       dispatch(signOutSuccess());
       dispatch<any>(push("/signin"));
     })

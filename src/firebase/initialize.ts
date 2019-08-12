@@ -1,15 +1,11 @@
-import * as firebase from "firebase/app";
 import "firebase/messaging";
 import { notification } from "antd";
 import { notifierService } from "services";
+import { messaging } from "./firebaseConfig";
+
+let onMessageDump: Function | null;
 
 export function initializePush() {
-  const messaging = firebase.messaging();
-
-  messaging.usePublicVapidKey(
-    "BNqCTGf6M54sSdm6eZajmV3HkwWq_c8zxnnokjqqaXD4CfWnAEwAPkfEQ6D9jXtOjXzhCG4lXwMaPGF_7rmb9bA"
-  );
-
   messaging
     .requestPermission()
     .then(() => {
@@ -38,10 +34,19 @@ export function initializePush() {
       });
   });
 
-  messaging.onMessage(payload => {
-    notification.info({
-      message: "Notification",
-      description: payload.data.content
-    });
-  });
+  //onMessageEvent();
 }
+
+/*export function onMessageEvent() {
+  if (!onMessageDump) {
+    onMessageDump = messaging.onMessage(payload => {
+      notification.info({
+        message: "Notification",
+        description: payload.data.content
+      });
+    });
+  } else {
+    onMessageDump();
+    onMessageDump = null;
+  }
+}*/
