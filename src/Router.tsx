@@ -13,6 +13,12 @@ import IUserConfig from "interfaces/IUserConfig";
 const SignIn = React.lazy(() => import("routes/SignIn/SignIn"));
 const SignUp = React.lazy(() => import("routes/SignUp/SignUp"));
 const Window404 = React.lazy(() => import("routes/Route404/Route404"));
+const ForgotPassword = React.lazy(() =>
+  import("routes/ForgotPassword/ForgotPassword")
+);
+const ChangePassword = React.lazy(() =>
+  import("routes/ChangePassword/ChangePassword")
+);
 
 const CSSReset = createGlobalStyle`
   * {
@@ -204,6 +210,28 @@ const Router: React.FC<IRouterProps> = ({ cookies, config }) => {
                 <Redirect to="/dashboard" />
               ) : (
                 <SignUp />
+              )
+            }
+          />
+          <Route
+            path="/forgot_password"
+            exact
+            render={props =>
+              cookies.get("IS_LOGGED_IN") ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <ForgotPassword />
+              )
+            }
+          />
+          <Route
+            path="/change_password/:token"
+            exact
+            render={props =>
+              cookies.get("IS_LOGGED_IN") ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <ChangePassword {...props} />
               )
             }
           />

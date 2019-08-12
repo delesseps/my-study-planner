@@ -6,8 +6,10 @@ export { default as evaluationService } from "./evaluation";
 export { default as homeworkService } from "./homework";
 export { default as toDoService } from "./toDo";
 export { default as notifierService } from "./notifier";
+export { default as recoverPasswordRequest } from "./recoverPassword";
 
 export * from "./user";
 export * from "./evaluation";
 export * from "./homework";
 export * from "./toDo";
+export * from "./recoverPassword";

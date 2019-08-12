@@ -10,6 +10,7 @@ import { breakpoints } from "styled";
 import { ApplicationState } from "store/types";
 import IRequestError from "interfaces/IRequestError";
 import FadeIn from "components/FadeIn/FadeIn";
+import { Link } from "react-router-dom";
 
 const StyledForm = styled(Form)`
   width: 100%;
@@ -37,7 +38,7 @@ const OptionsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const ForgotPassword = styled.p`
+const ForgotPassword = styled(Link)`
   cursor: pointer;
 
   &:hover {
@@ -120,7 +121,7 @@ const SignInForm: React.FC<ISignInFormProps> = ({
             valuePropName: "checked",
             initialValue: false
           })(<Checkbox>Remember me</Checkbox>)}
-          <ForgotPassword>Forgot password?</ForgotPassword>
+          <ForgotPassword to="/forgot_password">Forgot password?</ForgotPassword>
         </OptionsWrapper>
       </Form.Item>
       <Form.Item>

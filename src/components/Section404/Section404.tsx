@@ -86,7 +86,7 @@ const Section404: React.FunctionComponent<I404Props> = ({ white }) => {
         <Title>Oops...</Title>
         <Text>Looks like the page you are looking for doesn't exist!</Text>
         <StyledButton onClick={handleClick} size="large" type="primary">
-          GO BACK
+          Go Back
         </StyledButton>
       </LeftWrapper>
       {white ? <StyledSVGWhite /> : <StyledSVG />}
