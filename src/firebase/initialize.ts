@@ -3,7 +3,7 @@ import { notification } from "antd";
 import { notifierService } from "services";
 import { messaging } from "./firebaseConfig";
 
-let onMessageDump: Function | null;
+//let onMessageDump: Function | null;
 
 export function initializePush() {
   messaging

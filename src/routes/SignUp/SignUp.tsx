@@ -72,7 +72,7 @@ const RightSectionWrapper = styled.div`
 const SignIn = styled.h4`
   font-weight: 400;
   color: ${props => props.theme.fontColors.textRgba(0.8)};
-  margin-top: 7rem;
+  margin-top: 5rem;
 
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
     margin-top: 5rem;

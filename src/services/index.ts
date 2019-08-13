@@ -13,3 +13,4 @@ export * from "./evaluation";
 export * from "./homework";
 export * from "./toDo";
 export * from "./recoverPassword";
+export * from "./linkAccount";

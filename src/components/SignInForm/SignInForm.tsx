@@ -46,6 +46,20 @@ const ForgotPassword = styled(Link)`
   }
 `;
 
+const mapStateToProps = (state: ApplicationState) => {
+  return {
+    loading: state.reducer.loading.signIn,
+    error: state.reducer.error.signIn
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    signIn: (credentials: ISignInCredentials) =>
+      dispatch<any>(signIn(credentials))
+  };
+};
+
 interface ISignInFormProps {
   form: WrappedFormUtils;
   signIn: Function;
@@ -121,7 +135,9 @@ const SignInForm: React.FC<ISignInFormProps> = ({
             valuePropName: "checked",
             initialValue: false
           })(<Checkbox>Remember me</Checkbox>)}
-          <ForgotPassword to="/forgot_password">Forgot password?</ForgotPassword>
+          <ForgotPassword to="/forgot_password">
+            Forgot password?
+          </ForgotPassword>
         </OptionsWrapper>
       </Form.Item>
       <Form.Item>
@@ -134,20 +150,6 @@ const SignInForm: React.FC<ISignInFormProps> = ({
 };
 
 const wrappedSignInForm = Form.create()(SignInForm);
-
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    loading: state.reducer.loading.signIn,
-    error: state.reducer.error.signIn
-  };
-};
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    signIn: (credentials: ISignInCredentials) =>
-      dispatch<any>(signIn(credentials))
-  };
-};
 
 export default connect(
   mapStateToProps,

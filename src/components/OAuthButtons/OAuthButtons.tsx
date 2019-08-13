@@ -26,11 +26,6 @@ const StyledGoogleLogo = styled(GoogleLogo)`
   margin-right: 1.2rem;
 `;
 
-const StyledIcon = styled(Icon)`
-  margin-right: 1.2rem;
-  font-size: 24px;
-`;
-
 const OAuthButtons = ({ type }: { type?: string }) => {
   return (
     <Wrapper>

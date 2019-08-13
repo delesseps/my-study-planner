@@ -20,6 +20,10 @@ const ChangePassword = React.lazy(() =>
   import("routes/ChangePassword/ChangePassword")
 );
 
+const LinkGoogleAccount = React.lazy(() =>
+  import("routes/LinkGoogleAccount/LinkGoogleAccount")
+);
+
 const CSSReset = createGlobalStyle`
   * {
     margin: 0; 
@@ -232,6 +236,17 @@ const Router: React.FC<IRouterProps> = ({ cookies, config }) => {
                 <Redirect to="/dashboard" />
               ) : (
                 <ChangePassword {...props} />
+              )
+            }
+          />
+          <Route
+            path="/link/google/:token/:email"
+            exact
+            render={props =>
+              cookies.get("IS_LOGGED_IN") ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <LinkGoogleAccount {...props} />
               )
             }
           />
