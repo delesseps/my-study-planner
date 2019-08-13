@@ -125,7 +125,7 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
     };
 
     confirmToken();
-  }, []);
+  }, [dispatch, match.params.token]);
 
   const handleSubmit = (e: React.FormEvent, form: WrappedFormUtils): void => {
     e.preventDefault();

@@ -88,11 +88,6 @@ const CardButtonsWrapper = styled.div`
   }
 `;
 
-const ResultWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 interface ILinkGoogleAccountProps {
   match: match<{ token: string; email: string }>;
 }
@@ -125,7 +120,7 @@ const LinkGoogleAccount: React.FunctionComponent<ILinkGoogleAccountProps> = ({
     };
 
     confirmToken();
-  }, []);
+  }, [dispatch, match.params.token]);
 
   const handleLinkClick = async () => {
     try {

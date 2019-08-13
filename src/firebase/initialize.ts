@@ -1,5 +1,4 @@
 import "firebase/messaging";
-import { notification } from "antd";
 import { notifierService } from "services";
 import { messaging } from "./firebaseConfig";
 

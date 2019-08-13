@@ -88,13 +88,13 @@ const Dashboard: React.FC<IDashboardProps> = ({ error, user }) => {
           <React.Suspense fallback={<Loading />}>
             <Switch>
               <Route path="/dashboard" exact component={Home} />
-              <Route path="/dashboard/grades" exact component={Grades} />
+              {/*<Route path="/dashboard/grades" exact component={Grades} />
               <Route
                 path="/dashboard/friends-classes"
                 exact
                 component={FriendsClasses}
               />
-              <Route path="/dashboard/schedule" exact component={Schedule} />
+              <Route path="/dashboard/schedule" exact component={Schedule} />*/}
               <Route
                 path="/dashboard/Preferences"
                 exact

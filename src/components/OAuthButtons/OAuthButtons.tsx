@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as GoogleLogo } from "assets/google_logo.svg";
-import { Icon } from "antd";
 
 const Wrapper = styled.div`
   width: 100%;
