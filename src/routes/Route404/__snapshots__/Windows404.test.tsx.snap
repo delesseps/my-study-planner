@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Window404 should render correctly 1`] = `
-<Window404>
-  <div>
-    404 - Not Found
-  </div>
-</Window404>
-`;
