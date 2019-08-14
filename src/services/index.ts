@@ -7,6 +7,7 @@ export { default as homeworkService } from "./homework";
 export { default as toDoService } from "./toDo";
 export { default as notifierService } from "./notifier";
 export { default as recoverPasswordRequest } from "./recoverPassword";
+export { default as ModalService } from "./modal";
 
 export * from "./user";
 export * from "./evaluation";

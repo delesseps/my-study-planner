@@ -6,4 +6,3 @@ export { default as determinePriorityNumber } from "./priority";
 export * from "./date";
 export * from "./urgency";
 export * from "./priority";
-export * from "./testUtils";

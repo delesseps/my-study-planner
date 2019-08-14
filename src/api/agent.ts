@@ -1,7 +1,12 @@
 import axios from "axios";
 
+const BASE_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3001/api"
+    : process.env.SERVER_URL;
+
 const instance = axios.create({
-  baseURL: "http://localhost:3001/api",
+  baseURL: BASE_URL,
   withCredentials: true
 });
 

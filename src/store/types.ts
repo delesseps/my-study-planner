@@ -23,6 +23,7 @@ export interface ErrorState {
   toDo?: IRequestError;
   upload?: IRequestError;
   config?: IRequestError;
+  modal?: IRequestError;
 }
 
 export interface LoadingState {
@@ -34,6 +35,7 @@ export interface LoadingState {
   evaluation: boolean;
   homework: boolean;
   toDo: boolean;
+  welcomeModal: boolean;
 }
 
 export interface DrawerState {
@@ -152,16 +154,16 @@ export interface ToDoDrawer extends Action {
  * Add evaluation interfaces
  *
  */
-export interface AddEvaluationRequest {
+export interface AddEvaluationRequest extends Action {
   type: "addEvaluationRequest";
 }
 
-export interface AddEvaluationSuccess {
+export interface AddEvaluationSuccess extends Action {
   type: "addEvaluationSuccess";
   evaluation: IEvaluation;
 }
 
-export interface AddEvaluationError {
+export interface AddEvaluationError extends Action {
   type: "addEvaluationError";
   error: IAxiosErrorResponse;
 }
@@ -171,17 +173,17 @@ export interface AddEvaluationError {
  * Edit evaluation interfaces
  *
  */
-export interface EditEvaluationRequest {
+export interface EditEvaluationRequest extends Action {
   type: "editEvaluationRequest";
 }
 
-export interface EditEvaluationSuccess {
+export interface EditEvaluationSuccess extends Action {
   type: "editEvaluationSuccess";
   evaluation: IEvaluation;
   index: number;
 }
 
-export interface EditEvaluationError {
+export interface EditEvaluationError extends Action {
   type: "editEvaluationError";
   error: IAxiosErrorResponse;
 }
@@ -191,16 +193,16 @@ export interface EditEvaluationError {
  * Delete evaluation interfaces
  *
  */
-export interface DeleteEvaluationRequest {
+export interface DeleteEvaluationRequest extends Action {
   type: "deleteEvaluationRequest";
 }
 
-export interface DeleteEvaluationSuccess {
+export interface DeleteEvaluationSuccess extends Action {
   type: "deleteEvaluationSuccess";
   index: number;
 }
 
-export interface DeleteEvaluationError {
+export interface DeleteEvaluationError extends Action {
   type: "deleteEvaluationError";
   error: IAxiosErrorResponse;
 }
@@ -210,16 +212,16 @@ export interface DeleteEvaluationError {
  * Add homework interfaces
  *
  */
-export interface AddHomeworkRequest {
+export interface AddHomeworkRequest extends Action {
   type: "addHomeworkRequest";
 }
 
-export interface AddHomeworkSuccess {
+export interface AddHomeworkSuccess extends Action {
   type: "addHomeworkSuccess";
   homework: IHomework;
 }
 
-export interface AddHomeworkError {
+export interface AddHomeworkError extends Action {
   type: "addHomeworkError";
   error: IAxiosErrorResponse;
 }
@@ -229,17 +231,17 @@ export interface AddHomeworkError {
  * Edit homework interfaces
  *
  */
-export interface EditHomeworkRequest {
+export interface EditHomeworkRequest extends Action {
   type: "editHomeworkRequest";
 }
 
-export interface EditHomeworkSuccess {
+export interface EditHomeworkSuccess extends Action {
   type: "editHomeworkSuccess";
   homework: IHomework;
   index: number;
 }
 
-export interface EditHomeworkError {
+export interface EditHomeworkError extends Action {
   type: "editHomeworkError";
   error: IAxiosErrorResponse;
 }
@@ -249,16 +251,16 @@ export interface EditHomeworkError {
  * Delete homework interfaces
  *
  */
-export interface DeleteHomeworkRequest {
+export interface DeleteHomeworkRequest extends Action {
   type: "deleteHomeworkRequest";
 }
 
-export interface DeleteHomeworkSuccess {
+export interface DeleteHomeworkSuccess extends Action {
   type: "deleteHomeworkSuccess";
   index: number;
 }
 
-export interface DeleteHomeworkError {
+export interface DeleteHomeworkError extends Action {
   type: "deleteHomeworkError";
   error: IAxiosErrorResponse;
 }
@@ -268,16 +270,16 @@ export interface DeleteHomeworkError {
  * User profile picture interfaces
  *
  */
-export interface UploadProfilePictureRequest {
+export interface UploadProfilePictureRequest extends Action {
   type: "uploadProfilePictureRequest";
 }
 
-export interface UploadProfilePictureSuccess {
+export interface UploadProfilePictureSuccess extends Action {
   type: "uploadProfilePictureSuccess";
   imageUrl: string;
 }
 
-export interface UploadProfilePictureError {
+export interface UploadProfilePictureError extends Action {
   type: "uploadProfilePictureError";
   error: IAxiosErrorResponse;
 }
@@ -287,16 +289,16 @@ export interface UploadProfilePictureError {
  * User config interfaces
  *
  */
-export interface UserConfigRequest {
+export interface UserConfigRequest extends Action {
   type: "userConfigRequest";
 }
 
-export interface UserConfigSuccess {
+export interface UserConfigSuccess extends Action {
   type: "userConfigSuccess";
   config: IUserConfig;
 }
 
-export interface UserConfigError {
+export interface UserConfigError extends Action {
   type: "userConfigError";
   error: IAxiosErrorResponse;
 }
@@ -306,16 +308,16 @@ export interface UserConfigError {
  * Add homework interfaces
  *
  */
-export interface AddToDoRequest {
+export interface AddToDoRequest extends Action {
   type: "addToDoRequest";
 }
 
-export interface AddToDoSuccess {
+export interface AddToDoSuccess extends Action {
   type: "addToDoSuccess";
   toDo: IToDo;
 }
 
-export interface AddToDoError {
+export interface AddToDoError extends Action {
   type: "addToDoError";
   error: IAxiosErrorResponse;
 }
@@ -325,17 +327,17 @@ export interface AddToDoError {
  * Edit to-do interfaces
  *
  */
-export interface EditToDoRequest {
+export interface EditToDoRequest extends Action {
   type: "editToDoRequest";
 }
 
-export interface EditToDoSuccess {
+export interface EditToDoSuccess extends Action {
   type: "editToDoSuccess";
   toDo: IToDo;
   index: number;
 }
 
-export interface EditToDoError {
+export interface EditToDoError extends Action {
   type: "editToDoError";
   error: IAxiosErrorResponse;
 }
@@ -345,17 +347,37 @@ export interface EditToDoError {
  * Delete homework interfaces
  *
  */
-export interface DeleteToDoRequest {
+export interface DeleteToDoRequest extends Action {
   type: "deleteToDoRequest";
 }
 
-export interface DeleteToDoSuccess {
+export interface DeleteToDoSuccess extends Action {
   type: "deleteToDoSuccess";
   index: number;
 }
 
-export interface DeleteToDoError {
+export interface DeleteToDoError extends Action {
   type: "deleteToDoError";
+  error: IAxiosErrorResponse;
+}
+
+/**
+ *
+ * Modal interfaces
+ *
+ */
+export interface ModalRequest extends Action {
+  type: "ModalRequest";
+  modalType: "welcome";
+}
+
+export interface ModalSuccess extends Action {
+  type: "ModalSuccess";
+  modalType: "welcome";
+}
+
+export interface ModalError extends Action {
+  type: "ModalError";
   error: IAxiosErrorResponse;
 }
 
@@ -407,4 +429,7 @@ export type ApplicationAction =
   | UploadProfilePictureError
   | UserConfigRequest
   | UserConfigSuccess
-  | UserConfigError;
+  | UserConfigError
+  | ModalRequest
+  | ModalSuccess
+  | ModalError;

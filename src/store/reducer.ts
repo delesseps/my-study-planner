@@ -14,7 +14,8 @@ const initialState: ReducerState = {
     evaluation: false,
     homework: false,
     toDo: false,
-    uploadProfilePicture: false
+    uploadProfilePicture: false,
+    welcomeModal: false
   },
   error: {},
   user: {
@@ -22,6 +23,8 @@ const initialState: ReducerState = {
     email: "",
     role: "",
     picture: "",
+    fcm: false,
+    firstSignIn: false,
     verified: true,
     configuration: {
       darkMode: false
@@ -472,7 +475,7 @@ const reducer = (state = initialState, action: ApplicationAction) => {
 
     /**
      *
-     * Delete to-D=do reducers
+     * Delete to-do reducers
      *
      */
     case "deleteToDoRequest":
@@ -491,6 +494,41 @@ const reducer = (state = initialState, action: ApplicationAction) => {
         draft.error = {
           ...draft.error,
           toDo: {
+            message: action.error.data.errors.message,
+            status: action.error.status,
+            state: true
+          }
+        };
+      });
+    //////////////
+    //  Modals //
+    /////////////
+    case "ModalRequest":
+      return produce(state, draft => {
+        switch (action.modalType) {
+          case "welcome":
+            draft.loading.welcomeModal = true;
+            break;
+          default:
+        }
+      });
+    case "ModalSuccess":
+      return produce(state, draft => {
+        switch (action.modalType) {
+          case "welcome":
+            draft.loading.welcomeModal = false;
+            draft.user.firstSignIn = false;
+            break;
+          default:
+        }
+      });
+    case "ModalError":
+      return produce(state, draft => {
+        message.error("Internal error. Please reload or try again later.");
+
+        draft.error = {
+          ...draft.error,
+          modal: {
             message: action.error.data.errors.message,
             status: action.error.status,
             state: true

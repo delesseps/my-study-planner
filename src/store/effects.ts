@@ -45,7 +45,10 @@ import {
   deleteToDoError,
   editToDoRequest,
   editToDoSuccess,
-  editToDoError
+  editToDoError,
+  modalRequest,
+  modalSuccess,
+  modalError
 } from "./actions";
 import { push } from "connected-react-router";
 
@@ -64,7 +67,8 @@ import {
   userConfigService,
   toDoService,
   requestDeleteToDo,
-  requestEditToDo
+  requestEditToDo,
+  ModalService
 } from "services";
 
 import IUser from "interfaces/IUser";
@@ -308,5 +312,22 @@ export const deleteToDo = (id: string, index: number): Effect => dispatch => {
     )
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       response ? dispatch(deleteToDoError(response)) : noConnectionToServer()
+    );
+};
+
+//////////////
+//  Modals //
+/////////////
+export const welcomeModal = (): Effect => dispatch => {
+  dispatch(modalRequest("welcome"));
+
+  const modalService = new ModalService();
+
+  return modalService.WelcomeModal()
+    .then(() =>
+      dispatch<any>(modalSuccess("welcome"))
+    )
+    .catch(({ response }: { response: IAxiosErrorResponse }) =>
+      response ? dispatch(modalError(response)) : noConnectionToServer()
     );
 };

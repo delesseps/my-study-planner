@@ -46,7 +46,10 @@ import {
   DeleteToDoError,
   EditToDoRequest,
   EditToDoSuccess,
-  EditToDoError
+  EditToDoError,
+  ModalRequest,
+  ModalSuccess,
+  ModalError
 } from "./types";
 import IUser from "interfaces/IUser";
 import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
@@ -408,5 +411,25 @@ export const deleteToDoError = (
   error: IAxiosErrorResponse
 ): DeleteToDoError => ({
   type: "deleteToDoError",
+  error
+});
+
+/**
+ *
+ * Welcome Modal interfaces
+ *
+ */
+export const modalRequest = (modalType: "welcome"): ModalRequest => ({
+  type: "ModalRequest",
+  modalType
+});
+
+export const modalSuccess = (modalType: "welcome"): ModalSuccess => ({
+  type: "ModalSuccess",
+  modalType
+});
+
+export const modalError = (error: IAxiosErrorResponse): ModalError => ({
+  type: "ModalError",
   error
 });

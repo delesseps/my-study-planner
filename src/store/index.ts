@@ -22,13 +22,16 @@ export const initialState: ApplicationState = {
       evaluation: false,
       homework: false,
       toDo: false,
-      uploadProfilePicture: false
+      uploadProfilePicture: false,
+      welcomeModal: false
     },
     error: {},
     user: {
       name: "",
       email: "",
       picture: "",
+      firstSignIn: false,
+      fcm: false,
       role: "",
       verified: true,
       configuration: {

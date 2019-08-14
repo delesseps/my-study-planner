@@ -1,9 +1,8 @@
 import React from "react";
-import { mount } from "enzyme";
 
 import Route404 from "./Route404";
 import { darkTheme } from "styled";
-import { mountWithTheme } from "utils";
+import { mountWithTheme } from "testUtils";
 
 describe("Route404", () => {
   it("should render correctly", () => {

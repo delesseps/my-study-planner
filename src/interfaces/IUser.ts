@@ -13,6 +13,8 @@ export default interface IUser {
   name: string;
   email: string;
   role: string;
+  firstSignIn: boolean;
+  fcm: boolean;
   picture: string;
   configuration: IUserConfig;
   verified: boolean;

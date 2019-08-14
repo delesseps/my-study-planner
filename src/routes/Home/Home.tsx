@@ -15,6 +15,7 @@ import HomeworkPanel from "components/panels/HomeworkPanel/HomeworkPanel";
 import ToDoPanel from "components/panels/ToDoPanel/ToDoPanel";
 import RecommendedActionsPanel from "components/panels/RecommendedActionsPanel/RecommendedActionsPanel";
 import CalendarPanel from "components/panels/CalendarPanel/CalendarPanel";
+import WelcomeModal from "components/modals/WelcomeModal/WelcomeModal";
 
 const HomeSchedulePanel = React.lazy(() =>
   import("../../components/panels/HomeSchedulePanel/HomeSchedulePanel")
@@ -154,6 +155,7 @@ const Home: React.FC = props => {
   return (
     <FadeIn>
       <Wrapper>
+        <WelcomeModal />
         <CounterPanelLeft>
           <CounterPanel homework />
         </CounterPanelLeft>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "assets/logo.svg";
-import { Icon, Avatar, Dropdown, Menu, Skeleton } from "antd";
+import { Icon, Avatar, Dropdown, Menu, Skeleton, Popover, Empty } from "antd";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import { signOut } from "store/effects";
@@ -113,6 +113,13 @@ const StyledSkeleton = styled(Skeleton)`
   }
 `;
 
+const StyledEmpty = styled(Empty)`
+  && {
+    width: 20rem;
+    color: ${props => props.theme.fontColors.textRgba(0.8)};
+  }
+`;
+
 interface ITopBarProps {
   loading: boolean;
   user: IUser;
@@ -121,6 +128,7 @@ interface ITopBarProps {
 const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const handleSignOut = () => {
     dispatch(signOut());
@@ -128,6 +136,10 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
 
   const handleProfileClick = () => {
     setVisible(true);
+  };
+
+  const handleVisibleChange = (visible: boolean) => {
+    setShowNotifications(visible);
   };
 
   const userOptions = (
@@ -163,7 +175,19 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
         <Title>My Study Planner</Title>
       </LogoBox>
       <UserBox>
-        <StyledIcon type="bell" />
+        <Popover
+          content={
+            <StyledEmpty
+              description={"No notifications"}
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+            />
+          }
+          trigger="click"
+          visible={showNotifications}
+          onVisibleChange={handleVisibleChange}
+        >
+          <StyledIcon type="bell" />
+        </Popover>
         <Avatar shape="square" size={60} icon="user" src={user.picture} />
         <UserInfoBox>
           <StyledSkeleton
