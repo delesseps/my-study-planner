@@ -36,6 +36,14 @@ const SubHeading = styled.h3`
 const OptionsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media only screen and (max-width: ${breakpoints.bpMobileS}) {
+    flex-direction: column;
+
+    & > *:first-child {
+      margin-bottom: 1rem;
+    }
+  }
 `;
 
 const ForgotPassword = styled(Link)`

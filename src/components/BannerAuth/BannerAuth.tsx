@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   align-items: center;
 
   margin-top: auto;
-  margin-bottom: auto;  
+  margin-bottom: auto;
 `;
 
 const Text = styled.h2`
@@ -33,7 +33,6 @@ const Text = styled.h2`
   line-height: 4.1rem;
 
   font-weight: 400;
-  
 `;
 
 const SVGWrapper = styled.div`
@@ -81,6 +80,11 @@ const StyledStars = styled(Stars)`
     width: 45rem;
   }
 
+  @media only screen and (max-width: ${breakpoints.bpMedium}) {
+    width: 38rem;
+    margin-right: 0;
+  }
+
   & path {
     animation: ${twinkle} 1.5s ease-in-out infinite;
     animation-direction: alternate;
@@ -96,9 +100,16 @@ const StyledCheck = styled(Check)`
 
   width: 16rem;
   height: 12rem;
+
+  @media only screen and (max-width: ${breakpoints.bpMedium}) {
+    width: 10rem;
+
+    right: 6rem;
+  }
+
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
     bottom: 2rem;
-  }  
+  }
 `;
 
 const BannerAuth: React.FC = () => {

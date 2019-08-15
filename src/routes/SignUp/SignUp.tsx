@@ -12,6 +12,10 @@ import { breakpoints } from "styled";
 const Wrapper = styled.main`
   display: flex;
   flex: 1;
+
+  @media only screen and (max-width: ${breakpoints.bpMedium}) {
+    flex-direction: column-reverse;
+  }
 `;
 
 const LeftSection = styled.section`
@@ -51,6 +55,10 @@ const RightSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media only screen and (max-width: ${breakpoints.bpMedium}) {
+    min-height: 90vh;
+  }
 
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
     padding: 3rem 0;

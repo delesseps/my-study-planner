@@ -1,17 +1,23 @@
 import * as firebase from "firebase/app";
 import "firebase/messaging";
 
-const firebaseConfig = {
-  messagingSenderId: "809991180528",
-  appId: "1:809991180528:web:b83e8db5acb3edde"
-};
+export async function firebaseConfig() {
+  const registration = await navigator.serviceWorker.ready;
 
-const initializedFirebaseApp = firebase.initializeApp(firebaseConfig);
+  if (registration) {
+    const firebaseConfig = {
+      messagingSenderId: "809991180528",
+      appId: "1:809991180528:web:b83e8db5acb3edde"
+    };
 
-const messaging = initializedFirebaseApp.messaging();
+    const initializedFirebaseApp = firebase.initializeApp(firebaseConfig);
 
-messaging.usePublicVapidKey(
-  "BNqCTGf6M54sSdm6eZajmV3HkwWq_c8zxnnokjqqaXD4CfWnAEwAPkfEQ6D9jXtOjXzhCG4lXwMaPGF_7rmb9bA"
-);
+    const messaging = initializedFirebaseApp.messaging();
 
-export { messaging };
+    messaging.usePublicVapidKey(
+      "BNqCTGf6M54sSdm6eZajmV3HkwWq_c8zxnnokjqqaXD4CfWnAEwAPkfEQ6D9jXtOjXzhCG4lXwMaPGF_7rmb9bA"
+    );
+
+    return { messaging };
+  }
+}
