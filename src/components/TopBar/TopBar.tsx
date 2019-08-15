@@ -8,11 +8,16 @@ import { signOut } from "store/effects";
 import UserProfileModal from "components/modals/UserProfileModal/UserProfileModal";
 import IUser from "interfaces/IUser";
 import { Link } from "react-router-dom";
+import { breakpoints } from "styled";
 
 const Wrapper = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+    padding: 0 3rem;
+  }
 `;
 
 const LogoBox = styled.div`
@@ -33,6 +38,10 @@ const Title = styled.h2`
   letter-spacing: 1px;
 
   color: ${props => props.theme.fontColors.textRgba(0.8)};
+
+  @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+    display: none;
+  }
 `;
 
 const UserBox = styled.div`

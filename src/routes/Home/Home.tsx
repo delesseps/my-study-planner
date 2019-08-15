@@ -1,10 +1,3 @@
-/**
- *
- * @TODO:
- * - Make component responsive
- *
- */
-
 import React from "react";
 import styled from "styled-components";
 import FadeIn from "components/FadeIn/FadeIn";
@@ -32,6 +25,29 @@ const Wrapper = styled.section`
     "schedule schedule calendar"
     "todo homework evaluation ";
   grid-template-columns: repeat(3, 0.5fr);
+
+  @media only screen and (max-width: ${breakpoints.bpLargeMedium}) {
+    grid-template-areas:
+      "left right"
+      "schedule schedule"
+      "evaluation ractions"
+      "homework todo"
+      "calendar calendar";
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+    grid-template-areas:
+      "left "
+      "right"
+      "calendar"
+      "schedule"
+      "evaluation"
+      "ractions"
+      "homework "
+      "todo";
+    grid-template-columns: 1fr;
+  }
 `;
 
 const CounterPanelLeft = styled.div`
@@ -86,6 +102,10 @@ const HomeSchedulePanelWrapper = styled.div`
 
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
     height: 56.9rem;
+  }
+
+  @media only screen and (max-width: ${breakpoints.bpLargeMedium}) {
+    margin-top: 0;
   }
 `;
 

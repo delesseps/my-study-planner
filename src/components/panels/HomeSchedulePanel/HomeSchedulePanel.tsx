@@ -11,8 +11,22 @@ import EvaluationDescriptionModal from "components/modals/EvaluationDescriptionM
 import { Urgency } from "interfaces/IUser";
 import IHomework from "interfaces/IHomework";
 import HomeworkDescriptionModal from "components/modals/HomeworkDescriptionModal/HomeworkDescriptionModal";
+import styled from "styled-components";
+import { breakpoints } from "styled";
 
 const localizer = BigCalendar.momentLocalizer(moment);
+
+const StyledBigCalendar = styled(BigCalendar)`
+  @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+    .rbc-toolbar {
+      flex-direction: column;
+
+      & > *:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+`;
 
 function determineColor(urgency: Urgency, alpha = 1) {
   switch (urgency) {
@@ -70,17 +84,21 @@ const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = ({
   }, [evaluations, homework]);
 
   return (
-    <BigCalendar
+    <StyledBigCalendar
       events={events}
-      views={["week", "day", "agenda"]}
+      views={
+        window.innerWidth === 320
+          ? ["day", "agenda"]
+          : ["week", "day", "agenda"]
+      }
       localizer={localizer}
-      defaultView={"week"}
-      onSelectEvent={event => {
+      defaultView={window.innerWidth === 320 ? "day" : "week"}
+      onSelectEvent={(event: any) => {
         if (event.evaluation) EvaluationDescriptionModal(event.evaluation);
 
         if (event.homework) HomeworkDescriptionModal(event.homework);
       }}
-      eventPropGetter={event => ({
+      eventPropGetter={(event: any) => ({
         style: {
           backgroundColor: determineColor(event.urgency, 0.8),
           border: `2px solid ${determineColor(event.urgency)}`

@@ -15,15 +15,20 @@ import IUser from "interfaces/IUser";
 import { Alert } from "antd";
 
 const Home = React.lazy(() => import("routes/Home/Home"));
-const Schedule = React.lazy(() => import("routes/Schedule/Schedule"));
-const FriendsClasses = React.lazy(() =>
-  import("routes/FriendsClasses/FriendsClasses")
-);
-const Grades = React.lazy(() => import("routes/Grades/Grades"));
+// const Schedule = React.lazy(() => import("routes/Schedule/Schedule"));
+// const FriendsClasses = React.lazy(() =>
+//   import("routes/FriendsClasses/FriendsClasses")
+// );
+// const Grades = React.lazy(() => import("routes/Grades/Grades"));
 const Preferences = React.lazy(() => import("routes/Preferences/Preferences"));
 
 const Wrapper = styled.main`
   display: flex;
+
+  @media only screen and (max-width: ${breakpoints.bpMedium}) {
+    flex-direction: column-reverse;
+  }
+
   background-color: ${props => props.theme.backgroundColor};
 `;
 
@@ -38,6 +43,15 @@ const EmailVerificationError = styled(Alert)`
 const Sider = styled.section`
   flex: 1;
   min-height: 100vh;
+
+  @media only screen and (max-width: ${breakpoints.bpMedium}) {
+    min-height: auto;
+    width: 100%;
+    z-index: 1000;
+
+    position: sticky;
+    bottom: 0;
+  }
 `;
 
 const Content = styled.section`
@@ -48,6 +62,19 @@ const Content = styled.section`
 
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
     padding: 4rem 4rem;
+  }
+
+  @media only screen and (max-width: ${breakpoints.bpMedium}) {
+    flex: 1;
+    min-height: 100vh;
+  }
+
+  @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+    padding: 4rem 1rem;
+  }
+
+  @media only screen and (max-width: ${breakpoints.bpMobileS}) {
+    padding: 4rem 0.2rem;
   }
 `;
 interface IDashboardProps {

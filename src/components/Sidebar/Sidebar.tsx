@@ -2,6 +2,7 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import { NavLink } from "react-router-dom";
 import { Icon } from "antd";
+import { breakpoints } from "styled";
 
 const fadeIn = keyframes`
    from {
@@ -42,6 +43,21 @@ const Wrapper = styled.nav`
 
   position: fixed;
 
+  @media only screen and (max-width: ${breakpoints.bpMedium}) {
+    bottom: 0;
+    top: 0;
+    height: auto;
+    width: 100%;
+
+    position: sticky;
+
+    border-right: none;
+    border-top: 1px solid ${props => props.theme.fontColors.textRgba(0.1)};
+    padding: 1rem 0;
+
+    flex-direction: row;
+  }
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,23 +65,37 @@ const Wrapper = styled.nav`
 
   & > a:not(:last-child) {
     margin-bottom: 3.5rem;
+
+    @media only screen and (max-width: ${breakpoints.bpMedium}) {
+      margin-bottom: 0;
+    }
   }
 
-  & .active {
+  .active {
     & p {
       display: initial;
       animation: ${fadeInUpText} ease-out 0.3s;
       margin-bottom: -1.3rem;
+
+      @media only screen and (max-width: ${breakpoints.bpMedium}) {
+        color: ${props => props.theme.colors.main};
+      }
     }
 
     & i {
       animation: ${fadeInUp} ease-out 0.3s;
+
+      @media only screen and (max-width: ${breakpoints.bpMedium}) {
+        & > svg {
+          fill: ${props => props.theme.colors.main};
+        }
+      }
     }
 
     position: relative;
   }
 
-  & .active::after {
+  .active::after {
     content: "";
     position: absolute;
     width: 100%;
@@ -73,6 +103,10 @@ const Wrapper = styled.nav`
     border-right: 0.5rem solid ${props => props.theme.colors.main};
 
     animation: ${fadeIn} 0.5s;
+
+    @media only screen and (max-width: ${breakpoints.bpMedium}) {
+      display: none;
+    }
   }
 
   & p {
@@ -88,6 +122,10 @@ const Item = styled(NavLink)`
 
   width: 100%;
   height: 9.5rem;
+
+  @media only screen and (max-width: ${breakpoints.bpMedium}) {
+    height: 5rem;
+  }
 `;
 
 const StyledIcon = styled(Icon)`
@@ -125,10 +163,10 @@ const Sidebar: React.FC = props => {
         <StyledIcon type="team" />
         <Text>Friends and classes</Text>
       </Item>
-      <Item activeClassName="active" to="/dashboard/schedule">
+       <Item activeClassName="active" to="/dashboard/schedule">
         <StyledIcon type="calendar" />
         <Text>Schedule</Text>
-      </Item> */}
+      </Item>  */}
     </Wrapper>
   );
 };
