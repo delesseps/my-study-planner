@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   Drawer,
   Form,
@@ -149,7 +149,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
                 message: "Please select time!"
               }
             ]
-          })(<DatePicker autoFocus={false} disabledDate={disabledDate} />)}
+          })(<DatePicker disabledDate={disabledDate} />)}
         </Form.Item>
         <Form.Item>
           <Button
