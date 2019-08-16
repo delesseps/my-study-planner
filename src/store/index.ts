@@ -54,7 +54,9 @@ export default function configureStore() {
   const store = createStore(
     createRootReducer(history),
     initialState,
-    compose(applyMiddleware(routerMiddleware(history), thunk, logger))
+    process.env.NODE_ENV === "production"
+      ? compose(applyMiddleware(routerMiddleware(history), thunk))
+      : compose(applyMiddleware(routerMiddleware(history), thunk, logger))
   );
 
   return store;
