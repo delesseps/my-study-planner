@@ -5,13 +5,29 @@ import styled from "styled-components";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import { welcomeModal } from "store/effects";
+import { breakpoints } from "styled";
 
 const StyledModal = styled(Modal)`
+  @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+    && {
+      top: 0;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+  }
+
   & .ant-modal-content {
     background-color: ${props => props.theme.backgroundColor};
     border-radius: 10px;
     overflow: hidden;
     width: 65rem;
+
+    @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+    }
   }
 
   & .ant-modal-close-icon {
@@ -27,6 +43,11 @@ const StyledModal = styled(Modal)`
     padding-top: 0;
     padding-right: 0;
     padding-left: 0;
+
+    @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+      width: 100vw;
+      height: 100vh;
+    }
   }
 
   border-radius: 9px;
@@ -61,6 +82,11 @@ const TextWrapper = styled.section`
   & > *:not(:last-child) {
     margin-bottom: 0.5rem;
   }
+
+  @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+    height: 70%;
+    justify-content: space-around;
+  }
 `;
 
 const Title = styled.h1`
@@ -70,6 +96,10 @@ const Title = styled.h1`
   font-weight: 700;
 
   font-size: 3rem;
+
+  @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+    text-align: center;
+  }
 `;
 
 const Subtitle = styled.h2`
@@ -78,6 +108,10 @@ const Subtitle = styled.h2`
   font-size: 1.8rem;
 
   margin: 0;
+
+  @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+    text-align: center;
+  }
 
   && {
     margin-bottom: 4rem;
