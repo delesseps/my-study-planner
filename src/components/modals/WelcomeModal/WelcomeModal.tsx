@@ -162,7 +162,7 @@ const WelcomeModal: React.FunctionComponent<IWelcomeModalProps> = ({
           Help me build a better experience for your student life!
         </Subtitle>
         <Body>
-          Until all features are built, you can give feedback for features that
+          Until all features are built, you can give feedback for the ones that
           you do not like, or bugs you find along the way. Also, feel free to
           suggest new ideas! Without further ado, Start your journey in My Study
           Planner!
