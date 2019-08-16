@@ -30,7 +30,11 @@ const OAuthButtons = ({ type }: { type?: string }) => {
     <Wrapper>
       <GoogleButton
         className="ant-btn ant-btn-default ant-btn-lg ant-btn-block"
-        href="http://localhost:3001/api/auth/google"
+        href={
+          process.env.NODE_ENV === "production"
+            ? "https://msp-api.jfelix.info/api/auth/google/callback"
+            : "http://localhost:3001/api/auth/google"
+        }
       >
         <StyledGoogleLogo />
         {type === "signin" ? "Sign in with Google" : "Sign up with Google"}
