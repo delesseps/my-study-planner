@@ -26,7 +26,7 @@ const Wrapper = styled.main`
   display: flex;
 
   @media only screen and (max-width: ${breakpoints.bpMedium}) {
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 
   background-color: ${props => props.theme.backgroundColor};
@@ -50,7 +50,7 @@ const Sider = styled.section`
     width: 100%;
     z-index: 1000;
 
-    position: sticky;
+    position: fixed;
     bottom: 0;
   }
 `;
@@ -71,11 +71,11 @@ const Content = styled.section`
   }
 
   @media only screen and (max-width: ${breakpoints.bpMobileL}) {
-    padding: 4rem 1rem;
+    padding: 4rem 1rem 9rem 1rem;
   }
 
   @media only screen and (max-width: ${breakpoints.bpMobileS}) {
-    padding: 4rem 0.2rem;
+    padding: 4rem 0.2rem 10rem 0.2rem;
   }
 `;
 interface IDashboardProps {

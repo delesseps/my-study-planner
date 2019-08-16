@@ -56,6 +56,10 @@ const StyledIcon = styled(Icon)`
   font-size: 2.3rem;
   margin-right: 3.5rem;
 
+  @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+    margin-right: 2rem;
+  }
+
   && {
     color: ${props => props.theme.fontColors.textRgba(0.8)};
   }

@@ -5,6 +5,7 @@ import { ApplicationState } from "store/types";
 import IUserConfig from "interfaces/IUserConfig";
 import { useDispatch, connect } from "react-redux";
 import { updateUserConfig } from "store/effects";
+import { breakpoints } from "styled";
 
 const Wrapper = styled.section`
   display: flex;
@@ -12,6 +13,10 @@ const Wrapper = styled.section`
 
   margin: 0 auto;
   width: 60rem;
+
+  @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+    width: 100%;
+  }
 
   justify-content: center;
   align-items: center;
@@ -26,6 +31,10 @@ const Title = styled.h4`
   letter-spacing: 1px;
   margin: 0;
   margin-bottom: 1rem;
+
+  @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+    margin-left: 1rem;
+  }
 
   color: ${props => props.theme.fontColors.textRgba(0.8)};
 `;
