@@ -149,7 +149,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
                 message: "Please select time!"
               }
             ]
-          })(<DatePicker disabledDate={disabledDate} />)}
+          })(<DatePicker autoFocus={false} disabledDate={disabledDate} />)}
         </Form.Item>
         <Form.Item>
           <Button
