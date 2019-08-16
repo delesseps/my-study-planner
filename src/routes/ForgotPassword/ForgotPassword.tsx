@@ -120,6 +120,7 @@ const ForgotPassword: React.FunctionComponent<IResetPasswordProps> = ({
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
+  const [oauthError, setOauthError] = React.useState(false);
 
   const handleSubmit = (e: React.FormEvent, form: WrappedFormUtils): void => {
     e.preventDefault();
@@ -147,6 +148,11 @@ const ForgotPassword: React.FunctionComponent<IResetPasswordProps> = ({
       setLoading(false);
       setSuccess(true);
     } catch (e) {
+      if (e.response.status === 400) {
+        setOauthError(true);
+        return setLoading(false);
+      }
+
       setLoading(false);
       setError(true);
     }
@@ -162,6 +168,13 @@ const ForgotPassword: React.FunctionComponent<IResetPasswordProps> = ({
         {error && (
           <StyledError
             message="Error sending recovery link, is this the right email?"
+            type="error"
+            showIcon
+          />
+        )}
+        {oauthError && (
+          <StyledError
+            message="Google linked accounts can not recover a password!"
             type="error"
             showIcon
           />
