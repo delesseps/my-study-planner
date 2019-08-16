@@ -124,7 +124,8 @@ export const signOut = (): Effect => dispatch => {
 
   return signOutService()
     .then((response: AxiosResponse) => {
-      cookies.remove("IS_LOGGED_IN", { path: "/" });
+      const domain = process.env.NODE_ENV === "production" ? "jfelix.info" : "localhost";
+      cookies.remove("IS_LOGGED_IN", { path: "/", domain });
 
       dispatch(signOutSuccess());
       dispatch<any>(push("/signin"));
@@ -323,10 +324,9 @@ export const welcomeModal = (): Effect => dispatch => {
 
   const modalService = new ModalService();
 
-  return modalService.WelcomeModal()
-    .then(() =>
-      dispatch<any>(modalSuccess("welcome"))
-    )
+  return modalService
+    .WelcomeModal()
+    .then(() => dispatch<any>(modalSuccess("welcome")))
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
       response ? dispatch(modalError(response)) : noConnectionToServer()
     );

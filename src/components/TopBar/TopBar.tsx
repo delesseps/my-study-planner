@@ -9,6 +9,7 @@ import UserProfileModal from "components/modals/UserProfileModal/UserProfileModa
 import IUser from "interfaces/IUser";
 import { Link } from "react-router-dom";
 import { breakpoints } from "styled";
+import { push } from "connected-react-router";
 
 const Wrapper = styled.section`
   display: flex;
@@ -23,6 +24,8 @@ const Wrapper = styled.section`
 const LogoBox = styled.div`
   display: flex;
   align-items: center;
+
+  cursor: pointer;
 `;
 
 const StyledLogo = styled(Logo)`
@@ -151,6 +154,10 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
     setShowNotifications(visible);
   };
 
+  const handleHomeClick = () => {
+    dispatch(push("/dashboard"));
+  };
+
   const userOptions = (
     <Menu>
       <Menu.Item>
@@ -179,7 +186,7 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
   return (
     <Wrapper>
       <UserProfileModal user={user} visible={visible} setVisible={setVisible} />
-      <LogoBox>
+      <LogoBox onClick={handleHomeClick}>
         <StyledLogo />
         <Title>My Study Planner</Title>
       </LogoBox>
