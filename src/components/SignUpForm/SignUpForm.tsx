@@ -154,6 +154,10 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             },
             {
               validator: validateToNextPassword
+            },
+            {
+              min: 6,
+              message: "Password must have a minimum of 6 characters."
             }
           ]
         })(
@@ -173,6 +177,10 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             },
             {
               validator: compareToFirstPassword
+            },
+            {
+              min: 6,
+              message: "Password must have a minimum of 6 characters."
             }
           ]
         })(
