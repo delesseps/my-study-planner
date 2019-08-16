@@ -101,12 +101,6 @@ const StyledCheck = styled(Check)`
   width: 16rem;
   height: 12rem;
 
-  @media only screen and (max-width: ${breakpoints.bpMedium}) {
-    width: 10rem;
-
-    right: 6rem;
-  }
-
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
     bottom: 2rem;
   }
