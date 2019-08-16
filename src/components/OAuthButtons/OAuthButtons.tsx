@@ -32,7 +32,7 @@ const OAuthButtons = ({ type }: { type?: string }) => {
         className="ant-btn ant-btn-default ant-btn-lg ant-btn-block"
         href={
           process.env.NODE_ENV === "production"
-            ? "https://msp-api.jfelix.info/api/auth/google/callback"
+            ? "https://msp-api.jfelix.info/api/auth/google/"
             : "http://localhost:3001/api/auth/google"
         }
       >

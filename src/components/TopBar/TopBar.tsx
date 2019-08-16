@@ -17,7 +17,7 @@ const Wrapper = styled.section`
   align-items: center;
 
   @media only screen and (max-width: ${breakpoints.bpMobileL}) {
-    padding: 0 3rem;
+    padding: 0 1.5rem;
   }
 `;
 
