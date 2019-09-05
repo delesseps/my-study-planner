@@ -170,6 +170,7 @@ export const updateUserConfig = (config: IUserConfig): Effect => dispatch => {
 
   return userConfigService(config)
     .then(({ data }: { data: { config: IUserConfig } }) => {
+      localStorage.setItem("config", JSON.stringify(data.config));
       dispatch(userConfigSuccess(data.config));
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>

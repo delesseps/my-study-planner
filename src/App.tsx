@@ -15,10 +15,16 @@ interface IAppProps {
   config: IUserConfig;
 }
 
+const userConfig = JSON.parse(localStorage.getItem("config") as string);
+
 const App: React.FunctionComponent<IAppProps> = ({ config }) => {
+  const isDarkMode = userConfig.darkMode
+    ? userConfig.darkMode
+    : config.darkMode;
+
   return (
     <ConnectedRouter history={history}>
-      <ThemeProvider theme={config.darkMode ? darkTheme : lightTheme}>
+      <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
         <CookiesProvider>
           <Router />
         </CookiesProvider>
