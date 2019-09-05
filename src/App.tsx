@@ -18,9 +18,8 @@ interface IAppProps {
 const userConfig = JSON.parse(localStorage.getItem("config") as string);
 
 const App: React.FunctionComponent<IAppProps> = ({ config }) => {
-  const isDarkMode = userConfig.darkMode
-    ? userConfig.darkMode
-    : config.darkMode;
+  const isDarkMode =
+    userConfig && userConfig.darkMode ? userConfig.darkMode : config.darkMode;
 
   return (
     <ConnectedRouter history={history}>
