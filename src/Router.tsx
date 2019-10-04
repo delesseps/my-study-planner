@@ -1,8 +1,8 @@
 import React from "react";
 import { createGlobalStyle } from "styled-components";
 import { Switch, Route, Redirect } from "react-router";
-import Dashboard from "./routes/Dashboard/Dashboard";
-import Loading from "components/Loading/Loading";
+import Dashboard from "./routes/Dashboard";
+import Loading from "components/Loading";
 import { breakpoints } from "styled";
 import { Cookies, withCookies } from "react-cookie";
 
@@ -10,19 +10,104 @@ import { connect } from "react-redux";
 import { ApplicationState } from "store/types";
 import IUserConfig from "interfaces/IUserConfig";
 
-const SignIn = React.lazy(() => import("routes/SignIn/SignIn"));
-const SignUp = React.lazy(() => import("routes/SignUp/SignUp"));
-const Window404 = React.lazy(() => import("routes/Route404/Route404"));
-const ForgotPassword = React.lazy(() =>
-  import("routes/ForgotPassword/ForgotPassword")
-);
-const ChangePassword = React.lazy(() =>
-  import("routes/ChangePassword/ChangePassword")
-);
+const SignIn = React.lazy(() => import("routes/SignIn"));
+const SignUp = React.lazy(() => import("routes/SignUp"));
+const Window404 = React.lazy(() => import("routes/Route404"));
+const ForgotPassword = React.lazy(() => import("routes/ForgotPassword"));
+const ChangePassword = React.lazy(() => import("routes/ChangePassword"));
 
-const LinkGoogleAccount = React.lazy(() =>
-  import("routes/LinkGoogleAccount/LinkGoogleAccount")
-);
+const LinkGoogleAccount = React.lazy(() => import("routes/LinkGoogleAccount"));
+
+interface IRouterProps {
+  cookies: Cookies;
+  config?: IUserConfig;
+}
+
+const Router: React.FC<IRouterProps> = ({ cookies, config }) => {
+  return (
+    <React.Fragment>
+      <CSSReset />
+      <React.Suspense fallback={<Loading />}>
+        <Switch>
+          <Route path="/" exact render={() => <Redirect to="/dashboard" />} />
+          <Route
+            path="/dashboard"
+            render={props => {
+              return cookies.get("IS_LOGGED_IN") ? (
+                <Dashboard />
+              ) : (
+                <Redirect to="/signin" />
+              );
+            }}
+          />
+          <Route
+            path="/signin"
+            exact
+            render={props =>
+              cookies.get("IS_LOGGED_IN") ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <SignIn />
+              )
+            }
+          />
+          <Route
+            path="/signup"
+            exact
+            render={props =>
+              cookies.get("IS_LOGGED_IN") ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <SignUp />
+              )
+            }
+          />
+          <Route
+            path="/forgot_password"
+            exact
+            render={props =>
+              cookies.get("IS_LOGGED_IN") ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <ForgotPassword />
+              )
+            }
+          />
+          <Route
+            path="/change_password/:token"
+            exact
+            render={props =>
+              cookies.get("IS_LOGGED_IN") ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <ChangePassword {...props} />
+              )
+            }
+          />
+          <Route
+            path="/link/google/:token/:email"
+            exact
+            render={props =>
+              cookies.get("IS_LOGGED_IN") ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <LinkGoogleAccount {...props} />
+              )
+            }
+          />
+          <Route
+            path="/404"
+            exact
+            render={() =>
+              config && config.darkMode ? <Window404 white /> : <Window404 />
+            }
+          />
+          <Redirect to="/404" />
+        </Switch>
+      </React.Suspense>
+    </React.Fragment>
+  );
+};
 
 const CSSReset = createGlobalStyle`
   * {
@@ -83,7 +168,8 @@ const CSSReset = createGlobalStyle`
       background-color: ${props => props.theme.backgroundColor};
     }
 
-    & .ant-select-selection, .ant-radio-button-wrapper, .ant-calendar-date-input-wrap .ant-calendar-input {
+    & .ant-select-selection, .ant-radio-button-wrapper, .ant-calendar-date-input-wrap 
+    .ant-calendar-input {
       background-color: ${props => props.theme.panelBackgroundColor};
       color: ${props => props.theme.fontColors.text};
     }
@@ -93,9 +179,15 @@ const CSSReset = createGlobalStyle`
       background-color: ${props => props.theme.panelBackgroundColor};          
     }
 
-    & .ant-popover-placement-top > .ant-popover-content .ant-popover-arrow {
+    & .ant-popover-placement-top > .ant-popover-content .ant-popover-arrow
+     {
       border-bottom-color: ${props => props.theme.panelBackgroundColor};
       border-right-color: ${props => props.theme.panelBackgroundColor};
+    }
+
+    .ant-popover-placement-bottom > .ant-popover-content .ant-popover-arrow {
+      border-top-color: ${props => props.theme.panelBackgroundColor};
+      border-left-color: ${props => props.theme.panelBackgroundColor};
     }
 
     & .has-error .ant-input {
@@ -190,97 +282,6 @@ const CSSReset = createGlobalStyle`
 
   *::-webkit-scrollbar-button {display:none}
 `;
-
-interface IRouterProps {
-  cookies: Cookies;
-  config: IUserConfig;
-}
-
-const Router: React.FC<IRouterProps> = ({ cookies, config }) => {
-  return (
-    <React.Fragment>
-      <CSSReset />
-      <React.Suspense fallback={<Loading />}>
-        <Switch>
-          <Route path="/" exact render={() => <Redirect to="/dashboard" />} />
-          <Route
-            path="/dashboard"
-            render={props => {
-              return cookies.get("IS_LOGGED_IN") ? (
-                <Dashboard />
-              ) : (
-                <Redirect to="/signin" />
-              );
-            }}
-          />
-          <Route
-            path="/signin"
-            exact
-            render={props =>
-              cookies.get("IS_LOGGED_IN") ? (
-                <Redirect to="/dashboard" />
-              ) : (
-                <SignIn />
-              )
-            }
-          />
-          <Route
-            path="/signup"
-            exact
-            render={props =>
-              cookies.get("IS_LOGGED_IN") ? (
-                <Redirect to="/dashboard" />
-              ) : (
-                <SignUp />
-              )
-            }
-          />
-          <Route
-            path="/forgot_password"
-            exact
-            render={props =>
-              cookies.get("IS_LOGGED_IN") ? (
-                <Redirect to="/dashboard" />
-              ) : (
-                <ForgotPassword />
-              )
-            }
-          />
-          <Route
-            path="/change_password/:token"
-            exact
-            render={props =>
-              cookies.get("IS_LOGGED_IN") ? (
-                <Redirect to="/dashboard" />
-              ) : (
-                <ChangePassword {...props} />
-              )
-            }
-          />
-          <Route
-            path="/link/google/:token/:email"
-            exact
-            render={props =>
-              cookies.get("IS_LOGGED_IN") ? (
-                <Redirect to="/dashboard" />
-              ) : (
-                <LinkGoogleAccount {...props} />
-              )
-            }
-          />
-          <Route
-            path="/404"
-            exact
-            render={() =>
-              config.darkMode ? <Window404 white /> : <Window404 />
-            }
-          />
-          <Redirect to="/404" />
-        </Switch>
-      </React.Suspense>
-    </React.Fragment>
-  );
-};
 
 const mapStateToProps = (state: ApplicationState) => ({
   config: state.reducer.user.configuration

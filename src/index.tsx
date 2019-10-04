@@ -8,8 +8,10 @@ import App from "App";
 import { Provider } from "react-redux";
 
 import configureStore from "store";
+import { PersistGate } from "redux-persist/integration/react";
+import { Loading } from "components";
 
-const store = configureStore();
+const { persistor, store } = configureStore();
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
@@ -24,7 +26,9 @@ if ("serviceWorker" in navigator) {
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <PersistGate loading={<Loading />} persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>,
   document.getElementById("root")
 );

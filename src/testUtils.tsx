@@ -6,7 +6,7 @@ import { ThemeProvider, DefaultTheme } from "styled-components";
 import { Provider } from "react-redux";
 import configureStore from "store";
 
-const initialStore = configureStore();
+const { store: initialStore } = configureStore();
 
 export const mountWithTheme = (
   tree: ReactElement<any>,

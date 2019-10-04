@@ -7,10 +7,9 @@ import createRootReducer from "./reducer";
 import { createBrowserHistory } from "history";
 import { routerMiddleware } from "connected-react-router";
 import { ApplicationState } from "./types";
+import { persistStore, persistReducer } from 'redux-persist'
 
-const logger = createLogger();
-
-export const history = createBrowserHistory();
+import localforage from "localforage";
 
 export const initialState: ApplicationState = {
   reducer: {
@@ -50,14 +49,29 @@ export const initialState: ApplicationState = {
   }
 };
 
+
+const logger = createLogger();
+export const history = createBrowserHistory();
+
+const persistConfig = {
+  key: 'root',
+  storage: localforage,
+}
+
+const middlewares = process.env.NODE_ENV === "production"
+  ? [routerMiddleware(history), thunk]
+  : [routerMiddleware(history), thunk, logger]
+
+const rootReducer = createRootReducer(history);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 export default function configureStore() {
   const store = createStore(
-    createRootReducer(history),
+    persistedReducer,
     initialState,
-    process.env.NODE_ENV === "production"
-      ? compose(applyMiddleware(routerMiddleware(history), thunk))
-      : compose(applyMiddleware(routerMiddleware(history), thunk, logger))
+    compose(applyMiddleware(...middlewares))
   );
+  let persistor = persistStore(store)
 
-  return store;
+  return { persistor, store };
 }
