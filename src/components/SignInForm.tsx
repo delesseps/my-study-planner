@@ -86,7 +86,7 @@ const SignInForm: React.FC<ISignInFormProps> = ({
       </Form.Item>
       <Form.Item label="Password">
         {getFieldDecorator("password", {
-          rules: [{ required: true, message: "Please input your Password!" }]
+          rules: [{ required: true, message: "Please input your password!" }]
         })(
           <Input.Password
             prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -107,7 +107,13 @@ const SignInForm: React.FC<ISignInFormProps> = ({
         </OptionsWrapper>
       </Form.Item>
       <Form.Item>
-        <Button loading={loading} type="primary" size="large" htmlType="submit">
+        <Button
+          data-testid="submit"
+          loading={loading}
+          type="primary"
+          size="large"
+          htmlType="submit"
+        >
           Sign In
         </Button>
       </Form.Item>

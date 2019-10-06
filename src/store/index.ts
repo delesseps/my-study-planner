@@ -58,17 +58,17 @@ const persistConfig = {
   storage: localforage,
 }
 
-const middlewares = process.env.NODE_ENV === "production"
-  ? [routerMiddleware(history), thunk]
-  : [routerMiddleware(history), thunk, logger]
+const middlewares = process.env.NODE_ENV === "development"
+  ? [routerMiddleware(history), thunk, logger]
+  : [routerMiddleware(history), thunk]
 
 const rootReducer = createRootReducer(history);
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export default function configureStore() {
+export default function configureStore(state = initialState) {
   const store = createStore(
     persistedReducer,
-    initialState,
+    state,
     compose(applyMiddleware(...middlewares))
   );
   let persistor = persistStore(store)

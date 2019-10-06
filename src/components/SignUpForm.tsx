@@ -98,7 +98,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
           </Form.Item>
         </FadeIn>
       )}
-      <Form.Item label="Full name">
+      <Form.Item label="Full Name">
         {getFieldDecorator("name", {
           rules: [{ required: true, message: "Please input your full name!" }]
         })(
@@ -172,7 +172,13 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
         )}
       </Form.Item>
       <Form.Item>
-        <Button loading={loading} type="primary" size="large" htmlType="submit">
+        <Button
+          data-testid="submit"
+          loading={loading}
+          type="primary"
+          size="large"
+          htmlType="submit"
+        >
           Sign Up
         </Button>
       </Form.Item>

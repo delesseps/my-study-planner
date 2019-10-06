@@ -8,12 +8,10 @@ interface IUserProfileModalProps {
   user: IUser;
   visible: boolean;
   setVisible: Function;
-  me?: boolean;
 }
 
 const UserProfileModal: React.FunctionComponent<IUserProfileModalProps> = ({
   user,
-  me,
   visible,
   setVisible
 }) => {

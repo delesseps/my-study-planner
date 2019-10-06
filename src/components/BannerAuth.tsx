@@ -5,24 +5,22 @@ import { ReactComponent as Stars } from "assets/stars.svg";
 import { ReactComponent as Check } from "assets/check.svg";
 import { breakpoints } from "styled";
 
-const BannerAuth: React.FC = () => {
-  return (
-    <Wrapper>
-      <Text>
-        Plan your activities, have fun and <br /> keep those grades up!
-      </Text>
-      <Text>
-        Don’t ever forget a single <br /> homework again!
-      </Text>
-      <SVGWrapper>
-        <StyledStars />
-        <StyledLogoSharp />
-        <StyledCheck />
-      </SVGWrapper>
-      <Text>Continue and get things done!</Text>
-    </Wrapper>
-  );
-};
+const BannerAuth: React.FC = () => (
+  <Wrapper>
+    <Text>
+      Plan your activities, have fun and <br /> keep those grades up!
+    </Text>
+    <Text>
+      Don’t ever forget a single <br /> homework again!
+    </Text>
+    <SVGWrapper>
+      <StyledStars />
+      <StyledLogoSharp />
+      <StyledCheck />
+    </SVGWrapper>
+    <Text>Continue and get things done!</Text>
+  </Wrapper>
+);
 
 const twinkle = keyframes`
   from {

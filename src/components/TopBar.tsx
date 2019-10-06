@@ -10,27 +10,28 @@ import IUser from "interfaces/IUser";
 import { Link } from "react-router-dom";
 import { breakpoints } from "styled";
 import { push } from "connected-react-router";
+import { useToggle } from "utils/hooks";
+
+const mapStateToProps = (state: ApplicationState) => ({
+  loading: state.reducer.loading.user,
+  user: state.reducer.user
+});
 
 interface ITopBarProps {
-  loading: boolean;
-  user: IUser;
+  loading?: boolean;
+  user?: IUser;
 }
 
 const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
   const dispatch = useDispatch();
-  const [visible, setVisible] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
+  const { toggled: showProfile, toggle: toggleProfile } = useToggle();
+  const {
+    toggled: showNotifications,
+    toggle: toggleNotifications
+  } = useToggle();
 
   const handleSignOut = () => {
     dispatch(signOut());
-  };
-
-  const handleProfileClick = () => {
-    setVisible(true);
-  };
-
-  const handleVisibleChange = (visible: boolean) => {
-    setShowNotifications(visible);
   };
 
   const handleHomeClick = () => {
@@ -40,7 +41,7 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
   const userOptions = (
     <Menu>
       <Menu.Item>
-        <MenuButton onClick={handleProfileClick}>
+        <MenuButton onClick={toggleProfile}>
           <Icon type="user" />
           Profile
         </MenuButton>
@@ -64,7 +65,11 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
 
   return (
     <Wrapper>
-      <UserProfile user={user} visible={visible} setVisible={setVisible} />
+      <UserProfile
+        user={user as IUser}
+        visible={showProfile}
+        setVisible={toggleProfile}
+      />
       <LogoBox onClick={handleHomeClick}>
         <StyledLogo />
         <Title>My Study Planner</Title>
@@ -79,11 +84,16 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
           }
           trigger="click"
           visible={showNotifications}
-          onVisibleChange={handleVisibleChange}
+          onVisibleChange={toggleNotifications}
         >
           <StyledIcon type="bell" />
         </Popover>
-        <Avatar shape="square" size={60} icon="user" src={user.picture} />
+        <Avatar
+          shape="square"
+          size={60}
+          icon="user"
+          src={user && user.picture}
+        />
         <UserInfoBox>
           <StyledSkeleton
             loading={loading}
@@ -92,10 +102,12 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
           >
             <NameCaretWrapper placement="bottomRight" overlay={userOptions}>
               <Name>
-                {user.name} <Icon type="caret-down" />
+                {user && user.name} <Icon type="caret-down" />
               </Name>
             </NameCaretWrapper>
-            <Role>{user.role === "user" ? "Student" : "Administrator"}</Role>
+            <Role>
+              {user && user.role === "user" ? "Student" : "Administrator"}
+            </Role>
           </StyledSkeleton>
         </UserInfoBox>
       </UserBox>
@@ -227,13 +239,6 @@ const StyledEmpty = styled(Empty)`
     color: ${props => props.theme.fontColors.textRgba(0.8)};
   }
 `;
-
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    loading: state.reducer.loading.user,
-    user: state.reducer.user
-  };
-};
 
 export default connect(
   mapStateToProps,
