@@ -15,7 +15,7 @@ const mapStateToProps = (state: ApplicationState) => {
 };
 
 interface IEvaluationProps {
-  evaluations: IEvaluation[];
+  evaluations?: IEvaluation[];
 }
 
 const Evaluation: React.FC<IEvaluationProps> = ({ evaluations }) => {
@@ -35,7 +35,7 @@ const Evaluation: React.FC<IEvaluationProps> = ({ evaluations }) => {
         <EvaluationDrawer />
       </Header>
       <Content>
-        {evaluations.filter(evaluation => !evaluation.done).length ? (
+        {evaluations?.filter(evaluation => !evaluation.done).length ? (
           evaluations.map(
             (evaluation, i) =>
               !evaluation.done && (
@@ -90,7 +90,4 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-export default connect(
-  mapStateToProps,
-  null
-)(Evaluation);
+export default connect(mapStateToProps, null)(Evaluation);

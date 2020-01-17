@@ -4,6 +4,8 @@ import { History } from "history";
 import { connectRouter } from "connected-react-router";
 import produce from "immer";
 import { message } from "antd";
+import { persistReducer } from "redux-persist";
+import localforage from "localforage";
 
 const initialState: ReducerState = {
   loading: {
@@ -65,8 +67,8 @@ const reducer = (state = initialState, action: ApplicationAction) => {
         draft.error = {
           ...draft.error,
           signIn: {
-            message: action.error.data.errors.message,
-            status: action.error.status,
+            message: action?.error?.data.errors.message,
+            status: action?.error?.status,
             state: true
           }
         };
@@ -90,14 +92,17 @@ const reducer = (state = initialState, action: ApplicationAction) => {
     case "signUpError":
       return produce(state, draft => {
         draft.loading.signUp = false;
-        draft.error = {
-          ...draft.error,
-          signUp: {
-            message: action.error.data.errors.message,
-            status: action.error.status,
-            state: true
-          }
-        };
+
+        if (action.error) {
+          draft.error = {
+            ...draft.error,
+            signUp: {
+              message: action?.error?.data.errors.message,
+              status: action?.error?.status,
+              state: true
+            }
+          };
+        }
       });
     /**
      *
@@ -540,8 +545,14 @@ const reducer = (state = initialState, action: ApplicationAction) => {
   }
 };
 
+const reducerConfig = {
+  key: "reducer",
+  storage: localforage,
+  blacklist: ["loading", "error"]
+};
+
 export default (history: History) =>
   combineReducers({
     router: connectRouter(history),
-    reducer
+    reducer: persistReducer(reducerConfig, reducer)
   });

@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from "react";
 import IUser from "interfaces/IUser";
-import { ApplicationState } from "store/types";
-import { connect } from "react-redux";
 import styled from "styled-components";
 import { isThisWeek } from "utils";
 import moment from "moment";
-
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    user: state.reducer.user
-  };
-};
 
 interface ICounterProps {
   homework?: boolean;
@@ -83,7 +75,4 @@ const Count = styled.h1`
   color: ${props => props.theme.fontColors.textRgba(0.8)};
 `;
 
-export default connect(
-  mapStateToProps,
-  null
-)(Counter);
+export default Counter;

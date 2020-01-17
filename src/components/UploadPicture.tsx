@@ -42,7 +42,7 @@ const mapStateToProps = (state: ApplicationState) => ({
 });
 
 interface IUploadPictureProps {
-  user: IUser;
+  user?: IUser;
 }
 
 const UploadPicture: React.FC<IUploadPictureProps> = ({ user }) => {
@@ -63,7 +63,7 @@ const UploadPicture: React.FC<IUploadPictureProps> = ({ user }) => {
       beforeUpload={beforeUpload}
       action={handleUpload}
     >
-      <Avatar shape="square" size={120} icon="user" src={user.picture} />
+      <Avatar shape="square" size={120} icon="user" src={user?.picture} />
     </StyledUpload>
   );
 };
@@ -80,7 +80,4 @@ const StyledUpload = styled(Upload)`
   }
 `;
 
-export default connect(
-  mapStateToProps,
-  null
-)(UploadPicture);
+export default connect(mapStateToProps, null)(UploadPicture);

@@ -13,7 +13,7 @@ const mapStateToProps = (state: ApplicationState) => ({
 });
 
 interface IEvaluationProps {
-  toDos: IToDo[];
+  toDos?: IToDo[];
 }
 
 const ToDo: React.FunctionComponent<IEvaluationProps> = ({ toDos }) => {
@@ -33,7 +33,7 @@ const ToDo: React.FunctionComponent<IEvaluationProps> = ({ toDos }) => {
         <ToDoDrawer />
       </Header>
       <Content>
-        {toDos.filter(toDo => !toDo.done).length ? (
+        {toDos?.filter(toDo => !toDo.done).length ? (
           toDos.map(
             (toDo, i) =>
               !toDo.done && <ToDoCard index={i} key={toDo._id} toDo={toDo} />
@@ -78,7 +78,4 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-export default connect(
-  mapStateToProps,
-  null
-)(ToDo);
+export default connect(mapStateToProps, null)(ToDo);

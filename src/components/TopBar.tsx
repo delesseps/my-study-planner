@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import { Icon, Avatar, Dropdown, Menu, Skeleton, Popover, Empty } from "antd";

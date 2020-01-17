@@ -11,21 +11,25 @@ import {
   CalendarPanel
 } from "components/panels";
 import WelcomeModal from "components/modals/Welcome";
+import { useSelector } from "react-redux";
+import { ApplicationState } from "store/types";
 
 const HomeSchedulePanel = React.lazy(() =>
   import("../components/panels/HomeSchedulePanel")
 );
 
-const Home: React.FC = props => {
+const Home: React.FC = () => {
+  const user = useSelector((state: ApplicationState) => state.reducer.user);
+
   return (
     <FadeIn>
       <Wrapper>
         <WelcomeModal />
         <CounterPanelLeft>
-          <CounterPanel homework />
+          <CounterPanel user={user} homework />
         </CounterPanelLeft>
         <CounterPanelRight>
-          <CounterPanel />
+          <CounterPanel user={user} />
         </CounterPanelRight>
 
         <HomeSchedulePanelWrapper>

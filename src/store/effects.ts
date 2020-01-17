@@ -86,9 +86,6 @@ import IToDo from "interfaces/IToDo";
 
 type Effect = ThunkAction<any, ApplicationState, any, ApplicationAction>;
 
-const noConnectionToServer = () =>
-  message.error("Unable to connect to server. Please reload");
-
 ////////////
 //  AUTH //
 //////////
@@ -101,7 +98,7 @@ export const signIn = (credentials: ISignInCredentials): Effect => dispatch => {
       dispatch<any>(push("/dashboard"));
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response ? dispatch(signInError(response)) : noConnectionToServer()
+      dispatch(signInError(response))
     );
 };
 
@@ -114,7 +111,7 @@ export const signUp = (credentials: ISignUpCredentials): Effect => dispatch => {
       dispatch<any>(push("/dashboard"));
     })
     .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response ? dispatch(signUpError(response)) : noConnectionToServer()
+      dispatch(signUpError(response))
     );
 };
 
@@ -124,14 +121,16 @@ export const signOut = (): Effect => dispatch => {
 
   return signOutService()
     .then((response: AxiosResponse) => {
-      const domain = process.env.NODE_ENV === "production" ? "jfelix.info" : "localhost";
+      const domain =
+        process.env.NODE_ENV === "production" ? "jfelix.info" : "localhost";
       cookies.remove("IS_LOGGED_IN", { path: "/", domain });
 
       dispatch(signOutSuccess());
       dispatch<any>(push("/signin"));
     })
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response ? dispatch(signOutError(response)) : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(signOutError(response))
     );
 };
 
@@ -146,8 +145,9 @@ export const requestUser = (): Effect => dispatch => {
     .then(({ data }: { data: { user: IUser } }) => {
       dispatch(requestUserSuccess(data.user));
     })
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response ? dispatch(requestUserError(response)) : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(requestUserError(response))
     );
 };
 
@@ -160,8 +160,9 @@ export const uploadProfilePicture = (image: string): Effect => dispatch => {
       dispatch(uploadPictureSuccess(data.imageUrl));
       hide();
     })
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response ? dispatch(uploadPictureError(response)) : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(uploadPictureError(response))
     );
 };
 
@@ -173,8 +174,9 @@ export const updateUserConfig = (config: IUserConfig): Effect => dispatch => {
       localStorage.setItem("config", JSON.stringify(data.config));
       dispatch(userConfigSuccess(data.config));
     })
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response ? dispatch(userConfigError(response)) : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(userConfigError(response))
     );
 };
 
@@ -188,8 +190,9 @@ export const addEvaluation = (evaluation: IEvaluation): Effect => dispatch => {
     .then(({ data }: { data: { evaluation: IEvaluation } }) =>
       dispatch<any>(addEvaluationSuccess(data.evaluation))
     )
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response ? dispatch(addEvaluationError(response)) : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(addEvaluationError(response))
     );
 };
 
@@ -205,10 +208,9 @@ export const editEvaluation = (
       setVisibleEdit && setVisibleEdit(false);
       dispatch<any>(editEvaluationSuccess(data.evaluation, index));
     })
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response
-        ? dispatch(editEvaluationError(response))
-        : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(editEvaluationError(response))
     );
 };
 
@@ -222,10 +224,9 @@ export const deleteEvaluation = (
     .then(({ data }: { data: { evaluation: IEvaluation } }) =>
       dispatch<any>(deleteEvaluationSuccess(index))
     )
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response
-        ? dispatch(deleteEvaluationError(response))
-        : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(deleteEvaluationError(response))
     );
 };
 
@@ -239,8 +240,9 @@ export const addHomework = (homework: IHomework): Effect => dispatch => {
     .then(({ data }: { data: { homework: IHomework } }) =>
       dispatch<any>(addHomeworkSuccess(data.homework))
     )
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response ? dispatch(addHomeworkError(response)) : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(addHomeworkError(response))
     );
 };
 
@@ -256,8 +258,9 @@ export const editHomework = (
       setVisibleEdit && setVisibleEdit(false);
       dispatch<any>(editHomeworkSuccess(data.homework, index));
     })
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response ? dispatch(editHomeworkError(response)) : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(editHomeworkError(response))
     );
 };
 
@@ -271,10 +274,9 @@ export const deleteHomework = (
     .then(({ data }: { data: { homework: IHomework } }) =>
       dispatch<any>(deleteHomeworkSuccess(index))
     )
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response
-        ? dispatch(deleteHomeworkError(response))
-        : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(deleteHomeworkError(response))
     );
 };
 
@@ -288,8 +290,9 @@ export const addToDo = (toDo: IToDo): Effect => dispatch => {
     .then(({ data }: { data: { toDo: IToDo } }) =>
       dispatch<any>(addToDoSuccess(data.toDo))
     )
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response ? dispatch(addToDoError(response)) : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(addToDoError(response))
     );
 };
 
@@ -300,8 +303,9 @@ export const editToDo = (toDo: IToDo, index: number): Effect => dispatch => {
     .then(({ data }: { data: { toDo: IToDo } }) => {
       dispatch<any>(editToDoSuccess(data.toDo, index));
     })
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response ? dispatch(editToDoError(response)) : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(editToDoError(response))
     );
 };
 
@@ -312,8 +316,9 @@ export const deleteToDo = (id: string, index: number): Effect => dispatch => {
     .then(({ data }: { data: { toDo: IToDo } }) =>
       dispatch<any>(deleteToDoSuccess(index))
     )
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response ? dispatch(deleteToDoError(response)) : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(deleteToDoError(response))
     );
 };
 
@@ -328,7 +333,8 @@ export const welcomeModal = (): Effect => dispatch => {
   return modalService
     .WelcomeModal()
     .then(() => dispatch<any>(modalSuccess("welcome")))
-    .catch(({ response }: { response: IAxiosErrorResponse }) =>
-      response ? dispatch(modalError(response)) : noConnectionToServer()
+    .catch(
+      ({ response }: { response: IAxiosErrorResponse }) =>
+        response && dispatch(modalError(response))
     );
 };

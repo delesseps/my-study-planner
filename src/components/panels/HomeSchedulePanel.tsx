@@ -36,13 +36,13 @@ const mapStateToProps = (state: ApplicationState) => {
 };
 
 interface IHomeSchedulePanelProps {
-  evaluations: IEvaluation[];
-  homework: IHomework[];
+  evaluations?: IEvaluation[];
+  homework?: IHomework[];
 }
 
 const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = ({
-  evaluations,
-  homework
+  evaluations = [],
+  homework = []
 }) => {
   const [events, setEvents] = useState<IScheduleEvent[]>([]);
 
@@ -115,7 +115,4 @@ const StyledBigCalendar = styled(BigCalendar)`
   }
 `;
 
-export default connect(
-  mapStateToProps,
-  null
-)(HomeSchedulePanel);
+export default connect(mapStateToProps, null)(HomeSchedulePanel);

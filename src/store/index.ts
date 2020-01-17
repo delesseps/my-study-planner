@@ -7,7 +7,7 @@ import createRootReducer from "./reducer";
 import { createBrowserHistory } from "history";
 import { routerMiddleware } from "connected-react-router";
 import { ApplicationState } from "./types";
-import { persistStore, persistReducer } from 'redux-persist'
+import { persistStore, persistReducer } from "redux-persist";
 
 import localforage from "localforage";
 
@@ -49,18 +49,19 @@ export const initialState: ApplicationState = {
   }
 };
 
-
 const logger = createLogger();
 export const history = createBrowserHistory();
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage: localforage,
-}
+  blacklist: ["reducer"]
+};
 
-const middlewares = process.env.NODE_ENV === "development"
-  ? [routerMiddleware(history), thunk, logger]
-  : [routerMiddleware(history), thunk]
+const middlewares =
+  process.env.NODE_ENV === "development"
+    ? [routerMiddleware(history), thunk, logger]
+    : [routerMiddleware(history), thunk];
 
 const rootReducer = createRootReducer(history);
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -71,7 +72,7 @@ export default function configureStore(state = initialState) {
     state,
     compose(applyMiddleware(...middlewares))
   );
-  let persistor = persistStore(store)
+  let persistor = persistStore(store);
 
   return { persistor, store };
 }

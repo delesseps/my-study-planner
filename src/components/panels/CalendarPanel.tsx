@@ -25,13 +25,13 @@ const BadgeTitle = styled.span`
 `;
 
 interface ICalendarPanelProps {
-  evaluations: IEvaluation[];
-  homework: IHomework[];
+  evaluations?: IEvaluation[];
+  homework?: IHomework[];
 }
 
 const CalendarPanel: React.FC<ICalendarPanelProps> = ({
-  evaluations,
-  homework
+  evaluations = [],
+  homework = []
 }) => {
   const getListData = (value: Moment) => {
     //Get the evaluations of a specific day in a month
@@ -100,7 +100,11 @@ const CalendarPanel: React.FC<ICalendarPanelProps> = ({
             >
               <Badge
                 status={status}
-                text={<BadgeTitle>{assignmentType}: {item.subject}</BadgeTitle>}
+                text={
+                  <BadgeTitle>
+                    {assignmentType}: {item.subject}
+                  </BadgeTitle>
+                }
               />
             </li>
           );
@@ -146,7 +150,4 @@ const mapStateToProps = (state: ApplicationState) => ({
   config: state.reducer.user.configuration
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(CalendarPanel);
+export default connect(mapStateToProps, null)(CalendarPanel);

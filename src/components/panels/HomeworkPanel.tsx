@@ -15,7 +15,7 @@ const mapStateToProps = (state: ApplicationState) => {
 };
 
 interface IHomeworkProps {
-  homework: IHomework[];
+  homework?: IHomework[];
 }
 
 const Homework: React.FunctionComponent<IHomeworkProps> = ({ homework }) => {
@@ -33,7 +33,7 @@ const Homework: React.FunctionComponent<IHomeworkProps> = ({ homework }) => {
         <HomeworkDrawer />
       </Header>
       <Content>
-        {homework.filter(currHomework => !currHomework.done).length ? (
+        {homework?.filter(currHomework => !currHomework.done).length ? (
           homework.map(
             (currHomework, i) =>
               !currHomework.done && (
@@ -88,7 +88,4 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-export default connect(
-  mapStateToProps,
-  null
-)(Homework);
+export default connect(mapStateToProps, null)(Homework);

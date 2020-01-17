@@ -16,7 +16,7 @@ const api = ({
   }
 });
 
-const signIn = (credentials: ISignUpCredentials): Promise<AxiosResponse> =>
+const signUp = (credentials: ISignUpCredentials): Promise<AxiosResponse> =>
   agent.request(api(credentials));
 
-export default signIn;
+export default signUp;
