@@ -198,15 +198,26 @@ export const addEvaluation = (evaluation: IEvaluation): Effect => dispatch => {
 
 export const editEvaluation = (
   evaluation: IEvaluation,
-  index: number,
+  index?: number,
   setVisibleEdit?: Function
-): Effect => dispatch => {
+): Effect => (dispatch, getState) => {
   dispatch(editEvaluationRequest());
+
+  let evaluationIndex = index;
+
+  if (!index) {
+    const state = getState();
+    evaluationIndex = state.reducer.user.homework.findIndex(
+      elem => evaluation._id === elem._id
+    );
+  }
 
   return requestEditEvaluation(evaluation)
     .then(({ data }: { data: { evaluation: IEvaluation } }) => {
       setVisibleEdit && setVisibleEdit(false);
-      dispatch<any>(editEvaluationSuccess(data.evaluation, index));
+      dispatch<any>(
+        editEvaluationSuccess(data.evaluation, evaluationIndex as number)
+      );
     })
     .catch(
       ({ response }: { response: IAxiosErrorResponse }) =>
@@ -248,15 +259,25 @@ export const addHomework = (homework: IHomework): Effect => dispatch => {
 
 export const editHomework = (
   homework: IHomework,
-  index: number,
+  index?: number,
   setVisibleEdit?: Function
-): Effect => dispatch => {
+): Effect => (dispatch, getState) => {
   dispatch(editHomeworkRequest());
+  let homeworkIndex = index;
+
+  if (!index) {
+    const state = getState();
+    homeworkIndex = state.reducer.user.homework.findIndex(
+      elem => homework._id === elem._id
+    );
+  }
 
   return requestEditHomework(homework)
     .then(({ data }: { data: { homework: IHomework } }) => {
       setVisibleEdit && setVisibleEdit(false);
-      dispatch<any>(editHomeworkSuccess(data.homework, index));
+      dispatch<any>(
+        editHomeworkSuccess(data.homework, homeworkIndex as number)
+      );
     })
     .catch(
       ({ response }: { response: IAxiosErrorResponse }) =>

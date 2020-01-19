@@ -76,7 +76,7 @@ exports[`TopBar renders correctly 1`] = `
   margin-left: 1.5rem;
 }
 
-.c7 {
+.c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -87,7 +87,7 @@ exports[`TopBar renders correctly 1`] = `
   align-items: center;
 }
 
-.c8 {
+.c7 {
   font-weight: 500;
   font-size: 1.6rem;
   margin: 0;
@@ -95,7 +95,7 @@ exports[`TopBar renders correctly 1`] = `
   color: rgba(39,39,39,0.9);
 }
 
-.c8 i {
+.c7 i {
   margin-left: 0.4rem;
   font-size: 1.2rem;
 }
@@ -181,7 +181,7 @@ exports[`TopBar renders correctly 1`] = `
         class="c6"
       >
         <p
-          class="ant-dropdown-trigger c7 c8"
+          class="c7 ant-dropdown-trigger c8"
         >
           test 
           <i

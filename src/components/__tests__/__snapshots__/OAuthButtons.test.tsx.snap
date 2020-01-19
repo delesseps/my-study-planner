@@ -36,7 +36,7 @@ exports[`renders correctly 1`] = `
     class="c0"
   >
     <a
-      class="ant-btn ant-btn-default ant-btn-lg ant-btn-block c1"
+      class="c1 ant-btn ant-btn-default ant-btn-lg ant-btn-block"
       href="http://localhost:3001/api/auth/google"
     >
       <svg

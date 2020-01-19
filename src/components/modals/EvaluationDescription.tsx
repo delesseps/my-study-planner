@@ -12,7 +12,7 @@ const EvaluationDescriptionModal = (evaluation: IEvaluation) => {
     width: 470,
     title: (
       <ModalTitleWrapper>
-        <ModalTitle>
+        <ModalTitle data-testid="pizza">
           <Capitalize>{evaluation.evaluationType}</Capitalize>:{" "}
           {evaluation.subject}
         </ModalTitle>
