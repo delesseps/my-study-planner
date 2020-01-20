@@ -3,7 +3,7 @@ import { FadeIn, Loading, Sidebar, TopBar } from "components";
 import { connect, useDispatch } from "react-redux";
 import { ApplicationState } from "store/types";
 import { Switch, Route, Redirect } from "react-router";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 import { requestUser, signOut } from "store/effects";
 import { initializePush } from "firebase/initialize";
 import IRequestError from "interfaces/IRequestError";

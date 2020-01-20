@@ -1,0 +1,254 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<DocumentFragment>
+  .c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-top: 4rem;
+}
+
+.c1 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c1 > *:not(:last-child) {
+  margin-bottom: 2rem;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c3 {
+  font-weight: 600;
+  font-size: 2.6rem;
+  color: rgba(39,39,39,0.8);
+}
+
+.c4 {
+  padding: 2rem 6rem;
+  margin-left: 4rem;
+  cursor: pointer;
+  background-color: #fff;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+
+<section
+    class="c0"
+  >
+    <div
+      class="c1"
+    >
+      <div
+        class="c2"
+      >
+        <h1
+          class="c3"
+        >
+          Monday
+        </h1>
+        <div
+          class="c4"
+          data-testid="mondayCard"
+        >
+          <div
+            class="ant-empty"
+          >
+            <div
+              class="ant-empty-image"
+            >
+              <svg
+                width="80"
+              >
+                education-books.svg
+              </svg>
+            </div>
+            <p
+              class="ant-empty-description"
+            >
+              Click here to add new courses
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c2"
+      >
+        <h1
+          class="c3"
+        >
+          Tuesday
+        </h1>
+        <div
+          class="c4"
+          data-testid="tuesdayCard"
+        >
+          <div
+            class="ant-empty"
+          >
+            <div
+              class="ant-empty-image"
+            >
+              <svg
+                width="80"
+              >
+                education-books.svg
+              </svg>
+            </div>
+            <p
+              class="ant-empty-description"
+            >
+              Click here to add new courses
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c2"
+      >
+        <h1
+          class="c3"
+        >
+          Wednesday
+        </h1>
+        <div
+          class="c4"
+          data-testid="wednesdayCard"
+        >
+          <div
+            class="ant-empty"
+          >
+            <div
+              class="ant-empty-image"
+            >
+              <svg
+                width="80"
+              >
+                education-books.svg
+              </svg>
+            </div>
+            <p
+              class="ant-empty-description"
+            >
+              Click here to add new courses
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c2"
+      >
+        <h1
+          class="c3"
+        >
+          Thursday
+        </h1>
+        <div
+          class="c4"
+        >
+          <div
+            class="ant-empty"
+          >
+            <div
+              class="ant-empty-image"
+            >
+              <svg
+                width="80"
+              >
+                education-books.svg
+              </svg>
+            </div>
+            <p
+              class="ant-empty-description"
+            >
+              Click here to add new courses
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c2"
+      >
+        <h1
+          class="c3"
+        >
+          Friday
+        </h1>
+        <div
+          class="c4"
+        >
+          <div
+            class="ant-empty"
+          >
+            <div
+              class="ant-empty-image"
+            >
+              <svg
+                width="80"
+              >
+                education-books.svg
+              </svg>
+            </div>
+            <p
+              class="ant-empty-description"
+            >
+              Click here to add new courses
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c2"
+      >
+        <h1
+          class="c3"
+        >
+          Saturday
+        </h1>
+        <div
+          class="c4"
+        >
+          <div
+            class="ant-empty"
+          >
+            <div
+              class="ant-empty-image"
+            >
+              <svg
+                width="80"
+              >
+                education-books.svg
+              </svg>
+            </div>
+            <p
+              class="ant-empty-description"
+            >
+              Click here to add new courses
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;

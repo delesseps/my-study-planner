@@ -3,7 +3,7 @@ import { createGlobalStyle } from "styled-components";
 import { Switch, Route, Redirect } from "react-router";
 import Dashboard from "./routes/Dashboard";
 import Loading from "components/Loading";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 import { Cookies, withCookies } from "react-cookie";
 
 import { connect } from "react-redux";

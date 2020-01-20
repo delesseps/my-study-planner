@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { toTitleCase } from "utils";
 import { HomeworkDescription, EvaluationDescription } from "components/modals";
 import styled from "styled-components";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 
 import IEvaluation from "interfaces/IEvaluation";
 import IScheduleEvent from "interfaces/IScheduleEvent";

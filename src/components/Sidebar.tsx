@@ -2,7 +2,7 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import { NavLink } from "react-router-dom";
 import { Icon } from "antd";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 
 const Sidebar: React.FC = props => {
   return (
@@ -10,6 +10,10 @@ const Sidebar: React.FC = props => {
       <Item activeClassName="active" to="/dashboard" exact>
         <StyledIcon type="home" />
         <Text>Home</Text>
+      </Item>
+      <Item activeClassName="active" to="/dashboard/schedule">
+        <StyledIcon type="calendar" />
+        <Text>Schedule</Text>
       </Item>
     </Wrapper>
   );

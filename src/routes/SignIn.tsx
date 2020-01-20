@@ -7,7 +7,7 @@ import BannerAuth from "components/BannerAuth";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import { Link } from "react-router-dom";
 import FadeIn from "components/FadeIn";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 
 const SignIn: React.FC = () => {
   return (

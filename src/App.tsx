@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme } from "styled";
+import { lightTheme, darkTheme } from "theme";
 import Router from "./Router";
 
 import { CookiesProvider, withCookies, Cookies } from "react-cookie";

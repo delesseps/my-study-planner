@@ -6,7 +6,7 @@ import { Dispatch } from "redux";
 import { signUp } from "store/effects";
 import ISignUpCredentials from "interfaces/ISignUpCredentials";
 import { connect } from "react-redux";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 import { ApplicationState } from "store/types";
 import IRequestError from "interfaces/IRequestError";
 import { FadeIn } from "components";

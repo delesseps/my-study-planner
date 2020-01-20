@@ -8,9 +8,9 @@ import { signOut } from "store/effects";
 import { UserProfile } from "components/modals";
 import IUser from "interfaces/IUser";
 import { Link } from "react-router-dom";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 import { push } from "connected-react-router";
-import { useToggle } from "utils/hooks";
+import { useToggle } from "react-use";
 
 const mapStateToProps = (state: ApplicationState) => ({
   loading: state.reducer.loading.user,
@@ -24,11 +24,8 @@ interface ITopBarProps {
 
 const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
   const dispatch = useDispatch();
-  const { toggled: showProfile, toggle: toggleProfile } = useToggle();
-  const {
-    toggled: showNotifications,
-    toggle: toggleNotifications
-  } = useToggle();
+  const [showProfile, toggleProfile] = useToggle(false);
+  const [showNotifications, toggleNotifications] = useToggle(false);
 
   const handleSignOut = () => {
     dispatch(signOut());
@@ -141,7 +138,7 @@ const StyledLogo = styled(Logo)`
 
 const Title = styled.h2`
   margin-bottom: 0.8rem;
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: 1px;
 
   color: ${props => props.theme.fontColors.textRgba(0.8)};
@@ -240,7 +237,4 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-export default connect(
-  mapStateToProps,
-  null
-)(TopBar);
+export default connect(mapStateToProps, null)(TopBar);
