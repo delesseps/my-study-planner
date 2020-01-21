@@ -2,29 +2,14 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Empty } from "antd";
 import { ReactComponent as EmptyBook } from "assets/education-books.svg";
-import { useToggle } from "react-use";
-import { WeekdayCourses } from "components/modals";
 
 const Schedule: React.FC = () => {
-  const [showWeekdayModal, toggleWeekdayModal] = useToggle(false);
-  const [modalWeekday, setModalWeekday] = useState("");
-
-  const openModal = (weekday: string) => () => {
-    setModalWeekday(weekday);
-    toggleWeekdayModal(true);
-  };
-
   return (
     <Wrapper>
-      <WeekdayCourses
-        visible={showWeekdayModal}
-        setVisible={toggleWeekdayModal}
-        weekday={modalWeekday}
-      />
       <ItemContainer>
         <Item>
           <Weekday>Monday</Weekday>
-          <Card data-testid="mondayCard" onClick={openModal("monday")}>
+          <Card data-testid="mondayCard">
             <Empty
               description="Click here to add new courses"
               image={<EmptyBook width={80} />}
@@ -33,7 +18,7 @@ const Schedule: React.FC = () => {
         </Item>
         <Item>
           <Weekday>Tuesday</Weekday>
-          <Card data-testid="tuesdayCard" onClick={openModal("tuesday")}>
+          <Card data-testid="tuesdayCard">
             <Empty
               description="Click here to add new courses"
               image={<EmptyBook width={80} />}
@@ -42,7 +27,7 @@ const Schedule: React.FC = () => {
         </Item>
         <Item>
           <Weekday>Wednesday</Weekday>
-          <Card data-testid="wednesdayCard" onClick={openModal("wednesday")}>
+          <Card data-testid="wednesdayCard">
             <Empty
               description="Click here to add new courses"
               image={<EmptyBook width={80} />}
@@ -51,7 +36,7 @@ const Schedule: React.FC = () => {
         </Item>
         <Item>
           <Weekday>Thursday</Weekday>
-          <Card onClick={openModal("thursday")}>
+          <Card>
             <Empty
               description="Click here to add new courses"
               image={<EmptyBook width={80} />}
@@ -60,7 +45,7 @@ const Schedule: React.FC = () => {
         </Item>
         <Item>
           <Weekday>Friday</Weekday>
-          <Card onClick={openModal("friday")}>
+          <Card>
             <Empty
               description="Click here to add new courses"
               image={<EmptyBook width={80} />}
@@ -69,7 +54,7 @@ const Schedule: React.FC = () => {
         </Item>
         <Item>
           <Weekday>Saturday</Weekday>
-          <Card onClick={openModal("saturday")}>
+          <Card>
             <Empty
               description="Click here to add new courses"
               image={<EmptyBook width={80} />}
