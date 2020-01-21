@@ -1,6 +1,6 @@
 import React from "react";
-import { Form, Button, Input, Icon, Checkbox, Alert } from "antd";
-import { WrappedFormUtils } from "antd/lib/form/Form";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Input, Checkbox, Alert, Form } from "antd";
 import styled from "styled-components";
 import { Dispatch } from "redux";
 import { signIn } from "store/effects";
@@ -27,31 +27,27 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 };
 
 interface ISignInFormProps {
-  form: WrappedFormUtils;
   signIn: Function;
   loading: boolean;
-  error: IRequestError;
+  error: IRequestError | undefined;
 }
 
-const SignInForm: React.FC<ISignInFormProps> = ({
-  form,
-  signIn,
-  loading,
-  error
-}) => {
-  const { getFieldDecorator } = form;
+const SignInForm: React.FC<ISignInFormProps> = ({ signIn, loading, error }) => {
+  const [form] = Form.useForm();
 
-  const handleSubmit = (e: React.FormEvent, form: WrappedFormUtils): void => {
-    e.preventDefault();
-    form.validateFields((err, credentials: ISignInCredentials) => {
-      if (!err) {
-        signIn(credentials);
-      }
+  const handleSubmit = (): void => {
+    form.validateFields().then(credentials => {
+      signIn(credentials as ISignInCredentials);
     });
   };
 
   return (
-    <StyledForm layout="vertical" onSubmit={e => handleSubmit(e, form)}>
+    <StyledForm
+      form={form}
+      layout="vertical"
+      initialValues={{ remember: false }}
+      onFinish={handleSubmit}
+    >
       <Form.Item>
         <Heading>Welcome back</Heading>
         <SubHeading>Continue where you left off</SubHeading>
@@ -68,39 +64,36 @@ const SignInForm: React.FC<ISignInFormProps> = ({
           </Form.Item>
         </FadeIn>
       )}
-      <Form.Item label="E-mail">
-        {getFieldDecorator("email", {
-          rules: [
-            { required: true, message: "Please input your email!" },
-            {
-              type: "email",
-              message: "The input is not valid E-mail!"
-            }
-          ]
-        })(
-          <Input
-            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-            placeholder="john.doe@gmail.com"
-          />
-        )}
+      <Form.Item
+        label="E-mail"
+        name="email"
+        rules={[
+          { required: true, message: "Please input your email!" },
+          {
+            type: "email",
+            message: "The input is not valid E-mail!"
+          }
+        ]}
+      >
+        <Input
+          prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          placeholder="john.doe@gmail.com"
+        />
       </Form.Item>
-      <Form.Item label="Password">
-        {getFieldDecorator("password", {
-          rules: [{ required: true, message: "Please input your password!" }]
-        })(
-          <Input.Password
-            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-            type="password"
-            placeholder="Password"
-          />
-        )}
+      <Form.Item
+        label="Password"
+        name="password"
+        rules={[{ required: true, message: "Please input your password!" }]}
+      >
+        <Input.Password
+          prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          type="password"
+          placeholder="Password"
+        />
       </Form.Item>
-      <Form.Item>
+      <Form.Item name="remember" valuePropName="checked">
         <OptionsWrapper>
-          {getFieldDecorator("remember", {
-            valuePropName: "checked",
-            initialValue: false
-          })(<Checkbox>Remember me</Checkbox>)}
+          <Checkbox>Remember me</Checkbox>
           <ForgotPassword to="/forgot_password">
             Forgot password?
           </ForgotPassword>
@@ -163,9 +156,4 @@ const ForgotPassword = styled(Link)`
   }
 `;
 
-const wrappedSignInForm = Form.create()(SignInForm);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(wrappedSignInForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);

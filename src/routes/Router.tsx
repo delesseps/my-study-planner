@@ -1,7 +1,7 @@
 import React from "react";
 import { createGlobalStyle } from "styled-components";
 import { Switch, Route, Redirect } from "react-router";
-import Dashboard from "./routes/Dashboard";
+import Dashboard from "./Dashboard";
 import Loading from "components/Loading";
 import { breakpoints } from "theme";
 import { Cookies, withCookies } from "react-cookie";
@@ -149,7 +149,7 @@ const CSSReset = createGlobalStyle`
     }
 
     /*ANTD OVERRIDES*/
-    & .ant-fullcalendar-column-header-inner, .ant-fullcalendar-value, .ant-popover-message  {
+    & .ant-picker-column-header, .ant-picker-date-value, .ant-popover-message  {
       color: ${props => props.theme.fontColors.textRgba(0.65)};
     }
 
@@ -157,8 +157,8 @@ const CSSReset = createGlobalStyle`
       color: ${props => props.theme.fontColors.textRgba(0.65)} !important;
      }
 
-    & .ant-fullcalendar-last-month-cell .ant-fullcalendar-value,
-    .ant-fullcalendar-next-month-btn-day .ant-fullcalendar-value, 
+    & .ant-picker-last-month-cell .ant-picker-date-value,
+    .ant-picker-next-month-btn-day .ant-picker-date-value, 
     .ant-calendar-disabled-cell .ant-calendar-date, 
     .ant-calendar-next-month-btn-day .ant-calendar-date {
       color: ${props => props.theme.fontColors.textRgba(0.25)};
@@ -175,7 +175,8 @@ const CSSReset = createGlobalStyle`
     }
 
     & .ant-drawer-content, .ant-drawer-header, .ant-input, .ant-select-dropdown, 
-    .ant-dropdown-menu, .ant-popover-inner, .ant-modal-content, .ant-calendar {
+    .ant-dropdown-menu, .ant-popover-inner, .ant-modal-content, .ant-picker-calendar
+    ,.ant-picker-calendar .ant-picker-panel {
       background-color: ${props => props.theme.panelBackgroundColor};          
     }
 
@@ -217,9 +218,9 @@ const CSSReset = createGlobalStyle`
       background-color: ${props => props.theme.hoverColor};
     }
 
-    & .ant-fullcalendar-value, .ant-dropdown-menu-item, 
+    & .ant-picker-date-value, .ant-dropdown-menu-item, 
     .ant-select-dropdown-menu-item:not(.ant-select-dropdown-menu-item-disabled), 
-    .ant-calendar-date {
+    .ant-picker-calendar-date {
       &:hover {
         background-color: ${props => props.theme.hoverColor};
       }
@@ -287,7 +288,4 @@ const mapStateToProps = (state: ApplicationState) => ({
   config: state.reducer.user.configuration
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(withCookies(Router));
+export default connect(mapStateToProps, null)(withCookies(Router));

@@ -1,16 +1,7 @@
 import React from "react";
-import {
-  Drawer,
-  Form,
-  DatePicker,
-  Input,
-  Tooltip,
-  Icon,
-  Button,
-  Radio
-} from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Drawer, DatePicker, Input, Tooltip, Button, Radio, Form } from "antd";
 import moment from "moment";
-import { FormComponentProps } from "antd/lib/form/Form";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import { addEvaluation, editEvaluation } from "store/effects";
@@ -19,7 +10,7 @@ import { evaluationDrawer } from "store/actions";
 
 const { TextArea } = Input;
 
-interface IEvaluationDrawerProps extends FormComponentProps {
+interface IEvaluationDrawerProps {
   visible?: boolean;
   loading?: boolean;
 
@@ -31,7 +22,6 @@ interface IEvaluationDrawerProps extends FormComponentProps {
 }
 
 const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
-  form,
   visible = false,
   loading = false,
   visibleEdit,
@@ -39,20 +29,19 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
   evaluation,
   index
 }) => {
-  const { getFieldDecorator } = form;
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    form.validateFieldsAndScroll((err, values: IEvaluation) => {
-      if (!err) {
-        if (evaluation && setVisibleEdit && typeof index === "number") {
-          values._id = evaluation._id;
-          return dispatch(editEvaluation(values, index, setVisibleEdit));
-        }
-
-        dispatch(addEvaluation(values));
+  const handleSubmit = () => {
+    form.validateFields().then(values => {
+      if (evaluation && setVisibleEdit && typeof index === "number") {
+        values._id = evaluation._id;
+        return dispatch(
+          editEvaluation(values as IEvaluation, index, setVisibleEdit)
+        );
       }
+
+      dispatch(addEvaluation(values as IEvaluation));
     });
   };
 
@@ -73,83 +62,91 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
       visible={evaluation ? visibleEdit : visible}
       width={300}
     >
-      <Form onSubmit={handleSubmit} layout="vertical">
-        <Form.Item label={<span>Course name</span>}>
-          {getFieldDecorator("subject", {
-            initialValue: evaluation && evaluation.subject,
-            rules: [
-              {
-                required: true,
-                message: "Please input the course name!",
-                whitespace: true
-              }
-            ]
-          })(<Input />)}
+      <Form
+        form={form}
+        onFinish={handleSubmit}
+        initialValues={{
+          subject: evaluation?.subject,
+          evaluationType: evaluation?.evaluationType,
+          urgency: evaluation?.urgency,
+          description: evaluation?.description,
+          date: evaluation && moment(evaluation.date)
+        }}
+        layout="vertical"
+      >
+        <Form.Item
+          name="subject"
+          rules={[
+            {
+              required: true,
+              message: "Please input the course name!",
+              whitespace: true
+            }
+          ]}
+          label={<span>Course name</span>}
+        >
+          <Input />
         </Form.Item>
-        <Form.Item label="Evaluation">
-          {getFieldDecorator("evaluationType", {
-            initialValue: evaluation && evaluation.evaluationType,
-            rules: [{ required: true, message: "Please select an evaluation!" }]
-          })(
-            <Radio.Group buttonStyle="solid">
-              <Radio.Button value="quiz">Quiz</Radio.Button>
-              <Radio.Button value="test">Test</Radio.Button>
-            </Radio.Group>
-          )}
+        <Form.Item
+          label="Evaluation"
+          name="evaluationType"
+          rules={[{ required: true, message: "Please select an evaluation!" }]}
+        >
+          <Radio.Group buttonStyle="solid">
+            <Radio.Button value="quiz">Quiz</Radio.Button>
+            <Radio.Button value="test">Test</Radio.Button>
+          </Radio.Group>
         </Form.Item>
         <Form.Item
           label={
             <span>
               Urgency &nbsp;
               <Tooltip title="How important is this evaluation for you?">
-                <Icon type="question-circle-o" />
+                <QuestionCircleOutlined />
               </Tooltip>
             </span>
           }
+          name="urgency"
+          rules={[
+            {
+              required: true,
+              message: "Please select how urgent is your evaluation!"
+            }
+          ]}
         >
-          {getFieldDecorator("urgency", {
-            initialValue: evaluation && evaluation.urgency,
-            rules: [
-              {
-                required: true,
-                message: "Please select how urgent is your evaluation!"
-              }
-            ]
-          })(
-            <Radio.Group buttonStyle="solid">
-              <Radio.Button value="chill">Chill</Radio.Button>
-              <Radio.Button value="normal">Normal</Radio.Button>
-              <Radio.Button value="important">Important</Radio.Button>
-            </Radio.Group>
-          )}
+          <Radio.Group buttonStyle="solid">
+            <Radio.Button value="chill">Chill</Radio.Button>
+            <Radio.Button value="normal">Normal</Radio.Button>
+            <Radio.Button value="important">Important</Radio.Button>
+          </Radio.Group>
         </Form.Item>
-        <Form.Item label={<span>Description</span>}>
-          {getFieldDecorator("description", {
-            initialValue: evaluation && evaluation.description,
-            rules: [
-              {
-                required: false,
-                whitespace: true
-              }
-            ]
-          })(
-            <TextArea
-              placeholder="Input details about the evaluation. E.g. pages to read, good sources, ..."
-              autosize
-            />
-          )}
+        <Form.Item
+          name="description"
+          rules={[
+            {
+              required: false,
+              whitespace: true
+            }
+          ]}
+          label={<span>Description</span>}
+        >
+          <TextArea
+            placeholder="Input details about the evaluation. E.g. pages to read, good sources, ..."
+            autoSize
+          />
         </Form.Item>
-        <Form.Item label="Date">
-          {getFieldDecorator("date", {
-            initialValue: evaluation && moment(evaluation.date),
-            rules: [
-              {
-                type: "object",
-                required: true,
-                message: "Please select time!"
-              }
-            ]
-          })(<DatePicker disabledDate={disabledDate} />)}
+        <Form.Item
+          label="Date"
+          name="date"
+          rules={[
+            {
+              type: "object",
+              required: true,
+              message: "Please select time!"
+            }
+          ]}
+        >
+          <DatePicker disabledDate={disabledDate} />
         </Form.Item>
         <Form.Item>
           <Button
@@ -166,10 +163,6 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
   );
 };
 
-const wrappedEvaluationDrawer = Form.create<IEvaluationDrawerProps>()(
-  EvaluationDrawer
-);
-
 const mapStateToProps = (state: ApplicationState) => {
   return {
     visible: state.reducer.drawer.evaluation,
@@ -177,7 +170,4 @@ const mapStateToProps = (state: ApplicationState) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(wrappedEvaluationDrawer);
+export default connect(mapStateToProps, null)(EvaluationDrawer);

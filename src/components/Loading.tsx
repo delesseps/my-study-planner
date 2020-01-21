@@ -1,10 +1,11 @@
 import React from "react";
-import { Spin, Icon } from "antd";
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from "antd";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import styled, { keyframes } from "styled-components";
 
 const Loading: React.FC = () => {
-  const antIcon = <Icon type="loading" style={{ fontSize: 25 }} spin />;
+  const antIcon = <LoadingOutlined style={{ fontSize: 25 }} spin />;
 
   return (
     <Wrapper>

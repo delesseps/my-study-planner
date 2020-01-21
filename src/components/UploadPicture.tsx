@@ -1,4 +1,5 @@
 import React from "react";
+import { UserOutlined } from '@ant-design/icons';
 import { Upload, message, Avatar } from "antd";
 import { RcFile } from "antd/lib/upload";
 import { ApplicationState } from "store/types";
@@ -63,7 +64,7 @@ const UploadPicture: React.FC<IUploadPictureProps> = ({ user }) => {
       beforeUpload={beforeUpload}
       action={handleUpload}
     >
-      <Avatar shape="square" size={120} icon="user" src={user?.picture} />
+      <Avatar shape="square" size={120} icon={<UserOutlined />} src={user?.picture} />
     </StyledUpload>
   );
 };

@@ -1,8 +1,8 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import { ReactComponent as ChangePasswordDone } from "assets/change_password_done.svg";
-import { FormComponentProps, WrappedFormUtils } from "antd/lib/form/Form";
-import { Form, Button, Input, Icon, message } from "antd";
+import { LockOutlined } from "@ant-design/icons";
+import { Button, Input, message, Form } from "antd";
 import { Link, match } from "react-router-dom";
 import { FadeIn, Loading } from "components";
 import { recoverPasswordTokenConfirmation, changePassword } from "services";
@@ -10,15 +10,14 @@ import { useDispatch } from "react-redux";
 import { push } from "connected-react-router";
 import styled from "styled-components";
 
-interface IChangePasswordProps extends FormComponentProps {
+interface IChangePasswordProps {
   match: match<{ email: string; token: string }>;
 }
 
 const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
-  form,
   match
 }) => {
-  const { getFieldDecorator } = form;
+  const [form] = Form.useForm();
   const [confirmDirty, setConfirmDirty] = React.useState<Boolean | any>(false);
   const dispatch = useDispatch();
 
@@ -26,7 +25,7 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
   const [loading, setLoading] = React.useState(true);
   const [success, setSuccess] = React.useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const confirmToken = async () => {
       try {
         const response = await recoverPasswordTokenConfirmation(
@@ -47,18 +46,13 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
     confirmToken();
   }, [dispatch, match.params.token]);
 
-  const handleSubmit = (e: React.FormEvent, form: WrappedFormUtils): void => {
-    e.preventDefault();
-
+  const handleSubmit = (): void => {
     setRequestLoading(true);
 
-    form.validateFields((err, { password }: { password: string }) => {
-      if (!err) {
-        SendRequest(password);
-      } else {
-        setRequestLoading(false);
-      }
-    });
+    form
+      .validateFields()
+      .then(credentials => SendRequest(credentials.password))
+      .catch(() => setRequestLoading(false));
   };
 
   const SendRequest = async (password: string) => {
@@ -100,7 +94,7 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
     callback: Function
   ) => {
     if (value && confirmDirty) {
-      form.validateFields(["confirm"], { force: true });
+      form.validateFields(["confirm"]);
     }
     callback();
   };
@@ -125,58 +119,57 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
             {success ? (
               <ChangePasswordDone />
             ) : (
-              <StyledForm
-                layout="vertical"
-                onSubmit={e => handleSubmit(e, form)}
-              >
-                <Form.Item hasFeedback>
-                  {getFieldDecorator("password", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Please input your password!"
-                      },
-                      {
-                        validator: validateToNextPassword
-                      }
-                    ]
-                  })(
-                    <Input.Password
-                      prefix={
-                        <Icon
-                          type="lock"
-                          style={{ color: "rgba(0,0,0,.25)" }}
-                        />
-                      }
-                      type="password"
-                      placeholder="New password"
-                    />
-                  )}
+              <StyledForm form={form} layout="vertical" onFinish={handleSubmit}>
+                <Form.Item
+                  name="password"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your password!"
+                    },
+                    {
+                      validator: validateToNextPassword
+                    },
+                    {
+                      min: 6,
+                      message: "Password must have a minimum of 6 characters."
+                    }
+                  ]}
+                  hasFeedback
+                >
+                  <Input.Password
+                    prefix={
+                      <LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />
+                    }
+                    type="password"
+                    placeholder="New password"
+                  />
                 </Form.Item>
-                <Form.Item hasFeedback>
-                  {getFieldDecorator("confirm", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Please confirm your password!"
-                      },
-                      {
-                        validator: compareToFirstPassword
-                      }
-                    ]
-                  })(
-                    <Input.Password
-                      prefix={
-                        <Icon
-                          type="lock"
-                          style={{ color: "rgba(0,0,0,.25)" }}
-                        />
-                      }
-                      type="password"
-                      placeholder="Confirm new password"
-                      onBlur={handleConfirmBlur}
-                    />
-                  )}
+                <Form.Item
+                  name="confirm"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please confirm your password!"
+                    },
+                    {
+                      validator: compareToFirstPassword
+                    },
+                    {
+                      min: 6,
+                      message: "Password must have a minimum of 6 characters."
+                    }
+                  ]}
+                  hasFeedback
+                >
+                  <Input.Password
+                    prefix={
+                      <LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />
+                    }
+                    type="password"
+                    placeholder="Confirm new password"
+                    onBlur={handleConfirmBlur}
+                  />
                 </Form.Item>
                 <Form.Item>
                   <Button
@@ -279,8 +272,4 @@ const StyledLink = styled(Link)`
   font-size: 1.6rem;
 `;
 
-const wrappedChangePassword = Form.create<IChangePasswordProps>()(
-  ChangePassword
-);
-
-export default wrappedChangePassword;
+export default ChangePassword;

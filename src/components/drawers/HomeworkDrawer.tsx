@@ -1,16 +1,7 @@
 import React from "react";
-import {
-  Drawer,
-  Form,
-  DatePicker,
-  Input,
-  Tooltip,
-  Icon,
-  Button,
-  Radio
-} from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Drawer, DatePicker, Input, Tooltip, Button, Radio, Form } from "antd";
 import moment from "moment";
-import { FormComponentProps } from "antd/lib/form/Form";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import { homeworkDrawer } from "store/actions";
@@ -19,7 +10,7 @@ import { addHomework, editHomework } from "store/effects";
 
 const { TextArea } = Input;
 
-interface IHomeworkDrawerProps extends FormComponentProps {
+interface IHomeworkDrawerProps {
   visible?: boolean;
   loading?: boolean;
 
@@ -31,7 +22,6 @@ interface IHomeworkDrawerProps extends FormComponentProps {
 }
 
 const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
-  form,
   visible = false,
   loading = false,
   visibleEdit,
@@ -39,20 +29,19 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
   homework,
   index
 }) => {
-  const { getFieldDecorator } = form;
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    form.validateFieldsAndScroll((err, values: IHomework) => {
-      if (!err) {
-        if (homework && setVisibleEdit && typeof index === "number") {
-          values._id = homework._id;
-          return dispatch(editHomework(values, index, setVisibleEdit));
-        }
-
-        dispatch(addHomework(values));
+  const handleSubmit = () => {
+    form.validateFields().then(values => {
+      if (homework && setVisibleEdit && typeof index === "number") {
+        values._id = homework._id;
+        return dispatch(
+          editHomework(values as IHomework, index, setVisibleEdit)
+        );
       }
+
+      dispatch(addHomework(values as IHomework));
     });
   };
 
@@ -73,72 +62,80 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
       visible={homework ? visibleEdit : visible}
       width={300}
     >
-      <Form onSubmit={handleSubmit} layout="vertical">
-        <Form.Item label={<span>Course name</span>}>
-          {getFieldDecorator("subject", {
-            initialValue: homework && homework.subject,
-            rules: [
-              {
-                required: true,
-                message: "Please input the course name!",
-                whitespace: true
-              }
-            ]
-          })(<Input />)}
+      <Form
+        form={form}
+        onFinish={handleSubmit}
+        initialValues={{
+          subject: homework?.subject,
+          urgency: homework?.urgency,
+          description: homework?.description,
+          date: homework && moment(homework.date)
+        }}
+        layout="vertical"
+      >
+        <Form.Item
+          name="subject"
+          rules={[
+            {
+              required: true,
+              message: "Please input the course name!",
+              whitespace: true
+            }
+          ]}
+          label={<span>Course name</span>}
+        >
+          <Input />
         </Form.Item>
         <Form.Item
           label={
             <span>
               Urgency &nbsp;
               <Tooltip title="How important is this homework for you?">
-                <Icon type="question-circle-o" />
+                <QuestionCircleOutlined />
               </Tooltip>
             </span>
           }
+          name="urgency"
+          rules={[
+            {
+              required: true,
+              message: "Please select how urgent is your homework!"
+            }
+          ]}
         >
-          {getFieldDecorator("urgency", {
-            initialValue: homework && homework.urgency,
-            rules: [
-              {
-                required: true,
-                message: "Please select how urgent is your homework!"
-              }
-            ]
-          })(
-            <Radio.Group buttonStyle="solid">
-              <Radio.Button value="chill">Chill</Radio.Button>
-              <Radio.Button value="normal">Normal</Radio.Button>
-              <Radio.Button value="important">Important</Radio.Button>
-            </Radio.Group>
-          )}
+          <Radio.Group buttonStyle="solid">
+            <Radio.Button value="chill">Chill</Radio.Button>
+            <Radio.Button value="normal">Normal</Radio.Button>
+            <Radio.Button value="important">Important</Radio.Button>
+          </Radio.Group>
         </Form.Item>
-        <Form.Item label={<span>Description</span>}>
-          {getFieldDecorator("description", {
-            initialValue: homework && homework.description,
-            rules: [
-              {
-                required: false,
-                whitespace: true
-              }
-            ]
-          })(
-            <TextArea
-              placeholder="Input details about the homework. E.g. pages to read, number of exercises, ..."
-              autosize
-            />
-          )}
+        <Form.Item
+          name="description"
+          rules={[
+            {
+              required: false,
+              whitespace: true
+            }
+          ]}
+          label={<span>Description</span>}
+        >
+          <TextArea
+            placeholder="Input details about the homework. E.g. pages to read, number of exercises, ..."
+            autoSize
+          />
         </Form.Item>
-        <Form.Item label="Date">
-          {getFieldDecorator("date", {
-            initialValue: homework && moment(homework.date),
-            rules: [
-              {
-                type: "object",
-                required: true,
-                message: "Please select time!"
-              }
-            ]
-          })(<DatePicker autoFocus={false} disabledDate={disabledDate} />)}
+        <Form.Item
+          name="date"
+          rules={[
+            {
+              type: "object",
+              required: true,
+              message: "Please select time!"
+            }
+          ]}
+          label="Date"
+        >
+          <DatePicker autoFocus={false} disabledDate={disabledDate} />
         </Form.Item>
         <Form.Item>
           <Button
@@ -155,10 +152,6 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
   );
 };
 
-const wrappedEvaluationDrawer = Form.create<IHomeworkDrawerProps>()(
-  HomeworkDrawer
-);
-
 const mapStateToProps = (state: ApplicationState) => {
   return {
     visible: state.reducer.drawer.homework,
@@ -166,7 +159,4 @@ const mapStateToProps = (state: ApplicationState) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(wrappedEvaluationDrawer);
+export default connect(mapStateToProps, null)(HomeworkDrawer);

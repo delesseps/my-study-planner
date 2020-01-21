@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import IHomework from "interfaces/IHomework";
-import { Modal, Icon } from "antd";
+import { ClockCircleOutlined } from "@ant-design/icons";
+import { Modal } from "antd";
 import { setDate } from "utils";
 import moment from "moment";
 
@@ -14,7 +15,7 @@ const HomeworkDescriptionModal = (homework: IHomework) => {
       <ModalTitleWrapper>
         <ModalTitle>{homework.subject}</ModalTitle>
         <ModalTime>
-          <Clock type="clock-circle" />
+          <ClockIcon />
           {setDate(moment(homework.date))}
         </ModalTime>
       </ModalTitleWrapper>
@@ -63,7 +64,7 @@ const ModalContent = styled.p`
   line-height: 3rem;
 `;
 
-const Clock = styled(Icon)`
+const ClockIcon = styled(ClockCircleOutlined)`
   font-size: 2rem;
   margin-right: 0.7rem;
 `;

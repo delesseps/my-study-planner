@@ -2,38 +2,28 @@ import * as React from "react";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import { ReactComponent as SentMessage } from "assets/message_sent.svg";
 import styled from "styled-components";
-import { WrappedFormUtils } from "antd/lib/form/Form";
-import { Form, Button, Input, Icon, Alert } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import { Button, Input, Alert, Form } from "antd";
 import { Link } from "react-router-dom";
 import { recoverPasswordRequest } from "services";
 import { FadeIn } from "components";
 
-interface IResetPasswordProps {
-  form: WrappedFormUtils;
-}
+const ForgotPassword: React.FunctionComponent = () => {
+  const [form] = Form.useForm();
 
-const ForgotPassword: React.FunctionComponent<IResetPasswordProps> = ({
-  form
-}) => {
-  const { getFieldDecorator } = form;
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [oauthError, setOauthError] = React.useState(false);
 
-  const handleSubmit = (e: React.FormEvent, form: WrappedFormUtils): void => {
-    e.preventDefault();
-
+  const handleSubmit = (): void => {
     setLoading(true);
     setError(false);
 
-    form.validateFields((err, { email }: { email: string }) => {
-      if (!err) {
-        SendRequest(email);
-      } else {
-        setLoading(false);
-      }
-    });
+    form
+      .validateFields()
+      .then(value => SendRequest(value.email))
+      .catch(() => setLoading(false));
   };
 
   const SendRequest = async (email: string) => {
@@ -88,24 +78,21 @@ const ForgotPassword: React.FunctionComponent<IResetPasswordProps> = ({
           {success ? (
             <SentMessage />
           ) : (
-            <StyledForm layout="vertical" onSubmit={e => handleSubmit(e, form)}>
-              <Form.Item>
-                {getFieldDecorator("email", {
-                  rules: [
-                    { required: true, message: "Please input your email!" },
-                    {
-                      type: "email",
-                      message: "The input is not valid E-mail!"
-                    }
-                  ]
-                })(
-                  <Input
-                    prefix={
-                      <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
-                    }
-                    placeholder="Email address"
-                  />
-                )}
+            <StyledForm form={form} layout="vertical" onFinish={handleSubmit}>
+              <Form.Item
+                name="email"
+                rules={[
+                  { required: true, message: "Please input your email!" },
+                  {
+                    type: "email",
+                    message: "The input is not valid E-mail!"
+                  }
+                ]}
+              >
+                <Input
+                  prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+                  placeholder="Email address"
+                />
               </Form.Item>
               <Form.Item>
                 <Button
@@ -232,6 +219,4 @@ const StyledLink = styled(Link)`
   font-size: 1.6rem;
 `;
 
-const wrappedForgotPassword = Form.create()(ForgotPassword);
-
-export default wrappedForgotPassword;
+export default ForgotPassword;

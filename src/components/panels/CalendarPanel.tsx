@@ -7,23 +7,6 @@ import { Moment } from "moment";
 import IHomework from "interfaces/IHomework";
 import { toTitleCase } from "utils";
 import styled from "styled-components";
-
-const Wrapper = styled.span`
-  & i {
-    color: ${props => props.theme.fontColors.text};
-  }
-`;
-
-const Value = styled.div`
-  && {
-    color: ${props => props.theme.fontColors.text};
-  }
-`;
-
-const BadgeTitle = styled.span`
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
-`;
-
 interface ICalendarPanelProps {
   evaluations?: IEvaluation[];
   homework?: IHomework[];
@@ -116,23 +99,23 @@ const CalendarPanel: React.FC<ICalendarPanelProps> = ({
       return (
         <Popover content={popoverContent}>
           <div className="ant-fullcalendar-date">
-            <Value
+            <div
               style={{
                 boxShadow: "0 0 0 1px #f9ca24 inset"
               }}
-              className="ant-fullcalendar-value"
+              className="ant-picker-cell-inner ant-picker-calendar-date"
             >
               {value.date()}
-            </Value>
-            <div className="ant-fullcalendar-content" />
+            </div>
+            <div className="ant-picker-calendar-date-content" />
           </div>
         </Popover>
       );
 
     return (
-      <div className="ant-fullcalendar-date">
-        <Value className="ant-fullcalendar-value">{value.date()}</Value>
-        <div className="ant-fullcalendar-content" />
+      <div className="ant-picker-cell-inner ant-picker-calendar-date">
+        <div className="ant-picker-calendar-date-value">{value.date()}</div>
+        <div className="ant-picker-calendar-date-content" />
       </div>
     );
   };
@@ -143,6 +126,30 @@ const CalendarPanel: React.FC<ICalendarPanelProps> = ({
     </Wrapper>
   );
 };
+
+const Wrapper = styled.span`
+  .ant-picker-cell-in-view .ant-picker-calendar-date-value {
+    color: ${props => props.theme.fontColors.text};
+  }
+
+  .ant-picker-cell-selected .ant-picker-calendar-date-value {
+    color: white;
+  }
+
+  & i {
+    color: ${props => props.theme.fontColors.text};
+  }
+`;
+
+const Value = styled.div`
+  /* && {
+    
+  } */
+`;
+
+const BadgeTitle = styled.span`
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
+`;
 
 const mapStateToProps = (state: ApplicationState) => ({
   evaluations: state.reducer.user.evaluations,

@@ -9,3 +9,4 @@ export { default as Preferences } from "./Preferences";
 export { default as Schedule } from "./Schedule";
 export { default as SignIn } from "./SignIn";
 export { default as SignUp } from "./SignUp";
+export { default as Router } from "./Router";

@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import IEvaluation from "interfaces/IEvaluation";
-import { Modal, Icon } from "antd";
+import { Modal } from "antd";
 import { setDate } from "utils";
+import { ClockCircleOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 const EvaluationDescriptionModal = (evaluation: IEvaluation) => {
@@ -17,7 +18,7 @@ const EvaluationDescriptionModal = (evaluation: IEvaluation) => {
           {evaluation.subject}
         </ModalTitle>
         <ModalTime>
-          <Clock type="clock-circle" />
+          <ClockIcon />
           {setDate(moment(evaluation.date))}
         </ModalTime>
       </ModalTitleWrapper>
@@ -70,7 +71,7 @@ const Capitalize = styled.span`
   text-transform: capitalize;
 `;
 
-const Clock = styled(Icon)`
+const ClockIcon = styled(ClockCircleOutlined)`
   font-size: 2rem;
   margin-right: 0.7rem;
 `;
