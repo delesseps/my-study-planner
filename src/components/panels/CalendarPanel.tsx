@@ -141,12 +141,6 @@ const Wrapper = styled.span`
   }
 `;
 
-const Value = styled.div`
-  /* && {
-    
-  } */
-`;
-
 const BadgeTitle = styled.span`
   color: ${props => props.theme.fontColors.textRgba(0.8)};
 `;

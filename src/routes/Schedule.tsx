@@ -1,70 +1,68 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Empty } from "antd";
 import { ReactComponent as EmptyBook } from "assets/education-books.svg";
 
-const Schedule: React.FC = () => {
-  return (
-    <Wrapper>
-      <ItemContainer>
-        <Item>
-          <Weekday>Monday</Weekday>
-          <Card data-testid="mondayCard">
-            <Empty
-              description="Click here to add new courses"
-              image={<EmptyBook width={80} />}
-            />
-          </Card>
-        </Item>
-        <Item>
-          <Weekday>Tuesday</Weekday>
-          <Card data-testid="tuesdayCard">
-            <Empty
-              description="Click here to add new courses"
-              image={<EmptyBook width={80} />}
-            />
-          </Card>
-        </Item>
-        <Item>
-          <Weekday>Wednesday</Weekday>
-          <Card data-testid="wednesdayCard">
-            <Empty
-              description="Click here to add new courses"
-              image={<EmptyBook width={80} />}
-            />
-          </Card>
-        </Item>
-        <Item>
-          <Weekday>Thursday</Weekday>
-          <Card>
-            <Empty
-              description="Click here to add new courses"
-              image={<EmptyBook width={80} />}
-            />
-          </Card>
-        </Item>
-        <Item>
-          <Weekday>Friday</Weekday>
-          <Card>
-            <Empty
-              description="Click here to add new courses"
-              image={<EmptyBook width={80} />}
-            />
-          </Card>
-        </Item>
-        <Item>
-          <Weekday>Saturday</Weekday>
-          <Card>
-            <Empty
-              description="Click here to add new courses"
-              image={<EmptyBook width={80} />}
-            />
-          </Card>
-        </Item>
-      </ItemContainer>
-    </Wrapper>
-  );
-};
+const Schedule: React.FC = () => (
+  <Wrapper>
+    <ItemContainer>
+      <Item>
+        <Weekday>Monday</Weekday>
+        <Card data-testid="mondayCard">
+          <Empty
+            description="Click here to add new courses"
+            image={<EmptyBook width={80} />}
+          />
+        </Card>
+      </Item>
+      <Item>
+        <Weekday>Tuesday</Weekday>
+        <Card data-testid="tuesdayCard">
+          <Empty
+            description="Click here to add new courses"
+            image={<EmptyBook width={80} />}
+          />
+        </Card>
+      </Item>
+      <Item>
+        <Weekday>Wednesday</Weekday>
+        <Card data-testid="wednesdayCard">
+          <Empty
+            description="Click here to add new courses"
+            image={<EmptyBook width={80} />}
+          />
+        </Card>
+      </Item>
+      <Item>
+        <Weekday>Thursday</Weekday>
+        <Card>
+          <Empty
+            description="Click here to add new courses"
+            image={<EmptyBook width={80} />}
+          />
+        </Card>
+      </Item>
+      <Item>
+        <Weekday>Friday</Weekday>
+        <Card>
+          <Empty
+            description="Click here to add new courses"
+            image={<EmptyBook width={80} />}
+          />
+        </Card>
+      </Item>
+      <Item>
+        <Weekday>Saturday</Weekday>
+        <Card>
+          <Empty
+            description="Click here to add new courses"
+            image={<EmptyBook width={80} />}
+          />
+        </Card>
+      </Item>
+    </ItemContainer>
+  </Wrapper>
+);
 
 const Wrapper = styled.section`
   display: flex;
