@@ -153,14 +153,15 @@ const CSSReset = createGlobalStyle`
       color: ${props => props.theme.fontColors.textRgba(0.65)};
     }
 
-     & .ant-calendar-header a {
+    .ant-picker-content th {
       color: ${props => props.theme.fontColors.textRgba(0.65)} !important;
-     }
+    }
 
     & .ant-picker-last-month-cell .ant-picker-date-value,
     .ant-picker-next-month-btn-day .ant-picker-date-value, 
     .ant-calendar-disabled-cell .ant-calendar-date, 
-    .ant-calendar-next-month-btn-day .ant-calendar-date {
+    .ant-calendar-next-month-btn-day .ant-calendar-date, 
+    .ant-picker-cell-inner .ant-picker-calendar-date-value{
       color: ${props => props.theme.fontColors.textRgba(0.25)};
     }
 
@@ -168,9 +169,9 @@ const CSSReset = createGlobalStyle`
       background-color: ${props => props.theme.backgroundColor};
     }
 
-    & .ant-select-selection, .ant-radio-button-wrapper, .ant-calendar-date-input-wrap 
+    .ant-select-selection, .ant-select-selector, .ant-radio-button-wrapper, .ant-calendar-date-input-wrap 
     .ant-calendar-input {
-      background-color: ${props => props.theme.panelBackgroundColor};
+      background-color: ${props => props.theme.panelBackgroundColor} !important;
       color: ${props => props.theme.fontColors.text};
     }
 
@@ -191,6 +192,10 @@ const CSSReset = createGlobalStyle`
       border-left-color: ${props => props.theme.panelBackgroundColor};
     }
 
+    .ant-select-arrow svg {
+      color: ${props => props.theme.fontColors.text}; 
+    }
+
     & .has-error .ant-input {
       background-color: ${props => props.theme.panelBackgroundColor};   
 
@@ -202,7 +207,8 @@ const CSSReset = createGlobalStyle`
     & .ant-drawer-title, .ant-form-item-required > label, .ant-form-item-label > label, 
     .ant-input, .ant-select-dropdown-menu-item,.ant-dropdown-menu-item > a, .ant-drawer-close,
     .ant-modal-confirm-body .ant-modal-confirm-title h3, .ant-modal-confirm-body .ant-modal-confirm-title h5, 
-    .ant-modal-confirm-content p, .ant-calendar-body, .ant-calendar-date, .ant-calendar-picker div > i{
+    .ant-modal-confirm-content p, .ant-calendar-body, .ant-calendar-date, .ant-calendar-picker div > i, 
+    .ant-select-item-option-content {
       color: ${props => props.theme.fontColors.textRgba(0.85)};
     }
 
@@ -220,10 +226,15 @@ const CSSReset = createGlobalStyle`
 
     & .ant-picker-date-value, .ant-dropdown-menu-item, 
     .ant-select-dropdown-menu-item:not(.ant-select-dropdown-menu-item-disabled), 
-    .ant-picker-calendar-date {
+    .ant-picker-calendar-date,
+    .ant-select-item .ant-select-item-option .ant-select-item-option-active {
       &:hover {
         background-color: ${props => props.theme.hoverColor};
       }
+    }
+
+    .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner {
+      background: ${props => props.theme.hoverColor};
     }
 
     & .ant-popover-buttons button:first-child  {
