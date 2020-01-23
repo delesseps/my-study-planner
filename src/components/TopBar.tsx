@@ -217,9 +217,14 @@ const MenuButton = styled.a`
   & svg {
     margin-right: 2rem;
   }
+
+  &:hover {
+    color: ${({ theme }) => theme.fontColors.textRgba(0.85)} !important;
+  }
 `;
 
 const MenuButtonLink = styled.p`
+  color: ${({ theme }) => theme.fontColors.textRgba(0.85)};
   margin: 0;
   & svg {
     margin-right: 2rem;

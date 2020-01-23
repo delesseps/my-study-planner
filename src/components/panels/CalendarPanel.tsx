@@ -98,12 +98,12 @@ const CalendarPanel: React.FC<ICalendarPanelProps> = ({
     if (listData.length > 0)
       return (
         <Popover content={popoverContent}>
-          <div className="ant-fullcalendar-date">
+          <div className="ant-picker-cell-inner ant-picker-calendar-date">
             <div
               style={{
                 boxShadow: "0 0 0 1px #f9ca24 inset"
               }}
-              className="ant-picker-cell-inner ant-picker-calendar-date"
+              className="ant-picker-calendar-date-value"
             >
               {value.date()}
             </div>

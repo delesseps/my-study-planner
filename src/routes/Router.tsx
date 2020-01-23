@@ -26,7 +26,7 @@ interface IRouterProps {
 const Router: React.FC<IRouterProps> = ({ cookies, config }) => {
   return (
     <React.Fragment>
-      <CSSReset />
+      <CSSReset config={config} />
       <React.Suspense fallback={<Loading />}>
         <Switch>
           <Route path="/" exact render={() => <Redirect to="/dashboard" />} />
@@ -109,7 +109,7 @@ const Router: React.FC<IRouterProps> = ({ cookies, config }) => {
   );
 };
 
-const CSSReset = createGlobalStyle`
+const CSSReset = createGlobalStyle<{ config?: IUserConfig }>`
   * {
     margin: 0; 
     padding: 0;
@@ -163,16 +163,26 @@ const CSSReset = createGlobalStyle`
     .ant-calendar-next-month-btn-day .ant-calendar-date, 
     .ant-picker-cell-inner .ant-picker-calendar-date-value{
       color: ${props => props.theme.fontColors.textRgba(0.25)};
+    }    
+
+    .ant-select-item.ant-select-item-option.ant-select-item-option-selected 
+    .ant-select-item-option-content {
+      color: ${props => props.config?.darkMode && "rgba(39, 39, 39, 0.85)"};
     }
 
     & .ant-calendar-disabled-cell .ant-calendar-date {
       background-color: ${props => props.theme.backgroundColor};
     }
 
-    .ant-select-selection, .ant-select-selector, .ant-radio-button-wrapper, .ant-calendar-date-input-wrap 
-    .ant-calendar-input {
+    .ant-select-selection, .ant-select-selector, .ant-radio-button-wrapper
+    ,.ant-calendar-date-input-wrap, 
+    .ant-picker {
       background-color: ${props => props.theme.panelBackgroundColor} !important;
       color: ${props => props.theme.fontColors.text};
+    }
+
+    .ant-picker-suffix {
+      color: ${props => props.theme.fontColors.text};  
     }
 
     & .ant-drawer-content, .ant-drawer-header, .ant-input, .ant-select-dropdown, 
@@ -194,7 +204,7 @@ const CSSReset = createGlobalStyle`
 
     .ant-select-arrow svg {
       color: ${props => props.theme.fontColors.text}; 
-    }
+    }    
 
     & .has-error .ant-input {
       background-color: ${props => props.theme.panelBackgroundColor};   
@@ -204,13 +214,21 @@ const CSSReset = createGlobalStyle`
       } 
     }
 
+    .ant-radio-button-wrapper-checked {
+      background: ${({ theme }) => theme.colors.main} !important;
+
+      span {
+        color: ${props => props.theme.fontColors.textRgba(0.85)};
+      }
+    }
+
     & .ant-drawer-title, .ant-form-item-required > label, .ant-form-item-label > label, 
-    .ant-input, .ant-select-dropdown-menu-item,.ant-dropdown-menu-item > a, .ant-drawer-close,
+    .ant-input, .ant-dropdown-menu-item,.ant-dropdown-menu-item > a, .ant-drawer-close,
     .ant-modal-confirm-body .ant-modal-confirm-title h3, .ant-modal-confirm-body .ant-modal-confirm-title h5, 
     .ant-modal-confirm-content p, .ant-calendar-body, .ant-calendar-date, .ant-calendar-picker div > i, 
     .ant-select-item-option-content {
       color: ${props => props.theme.fontColors.textRgba(0.85)};
-    }
+    }    
 
     & .ant-drawer-close {
       color: ${props => props.theme.fontColors.textRgba(0.65)};
@@ -220,7 +238,9 @@ const CSSReset = createGlobalStyle`
       }
     }
 
-    & .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled), .ant-select-dropdown-menu-item-selected {
+    & .ant-dropdown-menu-item-active:not(.ant-dropdown-menu-item-disabled), 
+    .ant-dropdown-menu-item-selected,
+    .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
       background-color: ${props => props.theme.hoverColor};
     }
 
