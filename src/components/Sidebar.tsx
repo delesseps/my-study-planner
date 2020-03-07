@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import { CalendarOutlined, HomeOutlined } from "@ant-design/icons";
+import { HomeOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 import { breakpoints } from "theme";
 
@@ -140,15 +140,6 @@ const Item = styled(NavLink)`
 `;
 
 const HomeIcon = styled(HomeOutlined)`
-  font-size: 2.6rem;
-  margin-bottom: 0.7rem;
-
-  & svg {
-    fill: ${props => props.theme.fontColors.textRgba(0.8)};
-  }
-`;
-
-const CalendarIcon = styled(CalendarOutlined)`
   font-size: 2.6rem;
   margin-bottom: 0.7rem;
 

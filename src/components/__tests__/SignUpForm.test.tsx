@@ -1,4 +1,6 @@
 import React from "react";
+import MockAdapter from "axios-mock-adapter";
+
 import {
   render,
   fireEvent,
@@ -6,8 +8,19 @@ import {
   waitForElement
 } from "test-utils";
 import { SignUpForm } from "components";
+import { agent } from "api";
 
 describe("SignUpForm", () => {
+  let mock: MockAdapter;
+
+  beforeEach(() => {
+    mock = new MockAdapter(agent);
+  });
+
+  afterEach(() => {
+    mock.restore();
+  });
+
   it("renders correctly", () => {
     const { asFragment } = render(<SignUpForm />);
     expect(asFragment()).toMatchSnapshot();
@@ -18,9 +31,9 @@ describe("SignUpForm", () => {
     fireEvent.click(getByTestId("submit"));
 
     await waitForElement(() => getByText("Please input your full name!"));
-    getByText("Please input your email!");
-    getByText("Please input your password!");
-    getByText("Please confirm your password!");
+    await waitForElement(() => getByText("Please input your email!"));
+    await waitForElement(() => getByText("Please input your password!"));
+    await waitForElement(() => getByText("Please confirm your password!"));
   });
 
   it("will display invalid email", async () => {
@@ -48,11 +61,8 @@ describe("SignUpForm", () => {
       target: { value: "asd" }
     });
 
-    await waitForElement(() =>
-      getByText(
-        "The passwords do not match! Password must have a minimum of 6 characters."
-      )
-    );
+    await waitForElement(() => getByText(/^The passwords do not match!$/));
+    getByText(/^Password must have a minimum of 6 characters.$/);
 
     fireEvent.input(confirmPasswordField, {
       target: { value: "asd1234" }
@@ -68,24 +78,60 @@ describe("SignUpForm", () => {
     );
   });
 
-  // it("will submit when filled", () => {
-  //   const { getByLabelText, getByTestId } = render(<SignUpForm />);
+  it("will submit when filled", () => {
+    const { queryByText, getByLabelText, getByTestId } = render(<SignUpForm />);
 
-  //   fireEvent.change(getByLabelText("Full Name"), {
-  //     target: { value: "test" }
-  //   });
-  //   fireEvent.change(getByLabelText("E-mail"), {
-  //     target: { value: "test@test.com" }
-  //   });
-  //   fireEvent.change(getByLabelText("Password"), {
-  //     target: { value: "test123" }
-  //   });
-  //   fireEvent.change(getByLabelText("Confirm Password"), {
-  //     target: { value: "test123" }
-  //   });
+    mock.onPost("auth/signup").reply(200, { user: {} });
 
-  //   fireEvent.click(getByTestId("submit"));
+    fireEvent.change(getByLabelText("Full Name"), {
+      target: { value: "test" }
+    });
+    fireEvent.change(getByLabelText("E-mail"), {
+      target: { value: "test@test.com" }
+    });
+    fireEvent.change(getByLabelText("Password"), {
+      target: { value: "test123" }
+    });
+    fireEvent.change(getByLabelText("Confirm Password"), {
+      target: { value: "test123" }
+    });
 
-  //   getByLabelText("icon: loading");
-  // });
+    fireEvent.click(getByTestId("submit"));
+
+    expect(
+      queryByText(
+        "User already exists. Please try again with a different email."
+      )
+    ).toBeNull();
+  });
+
+  it("will display error when account exists", async () => {
+    const { getByText, getByLabelText, getByTestId } = render(<SignUpForm />);
+
+    mock.onPost("auth/signup").reply(500, {
+      errors: {
+        message:
+          'E11000 duplicate key error collection: test.users index: email_1 dup key: { email: "" }'
+      }
+    });
+
+    fireEvent.change(getByLabelText("Full Name"), {
+      target: { value: "test" }
+    });
+    fireEvent.change(getByLabelText("E-mail"), {
+      target: { value: "test@test.com" }
+    });
+    fireEvent.change(getByLabelText("Password"), {
+      target: { value: "test123" }
+    });
+    fireEvent.change(getByLabelText("Confirm Password"), {
+      target: { value: "test123" }
+    });
+
+    fireEvent.click(getByTestId("submit"));
+
+    await waitForElement(() =>
+      getByText("User already exists. Please try again with a different email.")
+    );
+  });
 });
