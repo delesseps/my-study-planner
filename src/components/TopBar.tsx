@@ -1,16 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "assets/logo.svg";
-import { Icon, Avatar, Dropdown, Menu, Skeleton, Popover, Empty } from "antd";
+import {
+  CaretDownOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+  UserOutlined,
+  BellOutlined
+} from "@ant-design/icons";
+import { Avatar, Dropdown, Menu, Skeleton, Popover, Empty } from "antd";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import { signOut } from "store/effects";
 import { UserProfile } from "components/modals";
 import IUser from "interfaces/IUser";
 import { Link } from "react-router-dom";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 import { push } from "connected-react-router";
-import { useToggle } from "utils/hooks";
+import { useToggle } from "react-use";
 
 const mapStateToProps = (state: ApplicationState) => ({
   loading: state.reducer.loading.user,
@@ -24,11 +31,8 @@ interface ITopBarProps {
 
 const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
   const dispatch = useDispatch();
-  const { toggled: showProfile, toggle: toggleProfile } = useToggle();
-  const {
-    toggled: showNotifications,
-    toggle: toggleNotifications
-  } = useToggle();
+  const [showProfile, toggleProfile] = useToggle(false);
+  const [showNotifications, toggleNotifications] = useToggle(false);
 
   const handleSignOut = () => {
     dispatch(signOut());
@@ -42,21 +46,21 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
     <Menu>
       <Menu.Item>
         <MenuButton onClick={toggleProfile}>
-          <Icon type="user" />
+          <UserOutlined />
           Profile
         </MenuButton>
       </Menu.Item>
       <Menu.Item>
         <StyledLink to="/dashboard/preferences">
           <MenuButtonLink>
-            <Icon type="setting" />
+            <SettingOutlined />
             Preferences
           </MenuButtonLink>
         </StyledLink>
       </Menu.Item>
       <Menu.Item>
         <MenuButton onClick={handleSignOut}>
-          <Icon type="logout" />
+          <LogoutOutlined />
           Logout
         </MenuButton>
       </Menu.Item>
@@ -86,13 +90,13 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
           visible={showNotifications}
           onVisibleChange={toggleNotifications}
         >
-          <StyledIcon type="bell" />
+          <BellIcon />
         </Popover>
         <Avatar
           shape="square"
           size={60}
-          icon="user"
-          src={user && user.picture}
+          icon={<UserOutlined />}
+          src={user?.picture}
         />
         <UserInfoBox>
           <StyledSkeleton
@@ -102,12 +106,10 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
           >
             <NameCaretWrapper placement="bottomRight" overlay={userOptions}>
               <Name>
-                {user && user.name} <Icon type="caret-down" />
+                {user?.name} <CaretIcon />
               </Name>
             </NameCaretWrapper>
-            <Role>
-              {user && user.role === "user" ? "Student" : "Administrator"}
-            </Role>
+            <Role>{user?.role === "user" ? "Student" : "Administrator"}</Role>
           </StyledSkeleton>
         </UserInfoBox>
       </UserBox>
@@ -141,7 +143,7 @@ const StyledLogo = styled(Logo)`
 
 const Title = styled.h2`
   margin-bottom: 0.8rem;
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: 1px;
 
   color: ${props => props.theme.fontColors.textRgba(0.8)};
@@ -156,7 +158,7 @@ const UserBox = styled.div`
   align-items: center;
 `;
 
-const StyledIcon = styled(Icon)`
+const BellIcon = styled(BellOutlined)`
   font-size: 2.3rem;
   margin-right: 3.5rem;
 
@@ -195,6 +197,13 @@ const Name = styled.p`
   color: ${props => props.theme.fontColors.textRgba(0.9)};
 `;
 
+const CaretIcon = styled(CaretDownOutlined)`
+  svg {
+    width: 1.4rem;
+    margin-left: 0.5rem;
+  }
+`;
+
 const Role = styled.p`
   font-weight: 500;
   letter-spacing: 1px;
@@ -205,14 +214,19 @@ const Role = styled.p`
 `;
 
 const MenuButton = styled.a`
-  & i {
+  & svg {
     margin-right: 2rem;
+  }
+
+  &:hover {
+    color: ${({ theme }) => theme.fontColors.textRgba(0.85)} !important;
   }
 `;
 
 const MenuButtonLink = styled.p`
+  color: ${({ theme }) => theme.fontColors.textRgba(0.85)};
   margin: 0;
-  & i {
+  & svg {
     margin-right: 2rem;
   }
 `;
@@ -240,7 +254,4 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-export default connect(
-  mapStateToProps,
-  null
-)(TopBar);
+export default connect(mapStateToProps, null)(TopBar);

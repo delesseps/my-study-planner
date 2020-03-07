@@ -10,15 +10,21 @@ describe("TopBar", () => {
 
   it("displays user profile", async () => {
     const { getByText, getByLabelText } = renderLoggedIn(<TopBar />);
-    fireEvent.mouseOver(getByLabelText("icon: caret-down"));
+
+    fireEvent.mouseOver(getByLabelText("caret-down"));
+
     const profileButton = await waitForElement(() => getByText("Profile"));
+
     fireEvent.click(profileButton);
-    getByText("Done Homework");
+
+    await waitForElement(() => getByText("Done Homework"));
   });
 
-  it("displays notifications", () => {
-    const { getByText, getByLabelText, debug } = renderLoggedIn(<TopBar />);
-    fireEvent.click(getByLabelText("icon: bell"));
-    getByText("No notifications");
+  it("displays notifications", async () => {
+    const { getByText, getByLabelText } = renderLoggedIn(<TopBar />);
+
+    fireEvent.click(getByLabelText("bell"));
+
+    await waitForElement(() => getByText("No notifications"));
   });
 });

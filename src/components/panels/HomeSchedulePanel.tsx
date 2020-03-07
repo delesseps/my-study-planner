@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { toTitleCase } from "utils";
 import { HomeworkDescription, EvaluationDescription } from "components/modals";
 import styled from "styled-components";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 
 import IEvaluation from "interfaces/IEvaluation";
 import IScheduleEvent from "interfaces/IScheduleEvent";
@@ -82,12 +82,12 @@ const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = ({
     <StyledBigCalendar
       events={events}
       views={
-        window.innerWidth === 320
+        window.innerWidth === 425
           ? ["day", "agenda"]
           : ["week", "day", "agenda"]
       }
       localizer={localizer}
-      defaultView={window.innerWidth === 320 ? "day" : "week"}
+      defaultView={window.innerWidth === 425 ? "day" : "week"}
       onSelectEvent={(event: any) => {
         if (event.evaluation) EvaluationDescription(event.evaluation);
 

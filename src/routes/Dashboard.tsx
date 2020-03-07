@@ -3,14 +3,13 @@ import { FadeIn, Loading, Sidebar, TopBar } from "components";
 import { connect, useDispatch } from "react-redux";
 import { ApplicationState } from "store/types";
 import { Switch, Route, Redirect } from "react-router";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 import { requestUser, signOut } from "store/effects";
 import { initializePush } from "firebase/initialize";
 import IRequestError from "interfaces/IRequestError";
 import IUser from "interfaces/IUser";
 import styled from "styled-components";
 import { Alert } from "antd";
-import { Schedule } from "routes";
 
 const Home = React.lazy(() => import("routes/Home"));
 const Preferences = React.lazy(() => import("routes/Preferences"));
@@ -58,7 +57,6 @@ const Dashboard: React.FC<IDashboardProps> = ({ error, user }) => {
                 exact
                 component={Preferences}
               />
-              <Route path="/dashboard/schedule" exact component={Schedule} />
               <Redirect to="/dashboard" />
             </Switch>
           </React.Suspense>

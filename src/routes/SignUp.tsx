@@ -4,7 +4,7 @@ import { Divider } from "antd";
 import { OAuthButtons, BannerAuth, FadeIn, SignUpForm } from "components";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import { Link } from "react-router-dom";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 
 const SignUp: React.FC = () => {
   return (

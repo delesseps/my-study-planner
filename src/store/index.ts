@@ -55,7 +55,7 @@ export const history = createBrowserHistory();
 const persistConfig = {
   key: "root",
   storage: localforage,
-  blacklist: ["reducer"]
+  blacklist: ["reducer", "router"]
 };
 
 const middlewares =

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import { welcomeModal } from "store/effects";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 
 interface IWelcomeModalProps {
   visible: boolean;

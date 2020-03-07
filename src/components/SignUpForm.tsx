@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Form, Button, Input, Icon, Alert } from "antd";
-import { WrappedFormUtils } from "antd/lib/form/Form";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Input, Alert, Form } from "antd";
 import styled from "styled-components";
 import { Dispatch } from "redux";
 import { signUp } from "store/effects";
 import ISignUpCredentials from "interfaces/ISignUpCredentials";
 import { connect } from "react-redux";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 import { ApplicationState } from "store/types";
 import IRequestError from "interfaces/IRequestError";
 import { FadeIn } from "components";
@@ -26,27 +26,18 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 };
 
 interface ISignUpFormProps {
-  form: WrappedFormUtils;
   signUp: Function;
   loading: boolean;
-  error: IRequestError;
+  error: IRequestError | undefined;
 }
 
-const SignUpForm: React.FC<ISignUpFormProps> = ({
-  form,
-  signUp,
-  loading,
-  error
-}) => {
-  const { getFieldDecorator } = form;
+const SignUpForm: React.FC<ISignUpFormProps> = ({ signUp, loading, error }) => {
+  const [form] = Form.useForm();
   const [confirmDirty, setConfirmDirty] = useState<Boolean | any>(false);
 
-  const handleSubmit = (e: React.FormEvent, form: WrappedFormUtils): void => {
-    e.preventDefault();
-    form.validateFields((err, credentials: ISignUpCredentials) => {
-      if (!err) {
-        signUp(credentials);
-      }
+  const handleSubmit = (): void => {
+    form.validateFields().then(credentials => {
+      signUp(credentials as ISignUpCredentials);
     });
   };
 
@@ -73,13 +64,13 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
     callback: Function
   ) => {
     if (value && confirmDirty) {
-      form.validateFields(["confirm"], { force: true });
+      form.validateFields(["confirm"]);
     }
     callback();
   };
 
   return (
-    <StyledForm layout="vertical" onSubmit={e => handleSubmit(e, form)}>
+    <StyledForm form={form} layout="vertical" onFinish={handleSubmit}>
       <Form.Item>
         <Heading>Hello, Student</Heading>
         <SubHeading>
@@ -98,78 +89,80 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
           </Form.Item>
         </FadeIn>
       )}
-      <Form.Item label="Full Name">
-        {getFieldDecorator("name", {
-          rules: [{ required: true, message: "Please input your full name!" }]
-        })(
-          <Input
-            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-            placeholder="John Doe"
-          />
-        )}
+      <Form.Item
+        label="Full Name"
+        name="name"
+        rules={[{ required: true, message: "Please input your full name!" }]}
+      >
+        <Input
+          prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          placeholder="John Doe"
+        />
       </Form.Item>
-      <Form.Item label="E-mail">
-        {getFieldDecorator("email", {
-          rules: [
-            { required: true, message: "Please input your email!" },
-            {
-              type: "email",
-              message: "The input is not valid E-mail!"
-            }
-          ]
-        })(
-          <Input
-            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-            placeholder="john.doe@gmail.com"
-          />
-        )}
+      <Form.Item
+        label="E-mail"
+        name="email"
+        rules={[
+          { required: true, message: "Please input your email!" },
+          {
+            type: "email",
+            message: "The input is not valid E-mail!"
+          }
+        ]}
+      >
+        <Input
+          prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          placeholder="john.doe@gmail.com"
+        />
       </Form.Item>
-      <Form.Item label="Password" hasFeedback>
-        {getFieldDecorator("password", {
-          rules: [
-            {
-              required: true,
-              message: "Please input your password!"
-            },
-            {
-              validator: validateToNextPassword
-            },
-            {
-              min: 6,
-              message: "Password must have a minimum of 6 characters."
-            }
-          ]
-        })(
-          <Input.Password
-            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-            type="password"
-            placeholder="Password"
-          />
-        )}
+      <Form.Item
+        label="Password"
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: "Please input your password!"
+          },
+          {
+            validator: validateToNextPassword
+          },
+          {
+            min: 6,
+            message: "Password must have a minimum of 6 characters."
+          }
+        ]}
+        hasFeedback
+      >
+        <Input.Password
+          prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          type="password"
+          placeholder="Password"
+        />
       </Form.Item>
-      <Form.Item label="Confirm Password" hasFeedback>
-        {getFieldDecorator("confirm", {
-          rules: [
-            {
-              required: true,
-              message: "Please confirm your password!"
-            },
-            {
-              validator: compareToFirstPassword
-            },
-            {
-              min: 6,
-              message: "Password must have a minimum of 6 characters."
-            }
-          ]
-        })(
-          <Input.Password
-            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-            type="password"
-            placeholder="Confirm password"
-            onBlur={handleConfirmBlur}
-          />
-        )}
+      <Form.Item
+        label="Confirm Password"
+        name="confirm"
+        rules={[
+          {
+            required: true,
+            message: "Please confirm your password!"
+          },
+          {
+            validator: compareToFirstPassword
+          },
+          {
+            min: 6,
+            message: "Password must have a minimum of 6 characters."
+          }
+        ]}
+        hasFeedback
+      >
+        <Input.Password
+          prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          type="password"
+          placeholder="Confirm password"
+          onBlur={handleConfirmBlur}
+        />
       </Form.Item>
       <Form.Item>
         <Button
@@ -207,9 +200,4 @@ const SubHeading = styled.h3`
   color: ${props => props.theme.fontColors.textRgba(0.6)};
 `;
 
-const wrappedSignInForm = Form.create()(SignUpForm);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(wrappedSignInForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);

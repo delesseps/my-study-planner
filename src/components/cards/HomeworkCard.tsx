@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Icon, Badge, Avatar, Divider, Popconfirm, Tooltip } from "antd";
+import {
+  UserOutlined,
+  CheckOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  ClockCircleOutlined
+} from "@ant-design/icons";
+import { Badge, Avatar, Divider, Popconfirm, Tooltip } from "antd";
 import { setDate, determinePriority, determineColor } from "utils";
 import moment from "moment";
 import { useDispatch } from "react-redux";
@@ -59,11 +66,11 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
         </Assignment>
         <Actions>
           <Tooltip title="Done">
-            <StyledIcon onClick={handleDoneClick} type="check" />
+            <CheckIcon onClick={handleDoneClick} />
           </Tooltip>
 
           <Tooltip title="Edit">
-            <StyledIcon onClick={handleEditClick} type="edit" />
+            <EditIcon onClick={handleEditClick} />
           </Tooltip>
 
           <Popconfirm
@@ -74,17 +81,21 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
             cancelText="No"
             onConfirm={handleDeleteClick}
           >
-            <StyledIcon type="delete" />
+            <DeleteIcon />
           </Popconfirm>
         </Actions>
       </MainInfo>
       <OtherInfo>
         <User>
-          <Avatar size={30} icon="user" src={homework.createdBy.picture} />
+          <Avatar
+            size={30}
+            icon={<UserOutlined />}
+            src={homework.createdBy.picture}
+          />
           <UserName>{homework.createdBy.name}</UserName>
         </User>
         <Date>
-          <Clock type="clock-circle" />
+          <ClockIcon />
           {setDate(moment(homework.date))} <Divider type="vertical" />
           <ViewMore onClick={handleViewMoreClick}> View More</ViewMore>
         </Date>
@@ -139,7 +150,25 @@ const Actions = styled.div`
   }
 `;
 
-const StyledIcon = styled(Icon)`
+const CheckIcon = styled(CheckOutlined)`
+  cursor: pointer;
+  font-size: 1.9rem;
+  transition: 0.1s;
+
+  &:hover {
+    color: ${props => props.theme.colors.main};
+  }
+`;
+const EditIcon = styled(EditOutlined)`
+  cursor: pointer;
+  font-size: 1.9rem;
+  transition: 0.1s;
+
+  &:hover {
+    color: ${props => props.theme.colors.main};
+  }
+`;
+const DeleteIcon = styled(DeleteOutlined)`
   cursor: pointer;
   font-size: 1.9rem;
   transition: 0.1s;
@@ -179,7 +208,7 @@ const Date = styled.h5`
   margin: 0;
 `;
 
-const Clock = styled(Icon)`
+const ClockIcon = styled(ClockCircleOutlined)`
   font-size: 2rem;
   margin-right: 0.7rem;
 `;

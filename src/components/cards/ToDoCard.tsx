@@ -1,7 +1,8 @@
 import React from "react";
 import IToDo from "interfaces/IToDo";
 import styled from "styled-components";
-import { Badge, Checkbox, Popconfirm, Icon, Tooltip } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
+import { Badge, Checkbox, Popconfirm, Tooltip } from "antd";
 import { determineColor } from "utils";
 import { useDispatch } from "react-redux";
 import { deleteToDo, editToDo } from "store/effects";
@@ -37,7 +38,7 @@ const ToDoCard: React.FC<IToDoCardProps> = ({ toDo, index }) => {
           cancelText="No"
           onConfirm={handleDeleteClick}
         >
-          <StyledIcon type="delete" />
+          <DeleteIcon />
         </Popconfirm>
         <Tooltip title="Done">
           <Checkbox onChange={handleDoneClick} />
@@ -74,7 +75,7 @@ const TaskTitle = styled.h3`
   color: ${props => props.theme.fontColors.textRgba(0.8)};
 `;
 
-const StyledIcon = styled(Icon)`
+const DeleteIcon = styled(DeleteOutlined)`
   cursor: pointer;
   font-size: 1.9rem;
   transition: 0.1s;

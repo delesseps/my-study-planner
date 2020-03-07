@@ -1,32 +1,28 @@
 import React from "react";
-import { Drawer, Form, Input, Tooltip, Icon, Button, Radio } from "antd";
-import { FormComponentProps } from "antd/lib/form/Form";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Drawer, Input, Tooltip, Button, Radio, Form } from "antd";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import { toDoDrawer } from "store/actions";
 import { addToDo } from "store/effects";
 import IToDo from "interfaces/IToDo";
 
-interface IToDoDrawerProps extends FormComponentProps {
+interface IToDoDrawerProps {
   visible?: boolean;
   loading?: boolean;
   index?: number;
 }
 
 const ToDoDrawer: React.FC<IToDoDrawerProps> = ({
-  form,
   visible = false,
   loading = false
 }) => {
-  const { getFieldDecorator } = form;
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    form.validateFieldsAndScroll((err, values: IToDo) => {
-      if (!err) {
-        dispatch(addToDo(values));
-      }
+  const handleSubmit = () => {
+    form.validateFields().then(values => {
+      dispatch(addToDo(values as IToDo));
     });
   };
 
@@ -42,42 +38,42 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({
       visible={visible}
       width={300}
     >
-      <Form onSubmit={handleSubmit} layout="vertical">
-        <Form.Item label={<span>Task name</span>}>
-          {getFieldDecorator("task", {
-            rules: [
-              {
-                required: true,
-                message: "Please input the task name!",
-                whitespace: true
-              }
-            ]
-          })(<Input />)}
+      <Form form={form} onFinish={handleSubmit} layout="vertical">
+        <Form.Item
+          name="task"
+          rules={[
+            {
+              required: true,
+              message: "Please input the task name!",
+              whitespace: true
+            }
+          ]}
+          label={<span>Task name</span>}
+        >
+          <Input />
         </Form.Item>
         <Form.Item
           label={
             <span>
               Urgency &nbsp;
               <Tooltip title="How important is this task for you?">
-                <Icon type="question-circle-o" />
+                <QuestionCircleOutlined />
               </Tooltip>
             </span>
           }
+          name="urgency"
+          rules={[
+            {
+              required: true,
+              message: "Please select how urgent is your to-do!"
+            }
+          ]}
         >
-          {getFieldDecorator("urgency", {
-            rules: [
-              {
-                required: true,
-                message: "Please select how urgent is your to-do!"
-              }
-            ]
-          })(
-            <Radio.Group buttonStyle="solid">
-              <Radio.Button value="chill">Chill</Radio.Button>
-              <Radio.Button value="normal">Normal</Radio.Button>
-              <Radio.Button value="important">Important</Radio.Button>
-            </Radio.Group>
-          )}
+          <Radio.Group buttonStyle="solid">
+            <Radio.Button value="chill">Chill</Radio.Button>
+            <Radio.Button value="normal">Normal</Radio.Button>
+            <Radio.Button value="important">Important</Radio.Button>
+          </Radio.Group>
         </Form.Item>
 
         <Form.Item>
@@ -95,8 +91,6 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({
   );
 };
 
-const wrappedToDoDrawer = Form.create<IToDoDrawerProps>()(ToDoDrawer);
-
 const mapStateToProps = (state: ApplicationState) => {
   return {
     visible: state.reducer.drawer.toDo,
@@ -104,7 +98,4 @@ const mapStateToProps = (state: ApplicationState) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(wrappedToDoDrawer);
+export default connect(mapStateToProps, null)(ToDoDrawer);

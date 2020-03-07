@@ -1,14 +1,14 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
+import { HomeOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
-import { Icon } from "antd";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 
 const Sidebar: React.FC = props => {
   return (
     <Wrapper>
       <Item activeClassName="active" to="/dashboard" exact>
-        <StyledIcon type="home" />
+        <HomeIcon />
         <Text>Home</Text>
       </Item>
     </Wrapper>
@@ -139,7 +139,7 @@ const Item = styled(NavLink)`
   }
 `;
 
-const StyledIcon = styled(Icon)`
+const HomeIcon = styled(HomeOutlined)`
   font-size: 2.6rem;
   margin-bottom: 0.7rem;
 

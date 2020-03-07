@@ -5,7 +5,7 @@ import { ApplicationState } from "store/types";
 import IUserConfig from "interfaces/IUserConfig";
 import { useDispatch, connect } from "react-redux";
 import { updateUserConfig } from "store/effects";
-import { breakpoints } from "styled";
+import { breakpoints } from "theme";
 
 interface IPreferencesProps {
   config: IUserConfig;

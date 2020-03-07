@@ -6,7 +6,7 @@ import { ThemeProvider, DefaultTheme } from "styled-components";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import configureStore, { initialState } from "store";
-import { lightTheme } from "styled";
+import { lightTheme } from "theme";
 
 const loggedInState = {
   ...initialState,

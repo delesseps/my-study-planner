@@ -13,8 +13,10 @@ declare module "styled-components" {
     sidebarBackgroundColor: string;
     panelBackgroundColor: string;
     scrollbarBackgroundColor: string;
+    tableCellBackgroundColor: string;
     bigCalendarCurrentDay: string;
     hoverColor: string;
     shadow1: string;
+    borderRadius: string;
   }
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import IUser from "interfaces/IUser";
-import { Modal, Badge, Icon } from "antd";
+import { EditOutlined } from "@ant-design/icons";
+import { Modal, Badge } from "antd";
 import styled from "styled-components";
 import UploadPicture from "components/UploadPicture";
 
@@ -41,7 +42,7 @@ const UserProfileModal: React.FunctionComponent<IUserProfileModalProps> = ({
       <Background>&nbsp;</Background>
       <Wrapper>
         <UserBox>
-          <Badge count={<StyledIcon type="edit" />}>
+          <Badge count={<EditIcon />}>
             <UploadPicture />
           </Badge>
           <Name>{user.name}</Name>
@@ -102,7 +103,7 @@ const UserBox = styled.div`
   margin-top: 9rem;
 `;
 
-const StyledIcon = styled(Icon)`
+const EditIcon = styled(EditOutlined)`
   &&& {
     transition: 0.2s;
     opacity: 0;

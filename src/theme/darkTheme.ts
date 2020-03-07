@@ -12,9 +12,11 @@ const theme: DefaultTheme = {
   sidebarBackgroundColor: "#303030",
   panelBackgroundColor: "#303030",
   scrollbarBackgroundColor: "#303030",
+  tableCellBackgroundColor: "#424242",
   bigCalendarCurrentDay: "#6f6c6c",
   hoverColor: "rgba(0, 173, 181, 0.60)",
-  shadow1: "0px 4px 12px rgba(0, 0, 0, 0.1);"
+  shadow1: "0px 4px 12px rgba(0, 0, 0, 0.1);",
+  borderRadius: "4px"
 };
 
 export default theme;
