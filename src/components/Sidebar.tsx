@@ -11,10 +11,6 @@ const Sidebar: React.FC = props => {
         <HomeIcon />
         <Text>Home</Text>
       </Item>
-      <Item activeClassName="active" to="/dashboard/schedule">
-        <CalendarIcon />
-        <Text>Schedule</Text>
-      </Item>
     </Wrapper>
   );
 };
