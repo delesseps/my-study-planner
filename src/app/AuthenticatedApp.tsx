@@ -1,25 +1,31 @@
 import React, { useEffect } from "react";
-import { FadeIn, Loading, Sidebar, TopBar } from "components";
-import { connect, useDispatch } from "react-redux";
-import { ApplicationState } from "store/types";
 import { Switch, Route, Redirect } from "react-router";
+import { connect, useDispatch } from "react-redux";
+import { Alert } from "antd";
+import styled from "styled-components";
+
+import { FadeIn, Loading, Sidebar, TopBar } from "components";
+import { ApplicationState } from "store/types";
 import { breakpoints } from "theme";
 import { requestUser, signOut } from "store/effects";
 import { initializePush } from "firebase/initialize";
 import IRequestError from "interfaces/IRequestError";
 import IUser from "interfaces/IUser";
-import styled from "styled-components";
-import { Alert } from "antd";
 
 const Home = React.lazy(() => import("routes/Home"));
 const Preferences = React.lazy(() => import("routes/Preferences"));
+
+const mapStateToProps = (state: ApplicationState) => ({
+  user: state.reducer.user,
+  error: state.reducer.error.user,
+});
 
 interface IDashboardProps {
   error: IRequestError | undefined;
   user: IUser;
 }
 
-const Dashboard: React.FC<IDashboardProps> = ({ error, user }) => {
+const AuthenticatedApp: React.FC<IDashboardProps> = ({ error, user }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -73,7 +79,7 @@ const Wrapper = styled.main`
     flex-direction: column;
   }
 
-  background-color: ${props => props.theme.backgroundColor};
+  background-color: ${(props) => props.theme.backgroundColor};
 `;
 
 const EmailVerificationError = styled(Alert)`
@@ -85,7 +91,7 @@ const EmailVerificationError = styled(Alert)`
   z-index: 100;
 `;
 
-const Sider = styled.section`
+const Sider = styled.div`
   flex: 1;
   min-height: 100vh;
 
@@ -123,9 +129,4 @@ const Content = styled.section`
   }
 `;
 
-const mapStateToProps = (state: ApplicationState) => ({
-  user: state.reducer.user,
-  error: state.reducer.error.user
-});
-
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps)(AuthenticatedApp);
