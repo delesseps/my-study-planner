@@ -1,8 +1,6 @@
 import React from "react";
-import { createGlobalStyle } from "styled-components";
 import { Switch, Route, Redirect } from "react-router";
 import Loading from "components/Loading";
-import { breakpoints } from "theme";
 import { Cookies, withCookies } from "react-cookie";
 
 import { connect } from "react-redux";
