@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 import * as serviceWorker from "./serviceWorker";
 
-import App from "App";
+import App from "app/App";
 
 import { Provider } from "react-redux";
 
@@ -16,10 +16,10 @@ const { persistor, store } = configureStore();
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("./firebase-messaging-sw.js")
-    .then(function(registration) {
+    .then(function (registration) {
       console.log("Registration successful, scope is:", registration.scope);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log("Service worker registration failed, error:", err);
     });
 }

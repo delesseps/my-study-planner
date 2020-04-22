@@ -8,9 +8,7 @@ function isToday(momentDate: Moment) {
 }
 
 function isYesterday(momentDate: Moment) {
-  let YESTERDAY = REFERENCE.clone()
-    .subtract(1, "days")
-    .startOf("day");
+  let YESTERDAY = REFERENCE.clone().subtract(1, "days").startOf("day");
   return momentDate.isSame(YESTERDAY, "d");
 }
 
@@ -20,9 +18,7 @@ function isPast(momentDate: Moment) {
 }
 
 function isTomorrow(momentDate: Moment) {
-  let TOMMORROW = REFERENCE.clone()
-    .add(1, "days")
-    .startOf("day");
+  let TOMMORROW = REFERENCE.clone().add(1, "days").startOf("day");
   return momentDate.isSame(TOMMORROW, "d");
 }
 
@@ -36,7 +32,6 @@ export function isThisWeek(momentDate: Moment) {
     REFERENCE.clone().endOf("week")
   );
 }
-
 
 export default function setDate(momentDate: Moment) {
   if (isToday(momentDate)) {
