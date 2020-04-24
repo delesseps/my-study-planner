@@ -9,20 +9,13 @@ import {
   BellOutlined,
 } from "@ant-design/icons";
 import { Avatar, Dropdown, Menu, Skeleton, Popover, Empty } from "antd";
-import { ApplicationState } from "store/types";
-import { connect, useDispatch } from "react-redux";
 import { UserProfile } from "components/modals";
 import IUser from "constants/interfaces/IUser";
 import { Link } from "react-router-dom";
 import { breakpoints } from "theme";
-import { push } from "connected-react-router";
+import { useHistory } from "react-router-dom";
 import { useToggle } from "react-use";
 import { useAuth } from "features/auth/auth-context";
-
-const mapStateToProps = (state: ApplicationState) => ({
-  loading: state.reducer.loading.user,
-  user: state.reducer.user,
-});
 
 interface ITopBarProps {
   loading?: boolean;
@@ -30,7 +23,7 @@ interface ITopBarProps {
 }
 
 const TopBar: React.FC<ITopBarProps> = ({ loading }) => {
-  const dispatch = useDispatch();
+  const { push } = useHistory();
   const { user, logout } = useAuth();
   const [showProfile, toggleProfile] = useToggle(false);
   const [showNotifications, toggleNotifications] = useToggle(false);
@@ -40,7 +33,7 @@ const TopBar: React.FC<ITopBarProps> = ({ loading }) => {
   };
 
   const handleHomeClick = () => {
-    dispatch(push("/dashboard"));
+    push("/dashboard");
   };
 
   const userOptions = (

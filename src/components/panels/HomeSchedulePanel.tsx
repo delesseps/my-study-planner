@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import BigCalendar from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
-import { ApplicationState } from "store/types";
-import { connect } from "react-redux";
 import { toTitleCase } from "utils";
 import { HomeworkDescription, EvaluationDescription } from "components/modals";
 import styled from "styled-components";
@@ -13,6 +11,8 @@ import IEvaluation from "constants/interfaces/IEvaluation";
 import IScheduleEvent from "constants/interfaces/IScheduleEvent";
 import { Urgency } from "constants/interfaces/IUser";
 import IHomework from "constants/interfaces/IHomework";
+import { useHomework } from "features/homework/homework-hooks";
+import { useEvaluations } from "features/evaluation/evaluation-hooks";
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -28,23 +28,15 @@ function determineColor(urgency: Urgency, alpha = 1) {
   }
 }
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    evaluations: state.reducer.user.evaluations,
-    homework: state.reducer.user.homework,
-  };
-};
-
 interface IHomeSchedulePanelProps {
   evaluations?: IEvaluation[];
   homework?: IHomework[];
 }
 
-const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = ({
-  evaluations = [],
-  homework = [],
-}) => {
+const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = () => {
   const [events, setEvents] = useState<IScheduleEvent[]>([]);
+  const { homework } = useHomework();
+  const { evaluations } = useEvaluations();
 
   useEffect(() => {
     //Adds and normalizes evaluations which are not done to events
@@ -115,4 +107,4 @@ const StyledBigCalendar = styled(BigCalendar)`
   }
 `;
 
-export default connect(mapStateToProps, null)(HomeSchedulePanel);
+export default HomeSchedulePanel;

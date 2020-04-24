@@ -1,74 +1,77 @@
 import React, { useEffect } from "react";
-import { ReactComponent as Logo } from "assets/logo.svg";
-import { ReactComponent as ChangePasswordDone } from "assets/change_password_done.svg";
+import { AxiosError } from "axios";
 import { LockOutlined } from "@ant-design/icons";
 import { Button, Input, message, Form } from "antd";
-import { Link, match } from "react-router-dom";
-import { FadeIn, Loading } from "components";
-import { recoverPasswordTokenConfirmation, changePassword } from "services";
-import { useDispatch } from "react-redux";
-import { push } from "connected-react-router";
+import { Link, match, useHistory } from "react-router-dom";
 import styled from "styled-components";
+
+import { ReactComponent as Logo } from "assets/logo.svg";
+import { ReactComponent as ChangePasswordDone } from "assets/change_password_done.svg";
+import { FadeIn, Loading } from "components";
+import { usePasswordChange } from "features/auth/auth-context";
 
 interface IChangePasswordProps {
   match: match<{ email: string; token: string }>;
 }
 
 const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
-  match
+  match,
 }) => {
   const [form] = Form.useForm();
+  const { push } = useHistory();
+  const {
+    confirmToken: [
+      confirmToken,
+      { status: tokenConfirmationStatus, error: tokenConfirmationError },
+    ],
+    change: [
+      changePassword,
+      { status: passwordChangeStatus, error: passwordChangeError },
+    ],
+  } = usePasswordChange();
   const [confirmDirty, setConfirmDirty] = React.useState<Boolean | any>(false);
-  const dispatch = useDispatch();
-
-  const [requestLoading, setRequestLoading] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
-  const [success, setSuccess] = React.useState(false);
 
   useEffect(() => {
-    const confirmToken = async () => {
-      try {
-        const response = await recoverPasswordTokenConfirmation(
-          match.params.token
-        );
+    confirmToken(match.params.token);
+  }, [match.params.token]);
 
-        if (!response) {
-          throw new Error(response);
-        }
+  React.useEffect(() => {
+    const error = tokenConfirmationError as AxiosError;
+    const errorCode = error?.response?.status;
 
-        setLoading(false);
-      } catch (e) {
-        message.error("Invalid link");
-        dispatch(push("/forgot_password"));
-      }
-    };
+    if (errorCode) {
+      message.error("Invalid link");
+      push("/forgot_password");
+    }
 
-    confirmToken();
-  }, [dispatch, match.params.token]);
+    if (!errorCode && error) {
+      throw new Error(error.toString());
+    }
+  }, [tokenConfirmationError]);
+
+  React.useEffect(() => {
+    const error = passwordChangeError as AxiosError;
+    const errorCode = error?.response?.status;
+
+    if (errorCode) {
+      message.error("An error has occured please try again!");
+      push("/forgot_password");
+    }
+
+    if (!errorCode && error) {
+      throw new Error(error.toString());
+    }
+  }, [passwordChangeError]);
 
   const handleSubmit = (): void => {
-    setRequestLoading(true);
-
     form
       .validateFields()
-      .then(credentials => SendRequest(credentials.password))
-      .catch(() => setRequestLoading(false));
+      .then((credentials) => SendRequest(credentials.password));
   };
 
   const SendRequest = async (password: string) => {
-    try {
-      const response = await changePassword(match.params.token, password);
-
-      if (!response) {
-        throw new Error(response);
-      }
-
-      setRequestLoading(false);
-      setSuccess(true);
-    } catch (e) {
-      message.error("An error has occured please try again!");
-      dispatch(push("/forgot_password"));
-    }
+    const { token } = match.params;
+    changePassword({ token, password });
   };
 
   const handleConfirmBlur = (e: React.BaseSyntheticEvent) => {
@@ -99,7 +102,10 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
     callback();
   };
 
-  if (loading) {
+  const success = passwordChangeStatus === "success";
+  const passwordChangeLoading = success || passwordChangeStatus === "loading";
+
+  if (tokenConfirmationStatus === "loading") {
     return <Loading />;
   } else {
     return (
@@ -125,15 +131,15 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
                   rules={[
                     {
                       required: true,
-                      message: "Please input your password!"
+                      message: "Please input your password!",
                     },
                     {
-                      validator: validateToNextPassword
+                      validator: validateToNextPassword,
                     },
                     {
                       min: 6,
-                      message: "Password must have a minimum of 6 characters."
-                    }
+                      message: "Password must have a minimum of 6 characters.",
+                    },
                   ]}
                   hasFeedback
                 >
@@ -150,15 +156,15 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
                   rules={[
                     {
                       required: true,
-                      message: "Please confirm your password!"
+                      message: "Please confirm your password!",
                     },
                     {
-                      validator: compareToFirstPassword
+                      validator: compareToFirstPassword,
                     },
                     {
                       min: 6,
-                      message: "Password must have a minimum of 6 characters."
-                    }
+                      message: "Password must have a minimum of 6 characters.",
+                    },
                   ]}
                   hasFeedback
                 >
@@ -173,7 +179,7 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
                 </Form.Item>
                 <Form.Item>
                   <Button
-                    loading={requestLoading}
+                    loading={passwordChangeLoading}
                     block
                     type="primary"
                     size="large"
@@ -201,7 +207,7 @@ const Wrapper = styled.main`
   padding: 4rem 0;
   min-height: 100vh;
 
-  background-color: ${props => props.theme.colors.main};
+  background-color: ${(props) => props.theme.colors.main};
 `;
 
 const LogoBox = styled.div`
@@ -249,7 +255,7 @@ const Card = styled.div`
 const CardTitle = styled.h2`
   font-weight: 300;
   font-size: 2.4rem;
-  color: ${props => props.theme.colors.main};
+  color: ${(props) => props.theme.colors.main};
 `;
 
 const CardBody = styled.h4`

@@ -1,16 +1,15 @@
 import * as React from "react";
 import { CookiesProvider } from "react-cookie";
-import { ConnectedRouter } from "connected-react-router";
 
-import { history } from "store";
 import { AuthProvider } from "./auth/auth-context";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const AppProviders: React.FC = ({ children }) => (
-  <ConnectedRouter history={history}>
+  <Router>
     <CookiesProvider>
       <AuthProvider>{children}</AuthProvider>
     </CookiesProvider>
-  </ConnectedRouter>
+  </Router>
 );
 
 export { AppProviders };

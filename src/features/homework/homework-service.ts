@@ -1,4 +1,4 @@
-import { agent } from "api";
+import { agent } from "utils";
 import { AxiosRequestConfig } from "axios";
 import IHomework from "constants/interfaces/IHomework";
 

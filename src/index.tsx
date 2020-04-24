@@ -5,14 +5,8 @@ import * as serviceWorker from "./serviceWorker";
 
 import App from "app/App";
 
-import { Provider } from "react-redux";
-
-import configureStore from "store";
-import { PersistGate } from "redux-persist/integration/react";
 import { Loading } from "components";
 import { AppProviders } from "features";
-
-const { persistor, store } = configureStore();
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
@@ -26,13 +20,9 @@ if ("serviceWorker" in navigator) {
 }
 
 ReactDOM.render(
-  <Provider store={store}>
-    <PersistGate loading={<Loading />} persistor={persistor}>
-      <AppProviders>
-        <App />
-      </AppProviders>
-    </PersistGate>
-  </Provider>,
+  <AppProviders>
+    <App />
+  </AppProviders>,
   document.getElementById("root")
 );
 

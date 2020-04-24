@@ -1,11 +1,11 @@
 import { AxiosResponse, AxiosRequestConfig } from "axios";
 
-import { agent } from "api";
+import { agent } from "utils";
 import IUser from "constants/interfaces/IUser";
 import ISignInCredentials from "constants/interfaces/ISignInCredentials";
 import ISignUpCredentials from "constants/interfaces/ISignUpCredentials";
 
-export function getUser(): Promise<AxiosResponse<IUser>> {
+export function getUser(): Promise<IUser> {
   const options: AxiosRequestConfig = {
     url: "/user/current",
     method: "get",
@@ -18,7 +18,7 @@ export function login({
   email,
   password,
   remember,
-}: ISignInCredentials): Promise<AxiosResponse<IUser>> {
+}: ISignInCredentials): Promise<IUser> {
   const options: AxiosRequestConfig = {
     url: "/auth/signin",
     method: "post",
@@ -45,7 +45,7 @@ export function register({
   name,
   email,
   password,
-}: ISignUpCredentials): Promise<AxiosResponse<IUser>> {
+}: ISignUpCredentials): Promise<IUser> {
   const options: AxiosRequestConfig = {
     url: "/auth/signup",
     method: "post",
@@ -57,4 +57,49 @@ export function register({
   };
 
   return agent.request(options).then(({ data }) => data.user);
+}
+
+export function requestChangePassword(email: string): Promise<string> {
+  const options: AxiosRequestConfig = {
+    url: "/recover/password",
+    method: "post",
+    data: {
+      email,
+    },
+  };
+
+  return agent.request(options);
+}
+
+export function changePasswordTokenConfirmation(
+  token: string
+): Promise<string> {
+  const options: AxiosRequestConfig = {
+    url: "/recover/password_token_confirmation",
+    method: "post",
+    data: {
+      token,
+    },
+  };
+
+  return agent.request(options);
+}
+
+export function changePassword({
+  token,
+  password,
+}: {
+  token: string;
+  password: string;
+}): Promise<string> {
+  const options: AxiosRequestConfig = {
+    url: "/recover/change_password",
+    method: "post",
+    data: {
+      password,
+      token,
+    },
+  };
+
+  return agent.request(options);
 }

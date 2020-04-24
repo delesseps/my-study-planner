@@ -1,4 +1,4 @@
-import { agent } from "api";
+import { agent } from "utils";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { IUserConfig } from "constants/interfaces/IUser";
 
@@ -26,4 +26,13 @@ export function uploadProfilePicture(
   };
 
   return agent.request(options);
+}
+
+export function closeWelcomeModal() {
+  const api: AxiosRequestConfig = {
+    url: "/user/welcome",
+    method: "post",
+  };
+
+  return agent.request(api);
 }

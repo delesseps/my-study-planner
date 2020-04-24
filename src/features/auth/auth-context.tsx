@@ -107,3 +107,11 @@ export function useAuth() {
   }
   return context;
 }
+
+export function usePasswordChange() {
+  const request = useMutation(authService.requestChangePassword);
+  const confirmToken = useMutation(authService.changePasswordTokenConfirmation);
+  const change = useMutation(authService.changePassword);
+
+  return { request, confirmToken, change };
+}

@@ -1,4 +1,4 @@
-import { agent } from "api";
+import { agent } from "utils";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import IEvaluation from "constants/interfaces/IEvaluation";
 

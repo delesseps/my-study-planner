@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { Button, Empty } from "antd";
 
-import { ApplicationState } from "store/types";
-import IToDo from "constants/interfaces/IToDo";
 import { ToDoDrawer } from "components/drawers";
 import { ToDoCard } from "components/cards";
 import { useToDo } from "features/toDo/toDo-hooks";

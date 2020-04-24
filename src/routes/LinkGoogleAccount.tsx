@@ -4,74 +4,73 @@ import { ReactComponent as Done } from "assets/change_password_done.svg";
 import styled from "styled-components";
 import { Button, message } from "antd";
 import { FadeIn, Loading } from "components";
-import { match } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { push } from "connected-react-router";
-import {
-  linkAccountGoogleTokenConfirmation,
-  linkAccountGoogle
-} from "services/linkAccount";
+import { match, useHistory } from "react-router-dom";
+
+import { useLinkAccount } from "features/link-account/link-account-hooks";
+import { AxiosError } from "axios";
 
 interface ILinkGoogleAccountProps {
   match: match<{ token: string; email: string }>;
 }
 
 const LinkGoogleAccount: React.FunctionComponent<ILinkGoogleAccountProps> = ({
-  match
+  match,
 }) => {
-  const dispatch = useDispatch();
+  const { push } = useHistory();
 
-  const [requestLoading, setRequestLoading] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
-  const [success, setSuccess] = React.useState(false);
+  const {
+    googleTokenConfirmation: [
+      confirmToken,
+      { status: tokenConfirmationStatus, error: tokenConfirmationError },
+    ],
+    googleAccountLink: [linkAccount, { status: linkStatus, error: linkError }],
+  } = useLinkAccount();
 
   React.useEffect(() => {
-    const confirmToken = async () => {
-      try {
-        const response = await linkAccountGoogleTokenConfirmation(
-          match.params.token
-        );
+    confirmToken(match.params.token);
+  }, [match.params.token]);
 
-        if (!response) {
-          throw new Error(response);
-        }
+  React.useEffect(() => {
+    const error = tokenConfirmationError as AxiosError;
+    const errorCode = error?.response?.status;
 
-        setLoading(false);
-      } catch (e) {
-        message.error("Invalid link");
-        dispatch(push("/signin"));
-      }
-    };
+    if (errorCode) {
+      message.error("Invalid link");
+      push("/signin");
+    }
 
-    confirmToken();
-  }, [dispatch, match.params.token]);
+    if (!errorCode && error) {
+      throw new Error(error.toString());
+    }
+  }, [tokenConfirmationError]);
+
+  React.useEffect(() => {
+    const error = linkError as AxiosError;
+    const errorCode = error?.response?.status;
+
+    if (errorCode) {
+      message.error("An error has occured please try again!");
+      push("/signin");
+    }
+
+    if (!errorCode && error) {
+      throw new Error(error.toString());
+    }
+  }, [linkError]);
 
   const handleLinkClick = async () => {
-    try {
-      setRequestLoading(true);
-
-      const response = await linkAccountGoogle(
-        match.params.token,
-        match.params.email
-      );
-
-      if (!response) {
-        throw new Error(response);
-      }
-
-      setRequestLoading(false);
-      setSuccess(true);
-    } catch (e) {
-      message.error("An error has occured please try again!");
-      dispatch(push("/signin"));
-    }
+    const { token, email } = match.params;
+    linkAccount({ token, email });
   };
 
   const handleRedirectClick = () => {
-    dispatch(push("/signin"));
+    push("/signin");
   };
 
-  if (loading) {
+  const linkSuccess = linkStatus === "success";
+  const linkLoading = linkStatus === "loading" || linkSuccess;
+
+  if (tokenConfirmationStatus === "loading") {
     return <Loading />;
   } else {
     return (
@@ -84,16 +83,16 @@ const LinkGoogleAccount: React.FunctionComponent<ILinkGoogleAccountProps> = ({
           <Card>
             <CardTitle>Link account to Google</CardTitle>
             <CardBody>
-              {success
+              {linkSuccess
                 ? "Successfuly linked account!"
                 : "To continue through Google you must link your account. This action can not be undone!"}
             </CardBody>
-            {success ? (
+            {linkSuccess ? (
               <Done />
             ) : (
               <CardButtonsWrapper>
                 <Button
-                  loading={requestLoading}
+                  loading={linkLoading}
                   onClick={handleLinkClick}
                   size="large"
                   type="primary"
@@ -105,7 +104,7 @@ const LinkGoogleAccount: React.FunctionComponent<ILinkGoogleAccountProps> = ({
                 </Button>
               </CardButtonsWrapper>
             )}
-            {success && (
+            {linkSuccess && (
               <Button type="primary" onClick={handleRedirectClick} size="large">
                 Sign in
               </Button>
@@ -125,7 +124,7 @@ const Wrapper = styled.main`
   padding: 4rem 0;
   min-height: 100vh;
 
-  background-color: ${props => props.theme.colors.main};
+  background-color: ${(props) => props.theme.colors.main};
 `;
 
 const LogoBox = styled.div`
@@ -173,7 +172,7 @@ const Card = styled.div`
 const CardTitle = styled.h2`
   font-weight: 300;
   font-size: 2.4rem;
-  color: ${props => props.theme.colors.main};
+  color: ${(props) => props.theme.colors.main};
 `;
 
 const CardBody = styled.h4`

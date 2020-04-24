@@ -1,11 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Button, Empty } from "antd";
-import { connect, useDispatch } from "react-redux";
 import { useToggle } from "react-use";
 
-import { ApplicationState } from "store/types";
-import { evaluationDrawer } from "store/actions";
 import { EvaluationCard } from "components/cards";
 import IEvaluation from "constants/interfaces/IEvaluation";
 import { useEvaluations } from "features/evaluation/evaluation-hooks";

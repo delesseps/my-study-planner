@@ -55,3 +55,28 @@ export function useConfig() {
 
   return { config, change };
 }
+
+export function useUserModal() {
+  const { user } = useAuth();
+
+  const close = useMutation(userService.closeWelcomeModal, {
+    onMutate: (config) => {
+      const previousUserData = queryCache.getQueryData("user") as IUser;
+
+      queryCache.setQueryData("user", (previous: IUser) => ({
+        ...previous,
+        firstSignIn: true,
+      }));
+
+      return () => queryCache.setQueryData("user", previousUserData);
+    },
+    onError: (err, previousUserData, rollback: any) => rollback(),
+    onSettled: () => {
+      queryCache.refetchQueries("user");
+    },
+  });
+
+  const hasModal = useMemo(() => Boolean(user.firstSignIn), [user.firstSignIn]);
+
+  return { hasModal, close };
+}

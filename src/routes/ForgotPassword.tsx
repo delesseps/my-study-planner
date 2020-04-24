@@ -1,51 +1,32 @@
 import * as React from "react";
-import { ReactComponent as Logo } from "assets/logo.svg";
-import { ReactComponent as SentMessage } from "assets/message_sent.svg";
 import styled from "styled-components";
 import { UserOutlined } from "@ant-design/icons";
 import { Button, Input, Alert, Form } from "antd";
 import { Link } from "react-router-dom";
-import { recoverPasswordRequest } from "services";
+
 import { FadeIn } from "components";
+import { usePasswordChange } from "features/auth/auth-context";
+import { ReactComponent as Logo } from "assets/logo.svg";
+import { ReactComponent as SentMessage } from "assets/message_sent.svg";
+import { AxiosError } from "axios";
 
 const ForgotPassword: React.FunctionComponent = () => {
   const [form] = Form.useForm();
-
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState(false);
-  const [success, setSuccess] = React.useState(false);
-  const [oauthError, setOauthError] = React.useState(false);
+  const {
+    request: [requestChange, { status, error }],
+  } = usePasswordChange();
 
   const handleSubmit = (): void => {
-    setLoading(true);
-    setError(false);
-
-    form
-      .validateFields()
-      .then(value => SendRequest(value.email))
-      .catch(() => setLoading(false));
+    form.validateFields().then((value) => SendRequest(value.email));
   };
 
   const SendRequest = async (email: string) => {
-    try {
-      const response = await recoverPasswordRequest(email);
-
-      if (!response) {
-        throw new Error(response);
-      }
-
-      setLoading(false);
-      setSuccess(true);
-    } catch (e) {
-      if (e.response.status === 400) {
-        setOauthError(true);
-        return setLoading(false);
-      }
-
-      setLoading(false);
-      setError(true);
-    }
+    requestChange(email);
   };
+
+  const success = status === "success";
+  const errorObject = error as AxiosError;
+  const errorCode = errorObject?.response?.status;
 
   return (
     <FadeIn>
@@ -54,14 +35,14 @@ const ForgotPassword: React.FunctionComponent = () => {
           <StyledLogo />
           <Title>My Study Planner</Title>
         </LogoBox>
-        {error && (
+        {errorCode && errorCode !== 400 && (
           <StyledError
             message="Error sending recovery link, is this the right email?"
             type="error"
             showIcon
           />
         )}
-        {oauthError && (
+        {errorCode === 400 && (
           <StyledError
             message="Google linked accounts can not recover a password!"
             type="error"
@@ -85,8 +66,8 @@ const ForgotPassword: React.FunctionComponent = () => {
                   { required: true, message: "Please input your email!" },
                   {
                     type: "email",
-                    message: "The input is not valid E-mail!"
-                  }
+                    message: "The input is not valid E-mail!",
+                  },
                 ]}
               >
                 <Input
@@ -96,7 +77,7 @@ const ForgotPassword: React.FunctionComponent = () => {
               </Form.Item>
               <Form.Item>
                 <Button
-                  loading={loading}
+                  loading={status === "loading" || status === "success"}
                   block
                   type="primary"
                   size="large"
@@ -127,7 +108,7 @@ const Wrapper = styled.main`
 
   min-height: 100vh;
 
-  background-color: ${props => props.theme.colors.main};
+  background-color: ${(props) => props.theme.colors.main};
 `;
 
 const LogoBox = styled.div`
@@ -179,7 +160,7 @@ const Card = styled.div`
 const CardTitle = styled.h2`
   font-weight: 300;
   font-size: 2.4rem;
-  color: ${props => props.theme.colors.main};
+  color: ${(props) => props.theme.colors.main};
 `;
 
 const CardBody = styled.h4`

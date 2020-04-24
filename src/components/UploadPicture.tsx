@@ -2,10 +2,9 @@ import React from "react";
 import { UserOutlined } from "@ant-design/icons";
 import { Upload, message, Avatar } from "antd";
 import { RcFile } from "antd/lib/upload";
-import { ApplicationState } from "store/types";
-import { connect, useDispatch } from "react-redux";
-import IUser from "constants/interfaces/IUser";
 import styled from "styled-components";
+
+import IUser from "constants/interfaces/IUser";
 import { UploadFile } from "antd/lib/upload/interface";
 import { useProfilePicture } from "features/user/user-hooks";
 
@@ -38,16 +37,11 @@ function beforeUpload(file: RcFile) {
   return (isJPG || isPNG) && isLt2M;
 }
 
-const mapStateToProps = (state: ApplicationState) => ({
-  user: state.reducer.user,
-});
-
 interface IUploadPictureProps {
   user?: IUser;
 }
 
 const UploadPicture: React.FC<IUploadPictureProps> = () => {
-  const dispatch = useDispatch();
   const { picture, change } = useProfilePicture();
 
   const handleUpload = async (file: UploadFile) => {
@@ -82,4 +76,4 @@ const StyledUpload = styled(Upload)`
   }
 `;
 
-export default connect(mapStateToProps, null)(UploadPicture);
+export default UploadPicture;
