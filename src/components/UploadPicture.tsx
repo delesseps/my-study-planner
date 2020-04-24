@@ -1,13 +1,15 @@
 import React from "react";
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined } from "@ant-design/icons";
 import { Upload, message, Avatar } from "antd";
 import { RcFile } from "antd/lib/upload";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
-import IUser from "interfaces/IUser";
+import IUser from "constants/interfaces/IUser";
 import styled from "styled-components";
 import { uploadProfilePicture } from "store/effects";
 import { UploadFile } from "antd/lib/upload/interface";
+import { useAuth } from "features/auth/auth-context";
+import { useProfilePicture } from "features/user/user-hooks";
 
 function getBase64(img: any): Promise<string | ArrayBuffer | null> {
   const reader = new FileReader();
@@ -39,20 +41,21 @@ function beforeUpload(file: RcFile) {
 }
 
 const mapStateToProps = (state: ApplicationState) => ({
-  user: state.reducer.user
+  user: state.reducer.user,
 });
 
 interface IUploadPictureProps {
   user?: IUser;
 }
 
-const UploadPicture: React.FC<IUploadPictureProps> = ({ user }) => {
+const UploadPicture: React.FC<IUploadPictureProps> = () => {
   const dispatch = useDispatch();
+  const { picture, change } = useProfilePicture();
 
   const handleUpload = async (file: UploadFile) => {
     const imageUrl = await getBase64(file);
 
-    dispatch(uploadProfilePicture(imageUrl as string));
+    change(imageUrl as string);
     return imageUrl as string;
   };
 
@@ -64,7 +67,7 @@ const UploadPicture: React.FC<IUploadPictureProps> = ({ user }) => {
       beforeUpload={beforeUpload}
       action={handleUpload}
     >
-      <Avatar shape="square" size={120} icon={<UserOutlined />} src={user?.picture} />
+      <Avatar shape="square" size={120} icon={<UserOutlined />} src={picture} />
     </StyledUpload>
   );
 };

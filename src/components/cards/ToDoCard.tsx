@@ -1,5 +1,5 @@
 import React from "react";
-import IToDo from "interfaces/IToDo";
+import IToDo from "constants/interfaces/IToDo";
 import styled from "styled-components";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Badge, Checkbox, Popconfirm, Tooltip } from "antd";
@@ -54,8 +54,8 @@ const Wrapper = styled.div`
 
   padding: 2rem 2rem;
 
-  border-top: 0.5px solid ${props => props.theme.fontColors.textRgba(0.2)};
-  border-bottom: 0.5px solid ${props => props.theme.fontColors.textRgba(0.2)};
+  border-top: 0.5px solid ${(props) => props.theme.fontColors.textRgba(0.2)};
+  border-bottom: 0.5px solid ${(props) => props.theme.fontColors.textRgba(0.2)};
 
   width: 100%;
 `;
@@ -72,7 +72,7 @@ const TaskTitle = styled.h3`
 
   letter-spacing: 1px;
   font-size: 1.7rem;
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const DeleteIcon = styled(DeleteOutlined)`
@@ -82,7 +82,7 @@ const DeleteIcon = styled(DeleteOutlined)`
   margin-right: 1.5rem;
 
   &:hover {
-    color: ${props => props.theme.colors.main};
+    color: ${(props) => props.theme.colors.main};
   }
 `;
 

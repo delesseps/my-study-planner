@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import IUser from "interfaces/IUser";
 import { EditOutlined } from "@ant-design/icons";
 import { Modal, Badge } from "antd";
 import styled from "styled-components";
+
+import IUser from "constants/interfaces/IUser";
 import UploadPicture from "components/UploadPicture";
+import { useAuth } from "features/auth/auth-context";
 
 interface IUserProfileModalProps {
   user: IUser;
@@ -12,12 +14,12 @@ interface IUserProfileModalProps {
 }
 
 const UserProfileModal: React.FunctionComponent<IUserProfileModalProps> = ({
-  user,
   visible,
-  setVisible
+  setVisible,
 }) => {
   const [doneHomework, setDoneHomework] = useState(0);
   const [doneEvaluations, setDoneEvaluations] = useState(0);
+  const { user } = useAuth();
 
   const handleClose = () => {
     setVisible(false);
@@ -25,15 +27,15 @@ const UserProfileModal: React.FunctionComponent<IUserProfileModalProps> = ({
 
   useEffect(() => {
     setDoneEvaluations(
-      user.evaluations.filter(evaluation => evaluation.done).length
+      user.evaluations.filter((evaluation) => evaluation.done).length
     );
-    setDoneHomework(user.homework.filter(homework => homework.done).length);
+    setDoneHomework(user.homework.filter((homework) => homework.done).length);
   }, [user.evaluations, user.homework]);
 
   return (
     <StyledModal
       style={{
-        position: "relative"
+        position: "relative",
       }}
       visible={visible}
       footer={null}
@@ -65,7 +67,7 @@ const UserProfileModal: React.FunctionComponent<IUserProfileModalProps> = ({
 
 const StyledModal = styled(Modal)`
   & .ant-modal-content {
-    background-color: ${props => props.theme.backgroundColor};
+    background-color: ${(props) => props.theme.backgroundColor};
   }
 
   & .ant-modal-close-icon {
@@ -86,7 +88,7 @@ const Wrapper = styled.section`
 
 const Background = styled.div`
   position: absolute;
-  background-color: ${props => props.theme.colors.main};
+  background-color: ${(props) => props.theme.colors.main};
   top: 0;
   left: 0;
   width: 100%;
@@ -107,7 +109,7 @@ const EditIcon = styled(EditOutlined)`
   &&& {
     transition: 0.2s;
     opacity: 0;
-    color: ${props => props.theme.fontColors.textRgba(0.8)};
+    color: ${(props) => props.theme.fontColors.textRgba(0.8)};
     font-size: 2.5rem;
     bottom: -15px;
     top: initial;
@@ -121,7 +123,7 @@ const Name = styled.h2`
   text-align: center;
   margin-top: 1rem;
 
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const Role = styled.p`
@@ -131,7 +133,7 @@ const Role = styled.p`
   font-size: 1.4rem;
   text-align: center;
 
-  color: ${props => props.theme.fontColors.textRgba(0.6)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.6)};
 `;
 
 const CounterRow = styled.div`
@@ -157,7 +159,7 @@ const Count = styled.h1`
 
   right: 2rem;
 
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const Assignment = styled.p`
@@ -167,7 +169,7 @@ const Assignment = styled.p`
   font-size: 1.4rem;
   text-align: center;
 
-  color: ${props => props.theme.fontColors.textRgba(0.6)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.6)};
 `;
 
 export default UserProfileModal;

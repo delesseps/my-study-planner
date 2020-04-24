@@ -5,7 +5,7 @@ import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import { toDoDrawer } from "store/actions";
 import { addToDo } from "store/effects";
-import IToDo from "interfaces/IToDo";
+import IToDo from "constants/interfaces/IToDo";
 
 interface IToDoDrawerProps {
   visible?: boolean;
@@ -15,13 +15,13 @@ interface IToDoDrawerProps {
 
 const ToDoDrawer: React.FC<IToDoDrawerProps> = ({
   visible = false,
-  loading = false
+  loading = false,
 }) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    form.validateFields().then(values => {
+    form.validateFields().then((values) => {
       dispatch(addToDo(values as IToDo));
     });
   };
@@ -45,8 +45,8 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({
             {
               required: true,
               message: "Please input the task name!",
-              whitespace: true
-            }
+              whitespace: true,
+            },
           ]}
           label={<span>Task name</span>}
         >
@@ -65,8 +65,8 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({
           rules={[
             {
               required: true,
-              message: "Please select how urgent is your to-do!"
-            }
+              message: "Please select how urgent is your to-do!",
+            },
           ]}
         >
           <Radio.Group buttonStyle="solid">
@@ -94,7 +94,7 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({
 const mapStateToProps = (state: ApplicationState) => {
   return {
     visible: state.reducer.drawer.toDo,
-    loading: state.reducer.loading.toDo
+    loading: state.reducer.loading.toDo,
   };
 };
 

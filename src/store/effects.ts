@@ -48,7 +48,7 @@ import {
   editToDoError,
   modalRequest,
   modalSuccess,
-  modalError
+  modalError,
 } from "./actions";
 import { push } from "connected-react-router";
 
@@ -68,28 +68,30 @@ import {
   toDoService,
   requestDeleteToDo,
   requestEditToDo,
-  ModalService
+  ModalService,
 } from "services";
 
-import IUser from "interfaces/IUser";
-import ISignInCredentials from "interfaces/ISignInCredentials";
-import ISignUpCredentials from "interfaces/ISignUpCredentials";
+import IUser from "constants/interfaces/IUser";
+import ISignInCredentials from "constants/interfaces/ISignInCredentials";
+import ISignUpCredentials from "constants/interfaces/ISignUpCredentials";
 
 import { Cookies } from "react-cookie";
-import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
+import IAxiosErrorResponse from "constants/interfaces/IAxiosErrorResponse";
 import { AxiosResponse } from "axios";
-import IEvaluation from "interfaces/IEvaluation";
-import IHomework from "interfaces/IHomework";
+import IEvaluation from "constants/interfaces/IEvaluation";
+import IHomework from "constants/interfaces/IHomework";
 import { message } from "antd";
-import IUserConfig from "interfaces/IUserConfig";
-import IToDo from "interfaces/IToDo";
+import { IUserConfig } from "constants/interfaces/IUser";
+import IToDo from "constants/interfaces/IToDo";
 
 type Effect = ThunkAction<any, ApplicationState, any, ApplicationAction>;
 
 ////////////
 //  AUTH //
 //////////
-export const signIn = (credentials: ISignInCredentials): Effect => dispatch => {
+export const signIn = (credentials: ISignInCredentials): Effect => (
+  dispatch
+) => {
   dispatch(signInRequest());
 
   return signInService(credentials)
@@ -102,7 +104,9 @@ export const signIn = (credentials: ISignInCredentials): Effect => dispatch => {
     );
 };
 
-export const signUp = (credentials: ISignUpCredentials): Effect => dispatch => {
+export const signUp = (credentials: ISignUpCredentials): Effect => (
+  dispatch
+) => {
   dispatch(signUpRequest());
 
   return signUpService(credentials)
@@ -115,7 +119,7 @@ export const signUp = (credentials: ISignUpCredentials): Effect => dispatch => {
     );
 };
 
-export const signOut = (): Effect => dispatch => {
+export const signOut = (): Effect => (dispatch) => {
   const cookies = new Cookies();
   dispatch(signOutRequest());
 
@@ -138,7 +142,7 @@ export const signOut = (): Effect => dispatch => {
 //  USER //
 ///////////
 
-export const requestUser = (): Effect => dispatch => {
+export const requestUser = (): Effect => (dispatch) => {
   dispatch(requestUserPending());
 
   return requestUserService()
@@ -151,7 +155,7 @@ export const requestUser = (): Effect => dispatch => {
     );
 };
 
-export const uploadProfilePicture = (image: string): Effect => dispatch => {
+export const uploadProfilePicture = (image: string): Effect => (dispatch) => {
   dispatch(uploadPictureRequest());
   const hide = message.loading("Uploading picture...", 0);
 
@@ -166,7 +170,7 @@ export const uploadProfilePicture = (image: string): Effect => dispatch => {
     );
 };
 
-export const updateUserConfig = (config: IUserConfig): Effect => dispatch => {
+export const updateUserConfig = (config: IUserConfig): Effect => (dispatch) => {
   dispatch(userConfigRequest());
 
   return userConfigService(config)
@@ -183,7 +187,9 @@ export const updateUserConfig = (config: IUserConfig): Effect => dispatch => {
 //////////////////
 //  EVALUATIONS //
 //////////////////
-export const addEvaluation = (evaluation: IEvaluation): Effect => dispatch => {
+export const addEvaluation = (evaluation: IEvaluation): Effect => (
+  dispatch
+) => {
   dispatch(addEvaluationRequest());
 
   return evaluationService(evaluation)
@@ -208,7 +214,7 @@ export const editEvaluation = (
   if (!index) {
     const state = getState();
     evaluationIndex = state.reducer.user.homework.findIndex(
-      elem => evaluation._id === elem._id
+      (elem) => evaluation._id === elem._id
     );
   }
 
@@ -225,10 +231,9 @@ export const editEvaluation = (
     );
 };
 
-export const deleteEvaluation = (
-  id: string,
-  index: number
-): Effect => dispatch => {
+export const deleteEvaluation = (id: string, index: number): Effect => (
+  dispatch
+) => {
   dispatch(deleteEvaluationRequest());
 
   return requestDeleteEvaluation(id)
@@ -244,7 +249,7 @@ export const deleteEvaluation = (
 ////////////////
 //  Homework //
 ///////////////
-export const addHomework = (homework: IHomework): Effect => dispatch => {
+export const addHomework = (homework: IHomework): Effect => (dispatch) => {
   dispatch(addHomeworkRequest());
 
   return homeworkService(homework)
@@ -268,7 +273,7 @@ export const editHomework = (
   if (!index) {
     const state = getState();
     homeworkIndex = state.reducer.user.homework.findIndex(
-      elem => homework._id === elem._id
+      (elem) => homework._id === elem._id
     );
   }
 
@@ -285,10 +290,9 @@ export const editHomework = (
     );
 };
 
-export const deleteHomework = (
-  id: string,
-  index: number
-): Effect => dispatch => {
+export const deleteHomework = (id: string, index: number): Effect => (
+  dispatch
+) => {
   dispatch(deleteHomeworkRequest());
 
   return requestDeleteHomework(id)
@@ -304,7 +308,7 @@ export const deleteHomework = (
 //////////////
 //  To-Dos //
 /////////////
-export const addToDo = (toDo: IToDo): Effect => dispatch => {
+export const addToDo = (toDo: IToDo): Effect => (dispatch) => {
   dispatch(addToDoRequest());
 
   return toDoService(toDo)
@@ -317,7 +321,7 @@ export const addToDo = (toDo: IToDo): Effect => dispatch => {
     );
 };
 
-export const editToDo = (toDo: IToDo, index: number): Effect => dispatch => {
+export const editToDo = (toDo: IToDo, index: number): Effect => (dispatch) => {
   dispatch(editToDoRequest());
 
   return requestEditToDo(toDo)
@@ -330,7 +334,7 @@ export const editToDo = (toDo: IToDo, index: number): Effect => dispatch => {
     );
 };
 
-export const deleteToDo = (id: string, index: number): Effect => dispatch => {
+export const deleteToDo = (id: string, index: number): Effect => (dispatch) => {
   dispatch(deleteToDoRequest());
 
   return requestDeleteToDo(id)
@@ -346,7 +350,7 @@ export const deleteToDo = (id: string, index: number): Effect => dispatch => {
 //////////////
 //  Modals //
 /////////////
-export const welcomeModal = (): Effect => dispatch => {
+export const welcomeModal = (): Effect => (dispatch) => {
   dispatch(modalRequest("welcome"));
 
   const modalService = new ModalService();

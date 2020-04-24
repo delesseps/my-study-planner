@@ -1,12 +1,12 @@
 import { Action } from "redux";
-import IUser from "interfaces/IUser";
+import IUser from "constants/interfaces/IUser";
 import { RouterState } from "connected-react-router";
-import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
-import IRequestError from "interfaces/IRequestError";
-import IEvaluation from "interfaces/IEvaluation";
-import IHomework from "interfaces/IHomework";
-import IUserConfig from "interfaces/IUserConfig";
-import IToDo from "interfaces/IToDo";
+import IAxiosErrorResponse from "constants/interfaces/IAxiosErrorResponse";
+import IRequestError from "constants/interfaces/IRequestError";
+import IEvaluation from "constants/interfaces/IEvaluation";
+import IHomework from "constants/interfaces/IHomework";
+import { IUserConfig } from "constants/interfaces/IUser";
+import IToDo from "constants/interfaces/IToDo";
 
 /**
  *

@@ -6,22 +6,23 @@ import {
   LogoutOutlined,
   SettingOutlined,
   UserOutlined,
-  BellOutlined
+  BellOutlined,
 } from "@ant-design/icons";
 import { Avatar, Dropdown, Menu, Skeleton, Popover, Empty } from "antd";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import { signOut } from "store/effects";
 import { UserProfile } from "components/modals";
-import IUser from "interfaces/IUser";
+import IUser from "constants/interfaces/IUser";
 import { Link } from "react-router-dom";
 import { breakpoints } from "theme";
 import { push } from "connected-react-router";
 import { useToggle } from "react-use";
+import { useAuth } from "features/auth/auth-context";
 
 const mapStateToProps = (state: ApplicationState) => ({
   loading: state.reducer.loading.user,
-  user: state.reducer.user
+  user: state.reducer.user,
 });
 
 interface ITopBarProps {
@@ -29,13 +30,14 @@ interface ITopBarProps {
   user?: IUser;
 }
 
-const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
+const TopBar: React.FC<ITopBarProps> = ({ loading }) => {
   const dispatch = useDispatch();
+  const { user, logout } = useAuth();
   const [showProfile, toggleProfile] = useToggle(false);
   const [showNotifications, toggleNotifications] = useToggle(false);
 
   const handleSignOut = () => {
-    dispatch(signOut());
+    logout();
   };
 
   const handleHomeClick = () => {
@@ -146,7 +148,7 @@ const Title = styled.h2`
   font-weight: 600;
   letter-spacing: 1px;
 
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 
   @media only screen and (max-width: ${breakpoints.bpMobileL}) {
     display: none;
@@ -167,7 +169,7 @@ const BellIcon = styled(BellOutlined)`
   }
 
   && {
-    color: ${props => props.theme.fontColors.textRgba(0.8)};
+    color: ${(props) => props.theme.fontColors.textRgba(0.8)};
   }
 `;
 
@@ -194,7 +196,7 @@ const Name = styled.p`
     font-size: 1.2rem;
   }
 
-  color: ${props => props.theme.fontColors.textRgba(0.9)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.9)};
 `;
 
 const CaretIcon = styled(CaretDownOutlined)`
@@ -210,7 +212,7 @@ const Role = styled.p`
   margin: 0;
   font-size: 1.4rem;
 
-  color: ${props => props.theme.fontColors.textRgba(0.6)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.6)};
 `;
 
 const MenuButton = styled.a`
@@ -250,7 +252,7 @@ const StyledSkeleton = styled(Skeleton)`
 const StyledEmpty = styled(Empty)`
   && {
     width: 20rem;
-    color: ${props => props.theme.fontColors.textRgba(0.8)};
+    color: ${(props) => props.theme.fontColors.textRgba(0.8)};
   }
 `;
 

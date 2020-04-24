@@ -1,19 +1,19 @@
 import { agent } from "api";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import ISignUpCredentials from "interfaces/ISignUpCredentials";
+import ISignUpCredentials from "constants/interfaces/ISignUpCredentials";
 
 const api = ({
   name,
   email,
-  password
+  password,
 }: ISignUpCredentials): AxiosRequestConfig => ({
   url: "/auth/signup",
   method: "post",
   data: {
     name,
     email,
-    password
-  }
+    password,
+  },
 });
 
 const signUp = (credentials: ISignUpCredentials): Promise<AxiosResponse> =>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Badge, Divider } from "antd";
-import IEvaluation from "interfaces/IEvaluation";
-import IHomework from "interfaces/IHomework";
+import IEvaluation from "constants/interfaces/IEvaluation";
+import IHomework from "constants/interfaces/IHomework";
 import { determineColor } from "utils";
 import HomeworkDescriptionModal from "components/modals/HomeworkDescription";
 import EvaluationDescriptionModal from "components/modals/EvaluationDescription";
@@ -14,7 +14,7 @@ interface IRecommendedActionCardProps {
 }
 
 const RecommendedActionCard: React.FC<IRecommendedActionCardProps> = ({
-  assignment
+  assignment,
 }) => {
   const dispatch = useDispatch();
   const [recommendedAction, setRecommendedAction] = useState("");
@@ -62,8 +62,8 @@ const Wrapper = styled.div`
 
   padding: 2rem 2rem;
 
-  border-top: 0.5px solid ${props => props.theme.fontColors.textRgba(0.2)};
-  border-bottom: 0.5px solid ${props => props.theme.fontColors.textRgba(0.2)};
+  border-top: 0.5px solid ${(props) => props.theme.fontColors.textRgba(0.2)};
+  border-bottom: 0.5px solid ${(props) => props.theme.fontColors.textRgba(0.2)};
 
   width: 100%;
 `;
@@ -79,7 +79,7 @@ const RecomendationTitle = styled.h3`
 
   letter-spacing: 1px;
   font-size: 1.7rem;
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const ActionContainer = styled.div`
@@ -89,7 +89,7 @@ const ActionContainer = styled.div`
 
 const ViewMore = styled.span`
   cursor: pointer;
-  color: ${props => props.theme.colors.main};
+  color: ${(props) => props.theme.colors.main};
   margin-left: 1.3rem;
 
   &:hover {
@@ -99,7 +99,7 @@ const ViewMore = styled.span`
 
 const Done = styled.span`
   cursor: pointer;
-  color: ${props => props.theme.colors.main};
+  color: ${(props) => props.theme.colors.main};
 
   &:hover {
     text-decoration: underline;

@@ -5,15 +5,17 @@ import {
   CheckOutlined,
   EditOutlined,
   DeleteOutlined,
-  ClockCircleOutlined
+  ClockCircleOutlined,
 } from "@ant-design/icons";
+import { useToggle } from "react-use";
 import { Badge, Avatar, Divider, Popconfirm, Tooltip } from "antd";
-import IEvaluation from "interfaces/IEvaluation";
-import { setDate, determinePriority, determineColor } from "utils";
 import moment from "moment";
-import { useDispatch } from "react-redux";
+
+import IEvaluation from "constants/interfaces/IEvaluation";
+import { setDate, determinePriority, determineColor } from "utils";
 import { deleteEvaluation, editEvaluation } from "store/effects";
 import EvaluationDescriptionModal from "components/modals/EvaluationDescription";
+import { useEvaluations } from "features/evaluation/evaluation-hooks";
 
 const EvaluationDrawer = React.lazy(() =>
   import("components/drawers/EvaluationDrawer")
@@ -26,33 +28,36 @@ interface IEvaluationCardProps {
 
 const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
   evaluation,
-  index
+  index,
 }) => {
-  const [visibleEdit, setVisibleEdit] = useState(false);
-  const dispatch = useDispatch();
+  const [openDrawer, toggleDrawer] = useToggle(false);
+  const {
+    edit: [editMutate],
+    remove: [removeMutate],
+  } = useEvaluations();
 
   const handleViewMoreClick = () => {
     EvaluationDescriptionModal(evaluation);
   };
 
   const handleEditClick = () => {
-    setVisibleEdit(true);
+    toggleDrawer(true);
   };
 
   const handleDeleteClick = () => {
-    dispatch(deleteEvaluation(evaluation._id, index));
+    removeMutate({ id: evaluation._id, index });
   };
 
   const handleDoneClick = () => {
     evaluation.done = true;
-    dispatch(editEvaluation(evaluation, index));
+    editMutate({ evaluation, index });
   };
 
   return (
     <Wrapper>
       <EvaluationDrawer
-        visibleEdit={visibleEdit}
-        setVisibleEdit={setVisibleEdit}
+        visible={openDrawer}
+        setVisible={toggleDrawer}
         evaluation={evaluation}
         index={index}
       />
@@ -109,7 +114,7 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
 
 const Wrapper = styled.div`
   padding: 0.8rem 2rem;
-  border: 0.7px solid ${props => props.theme.fontColors.textRgba(0.15)};
+  border: 0.7px solid ${(props) => props.theme.fontColors.textRgba(0.15)};
   border-radius: 5px;
 
   display: flex;
@@ -135,7 +140,7 @@ const AssignmentTitle = styled.h3`
   letter-spacing: 0.5px;
   font-weight: 500;
   font-size: 1.7rem;
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const Capitalize = styled.span`
@@ -145,7 +150,7 @@ const Capitalize = styled.span`
 const AssignmentPriority = styled.h5`
   display: flex;
   align-items: center;
-  color: ${props => props.theme.fontColors.textRgba(0.5)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.5)};
   margin: 0;
 `;
 
@@ -163,7 +168,7 @@ const DeleteIcon = styled(DeleteOutlined)`
   transition: 0.1s;
 
   &:hover {
-    color: ${props => props.theme.colors.main};
+    color: ${(props) => props.theme.colors.main};
   }
 `;
 
@@ -173,7 +178,7 @@ const CheckIcon = styled(CheckOutlined)`
   transition: 0.1s;
 
   &:hover {
-    color: ${props => props.theme.colors.main};
+    color: ${(props) => props.theme.colors.main};
   }
 `;
 
@@ -183,7 +188,7 @@ const EditIcon = styled(EditOutlined)`
   transition: 0.1s;
 
   &:hover {
-    color: ${props => props.theme.colors.main};
+    color: ${(props) => props.theme.colors.main};
   }
 `;
 
@@ -203,7 +208,7 @@ const UserName = styled.h5`
   font-weight: bold;
   font-size: 1.2rem;
   align-items: center;
-  color: ${props => props.theme.fontColors.textRgba(0.6)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.6)};
   margin: 0;
   margin-left: 0.7rem;
 `;
@@ -213,7 +218,7 @@ const Date = styled.h5`
   display: flex;
   font-weight: 400;
   align-items: center;
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
   margin: 0;
 `;
 
@@ -224,7 +229,7 @@ const ClockIcon = styled(ClockCircleOutlined)`
 
 const ViewMore = styled.span`
   cursor: pointer;
-  color: ${props => props.theme.colors.main};
+  color: ${(props) => props.theme.colors.main};
   margin-left: 0.5rem;
 
   &:hover {

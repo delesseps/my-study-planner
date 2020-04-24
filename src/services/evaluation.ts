@@ -1,13 +1,13 @@
 import { agent } from "api";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import IEvaluation from "interfaces/IEvaluation";
+import IEvaluation from "constants/interfaces/IEvaluation";
 
 const deleteApi = (id: string): AxiosRequestConfig => ({
   url: "/evaluation/delete",
   method: "delete",
   data: {
-    _id: id
-  }
+    _id: id,
+  },
 });
 
 export const requestDeleteEvaluation = (id: string): Promise<AxiosResponse> =>
@@ -16,7 +16,7 @@ export const requestDeleteEvaluation = (id: string): Promise<AxiosResponse> =>
 const editApi = (evaluation: IEvaluation): AxiosRequestConfig => ({
   url: "/evaluation/update",
   method: "patch",
-  data: evaluation
+  data: evaluation,
 });
 
 export const requestEditEvaluation = (
@@ -26,7 +26,7 @@ export const requestEditEvaluation = (
 const addApi = (evaluation: IEvaluation): AxiosRequestConfig => ({
   url: "/evaluation/add",
   method: "post",
-  data: evaluation
+  data: evaluation,
 });
 
 const requestAddEvaluation = (

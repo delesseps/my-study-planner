@@ -2,31 +2,33 @@ import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router";
 import { connect, useDispatch } from "react-redux";
 import { Alert } from "antd";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 
 import { FadeIn, Loading, Sidebar, TopBar } from "components";
 import { ApplicationState } from "store/types";
-import { breakpoints } from "theme";
+import { breakpoints, lightTheme, darkTheme, GlobalStyle } from "theme";
 import { requestUser, signOut } from "store/effects";
 import { initializePush } from "firebase/initialize";
-import IRequestError from "interfaces/IRequestError";
-import IUser from "interfaces/IUser";
+import IRequestError from "constants/interfaces/IRequestError";
+import IUser from "constants/interfaces/IUser";
+import { useConfig } from "features/user/user-hooks";
+import { useAuth } from "features/auth/auth-context";
 
 const Home = React.lazy(() => import("routes/Home"));
 const Preferences = React.lazy(() => import("routes/Preferences"));
 
 const mapStateToProps = (state: ApplicationState) => ({
-  user: state.reducer.user,
   error: state.reducer.error.user,
 });
 
 interface IDashboardProps {
   error: IRequestError | undefined;
-  user: IUser;
 }
 
-const AuthenticatedApp: React.FC<IDashboardProps> = ({ error, user }) => {
+const AuthenticatedApp: React.FC<IDashboardProps> = ({ error }) => {
   const dispatch = useDispatch();
+  const { user } = useAuth();
+  const { config } = useConfig();
 
   useEffect(() => {
     initializePush();
@@ -41,34 +43,38 @@ const AuthenticatedApp: React.FC<IDashboardProps> = ({ error, user }) => {
   }, [error, dispatch]);
 
   return (
-    <FadeIn>
-      <Wrapper>
-        <Sider>
-          <Sidebar />
-        </Sider>
-        <Content>
-          {!user.verified && (
-            <EmailVerificationError
-              message="Check your email and activate your account!"
-              banner
-              closable
-            />
-          )}
-          <TopBar />
-          <React.Suspense fallback={<Loading />}>
-            <Switch>
-              <Route path="/dashboard" exact component={Home} />
-              <Route
-                path="/dashboard/Preferences"
-                exact
-                component={Preferences}
+    <ThemeProvider theme={config.darkMode ? darkTheme : lightTheme}>
+      <GlobalStyle config={config} />
+
+      <FadeIn>
+        <Wrapper>
+          <Sider>
+            <Sidebar />
+          </Sider>
+          <Content>
+            {!user.verified && (
+              <EmailVerificationError
+                message="Check your email and activate your account!"
+                banner
+                closable
               />
-              <Redirect to="/dashboard" />
-            </Switch>
-          </React.Suspense>
-        </Content>
-      </Wrapper>
-    </FadeIn>
+            )}
+            <TopBar />
+            <React.Suspense fallback={<Loading />}>
+              <Switch>
+                <Route path="/dashboard" exact component={Home} />
+                <Route
+                  path="/dashboard/Preferences"
+                  exact
+                  component={Preferences}
+                />
+                <Redirect to="/dashboard" />
+              </Switch>
+            </React.Suspense>
+          </Content>
+        </Wrapper>
+      </FadeIn>
+    </ThemeProvider>
   );
 };
 

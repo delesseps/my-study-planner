@@ -3,13 +3,13 @@ import styled from "styled-components";
 import { Button, Empty } from "antd";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
-import IToDo from "interfaces/IToDo";
+import IToDo from "constants/interfaces/IToDo";
 import { toDoDrawer } from "store/actions";
 import { ToDoDrawer } from "components/drawers";
 import { ToDoCard } from "components/cards";
 
 const mapStateToProps = (state: ApplicationState) => ({
-  toDos: state.reducer.user.toDos
+  toDos: state.reducer.user.toDos,
 });
 
 interface IEvaluationProps {
@@ -33,7 +33,7 @@ const ToDo: React.FunctionComponent<IEvaluationProps> = ({ toDos }) => {
         <ToDoDrawer />
       </Header>
       <Content>
-        {toDos?.filter(toDo => !toDo.done).length ? (
+        {toDos?.filter((toDo) => !toDo.done).length ? (
           toDos.map(
             (toDo, i) =>
               !toDo.done && <ToDoCard index={i} key={toDo._id} toDo={toDo} />
@@ -51,7 +51,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid ${props => props.theme.fontColors.textRgba(0.1)};
+  border-bottom: 1px solid ${(props) => props.theme.fontColors.textRgba(0.1)};
 `;
 
 const Title = styled.h3`
@@ -60,7 +60,7 @@ const Title = styled.h3`
   letter-spacing: 1px;
   margin: 0;
 
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const Content = styled.div`

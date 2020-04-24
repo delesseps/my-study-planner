@@ -1,28 +1,29 @@
 import React from "react";
-import IEvaluation from "interfaces/IEvaluation";
 import styled from "styled-components";
 import { Button, Empty } from "antd";
-import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
+import { useToggle } from "react-use";
+
+import { ApplicationState } from "store/types";
 import { evaluationDrawer } from "store/actions";
 import { EvaluationCard } from "components/cards";
-import { EvaluationDrawer } from "components/drawers";
+import IEvaluation from "constants/interfaces/IEvaluation";
+import { useEvaluations } from "features/evaluation/evaluation-hooks";
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    evaluations: state.reducer.user.evaluations
-  };
-};
+const EvaluationDrawer = React.lazy(() =>
+  import("components/drawers/EvaluationDrawer")
+);
 
 interface IEvaluationProps {
   evaluations?: IEvaluation[];
 }
 
-const Evaluation: React.FC<IEvaluationProps> = ({ evaluations }) => {
-  const dispatch = useDispatch();
+const Evaluation: React.FC<IEvaluationProps> = () => {
+  const [openDrawer, toggleDrawer] = useToggle(false);
+  const { evaluations } = useEvaluations();
 
   const handleClick = () => {
-    dispatch(evaluationDrawer());
+    toggleDrawer(true);
   };
 
   return (
@@ -32,10 +33,10 @@ const Evaluation: React.FC<IEvaluationProps> = ({ evaluations }) => {
         <Button onClick={handleClick} type="primary">
           NEW EVALUATION
         </Button>
-        <EvaluationDrawer />
+        <EvaluationDrawer visible={openDrawer} setVisible={toggleDrawer} />
       </Header>
       <Content>
-        {evaluations?.filter(evaluation => !evaluation.done).length ? (
+        {evaluations?.filter((evaluation) => !evaluation.done).length ? (
           evaluations.map(
             (evaluation, i) =>
               !evaluation.done && (
@@ -59,7 +60,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid ${props => props.theme.fontColors.textRgba(0.1)};
+  border-bottom: 1px solid ${(props) => props.theme.fontColors.textRgba(0.1)};
 `;
 
 const Title = styled.h3`
@@ -68,7 +69,7 @@ const Title = styled.h3`
   letter-spacing: 1px;
   margin: 0;
 
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const Content = styled.div`
@@ -90,4 +91,4 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-export default connect(mapStateToProps, null)(Evaluation);
+export default Evaluation;

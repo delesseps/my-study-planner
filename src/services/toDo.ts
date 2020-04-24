@@ -1,13 +1,13 @@
 import { agent } from "api";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import IToDo from "interfaces/IToDo";
+import IToDo from "constants/interfaces/IToDo";
 
 const deleteApi = (id: string): AxiosRequestConfig => ({
   url: "/to-do/delete",
   method: "delete",
   data: {
-    _id: id
-  }
+    _id: id,
+  },
 });
 
 export const requestDeleteToDo = (id: string): Promise<AxiosResponse> =>
@@ -16,7 +16,7 @@ export const requestDeleteToDo = (id: string): Promise<AxiosResponse> =>
 const editApi = (toDo: IToDo): AxiosRequestConfig => ({
   url: "/to-do/update",
   method: "patch",
-  data: toDo
+  data: toDo,
 });
 
 export const requestEditToDo = (toDo: IToDo): Promise<AxiosResponse> =>
@@ -25,7 +25,7 @@ export const requestEditToDo = (toDo: IToDo): Promise<AxiosResponse> =>
 const addApi = (toDo: IToDo): AxiosRequestConfig => ({
   url: "/to-do/add",
   method: "post",
-  data: toDo
+  data: toDo,
 });
 
 const requestAddToDo = (toDo: IToDo): Promise<AxiosResponse> =>

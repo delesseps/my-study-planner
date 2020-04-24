@@ -1,28 +1,30 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Input, Checkbox, Alert, Form } from "antd";
 import styled from "styled-components";
 import { Dispatch } from "redux";
-import { signIn } from "store/effects";
-import ISignInCredentials from "interfaces/ISignInCredentials";
 import { connect } from "react-redux";
+
+import { signIn } from "store/effects";
+import ISignInCredentials from "constants/interfaces/ISignInCredentials";
 import { breakpoints } from "theme";
 import { ApplicationState } from "store/types";
-import IRequestError from "interfaces/IRequestError";
+import IRequestError from "constants/interfaces/IRequestError";
 import { FadeIn } from "components";
-import { Link } from "react-router-dom";
+import { useAuth } from "features/auth/auth-context";
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
     loading: state.reducer.loading.signIn,
-    error: state.reducer.error.signIn
+    error: state.reducer.error.signIn,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     signIn: (credentials: ISignInCredentials) =>
-      dispatch<any>(signIn(credentials))
+      dispatch<any>(signIn(credentials)),
   };
 };
 
@@ -34,10 +36,11 @@ interface ISignInFormProps {
 
 const SignInForm: React.FC<ISignInFormProps> = ({ signIn, loading, error }) => {
   const [form] = Form.useForm();
+  const { login } = useAuth();
 
   const handleSubmit = (): void => {
-    form.validateFields().then(credentials => {
-      signIn(credentials as ISignInCredentials);
+    form.validateFields().then((credentials) => {
+      login(credentials as ISignInCredentials);
     });
   };
 
@@ -71,8 +74,8 @@ const SignInForm: React.FC<ISignInFormProps> = ({ signIn, loading, error }) => {
           { required: true, message: "Please input your email!" },
           {
             type: "email",
-            message: "The input is not valid E-mail!"
-          }
+            message: "The input is not valid E-mail!",
+          },
         ]}
       >
         <Input
@@ -127,12 +130,12 @@ const StyledForm = styled(Form)`
 const Heading = styled.h1`
   font-weight: bold;
   font-size: 3.6rem;
-  color: ${props => props.theme.fontColors.text};
+  color: ${(props) => props.theme.fontColors.text};
 `;
 
 const SubHeading = styled.h3`
   font-weight: 600;
-  color: ${props => props.theme.fontColors.textRgba(0.6)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.6)};
 `;
 
 const OptionsWrapper = styled.div`

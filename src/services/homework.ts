@@ -1,13 +1,13 @@
 import { agent } from "api";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import IHomework from "interfaces/IHomework";
+import IHomework from "constants/interfaces/IHomework";
 
 const deleteApi = (id: string): AxiosRequestConfig => ({
   url: "/homework/delete",
   method: "delete",
   data: {
-    _id: id
-  }
+    _id: id,
+  },
 });
 
 export const requestDeleteHomework = (id: string): Promise<AxiosResponse> =>
@@ -16,7 +16,7 @@ export const requestDeleteHomework = (id: string): Promise<AxiosResponse> =>
 const editApi = (homework: IHomework): AxiosRequestConfig => ({
   url: "/homework/update",
   method: "patch",
-  data: homework
+  data: homework,
 });
 
 export const requestEditHomework = (
@@ -26,7 +26,7 @@ export const requestEditHomework = (
 const addApi = (homework: IHomework): AxiosRequestConfig => ({
   url: "/homework/add",
   method: "post",
-  data: homework
+  data: homework,
 });
 
 const requestAddHomework = (homework: IHomework): Promise<AxiosResponse> =>

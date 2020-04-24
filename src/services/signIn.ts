@@ -1,19 +1,19 @@
 import { agent } from "api";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import ISignInCredentials from "interfaces/ISignInCredentials";
+import ISignInCredentials from "constants/interfaces/ISignInCredentials";
 
 const api = ({
   email,
   password,
-  remember
+  remember,
 }: ISignInCredentials): AxiosRequestConfig => ({
   url: "/auth/signin",
   method: "post",
   data: {
     email,
     password,
-    remember
-  }
+    remember,
+  },
 });
 
 const signIn = (credentials: ISignInCredentials): Promise<AxiosResponse> =>

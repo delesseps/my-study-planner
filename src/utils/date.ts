@@ -2,27 +2,27 @@ import moment, { Moment } from "moment";
 
 let REFERENCE = moment();
 
-function isToday(momentDate: Moment) {
+export function isToday(momentDate: Moment) {
   let TODAY = REFERENCE.clone().startOf("day");
   return momentDate.isSame(TODAY, "d");
 }
 
-function isYesterday(momentDate: Moment) {
+export function isYesterday(momentDate: Moment) {
   let YESTERDAY = REFERENCE.clone().subtract(1, "days").startOf("day");
   return momentDate.isSame(YESTERDAY, "d");
 }
 
-function isPast(momentDate: Moment) {
+export function isPast(momentDate: Moment) {
   let TODAY = REFERENCE.clone().startOf("day");
   return momentDate.isBefore(TODAY, "d");
 }
 
-function isTomorrow(momentDate: Moment) {
+export function isTomorrow(momentDate: Moment) {
   let TOMMORROW = REFERENCE.clone().add(1, "days").startOf("day");
   return momentDate.isSame(TOMMORROW, "d");
 }
 
-function isSameMonth(momentDate: Moment) {
+export function isSameMonth(momentDate: Moment) {
   return momentDate.isSame(REFERENCE, "month");
 }
 

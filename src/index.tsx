@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import configureStore from "store";
 import { PersistGate } from "redux-persist/integration/react";
 import { Loading } from "components";
+import { AppProviders } from "features";
 
 const { persistor, store } = configureStore();
 
@@ -27,7 +28,9 @@ if ("serviceWorker" in navigator) {
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={<Loading />} persistor={persistor}>
-      <App />
+      <AppProviders>
+        <App />
+      </AppProviders>
     </PersistGate>
   </Provider>,
   document.getElementById("root")

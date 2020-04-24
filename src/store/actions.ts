@@ -49,14 +49,14 @@ import {
   EditToDoError,
   ModalRequest,
   ModalSuccess,
-  ModalError
+  ModalError,
 } from "./types";
-import IUser from "interfaces/IUser";
-import IAxiosErrorResponse from "interfaces/IAxiosErrorResponse";
-import IEvaluation from "interfaces/IEvaluation";
-import IHomework from "interfaces/IHomework";
-import IUserConfig from "interfaces/IUserConfig";
-import IToDo from "interfaces/IToDo";
+import IUser from "constants/interfaces/IUser";
+import IAxiosErrorResponse from "constants/interfaces/IAxiosErrorResponse";
+import IEvaluation from "constants/interfaces/IEvaluation";
+import IHomework from "constants/interfaces/IHomework";
+import { IUserConfig } from "constants/interfaces/IUser";
+import IToDo from "constants/interfaces/IToDo";
 
 /**
  *
@@ -65,17 +65,17 @@ import IToDo from "interfaces/IToDo";
  */
 
 export const signInRequest = (): SignInRequest => ({
-  type: "signInRequest"
+  type: "signInRequest",
 });
 
 export const signInSuccess = (user: IUser): SignInSuccess => ({
   type: "signInSuccess",
-  user
+  user,
 });
 
 export const signInError = (error: IAxiosErrorResponse): SignInError => ({
   type: "signInError",
-  error
+  error,
 });
 
 /**
@@ -85,17 +85,17 @@ export const signInError = (error: IAxiosErrorResponse): SignInError => ({
  */
 
 export const signUpRequest = (): SignUpRequest => ({
-  type: "signUpRequest"
+  type: "signUpRequest",
 });
 
 export const signUpSuccess = (user: IUser): SignUpSuccess => ({
   type: "signUpSuccess",
-  user
+  user,
 });
 
 export const signUpError = (error: IAxiosErrorResponse): SignUpError => ({
   type: "signUpError",
-  error
+  error,
 });
 
 /**
@@ -105,19 +105,19 @@ export const signUpError = (error: IAxiosErrorResponse): SignUpError => ({
  */
 
 export const requestUserPending = (): RequestUserPending => ({
-  type: "requestUserPending"
+  type: "requestUserPending",
 });
 
 export const requestUserSuccess = (user: IUser): RequestUserSuccess => ({
   type: "requestUserSuccess",
-  user
+  user,
 });
 
 export const requestUserError = (
   error: IAxiosErrorResponse
 ): RequestUserError => ({
   type: "requestUserError",
-  error
+  error,
 });
 
 /**
@@ -127,16 +127,16 @@ export const requestUserError = (
  */
 
 export const signOutRequest = (): SignOutRequest => ({
-  type: "signOutRequest"
+  type: "signOutRequest",
 });
 
 export const signOutSuccess = (): SignOutSuccess => ({
-  type: "signOutSuccess"
+  type: "signOutSuccess",
 });
 
 export const signOutError = (error: IAxiosErrorResponse): SignOutError => ({
   type: "signOutError",
-  error
+  error,
 });
 
 /**
@@ -145,15 +145,15 @@ export const signOutError = (error: IAxiosErrorResponse): SignOutError => ({
  *
  */
 export const evaluationDrawer = (): EvaluationDrawer => ({
-  type: "evaluationDrawer"
+  type: "evaluationDrawer",
 });
 
 export const homeworkDrawer = (): HomeworkDrawer => ({
-  type: "homeworkDrawer"
+  type: "homeworkDrawer",
 });
 
 export const toDoDrawer = (): ToDoDrawer => ({
-  type: "toDoDrawer"
+  type: "toDoDrawer",
 });
 
 /**
@@ -163,21 +163,21 @@ export const toDoDrawer = (): ToDoDrawer => ({
  */
 
 export const addEvaluationRequest = (): AddEvaluationRequest => ({
-  type: "addEvaluationRequest"
+  type: "addEvaluationRequest",
 });
 
 export const addEvaluationSuccess = (
   evaluation: IEvaluation
 ): AddEvaluationSuccess => ({
   type: "addEvaluationSuccess",
-  evaluation
+  evaluation,
 });
 
 export const addEvaluationError = (
   error: IAxiosErrorResponse
 ): AddEvaluationError => ({
   type: "addEvaluationError",
-  error
+  error,
 });
 
 /**
@@ -187,7 +187,7 @@ export const addEvaluationError = (
  */
 
 export const editEvaluationRequest = (): EditEvaluationRequest => ({
-  type: "editEvaluationRequest"
+  type: "editEvaluationRequest",
 });
 
 export const editEvaluationSuccess = (
@@ -196,14 +196,14 @@ export const editEvaluationSuccess = (
 ): EditEvaluationSuccess => ({
   type: "editEvaluationSuccess",
   evaluation,
-  index
+  index,
 });
 
 export const editEvaluationError = (
   error: IAxiosErrorResponse
 ): EditEvaluationError => ({
   type: "editEvaluationError",
-  error
+  error,
 });
 
 /**
@@ -213,21 +213,21 @@ export const editEvaluationError = (
  */
 
 export const deleteEvaluationRequest = (): DeleteEvaluationRequest => ({
-  type: "deleteEvaluationRequest"
+  type: "deleteEvaluationRequest",
 });
 
 export const deleteEvaluationSuccess = (
   index: number
 ): DeleteEvaluationSuccess => ({
   type: "deleteEvaluationSuccess",
-  index
+  index,
 });
 
 export const deleteEvaluationError = (
   error: IAxiosErrorResponse
 ): DeleteEvaluationError => ({
   type: "deleteEvaluationError",
-  error
+  error,
 });
 
 /**
@@ -237,21 +237,21 @@ export const deleteEvaluationError = (
  */
 
 export const addHomeworkRequest = (): AddHomeworkRequest => ({
-  type: "addHomeworkRequest"
+  type: "addHomeworkRequest",
 });
 
 export const addHomeworkSuccess = (
   homework: IHomework
 ): AddHomeworkSuccess => ({
   type: "addHomeworkSuccess",
-  homework
+  homework,
 });
 
 export const addHomeworkError = (
   error: IAxiosErrorResponse
 ): AddHomeworkError => ({
   type: "addHomeworkError",
-  error
+  error,
 });
 
 /**
@@ -261,7 +261,7 @@ export const addHomeworkError = (
  */
 
 export const editHomeworkRequest = (): EditHomeworkRequest => ({
-  type: "editHomeworkRequest"
+  type: "editHomeworkRequest",
 });
 
 export const editHomeworkSuccess = (
@@ -270,14 +270,14 @@ export const editHomeworkSuccess = (
 ): EditHomeworkSuccess => ({
   type: "editHomeworkSuccess",
   homework,
-  index
+  index,
 });
 
 export const editHomeworkError = (
   error: IAxiosErrorResponse
 ): EditHomeworkError => ({
   type: "editHomeworkError",
-  error
+  error,
 });
 
 /**
@@ -287,21 +287,21 @@ export const editHomeworkError = (
  */
 
 export const deleteHomeworkRequest = (): DeleteHomeworkRequest => ({
-  type: "deleteHomeworkRequest"
+  type: "deleteHomeworkRequest",
 });
 
 export const deleteHomeworkSuccess = (
   index: number
 ): DeleteHomeworkSuccess => ({
   type: "deleteHomeworkSuccess",
-  index
+  index,
 });
 
 export const deleteHomeworkError = (
   error: IAxiosErrorResponse
 ): DeleteHomeworkError => ({
   type: "deleteHomeworkError",
-  error
+  error,
 });
 
 /**
@@ -310,21 +310,21 @@ export const deleteHomeworkError = (
  *
  */
 export const uploadPictureRequest = (): UploadProfilePictureRequest => ({
-  type: "uploadProfilePictureRequest"
+  type: "uploadProfilePictureRequest",
 });
 
 export const uploadPictureSuccess = (
   imageUrl: string
 ): UploadProfilePictureSuccess => ({
   type: "uploadProfilePictureSuccess",
-  imageUrl
+  imageUrl,
 });
 
 export const uploadPictureError = (
   error: IAxiosErrorResponse
 ): UploadProfilePictureError => ({
   type: "uploadProfilePictureError",
-  error
+  error,
 });
 
 /**
@@ -333,19 +333,19 @@ export const uploadPictureError = (
  *
  */
 export const userConfigRequest = (): UserConfigRequest => ({
-  type: "userConfigRequest"
+  type: "userConfigRequest",
 });
 
 export const userConfigSuccess = (config: IUserConfig): UserConfigSuccess => ({
   type: "userConfigSuccess",
-  config
+  config,
 });
 
 export const userConfigError = (
   error: IAxiosErrorResponse
 ): UserConfigError => ({
   type: "userConfigError",
-  error
+  error,
 });
 
 /**
@@ -355,17 +355,17 @@ export const userConfigError = (
  */
 
 export const addToDoRequest = (): AddToDoRequest => ({
-  type: "addToDoRequest"
+  type: "addToDoRequest",
 });
 
 export const addToDoSuccess = (toDo: IToDo): AddToDoSuccess => ({
   type: "addToDoSuccess",
-  toDo
+  toDo,
 });
 
 export const addToDoError = (error: IAxiosErrorResponse): AddToDoError => ({
   type: "addToDoError",
-  error
+  error,
 });
 
 /**
@@ -375,7 +375,7 @@ export const addToDoError = (error: IAxiosErrorResponse): AddToDoError => ({
  */
 
 export const editToDoRequest = (): EditToDoRequest => ({
-  type: "editToDoRequest"
+  type: "editToDoRequest",
 });
 
 export const editToDoSuccess = (
@@ -384,12 +384,12 @@ export const editToDoSuccess = (
 ): EditToDoSuccess => ({
   type: "editToDoSuccess",
   toDo,
-  index
+  index,
 });
 
 export const editToDoError = (error: IAxiosErrorResponse): EditToDoError => ({
   type: "editToDoError",
-  error
+  error,
 });
 
 /**
@@ -399,19 +399,19 @@ export const editToDoError = (error: IAxiosErrorResponse): EditToDoError => ({
  */
 
 export const deleteToDoRequest = (): DeleteToDoRequest => ({
-  type: "deleteToDoRequest"
+  type: "deleteToDoRequest",
 });
 
 export const deleteToDoSuccess = (index: number): DeleteToDoSuccess => ({
   type: "deleteToDoSuccess",
-  index
+  index,
 });
 
 export const deleteToDoError = (
   error: IAxiosErrorResponse
 ): DeleteToDoError => ({
   type: "deleteToDoError",
-  error
+  error,
 });
 
 /**
@@ -421,15 +421,15 @@ export const deleteToDoError = (
  */
 export const modalRequest = (modalType: "welcome"): ModalRequest => ({
   type: "ModalRequest",
-  modalType
+  modalType,
 });
 
 export const modalSuccess = (modalType: "welcome"): ModalSuccess => ({
   type: "ModalSuccess",
-  modalType
+  modalType,
 });
 
 export const modalError = (error: IAxiosErrorResponse): ModalError => ({
   type: "ModalError",
-  error
+  error,
 });

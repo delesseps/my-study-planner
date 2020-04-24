@@ -4,24 +4,25 @@ import { Button, Input, Alert, Form } from "antd";
 import styled from "styled-components";
 import { Dispatch } from "redux";
 import { signUp } from "store/effects";
-import ISignUpCredentials from "interfaces/ISignUpCredentials";
+import ISignUpCredentials from "constants/interfaces/ISignUpCredentials";
 import { connect } from "react-redux";
 import { breakpoints } from "theme";
 import { ApplicationState } from "store/types";
-import IRequestError from "interfaces/IRequestError";
+import IRequestError from "constants/interfaces/IRequestError";
 import { FadeIn } from "components";
+import { useAuth } from "features/auth/auth-context";
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
     loading: state.reducer.loading.signUp,
-    error: state.reducer.error.signUp
+    error: state.reducer.error.signUp,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     signUp: (credentials: ISignUpCredentials) =>
-      dispatch<any>(signUp(credentials))
+      dispatch<any>(signUp(credentials)),
   };
 };
 
@@ -34,10 +35,11 @@ interface ISignUpFormProps {
 const SignUpForm: React.FC<ISignUpFormProps> = ({ signUp, loading, error }) => {
   const [form] = Form.useForm();
   const [confirmDirty, setConfirmDirty] = useState<Boolean | any>(false);
+  const { register } = useAuth();
 
   const handleSubmit = (): void => {
-    form.validateFields().then(credentials => {
-      signUp(credentials as ISignUpCredentials);
+    form.validateFields().then((credentials) => {
+      register(credentials as ISignUpCredentials);
     });
   };
 
@@ -106,8 +108,8 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({ signUp, loading, error }) => {
           { required: true, message: "Please input your email!" },
           {
             type: "email",
-            message: "The input is not valid E-mail!"
-          }
+            message: "The input is not valid E-mail!",
+          },
         ]}
       >
         <Input
@@ -121,15 +123,15 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({ signUp, loading, error }) => {
         rules={[
           {
             required: true,
-            message: "Please input your password!"
+            message: "Please input your password!",
           },
           {
-            validator: validateToNextPassword
+            validator: validateToNextPassword,
           },
           {
             min: 6,
-            message: "Password must have a minimum of 6 characters."
-          }
+            message: "Password must have a minimum of 6 characters.",
+          },
         ]}
         hasFeedback
       >
@@ -145,15 +147,15 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({ signUp, loading, error }) => {
         rules={[
           {
             required: true,
-            message: "Please confirm your password!"
+            message: "Please confirm your password!",
           },
           {
-            validator: compareToFirstPassword
+            validator: compareToFirstPassword,
           },
           {
             min: 6,
-            message: "Password must have a minimum of 6 characters."
-          }
+            message: "Password must have a minimum of 6 characters.",
+          },
         ]}
         hasFeedback
       >
@@ -192,12 +194,12 @@ const StyledForm = styled(Form)`
 const Heading = styled.h1`
   font-weight: bold;
   font-size: 3.6rem;
-  color: ${props => props.theme.fontColors.text};
+  color: ${(props) => props.theme.fontColors.text};
 `;
 
 const SubHeading = styled.h3`
   font-weight: 600;
-  color: ${props => props.theme.fontColors.textRgba(0.6)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.6)};
 `;
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);

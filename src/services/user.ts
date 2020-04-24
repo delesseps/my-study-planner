@@ -1,13 +1,13 @@
 import { agent } from "api";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import IUserConfig from "interfaces/IUserConfig";
+import { IUserConfig } from "constants/interfaces/IUser";
 
 const userConfigApi = (config: IUserConfig): AxiosRequestConfig => ({
   url: "/user/config",
   method: "patch",
   data: {
-    config
-  }
+    config,
+  },
 });
 
 export const userConfigService = (
@@ -18,8 +18,8 @@ const uploadProfilePictureApi = (image: string): AxiosRequestConfig => ({
   url: "/user/upload_profile_picture",
   method: "post",
   data: {
-    image
-  }
+    image,
+  },
 });
 
 export const uploadProfilePictureService = (
@@ -28,7 +28,7 @@ export const uploadProfilePictureService = (
 
 const requestUserApi = (): AxiosRequestConfig => ({
   url: "/user/current",
-  method: "get"
+  method: "get",
 });
 
 const requestUser = (): Promise<AxiosResponse> =>
