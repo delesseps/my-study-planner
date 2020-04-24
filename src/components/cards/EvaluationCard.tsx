@@ -13,7 +13,6 @@ import moment from "moment";
 
 import IEvaluation from "constants/interfaces/IEvaluation";
 import { setDate, determinePriority, determineColor } from "utils";
-import { deleteEvaluation, editEvaluation } from "store/effects";
 import EvaluationDescriptionModal from "components/modals/EvaluationDescription";
 import { useEvaluations } from "features/evaluation/evaluation-hooks";
 

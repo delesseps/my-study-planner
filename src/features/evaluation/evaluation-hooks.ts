@@ -13,6 +13,13 @@ export function useEvaluations() {
     onSuccess: (data, { index }) => {
       queryCache.setQueryData(["user"], (previous: IUser) => {
         const newEvaluations = [...previous.evaluations];
+
+        if (!index) {
+          index = previous.evaluations.findIndex(
+            (elem) => data._id === elem._id
+          );
+        }
+
         newEvaluations[index] = data;
 
         return {

@@ -205,6 +205,13 @@ const GlobalStyle = createGlobalStyle<{ config?: IUserConfig }>`
       background-color: transparent;
     }
 
+    .ant-popover-arrow {
+      border-right-color: ${(props) =>
+        props.theme.panelBackgroundColor} !important;
+      border-bottom-color: ${(props) =>
+        props.theme.panelBackgroundColor} !important;
+    }
+
     /*REACT-BIG-CALENDAR OVERRIDES*/
     & .rbc-today {
       background-color: ${(props) => props.theme.bigCalendarCurrentDay};
@@ -239,7 +246,7 @@ const GlobalStyle = createGlobalStyle<{ config?: IUserConfig }>`
     border:4px solid ${(props) => props.theme.scrollbarBackgroundColor}
   }
 
-  *::-webkit-scrollbar-button {display:none}
+  *::-webkit-scrollbar-button {display:none}  
 `;
 
 export default GlobalStyle;

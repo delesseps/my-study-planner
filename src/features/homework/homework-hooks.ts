@@ -13,6 +13,11 @@ export function useHomework() {
     onSuccess: (data, { index }) => {
       queryCache.setQueryData(["user"], (previous: IUser) => {
         const newHomework = [...previous.homework];
+
+        if (!index) {
+          index = previous.homework.findIndex((elem) => data._id === elem._id);
+        }
+
         newHomework[index] = data;
 
         return {

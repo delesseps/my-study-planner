@@ -25,7 +25,7 @@ export function edit({
   index,
 }: {
   evaluation: IEvaluation;
-  index: number;
+  index?: number;
 }): Promise<IEvaluation> {
   const options: AxiosRequestConfig = {
     url: "/evaluation/update",

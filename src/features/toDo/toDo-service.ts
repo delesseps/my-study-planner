@@ -1,6 +1,6 @@
 import { agent } from "api";
 import { AxiosRequestConfig } from "axios";
-import IHomework from "constants/interfaces/IHomework";
+import IToDo from "constants/interfaces/IToDo";
 
 export function remove({
   id,
@@ -10,7 +10,7 @@ export function remove({
   index: number;
 }): Promise<any> {
   const options: AxiosRequestConfig = {
-    url: "/homework/delete",
+    url: "/to-do/delete",
     method: "delete",
     data: {
       _id: id,
@@ -21,27 +21,27 @@ export function remove({
 }
 
 export function edit({
-  homework,
+  toDo,
   index,
 }: {
-  homework: IHomework;
-  index?: number;
-}): Promise<IHomework> {
+  toDo: IToDo;
+  index: number;
+}): Promise<IToDo> {
   const options: AxiosRequestConfig = {
-    url: "/homework/update",
+    url: "/to-do/update",
     method: "patch",
-    data: homework,
+    data: toDo,
   };
 
-  return agent.request(options).then(({ data }) => data.homework);
+  return agent.request(options).then(({ data }) => data.toDo);
 }
 
-export function add(homework: IHomework): Promise<IHomework> {
+export function add(toDo: IToDo): Promise<IToDo> {
   const options: AxiosRequestConfig = {
-    url: "/homework/add",
+    url: "/to-do/add",
     method: "post",
-    data: homework,
+    data: toDo,
   };
 
-  return agent.request(options).then(({ data }) => data.homework);
+  return agent.request(options).then(({ data }) => data.toDo);
 }

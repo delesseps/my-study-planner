@@ -10,10 +10,8 @@ import {
 import { Badge, Avatar, Divider, Popconfirm, Tooltip } from "antd";
 import moment from "moment";
 import { useToggle } from "react-use";
-import { useDispatch } from "react-redux";
 
 import { setDate, determinePriority, determineColor } from "utils";
-import { deleteHomework, editHomework } from "store/effects";
 import IHomework from "constants/interfaces/IHomework";
 import HomeworkDescriptionModal from "components/modals/HomeworkDescription";
 import { useHomework } from "features/homework/homework-hooks";

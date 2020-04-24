@@ -1,46 +1,25 @@
 import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router";
-import { connect, useDispatch } from "react-redux";
 import { Alert } from "antd";
 import styled, { ThemeProvider } from "styled-components";
 
 import { FadeIn, Loading, Sidebar, TopBar } from "components";
-import { ApplicationState } from "store/types";
 import { breakpoints, lightTheme, darkTheme, GlobalStyle } from "theme";
-import { requestUser, signOut } from "store/effects";
 import { initializePush } from "firebase/initialize";
-import IRequestError from "constants/interfaces/IRequestError";
-import IUser from "constants/interfaces/IUser";
+
 import { useConfig } from "features/user/user-hooks";
 import { useAuth } from "features/auth/auth-context";
 
 const Home = React.lazy(() => import("routes/Home"));
 const Preferences = React.lazy(() => import("routes/Preferences"));
 
-const mapStateToProps = (state: ApplicationState) => ({
-  error: state.reducer.error.user,
-});
-
-interface IDashboardProps {
-  error: IRequestError | undefined;
-}
-
-const AuthenticatedApp: React.FC<IDashboardProps> = ({ error }) => {
-  const dispatch = useDispatch();
+const AuthenticatedApp: React.FC = () => {
   const { user } = useAuth();
   const { config } = useConfig();
 
   useEffect(() => {
     initializePush();
   }, []);
-
-  useEffect(() => {
-    dispatch(requestUser());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (error && error.status === 401) dispatch(signOut());
-  }, [error, dispatch]);
 
   return (
     <ThemeProvider theme={config.darkMode ? darkTheme : lightTheme}>
@@ -135,4 +114,4 @@ const Content = styled.section`
   }
 `;
 
-export default connect(mapStateToProps)(AuthenticatedApp);
+export default AuthenticatedApp;

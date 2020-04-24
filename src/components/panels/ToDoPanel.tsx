@@ -1,26 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 import { Button, Empty } from "antd";
+
 import { ApplicationState } from "store/types";
-import { connect, useDispatch } from "react-redux";
 import IToDo from "constants/interfaces/IToDo";
-import { toDoDrawer } from "store/actions";
 import { ToDoDrawer } from "components/drawers";
 import { ToDoCard } from "components/cards";
+import { useToDo } from "features/toDo/toDo-hooks";
+import { useToggle } from "react-use";
 
-const mapStateToProps = (state: ApplicationState) => ({
-  toDos: state.reducer.user.toDos,
-});
-
-interface IEvaluationProps {
-  toDos?: IToDo[];
-}
-
-const ToDo: React.FunctionComponent<IEvaluationProps> = ({ toDos }) => {
-  const dispatch = useDispatch();
+const ToDo: React.FC = () => {
+  const [openDrawer, toggleDrawer] = useToggle(false);
+  const { toDos } = useToDo();
 
   const handleClick = () => {
-    dispatch(toDoDrawer());
+    toggleDrawer(true);
   };
 
   return (
@@ -30,10 +24,10 @@ const ToDo: React.FunctionComponent<IEvaluationProps> = ({ toDos }) => {
         <Button onClick={handleClick} type="primary">
           NEW TO-DO
         </Button>
-        <ToDoDrawer />
+        <ToDoDrawer visible={openDrawer} setVisible={toggleDrawer} />
       </Header>
       <Content>
-        {toDos?.filter((toDo) => !toDo.done).length ? (
+        {toDos.filter((toDo) => !toDo.done).length ? (
           toDos.map(
             (toDo, i) =>
               !toDo.done && <ToDoCard index={i} key={toDo._id} toDo={toDo} />
@@ -78,4 +72,4 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-export default connect(mapStateToProps, null)(ToDo);
+export default ToDo;

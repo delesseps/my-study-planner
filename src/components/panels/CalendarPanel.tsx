@@ -1,21 +1,18 @@
 import React from "react";
 import { Calendar, Badge, Popover } from "antd";
-import { ApplicationState } from "store/types";
-import { connect } from "react-redux";
-import IEvaluation from "constants/interfaces/IEvaluation";
 import { Moment } from "moment";
-import IHomework from "constants/interfaces/IHomework";
-import { toTitleCase } from "utils";
 import styled from "styled-components";
-interface ICalendarPanelProps {
-  evaluations?: IEvaluation[];
-  homework?: IHomework[];
-}
 
-const CalendarPanel: React.FC<ICalendarPanelProps> = ({
-  evaluations = [],
-  homework = [],
-}) => {
+import { useHomework } from "features/homework/homework-hooks";
+import { useEvaluations } from "features/evaluation/evaluation-hooks";
+import { toTitleCase } from "utils";
+import IHomework from "constants/interfaces/IHomework";
+import IEvaluation from "constants/interfaces/IEvaluation";
+
+const CalendarPanel: React.FC = () => {
+  const { homework } = useHomework();
+  const { evaluations } = useEvaluations();
+
   const getListData = (value: Moment) => {
     //Get the evaluations of a specific day in a month
     const filteredEvaluations = evaluations.filter((evaluation) => {
@@ -145,10 +142,4 @@ const BadgeTitle = styled.span`
   color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
-const mapStateToProps = (state: ApplicationState) => ({
-  evaluations: state.reducer.user.evaluations,
-  homework: state.reducer.user.homework,
-  config: state.reducer.user.configuration,
-});
-
-export default connect(mapStateToProps, null)(CalendarPanel);
+export default CalendarPanel;

@@ -1,11 +1,11 @@
 import React from "react";
-import IToDo from "constants/interfaces/IToDo";
 import styled from "styled-components";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Badge, Checkbox, Popconfirm, Tooltip } from "antd";
+
 import { determineColor } from "utils";
-import { useDispatch } from "react-redux";
-import { deleteToDo, editToDo } from "store/effects";
+import { useToDo } from "features/toDo/toDo-hooks";
+import IToDo from "constants/interfaces/IToDo";
 
 interface IToDoCardProps {
   toDo: IToDo;
@@ -13,15 +13,18 @@ interface IToDoCardProps {
 }
 
 const ToDoCard: React.FC<IToDoCardProps> = ({ toDo, index }) => {
-  const dispatch = useDispatch();
+  const {
+    remove: [removeMutate],
+    edit: [editMutate],
+  } = useToDo();
 
   const handleDeleteClick = () => {
-    dispatch(deleteToDo(toDo._id, index));
+    removeMutate({ id: toDo._id, index });
   };
 
   const handleDoneClick = () => {
     toDo.done = true;
-    dispatch(editToDo(toDo, index));
+    editMutate({ toDo, index });
   };
 
   return (

@@ -11,7 +11,6 @@ import {
 import { Avatar, Dropdown, Menu, Skeleton, Popover, Empty } from "antd";
 import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
-import { signOut } from "store/effects";
 import { UserProfile } from "components/modals";
 import IUser from "constants/interfaces/IUser";
 import { Link } from "react-router-dom";
@@ -101,18 +100,12 @@ const TopBar: React.FC<ITopBarProps> = ({ loading }) => {
           src={user?.picture}
         />
         <UserInfoBox>
-          <StyledSkeleton
-            loading={loading}
-            title={{ width: 120 }}
-            paragraph={{ rows: 1, width: 60 }}
-          >
-            <NameCaretWrapper placement="bottomRight" overlay={userOptions}>
-              <Name>
-                {user?.name} <CaretIcon />
-              </Name>
-            </NameCaretWrapper>
-            <Role>{user?.role === "user" ? "Student" : "Administrator"}</Role>
-          </StyledSkeleton>
+          <NameCaretWrapper placement="bottomRight" overlay={userOptions}>
+            <Name>
+              {user?.name} <CaretIcon />
+            </Name>
+          </NameCaretWrapper>
+          <Role>{user?.role === "user" ? "Student" : "Administrator"}</Role>
         </UserInfoBox>
       </UserBox>
     </Wrapper>
@@ -256,4 +249,4 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-export default connect(mapStateToProps, null)(TopBar);
+export default TopBar;

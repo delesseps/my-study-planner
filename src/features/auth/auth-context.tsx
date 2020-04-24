@@ -1,18 +1,31 @@
 import React, { useMemo, useContext, useCallback } from "react";
 import { useCookies } from "react-cookie";
-import { useQuery, useMutation, queryCache } from "react-query";
+import {
+  useQuery,
+  useMutation,
+  queryCache,
+  MutateFunction,
+  MutationResult,
+} from "react-query";
 
 import { Loading } from "components";
 import * as authService from "./auth-service";
 import IUser from "constants/interfaces/IUser";
-import ISignInCredentials from "constants/interfaces/ISignInCredentials";
 import { domain } from "constants/site";
+import ISignInCredentials from "constants/interfaces/ISignInCredentials";
 import ISignUpCredentials from "constants/interfaces/ISignUpCredentials";
+import { AxiosResponse } from "axios";
 
 interface IAuthContext {
   user: IUser;
-  login: (form: ISignInCredentials) => Promise<any>;
-  register: (form: ISignUpCredentials) => Promise<any>;
+  login: [
+    MutateFunction<AxiosResponse<IUser>, ISignInCredentials>,
+    MutationResult<AxiosResponse<IUser>>
+  ];
+  register: [
+    MutateFunction<AxiosResponse<IUser>, ISignUpCredentials>,
+    MutationResult<AxiosResponse<IUser>>
+  ];
   logout: () => Promise<any>;
 }
 
@@ -28,12 +41,11 @@ export function AuthProvider(props: any) {
     isLoggedIn ? "user" : null,
     authService.getUser,
     {
-      staleTime: 1000 * 60 * 60,
       cacheTime: 1000 * 60 * 60,
     }
   );
 
-  const [loginMutation] = useMutation(authService.login, {
+  const login = useMutation(authService.login, {
     onSuccess: (data, { remember }) => {
       queryCache.setQueryData(["user"], data);
 
@@ -47,7 +59,7 @@ export function AuthProvider(props: any) {
     },
   });
 
-  const [registerMutation] = useMutation(authService.register, {
+  const register = useMutation(authService.register, {
     onSuccess: (data) => {
       queryCache.setQueryData(["user"], data);
 
@@ -57,15 +69,6 @@ export function AuthProvider(props: any) {
       });
     },
   });
-
-  const login = useCallback((form: ISignInCredentials) => loginMutation(form), [
-    loginMutation,
-  ]);
-
-  const register = useCallback(
-    (form: ISignUpCredentials) => registerMutation(form),
-    [registerMutation]
-  );
 
   const logout = useCallback(
     () =>

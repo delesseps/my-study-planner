@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Badge, Divider } from "antd";
+
 import IEvaluation from "constants/interfaces/IEvaluation";
 import IHomework from "constants/interfaces/IHomework";
 import { determineColor } from "utils";
 import HomeworkDescriptionModal from "components/modals/HomeworkDescription";
 import EvaluationDescriptionModal from "components/modals/EvaluationDescription";
-import { useDispatch } from "react-redux";
-import { editEvaluation, editHomework } from "store/effects";
+import { useHomework } from "features/homework/homework-hooks";
+import { useEvaluations } from "features/evaluation/evaluation-hooks";
 
 interface IRecommendedActionCardProps {
   assignment: IHomework | IEvaluation | any;
@@ -16,8 +17,13 @@ interface IRecommendedActionCardProps {
 const RecommendedActionCard: React.FC<IRecommendedActionCardProps> = ({
   assignment,
 }) => {
-  const dispatch = useDispatch();
   const [recommendedAction, setRecommendedAction] = useState("");
+  const {
+    edit: [editHomeworkMutate],
+  } = useHomework();
+  const {
+    edit: [editEvaluationMutate],
+  } = useEvaluations();
 
   useEffect(() => {
     assignment.evaluationType
@@ -33,18 +39,21 @@ const RecommendedActionCard: React.FC<IRecommendedActionCardProps> = ({
 
   const handleMarkAsDone = () => {
     assignment.done = true;
-    dispatch(
-      (assignment.evaluationType ? editEvaluation : editHomework)(assignment)
-    );
+
+    if (assignment.evaluationType) {
+      return editEvaluationMutate({ evaluation: assignment });
+    }
+
+    editHomeworkMutate({ homework: assignment });
   };
 
   return (
     <Wrapper>
       <RowWrapper>
         <Badge color={determineColor(assignment.urgency)} />
-        <RecomendationTitle>
+        <RecommendationTitle>
           {recommendedAction + assignment.subject}
-        </RecomendationTitle>
+        </RecommendationTitle>
       </RowWrapper>
 
       <ActionContainer>
@@ -73,7 +82,7 @@ const RowWrapper = styled.div`
   align-items: center;
 `;
 
-const RecomendationTitle = styled.h3`
+const RecommendationTitle = styled.h3`
   margin-bottom: 0;
   font-weight: 400;
 

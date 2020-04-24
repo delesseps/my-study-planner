@@ -3,46 +3,31 @@ import { Link } from "react-router-dom";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Input, Checkbox, Alert, Form } from "antd";
 import styled from "styled-components";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
+import { AxiosError } from "axios";
 
-import { signIn } from "store/effects";
 import ISignInCredentials from "constants/interfaces/ISignInCredentials";
 import { breakpoints } from "theme";
-import { ApplicationState } from "store/types";
-import IRequestError from "constants/interfaces/IRequestError";
 import { FadeIn } from "components";
 import { useAuth } from "features/auth/auth-context";
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    loading: state.reducer.loading.signIn,
-    error: state.reducer.error.signIn,
-  };
+const errors: Record<string, string> = {
+  400: "Incorrect e-mail or password.",
+  404: "The user does not exist. Please create an account.",
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    signIn: (credentials: ISignInCredentials) =>
-      dispatch<any>(signIn(credentials)),
-  };
-};
-
-interface ISignInFormProps {
-  signIn: Function;
-  loading: boolean;
-  error: IRequestError | undefined;
-}
-
-const SignInForm: React.FC<ISignInFormProps> = ({ signIn, loading, error }) => {
+const SignInForm: React.FC = () => {
   const [form] = Form.useForm();
-  const { login } = useAuth();
+  const {
+    login: [loginMutate, { status, error }],
+  } = useAuth();
 
   const handleSubmit = (): void => {
     form.validateFields().then((credentials) => {
-      login(credentials as ISignInCredentials);
+      loginMutate(credentials as ISignInCredentials);
     });
   };
+
+  const errorCode = (error as AxiosError)?.response?.status;
 
   return (
     <StyledForm
@@ -55,15 +40,10 @@ const SignInForm: React.FC<ISignInFormProps> = ({ signIn, loading, error }) => {
         <Heading>Welcome back</Heading>
         <SubHeading>Continue where you left off</SubHeading>
       </Form.Item>
-      {error && (
+      {errorCode && (
         <FadeIn>
           <Form.Item>
-            <Alert
-              message="Incorrect e-mail or password."
-              type="error"
-              showIcon
-              closable
-            />
+            <Alert message={errors[errorCode]} type="error" showIcon closable />
           </Form.Item>
         </FadeIn>
       )}
@@ -105,7 +85,7 @@ const SignInForm: React.FC<ISignInFormProps> = ({ signIn, loading, error }) => {
       <Form.Item>
         <Button
           data-testid="submit"
-          loading={loading}
+          loading={status === "loading"}
           type="primary"
           size="large"
           htmlType="submit"
@@ -159,4 +139,4 @@ const ForgotPassword = styled(Link)`
   }
 `;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);
+export default SignInForm;

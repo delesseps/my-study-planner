@@ -6,9 +6,7 @@ import { ApplicationState } from "store/types";
 import { connect, useDispatch } from "react-redux";
 import IUser from "constants/interfaces/IUser";
 import styled from "styled-components";
-import { uploadProfilePicture } from "store/effects";
 import { UploadFile } from "antd/lib/upload/interface";
-import { useAuth } from "features/auth/auth-context";
 import { useProfilePicture } from "features/user/user-hooks";
 
 function getBase64(img: any): Promise<string | ArrayBuffer | null> {

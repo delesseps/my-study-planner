@@ -2,44 +2,23 @@ import React, { useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Input, Alert, Form } from "antd";
 import styled from "styled-components";
-import { Dispatch } from "redux";
-import { signUp } from "store/effects";
+import { AxiosError } from "axios";
+
 import ISignUpCredentials from "constants/interfaces/ISignUpCredentials";
-import { connect } from "react-redux";
 import { breakpoints } from "theme";
-import { ApplicationState } from "store/types";
-import IRequestError from "constants/interfaces/IRequestError";
 import { FadeIn } from "components";
 import { useAuth } from "features/auth/auth-context";
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    loading: state.reducer.loading.signUp,
-    error: state.reducer.error.signUp,
-  };
-};
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    signUp: (credentials: ISignUpCredentials) =>
-      dispatch<any>(signUp(credentials)),
-  };
-};
-
-interface ISignUpFormProps {
-  signUp: Function;
-  loading: boolean;
-  error: IRequestError | undefined;
-}
-
-const SignUpForm: React.FC<ISignUpFormProps> = ({ signUp, loading, error }) => {
+const SignUpForm: React.FC = () => {
   const [form] = Form.useForm();
   const [confirmDirty, setConfirmDirty] = useState<Boolean | any>(false);
-  const { register } = useAuth();
+  const {
+    register: [registerMutate, { status, error }],
+  } = useAuth();
 
   const handleSubmit = (): void => {
     form.validateFields().then((credentials) => {
-      register(credentials as ISignUpCredentials);
+      registerMutate(credentials as ISignUpCredentials);
     });
   };
 
@@ -71,6 +50,8 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({ signUp, loading, error }) => {
     callback();
   };
 
+  const errorCode = (error as AxiosError)?.response?.status;
+
   return (
     <StyledForm form={form} layout="vertical" onFinish={handleSubmit}>
       <Form.Item>
@@ -79,7 +60,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({ signUp, loading, error }) => {
           Enter your details and start your journey with us
         </SubHeading>
       </Form.Item>
-      {error && (
+      {errorCode && (
         <FadeIn>
           <Form.Item>
             <Alert
@@ -169,7 +150,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({ signUp, loading, error }) => {
       <Form.Item>
         <Button
           data-testid="submit"
-          loading={loading}
+          loading={status === "loading"}
           type="primary"
           size="large"
           htmlType="submit"
@@ -202,4 +183,4 @@ const SubHeading = styled.h3`
   color: ${(props) => props.theme.fontColors.textRgba(0.6)};
 `;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
+export default SignUpForm;
