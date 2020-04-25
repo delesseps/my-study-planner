@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Drawer, DatePicker, Input, Tooltip, Button, Radio, Form } from "antd";
 import moment from "moment";
@@ -23,16 +23,17 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
 }) => {
   const [form] = Form.useForm();
   const {
-    add: [addMutate, { status: addStatus, reset: addMutateReset }],
-    edit: [editMutate, { status: editStatus, reset: editMutateReset }],
+    add: [
+      addEvaluationMutate,
+      { status: addEvaluationStatus, reset: addEvaluationReset },
+    ],
+    edit: [
+      editEvaluationMutate,
+      { status: editEvaluationStatus, reset: editEvaluationReset },
+    ],
   } = useEvaluations();
 
-  const status = evaluation ? editStatus : addStatus;
-
-  useEffect(() => {
-    // Close drawer after successful operation
-    if (status === "success") onClose();
-  }, [status]);
+  const status = evaluation ? editEvaluationStatus : addEvaluationStatus;
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
@@ -40,18 +41,23 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
 
       if (evaluation && typeof index === "number") {
         newEvaluation._id = evaluation._id;
-        return editMutate({ evaluation: newEvaluation, index });
+        return editEvaluationMutate({ evaluation: newEvaluation, index });
       }
 
-      addMutate(newEvaluation);
+      addEvaluationMutate(newEvaluation);
     });
   };
 
-  const onClose = () => {
-    addMutateReset();
-    editMutateReset();
+  const onClose = useCallback(() => {
+    addEvaluationReset();
+    editEvaluationReset();
     setVisible(false);
-  };
+  }, [addEvaluationReset, editEvaluationReset, setVisible]);
+
+  useEffect(() => {
+    // Close drawer after successful operation
+    if (status === "success") onClose();
+  }, [status, onClose]);
 
   const disabledDate = (current: any) => {
     // Can not select days before today and today

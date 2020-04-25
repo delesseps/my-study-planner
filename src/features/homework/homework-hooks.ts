@@ -30,6 +30,9 @@ export function useHomework() {
         data.done ? "Great Job!" : "Successfuly edited homework!"
       );
     },
+    onError: () => {
+      message.error("Error editing homework. Please try again.");
+    },
   });
 
   const add = useMutation(homeworkService.add, {
@@ -49,6 +52,9 @@ export function useHomework() {
 
       message.success("Successfuly added homework!");
     },
+    onError: () => {
+      message.error("Error adding homework. Please try again.");
+    },
   });
 
   const remove = useMutation(homeworkService.remove, {
@@ -64,6 +70,9 @@ export function useHomework() {
       });
 
       message.success("Successfuly removed homework!");
+    },
+    onError: () => {
+      message.error("Error removing homework. Please try again.");
     },
   });
 

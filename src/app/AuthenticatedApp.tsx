@@ -2,11 +2,17 @@ import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router";
 import { Alert } from "antd";
 import styled, { ThemeProvider } from "styled-components";
+import ErrorBoundary from "react-error-boundary";
 
-import { FadeIn, Loading, Sidebar, TopBar } from "components";
+import {
+  FadeIn,
+  Loading,
+  Sidebar,
+  TopBar,
+  FullPageErrorFallback,
+} from "components";
 import { breakpoints, lightTheme, darkTheme, GlobalStyle } from "theme";
 import { initializePush } from "firebase/initialize";
-
 import { useConfig } from "features/user/user-hooks";
 import { useAuth } from "features/auth/auth-context";
 
@@ -22,38 +28,40 @@ const AuthenticatedApp: React.FC = () => {
   }, []);
 
   return (
-    <ThemeProvider theme={config.darkMode ? darkTheme : lightTheme}>
-      <GlobalStyle config={config} />
+    <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
+      <ThemeProvider theme={config.darkMode ? darkTheme : lightTheme}>
+        <GlobalStyle config={config} />
 
-      <FadeIn>
-        <Wrapper>
-          <Sider>
-            <Sidebar />
-          </Sider>
-          <Content>
-            {!user.verified && (
-              <EmailVerificationError
-                message="Check your email and activate your account!"
-                banner
-                closable
-              />
-            )}
-            <TopBar />
-            <React.Suspense fallback={<Loading />}>
-              <Switch>
-                <Route path="/dashboard" exact component={Home} />
-                <Route
-                  path="/dashboard/Preferences"
-                  exact
-                  component={Preferences}
+        <FadeIn>
+          <Wrapper>
+            <Sider>
+              <Sidebar />
+            </Sider>
+            <Content>
+              {!user.verified && (
+                <EmailVerificationError
+                  message="Check your email and activate your account!"
+                  banner
+                  closable
                 />
-                <Redirect to="/dashboard" />
-              </Switch>
-            </React.Suspense>
-          </Content>
-        </Wrapper>
-      </FadeIn>
-    </ThemeProvider>
+              )}
+              <TopBar />
+              <React.Suspense fallback={<Loading />}>
+                <Switch>
+                  <Route path="/dashboard" exact component={Home} />
+                  <Route
+                    path="/dashboard/Preferences"
+                    exact
+                    component={Preferences}
+                  />
+                  <Redirect to="/dashboard" />
+                </Switch>
+              </React.Suspense>
+            </Content>
+          </Wrapper>
+        </FadeIn>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 };
 

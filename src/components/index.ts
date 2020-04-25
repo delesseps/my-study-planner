@@ -8,3 +8,4 @@ export { default as SignInForm } from "./SignInForm";
 export { default as SignUpForm } from "./SignUpForm";
 export { default as TopBar } from "./TopBar";
 export { default as UploadPicture } from "./UploadPicture";
+export { default as FullPageErrorFallback } from "./FullPageErrorFallback";

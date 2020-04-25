@@ -7,14 +7,14 @@ import {
   MutateFunction,
   MutationResult,
 } from "react-query";
+import { AxiosResponse, AxiosError } from "axios";
 
-import { Loading } from "components";
+import { Loading, FullPageErrorFallback } from "components";
 import * as authService from "./auth-service";
 import IUser from "constants/interfaces/IUser";
 import { domain } from "constants/site";
 import ISignInCredentials from "constants/interfaces/ISignInCredentials";
 import ISignUpCredentials from "constants/interfaces/ISignUpCredentials";
-import { AxiosResponse } from "axios";
 
 interface IAuthContext {
   user: IUser;
@@ -37,11 +37,24 @@ export function AuthProvider(props: any) {
     "IS_LOGGED_IN",
   ]);
 
-  const { data, status } = useQuery(
+  const { data, status, error } = useQuery(
     isLoggedIn ? "user" : null,
     authService.getUser,
     {
       cacheTime: 1000 * 60 * 60,
+      retry: (failureCount, error) => {
+        const errorCode = (error as AxiosError)?.response?.status;
+
+        if (errorCode === 401) {
+          logout();
+        }
+
+        if (failureCount < 3) {
+          return true; // Keep trying
+        }
+
+        return false;
+      },
     }
   );
 
@@ -93,6 +106,10 @@ export function AuthProvider(props: any) {
 
   if (status === "loading") {
     return <Loading />;
+  }
+
+  if (status === "error") {
+    return <FullPageErrorFallback requestError={error as AxiosError} />;
   }
 
   return <AuthContext.Provider value={value} {...props} />;

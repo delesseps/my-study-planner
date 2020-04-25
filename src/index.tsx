@@ -1,11 +1,12 @@
+import "stop-runaway-react-effects/hijack";
 import React from "react";
 import ReactDOM from "react-dom";
+import { ReactQueryDevtools } from "react-query-devtools";
 
 import * as serviceWorker from "./serviceWorker";
 
 import App from "app/App";
 
-import { Loading } from "components";
 import { AppProviders } from "features";
 
 if ("serviceWorker" in navigator) {
@@ -22,6 +23,7 @@ if ("serviceWorker" in navigator) {
 ReactDOM.render(
   <AppProviders>
     <App />
+    <ReactQueryDevtools initialIsOpen={false} />
   </AppProviders>,
   document.getElementById("root")
 );

@@ -1,6 +1,9 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+import { useToggle } from "react-use";
 import styled from "styled-components";
-import { ReactComponent as Logo } from "assets/logo.svg";
+import { Avatar, Dropdown, Menu, Popover, Empty } from "antd";
+import { Link } from "react-router-dom";
 import {
   CaretDownOutlined,
   LogoutOutlined,
@@ -8,14 +11,12 @@ import {
   UserOutlined,
   BellOutlined,
 } from "@ant-design/icons";
-import { Avatar, Dropdown, Menu, Skeleton, Popover, Empty } from "antd";
+
 import { UserProfile } from "components/modals";
 import IUser from "constants/interfaces/IUser";
-import { Link } from "react-router-dom";
 import { breakpoints } from "theme";
-import { useHistory } from "react-router-dom";
-import { useToggle } from "react-use";
 import { useAuth } from "features/auth/auth-context";
+import { ReactComponent as Logo } from "assets/logo.svg";
 
 interface ITopBarProps {
   loading?: boolean;
@@ -226,12 +227,6 @@ const StyledLink = styled(Link)`
     &:hover {
       color: inherit;
     }
-  }
-`;
-
-const StyledSkeleton = styled(Skeleton)`
-  &&& .ant-skeleton-paragraph {
-    margin-top: 0;
   }
 `;
 

@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { useMutation, queryCache } from "react-query";
+import { message } from "antd";
 
 import { useAuth } from "features/auth/auth-context";
 import * as evaluationService from "./evaluation-service";
 import IUser from "constants/interfaces/IUser";
-import { message } from "antd";
 
 export function useEvaluations() {
   const { user } = useAuth();
@@ -32,6 +32,9 @@ export function useEvaluations() {
         data.done ? "Great Job!" : "Successfuly edited evaluation!"
       );
     },
+    onError: () => {
+      message.error("Error editing evaluation. Please try again.");
+    },
   });
 
   const add = useMutation(evaluationService.add, {
@@ -51,6 +54,9 @@ export function useEvaluations() {
 
       message.success("Successfuly added evaluation!");
     },
+    onError: () => {
+      message.error("Error adding evaluation. Please try again.");
+    },
   });
 
   const remove = useMutation(evaluationService.remove, {
@@ -66,6 +72,9 @@ export function useEvaluations() {
       });
 
       message.success("Successfuly removed evaluation!");
+    },
+    onError: () => {
+      message.error("Error removing evaluation. Please try again.");
     },
   });
 

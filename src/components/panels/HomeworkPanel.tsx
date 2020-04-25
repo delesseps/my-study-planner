@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Button, Empty } from "antd";
-import { useDispatch } from "react-redux";
 import { useToggle } from "react-use";
 
 import { HomeworkCard } from "components/cards";

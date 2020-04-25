@@ -1,22 +1,20 @@
 import * as React from "react";
+import styled from "styled-components";
+import { Button } from "antd";
+import { useHistory } from "react-router-dom";
 
 import { ReactComponent as SVG404White } from "assets/404-white.svg";
 import { ReactComponent as SVG404 } from "assets/404.svg";
-
-import styled from "styled-components";
-import { Button } from "antd";
-import { useDispatch } from "react-redux";
-import { push } from "connected-react-router";
 
 interface I404Props {
   white?: boolean;
 }
 
 const Section404: React.FunctionComponent<I404Props> = ({ white }) => {
-  const dispatch = useDispatch();
+  const { push } = useHistory();
 
   const handleClick = () => {
-    dispatch(push("/signin"));
+    push("/signin");
   };
 
   return (
@@ -41,7 +39,7 @@ const Wrapper = styled.section`
   justify-content: space-around;
   margin-top: 6rem;
 
-  background-color: ${props => props.theme.backgroundColor};
+  background-color: ${(props) => props.theme.backgroundColor};
 `;
 
 const LeftWrapper = styled.div`
@@ -53,7 +51,7 @@ const LeftWrapper = styled.div`
 
   margin-bottom: 20rem;
 
-  color: ${props => props.theme.fontColors.text};
+  color: ${(props) => props.theme.fontColors.text};
 
   & > *:not(:last-child) {
     margin-bottom: 2rem;

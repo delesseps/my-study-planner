@@ -1,5 +1,5 @@
 import { agent } from "utils";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosRequestConfig } from "axios";
 import IEvaluation from "constants/interfaces/IEvaluation";
 
 export function remove({

@@ -1,13 +1,13 @@
 import * as React from "react";
-import { ReactComponent as Logo } from "assets/logo.svg";
-import { ReactComponent as Done } from "assets/change_password_done.svg";
 import styled from "styled-components";
 import { Button, message } from "antd";
-import { FadeIn, Loading } from "components";
 import { match, useHistory } from "react-router-dom";
 
 import { useLinkAccount } from "features/link-account/link-account-hooks";
 import { AxiosError } from "axios";
+import { FadeIn, Loading } from "components";
+import { ReactComponent as Logo } from "assets/logo.svg";
+import { ReactComponent as Done } from "assets/change_password_done.svg";
 
 interface ILinkGoogleAccountProps {
   match: match<{ token: string; email: string }>;
@@ -28,7 +28,7 @@ const LinkGoogleAccount: React.FunctionComponent<ILinkGoogleAccountProps> = ({
 
   React.useEffect(() => {
     confirmToken(match.params.token);
-  }, [match.params.token]);
+  }, [match.params.token, confirmToken]);
 
   React.useEffect(() => {
     const error = tokenConfirmationError as AxiosError;
@@ -42,7 +42,7 @@ const LinkGoogleAccount: React.FunctionComponent<ILinkGoogleAccountProps> = ({
     if (!errorCode && error) {
       throw new Error(error.toString());
     }
-  }, [tokenConfirmationError]);
+  }, [tokenConfirmationError, push]);
 
   React.useEffect(() => {
     const error = linkError as AxiosError;
@@ -56,7 +56,7 @@ const LinkGoogleAccount: React.FunctionComponent<ILinkGoogleAccountProps> = ({
     if (!errorCode && error) {
       throw new Error(error.toString());
     }
-  }, [linkError]);
+  }, [linkError, push]);
 
   const handleLinkClick = async () => {
     const { token, email } = match.params;

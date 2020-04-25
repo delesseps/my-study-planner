@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Drawer, Input, Tooltip, Button, Radio, Form } from "antd";
 
@@ -16,20 +16,20 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({ visible, setVisible }) => {
     add: [toDoMutate, { status }],
   } = useToDo();
 
-  useEffect(() => {
-    // Close drawer after successful operation
-    if (status === "success") onClose();
-  }, [status]);
-
   const handleSubmit = () => {
     form.validateFields().then((values) => {
       toDoMutate(values as IToDo);
     });
   };
 
-  const onClose = () => {
+  const onClose = useCallback(() => {
     setVisible(false);
-  };
+  }, [setVisible]);
+
+  useEffect(() => {
+    // Close drawer after successful operation
+    if (status === "success") onClose();
+  }, [status, onClose]);
 
   return (
     <Drawer

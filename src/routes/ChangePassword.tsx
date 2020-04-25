@@ -33,7 +33,7 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
 
   useEffect(() => {
     confirmToken(match.params.token);
-  }, [match.params.token]);
+  }, [match.params.token, confirmToken]);
 
   React.useEffect(() => {
     const error = tokenConfirmationError as AxiosError;
@@ -47,7 +47,7 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
     if (!errorCode && error) {
       throw new Error(error.toString());
     }
-  }, [tokenConfirmationError]);
+  }, [tokenConfirmationError, push]);
 
   React.useEffect(() => {
     const error = passwordChangeError as AxiosError;
@@ -61,7 +61,7 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
     if (!errorCode && error) {
       throw new Error(error.toString());
     }
-  }, [passwordChangeError]);
+  }, [passwordChangeError, push]);
 
   const handleSubmit = (): void => {
     form

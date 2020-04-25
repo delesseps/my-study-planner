@@ -9,16 +9,16 @@ const BASE_URL =
 const instance = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
-  timeout: 10000
+  timeout: 10000,
 });
 
 instance.interceptors.response.use(
-  response => {
+  (response) => {
     return response;
   },
-  error => {
+  (error) => {
     if (error.message === "Network Error") {
-      message.error("Unable to connect to server. Please reload");
+      message.error("Unable to connect to server. Retrying...");
     }
 
     return Promise.reject(error);

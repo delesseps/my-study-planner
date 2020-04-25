@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Drawer, DatePicker, Input, Tooltip, Button, Radio, Form } from "antd";
 import moment from "moment";
@@ -23,16 +23,14 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
 }) => {
   const [form] = Form.useForm();
   const {
-    add: [addMutate, { status: addStatus, reset: addMutateReset }],
-    edit: [editMutate, { status: editStatus, reset: editMutateReset }],
+    add: [addHomework, { status: addHomeworkStatus, reset: addHomeworkReset }],
+    edit: [
+      editHomework,
+      { status: editHomeworkStatus, reset: editHomeworkReset },
+    ],
   } = useHomework();
 
-  const status = homework ? editStatus : addStatus;
-
-  useEffect(() => {
-    // Close drawer after successful operation
-    if (status === "success") onClose();
-  }, [status]);
+  const status = homework ? editHomeworkStatus : addHomeworkStatus;
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
@@ -40,18 +38,23 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
 
       if (homework && typeof index === "number") {
         newHomework._id = homework._id;
-        return editMutate({ homework: newHomework, index });
+        return editHomework({ homework: newHomework, index });
       }
 
-      addMutate(newHomework);
+      addHomework(newHomework);
     });
   };
 
-  const onClose = () => {
-    addMutateReset();
-    editMutateReset();
+  const onClose = useCallback(() => {
+    addHomeworkReset();
+    editHomeworkReset();
     setVisible(false);
-  };
+  }, [addHomeworkReset, editHomeworkReset, setVisible]);
+
+  useEffect(() => {
+    // Close drawer after successful operation
+    if (status === "success") onClose();
+  }, [status, onClose]);
 
   const disabledDate = (current: any) => {
     // Can not select days before today and today
