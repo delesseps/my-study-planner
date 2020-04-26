@@ -1,12 +1,16 @@
 import IHomework from "./IHomework";
 import IToDo from "./IToDo";
 import IEvaluation from "./IEvaluation";
-import IUserConfig from "./IUserConfig";
 
 export enum Urgency {
   important = "important",
   normal = "normal",
-  chill = "chill"
+  chill = "chill",
+}
+
+export interface IUserConfig {
+  darkMode: boolean;
+  [key: string]: boolean;
 }
 
 export default interface IUser {
@@ -16,11 +20,11 @@ export default interface IUser {
   firstSignIn: boolean;
   fcm: boolean;
   picture: string;
-  configuration: IUserConfig;
   verified: boolean;
   evaluations: IEvaluation[];
   toDos: IToDo[];
   homework: IHomework[];
+  configuration: IUserConfig;
   semesters: {
     _id: String;
     grades: {

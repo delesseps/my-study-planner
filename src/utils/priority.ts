@@ -1,29 +1,8 @@
-import { Urgency } from "interfaces/IUser";
+import { Urgency } from "constants/interfaces/IUser";
 import moment, { Moment } from "moment";
-import { isThisWeek } from "utils";
+import { isPast, isToday, isTomorrow, isThisWeek, isSameMonth } from "./date";
 
 let REFERENCE = moment();
-
-function isToday(momentDate: Moment) {
-  let TODAY = REFERENCE.clone().startOf("day");
-  return momentDate.isSame(TODAY, "d");
-}
-
-function isPast(momentDate: Moment) {
-  let TODAY = REFERENCE.clone().startOf("day");
-  return momentDate.isBefore(TODAY, "d");
-}
-
-function isTomorrow(momentDate: Moment) {
-  let TOMMORROW = REFERENCE.clone()
-    .add(1, "days")
-    .startOf("day");
-  return momentDate.isSame(TOMMORROW, "d");
-}
-
-function isSameMonth(momentDate: Moment) {
-  return momentDate.isSame(REFERENCE, "month");
-}
 
 export default function determinePriorityNumber(urgency: Urgency) {
   switch (urgency) {

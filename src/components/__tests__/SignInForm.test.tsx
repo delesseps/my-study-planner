@@ -3,22 +3,18 @@ import MockAdapter from "axios-mock-adapter";
 
 import {
   render,
+  screen,
   fireEvent,
   waitForElementToBeRemoved,
-  waitForElement
-} from "test-utils";
+  waitFor,
+  mockAxios,
+} from "test/test-utils";
 import { SignInForm } from "components";
-import { agent } from "api";
+import { agent } from "utils";
 
 describe("SignInForm", () => {
-  let mock: MockAdapter;
-
-  beforeEach(() => {
-    mock = new MockAdapter(agent);
-  });
-
   afterEach(() => {
-    mock.restore();
+    mockAxios.reset();
   });
 
   it("renders correctly", () => {
@@ -29,18 +25,18 @@ describe("SignInForm", () => {
   it("will display errors when empty", async () => {
     const { getByTestId, getByText } = render(<SignInForm />);
     fireEvent.click(getByTestId("submit"));
-    await waitForElement(() => getByText("Please input your email!"));
-    await waitForElement(() => getByText("Please input your password!"));
+    await waitFor(() => getByText("Please input your email!"));
+    await waitFor(() => getByText("Please input your password!"));
   });
 
   it("will display invalid email", async () => {
     const { getByLabelText, getByText } = render(<SignInForm />);
 
     fireEvent.change(getByLabelText("E-mail"), { target: { value: "test@" } });
-    await waitForElement(() => getByText("The input is not valid E-mail!"));
+    await waitFor(() => getByText("The input is not valid E-mail!"));
 
     fireEvent.change(getByLabelText("E-mail"), {
-      target: { value: "test@test.com" }
+      target: { value: "test@test.com" },
     });
     await waitForElementToBeRemoved(() =>
       getByText("The input is not valid E-mail!")
@@ -49,10 +45,10 @@ describe("SignInForm", () => {
 
   it("will submit form", () => {
     const { getByLabelText, queryByText, getByTestId } = render(<SignInForm />);
-    mock.onPost("/auth/signin").reply(200, { users: {} });
+    mockAxios.onPost("/auth/signin").reply(200, { user: {} });
 
     fireEvent.change(getByLabelText("E-mail"), {
-      target: { value: "test@test.com" }
+      target: { value: "test@test.com" },
     });
     fireEvent.change(getByLabelText("Password"), { target: { value: "test" } });
 
@@ -63,17 +59,17 @@ describe("SignInForm", () => {
 
   it("will display incorrect credentials", async () => {
     const { getByLabelText, getByText, getByTestId } = render(<SignInForm />);
-    mock
+    mockAxios
       .onPost("/auth/signin")
       .reply(400, { errors: { message: "Invalid Password" } });
 
     fireEvent.change(getByLabelText("E-mail"), {
-      target: { value: "test@test.com" }
+      target: { value: "test@test.com" },
     });
     fireEvent.change(getByLabelText("Password"), { target: { value: "test" } });
 
     fireEvent.click(getByTestId("submit"));
 
-    await waitForElement(() => getByText("Incorrect e-mail or password."));
+    await waitFor(() => getByText("Incorrect e-mail or password."));
   });
 });

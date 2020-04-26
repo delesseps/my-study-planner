@@ -1,27 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 import { Button, Empty } from "antd";
-import { ApplicationState } from "store/types";
-import { connect, useDispatch } from "react-redux";
-import IHomework from "interfaces/IHomework";
-import { homeworkDrawer } from "store/actions";
-import { HomeworkDrawer } from "components/drawers";
+import { useToggle } from "react-use";
+
 import { HomeworkCard } from "components/cards";
+import { useHomework } from "features/homework/homework-hooks";
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    homework: state.reducer.user.homework
+const HomeworkDrawer = React.lazy(() =>
+  import("components/drawers/HomeworkDrawer")
+);
+
+const Homework: React.FC = () => {
+  const [openDrawer, toggleDrawer] = useToggle(false);
+  const { homework } = useHomework();
+
+  const handleClick = () => {
+    toggleDrawer(true);
   };
-};
-
-interface IHomeworkProps {
-  homework?: IHomework[];
-}
-
-const Homework: React.FunctionComponent<IHomeworkProps> = ({ homework }) => {
-  const dispatch = useDispatch();
-
-  const handleClick = () => dispatch(homeworkDrawer());
 
   return (
     <React.Fragment>
@@ -30,10 +25,10 @@ const Homework: React.FunctionComponent<IHomeworkProps> = ({ homework }) => {
         <Button onClick={handleClick} type="primary">
           NEW HOMEWORK
         </Button>
-        <HomeworkDrawer />
+        <HomeworkDrawer visible={openDrawer} setVisible={toggleDrawer} />
       </Header>
       <Content>
-        {homework?.filter(currHomework => !currHomework.done).length ? (
+        {homework.filter((currHomework) => !currHomework.done).length ? (
           homework.map(
             (currHomework, i) =>
               !currHomework.done && (
@@ -57,7 +52,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid ${props => props.theme.fontColors.textRgba(0.1)};
+  border-bottom: 1px solid ${(props) => props.theme.fontColors.textRgba(0.1)};
 `;
 
 const Title = styled.h3`
@@ -66,7 +61,7 @@ const Title = styled.h3`
   letter-spacing: 1px;
   margin: 0;
 
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const Content = styled.div`
@@ -88,4 +83,4 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-export default connect(mapStateToProps, null)(Homework);
+export default Homework;

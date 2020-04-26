@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import FadeIn from "components/FadeIn";
+
+import { FadeIn, Profiler } from "components";
 import { breakpoints } from "theme";
 import {
   CounterPanel,
@@ -8,55 +9,56 @@ import {
   HomeworkPanel,
   ToDoPanel,
   RecommendedActionsPanel,
-  CalendarPanel
+  CalendarPanel,
 } from "components/panels";
-import WelcomeModal from "components/modals/Welcome";
-import { useSelector } from "react-redux";
-import { ApplicationState } from "store/types";
+import { useAuth } from "features/auth/auth-context";
 
 const HomeSchedulePanel = React.lazy(() =>
   import("../components/panels/HomeSchedulePanel")
 );
+const WelcomeModal = React.lazy(() => import("../components/modals/Welcome"));
 
 const Home: React.FC = () => {
-  const user = useSelector((state: ApplicationState) => state.reducer.user);
+  const { user } = useAuth();
 
   return (
-    <FadeIn>
-      <Wrapper>
-        <WelcomeModal />
-        <CounterPanelLeft>
-          <CounterPanel user={user} homework />
-        </CounterPanelLeft>
-        <CounterPanelRight>
-          <CounterPanel user={user} />
-        </CounterPanelRight>
+    <Profiler id="Home Screen">
+      <FadeIn>
+        <Wrapper>
+          <WelcomeModal />
+          <CounterPanelLeft>
+            <CounterPanel user={user} homework />
+          </CounterPanelLeft>
+          <CounterPanelRight>
+            <CounterPanel user={user} />
+          </CounterPanelRight>
 
-        <HomeSchedulePanelWrapper>
-          <HomeSchedulePanel />
-        </HomeSchedulePanelWrapper>
+          <HomeSchedulePanelWrapper>
+            <HomeSchedulePanel />
+          </HomeSchedulePanelWrapper>
 
-        <ToDoPanelWrapper>
-          <ToDoPanel />
-        </ToDoPanelWrapper>
+          <ToDoPanelWrapper>
+            <ToDoPanel />
+          </ToDoPanelWrapper>
 
-        <HomeworkPanelWrapper>
-          <HomeworkPanel />
-        </HomeworkPanelWrapper>
+          <HomeworkPanelWrapper>
+            <HomeworkPanel />
+          </HomeworkPanelWrapper>
 
-        <EvaluationPanelWrapper>
-          <EvaluationPanel />
-        </EvaluationPanelWrapper>
+          <EvaluationPanelWrapper>
+            <EvaluationPanel />
+          </EvaluationPanelWrapper>
 
-        <RecommendedActionsPanelWrapper>
-          <RecommendedActionsPanel />
-        </RecommendedActionsPanelWrapper>
+          <RecommendedActionsPanelWrapper>
+            <RecommendedActionsPanel />
+          </RecommendedActionsPanelWrapper>
 
-        <CalendarPanelWrapper>
-          <CalendarPanel />
-        </CalendarPanelWrapper>
-      </Wrapper>
-    </FadeIn>
+          <CalendarPanelWrapper>
+            <CalendarPanel />
+          </CalendarPanelWrapper>
+        </Wrapper>
+      </FadeIn>
+    </Profiler>
   );
 };
 
@@ -97,12 +99,12 @@ const Wrapper = styled.section`
 `;
 
 const CounterPanelLeft = styled.div`
-  box-shadow: ${props => props.theme.shadow1};
+  box-shadow: ${(props) => props.theme.shadow1};
   height: 13rem;
   position: relative;
 
   padding: 2rem 2.6rem;
-  background-color: ${props => props.theme.panelBackgroundColor};
+  background-color: ${(props) => props.theme.panelBackgroundColor};
 
   ${panelTheme};
 
@@ -111,10 +113,10 @@ const CounterPanelLeft = styled.div`
 
 const CounterPanelRight = styled.div`
   ${panelTheme};
-  box-shadow: ${props => props.theme.shadow1};
+  box-shadow: ${(props) => props.theme.shadow1};
   height: 13rem;
   position: relative;
-  background-color: ${props => props.theme.panelBackgroundColor};
+  background-color: ${(props) => props.theme.panelBackgroundColor};
 
   padding: 2rem 2.6rem;
 
@@ -127,8 +129,8 @@ const CalendarPanelWrapper = styled.div`
 
   background-color: #fff;
   border-radius: 4px;
-  box-shadow: ${props => props.theme.shadow1};
-  background-color: ${props => props.theme.panelBackgroundColor};
+  box-shadow: ${(props) => props.theme.shadow1};
+  background-color: ${(props) => props.theme.panelBackgroundColor};
 
   grid-area: calendar;
   grid-row: auto;
@@ -138,12 +140,12 @@ const HomeSchedulePanelWrapper = styled.div`
   height: 48.9rem;
   margin-top: -17rem;
   padding: 2rem 2.6rem;
-  background-color: ${props => props.theme.panelBackgroundColor};
+  background-color: ${(props) => props.theme.panelBackgroundColor};
 
   grid-area: schedule;
 
   ${panelTheme};
-  box-shadow: ${props => props.theme.shadow1};
+  box-shadow: ${(props) => props.theme.shadow1};
   padding: 1rem;
 
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
@@ -157,10 +159,10 @@ const HomeSchedulePanelWrapper = styled.div`
 
 const RecommendedActionsPanelWrapper = styled.div`
   ${panelTheme};
-  box-shadow: ${props => props.theme.shadow1};
+  box-shadow: ${(props) => props.theme.shadow1};
   height: 30rem;
   overflow-y: auto;
-  background-color: ${props => props.theme.panelBackgroundColor};
+  background-color: ${(props) => props.theme.panelBackgroundColor};
 
   display: flex;
   flex-direction: column;
@@ -174,9 +176,9 @@ const ToDoPanelWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
-  background-color: ${props => props.theme.panelBackgroundColor};
+  background-color: ${(props) => props.theme.panelBackgroundColor};
 
-  box-shadow: ${props => props.theme.shadow1};
+  box-shadow: ${(props) => props.theme.shadow1};
   min-height: 30rem;
   max-height: 60rem;
 
@@ -190,9 +192,9 @@ const HomeworkPanelWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
-  background-color: ${props => props.theme.panelBackgroundColor};
+  background-color: ${(props) => props.theme.panelBackgroundColor};
 
-  box-shadow: ${props => props.theme.shadow1};
+  box-shadow: ${(props) => props.theme.shadow1};
   min-height: 30rem;
   max-height: 60rem;
 
@@ -206,9 +208,9 @@ const EvaluationPanelWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
-  background-color: ${props => props.theme.panelBackgroundColor};
+  background-color: ${(props) => props.theme.panelBackgroundColor};
 
-  box-shadow: ${props => props.theme.shadow1};
+  box-shadow: ${(props) => props.theme.shadow1};
   min-height: 30rem;
   max-height: 60rem;
 

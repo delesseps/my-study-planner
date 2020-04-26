@@ -1,17 +1,13 @@
+import "stop-runaway-react-effects/hijack";
 import React from "react";
 import ReactDOM from "react-dom";
+import { ReactQueryDevtools } from "react-query-devtools";
 
 import * as serviceWorker from "./serviceWorker";
 
 import App from "app/App";
 
-import { Provider } from "react-redux";
-
-import configureStore from "store";
-import { PersistGate } from "redux-persist/integration/react";
-import { Loading } from "components";
-
-const { persistor, store } = configureStore();
+import { AppProviders } from "features";
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
@@ -25,11 +21,10 @@ if ("serviceWorker" in navigator) {
 }
 
 ReactDOM.render(
-  <Provider store={store}>
-    <PersistGate loading={<Loading />} persistor={persistor}>
-      <App />
-    </PersistGate>
-  </Provider>,
+  <AppProviders>
+    <App />
+    <ReactQueryDevtools initialIsOpen={false} />
+  </AppProviders>,
   document.getElementById("root")
 );
 

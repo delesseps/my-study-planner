@@ -1,11 +1,11 @@
 import React from "react";
-import IToDo from "interfaces/IToDo";
 import styled from "styled-components";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Badge, Checkbox, Popconfirm, Tooltip } from "antd";
+
 import { determineColor } from "utils";
-import { useDispatch } from "react-redux";
-import { deleteToDo, editToDo } from "store/effects";
+import { useToDo } from "features/toDo/toDo-hooks";
+import IToDo from "constants/interfaces/IToDo";
 
 interface IToDoCardProps {
   toDo: IToDo;
@@ -13,15 +13,18 @@ interface IToDoCardProps {
 }
 
 const ToDoCard: React.FC<IToDoCardProps> = ({ toDo, index }) => {
-  const dispatch = useDispatch();
+  const {
+    remove: [removeMutate],
+    edit: [editMutate],
+  } = useToDo();
 
   const handleDeleteClick = () => {
-    dispatch(deleteToDo(toDo._id, index));
+    removeMutate({ id: toDo._id, index });
   };
 
   const handleDoneClick = () => {
     toDo.done = true;
-    dispatch(editToDo(toDo, index));
+    editMutate({ toDo, index });
   };
 
   return (
@@ -54,8 +57,8 @@ const Wrapper = styled.div`
 
   padding: 2rem 2rem;
 
-  border-top: 0.5px solid ${props => props.theme.fontColors.textRgba(0.2)};
-  border-bottom: 0.5px solid ${props => props.theme.fontColors.textRgba(0.2)};
+  border-top: 0.5px solid ${(props) => props.theme.fontColors.textRgba(0.2)};
+  border-bottom: 0.5px solid ${(props) => props.theme.fontColors.textRgba(0.2)};
 
   width: 100%;
 `;
@@ -72,7 +75,7 @@ const TaskTitle = styled.h3`
 
   letter-spacing: 1px;
   font-size: 1.7rem;
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const DeleteIcon = styled(DeleteOutlined)`
@@ -82,7 +85,7 @@ const DeleteIcon = styled(DeleteOutlined)`
   margin-right: 1.5rem;
 
   &:hover {
-    color: ${props => props.theme.colors.main};
+    color: ${(props) => props.theme.colors.main};
   }
 `;
 

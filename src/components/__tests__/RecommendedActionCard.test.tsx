@@ -2,137 +2,154 @@ import React from "react";
 import {
   render,
   fireEvent,
-  waitForElement,
-  waitForElementToBeRemoved
-} from "test-utils";
+  waitFor,
+  waitForElementToBeRemoved,
+  loginAsUser,
+  screen,
+  mockAxios,
+} from "test/test-utils";
+import MockAdapter from "axios-mock-adapter";
+
 import { RecommendedActionCard } from "components/cards";
+import IUser from "constants/interfaces/IUser";
+import IHomework from "constants/interfaces/IHomework";
+import IEvaluation from "constants/interfaces/IEvaluation";
+import { buildHomework, buildEvaluation } from "test/generate";
 
-test("renders correctly", () => {
-  const props = {
-    assignment: {
-      _id: "",
-      subject: "homework",
-      date: "",
-      urgency: "normal",
-      description: "Extra hard homework",
-      done: false,
-      createdBy: {
-        _id: "",
-        name: "",
-        picture: ""
-      }
-    }
-  };
+import { agent } from "utils";
 
-  const { asFragment } = render(<RecommendedActionCard {...props} />);
-  expect(asFragment()).toMatchSnapshot();
-});
+async function renderCardWithHomework({
+  user,
+  homework,
+}: {
+  user?: IUser;
+  homework?: IHomework;
+} = {}) {
+  if (user === undefined) {
+    user = await loginAsUser();
+  }
 
-test("will display homework modal with description", async () => {
-  const props = {
-    assignment: {
-      _id: "",
-      subject: "Really hard homework",
-      date: new Date(),
-      urgency: "normal",
-      description: "Extra hard homework",
-      done: false,
-      createdBy: {
-        _id: "",
-        name: "",
-        picture: ""
-      }
-    }
-  };
+  if (homework === undefined) {
+    homework = buildHomework();
+  }
 
-  const { getByText } = render(<RecommendedActionCard {...props} />);
+  const utils = render(<RecommendedActionCard assignment={homework} />);
 
-  fireEvent.click(getByText("View More"));
-
-  await waitForElement(() => getByText(props.assignment.subject));
-  getByText(`Description: ${props.assignment.description}`);
-
-  fireEvent.click(getByText("OK"));
-});
-
-test("will display homework modal with no description", async () => {
-  const props = {
-    assignment: {
-      _id: "",
-      subject: "No description homework",
-      date: new Date(),
-      urgency: "normal",
-      description: null,
-      done: false,
-      createdBy: {
-        _id: "",
-        name: "",
-        picture: ""
-      }
-    }
-  };
-
-  const { getByText } = render(<RecommendedActionCard {...props} />);
-  fireEvent.click(getByText("View More"));
-
-  await waitForElement(() => getByText(props.assignment.subject));
-  getByText("No Description");
-
-  fireEvent.click(getByText("OK"));
-});
-
-test("will display evaluation modal with description", async () => {
-  const props = {
-    assignment: {
-      _id: "",
-      subject: "Hamlet",
-      evaluationType: "quiz",
-      date: "",
-      urgency: "normal",
-      description: "chapters",
-      done: false,
-      createdBy: {
-        _id: "",
-        name: "",
-        picture: ""
-      }
-    }
-  };
-
-  const { getByText } = render(<RecommendedActionCard {...props} />);
-
-  fireEvent.click(getByText("View More"));
-
-  await waitForElement(() => getByText(props.assignment.evaluationType));
-  getByText(`: ${props.assignment.subject}`);
-  getByText(`Description: ${props.assignment.description}`);
-
-  fireEvent.click(getByText("OK"));
-});
-
-test("marks as done", async () => {
-  const props = {
-    assignment: {
-      _id: "",
-      subject: "Hamlet",
-      evaluationType: "quiz",
-      date: "",
-      urgency: "normal",
-      description: "chapters",
-      done: false,
-      createdBy: {
-        _id: "",
-        name: "",
-        picture: ""
-      }
-    }
-  };
-
-  const { getByText } = render(<RecommendedActionCard {...props} />);
-
-  fireEvent.click(getByText("Done"));
-
-  waitForElementToBeRemoved(() =>
-    getByText(`Start studying for ${props.assignment.subject}`)
+  await waitForElementToBeRemoved(
+    () => screen.queryByTestId("full-page-loader"),
+    { timeout: 4000 }
   );
+
+  return {
+    ...utils,
+    user,
+    homework,
+  };
+}
+
+async function renderCardWithEvaluation({
+  user,
+  evaluation,
+}: {
+  user?: IUser;
+  evaluation?: IEvaluation;
+} = {}) {
+  if (user === undefined) {
+    user = await loginAsUser();
+  }
+
+  if (evaluation === undefined) {
+    evaluation = buildEvaluation();
+  }
+
+  const utils = render(<RecommendedActionCard assignment={evaluation} />);
+
+  await waitForElementToBeRemoved(
+    () => screen.queryByTestId("full-page-loader"),
+    { timeout: 4000 }
+  );
+
+  return {
+    ...utils,
+    user,
+    evaluation,
+  };
+}
+
+describe("Recommended action card", () => {
+  afterEach(() => {
+    mockAxios.reset();
+  });
+
+  test("will display homework modal with description", async () => {
+    const { getByText, homework } = await renderCardWithHomework();
+
+    fireEvent.click(getByText("View More"));
+
+    await waitFor(() => getByText(homework.subject));
+    getByText(`Description: ${homework.description}`);
+
+    fireEvent.click(getByText("OK"));
+  });
+
+  test("will display homework modal with no description", async () => {
+    const { getByText, homework } = await renderCardWithHomework({
+      homework: buildHomework({ description: "" }),
+    });
+    fireEvent.click(getByText("View More"));
+
+    await waitFor(() => getByText(homework.subject));
+    getByText("No Description");
+
+    fireEvent.click(getByText("OK"));
+  });
+
+  test("will display evaluation modal with description", async () => {
+    const { getByText, evaluation } = await renderCardWithEvaluation();
+
+    fireEvent.click(getByText("View More"));
+
+    await waitFor(() => getByText(evaluation.evaluationType));
+    getByText(`: ${evaluation.subject}`);
+    getByText(`Description: ${evaluation.description}`);
+
+    fireEvent.click(getByText("OK"));
+  });
+
+  test("will display evaluation modal with no description", async () => {
+    const { getByText, evaluation } = await renderCardWithEvaluation({
+      evaluation: buildEvaluation({ description: "" }),
+    });
+
+    fireEvent.click(getByText("View More"));
+
+    await waitFor(() => getByText(evaluation.evaluationType));
+    getByText(`: ${evaluation.subject}`);
+
+    fireEvent.click(getByText("OK"));
+  });
+
+  test("marks homework as done", async () => {
+    const { getByText, homework } = await renderCardWithHomework();
+
+    mockAxios.onPatch("/homework/update").reply(200, { homework: {} });
+
+    fireEvent.click(getByText("Done"));
+
+    waitForElementToBeRemoved(() =>
+      getByText(`Start Working on ${homework.subject}`)
+    );
+  });
+
+  test("marks evaluation as done", async () => {
+    const { getByText, evaluation } = await renderCardWithEvaluation();
+
+    mockAxios.onPatch("evaluation/update").reply(200);
+
+    fireEvent.click(getByText("Done"));
+
+    waitForElementToBeRemoved(() =>
+      getByText(`Start studying for ${evaluation.subject}`)
+    );
+  });
 });

@@ -1,53 +1,60 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Drawer, DatePicker, Input, Tooltip, Button, Radio, Form } from "antd";
 import moment from "moment";
-import { ApplicationState } from "store/types";
-import { connect, useDispatch } from "react-redux";
-import { homeworkDrawer } from "store/actions";
-import IHomework from "interfaces/IHomework";
-import { addHomework, editHomework } from "store/effects";
 
-const { TextArea } = Input;
+import IHomework from "constants/interfaces/IHomework";
+import { useHomework } from "features/homework/homework-hooks";
 
 interface IHomeworkDrawerProps {
-  visible?: boolean;
-  loading?: boolean;
+  visible: boolean;
+  setVisible: Function;
 
   //Edit optional Props
-  visibleEdit?: boolean;
   homework?: IHomework;
-  setVisibleEdit?: Function;
   index?: number;
 }
 
 const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
-  visible = false,
-  loading = false,
-  visibleEdit,
-  setVisibleEdit,
+  visible,
+  setVisible,
   homework,
-  index
+  index,
 }) => {
   const [form] = Form.useForm();
-  const dispatch = useDispatch();
+  const {
+    add: [addHomework, { status: addHomeworkStatus, reset: addHomeworkReset }],
+    edit: [
+      editHomework,
+      { status: editHomeworkStatus, reset: editHomeworkReset },
+    ],
+  } = useHomework();
+
+  const status = homework ? editHomeworkStatus : addHomeworkStatus;
 
   const handleSubmit = () => {
-    form.validateFields().then(values => {
-      if (homework && setVisibleEdit && typeof index === "number") {
-        values._id = homework._id;
-        return dispatch(
-          editHomework(values as IHomework, index, setVisibleEdit)
-        );
+    form.validateFields().then((values) => {
+      const newHomework: IHomework = { ...values } as any;
+
+      if (homework && typeof index === "number") {
+        newHomework._id = homework._id;
+        return editHomework({ homework: newHomework, index });
       }
 
-      dispatch(addHomework(values as IHomework));
+      addHomework(newHomework);
     });
   };
 
-  const onClose = () => {
-    setVisibleEdit ? setVisibleEdit(false) : dispatch(homeworkDrawer());
-  };
+  const onClose = useCallback(() => {
+    addHomeworkReset();
+    editHomeworkReset();
+    setVisible(false);
+  }, [addHomeworkReset, editHomeworkReset, setVisible]);
+
+  useEffect(() => {
+    // Close drawer after successful operation
+    if (status === "success") onClose();
+  }, [status, onClose]);
 
   const disabledDate = (current: any) => {
     // Can not select days before today and today
@@ -59,7 +66,7 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
       destroyOnClose={true}
       title={homework ? "Edit homework" : "Add new homework"}
       onClose={onClose}
-      visible={homework ? visibleEdit : visible}
+      visible={visible}
       width={300}
     >
       <Form
@@ -69,7 +76,7 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
           subject: homework?.subject,
           urgency: homework?.urgency,
           description: homework?.description,
-          date: homework && moment(homework.date)
+          date: homework && moment(homework.date),
         }}
         layout="vertical"
       >
@@ -79,8 +86,8 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
             {
               required: true,
               message: "Please input the course name!",
-              whitespace: true
-            }
+              whitespace: true,
+            },
           ]}
           label={<span>Course name</span>}
         >
@@ -99,8 +106,8 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
           rules={[
             {
               required: true,
-              message: "Please select how urgent is your homework!"
-            }
+              message: "Please select how urgent is your homework!",
+            },
           ]}
         >
           <Radio.Group buttonStyle="solid">
@@ -114,12 +121,12 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
           rules={[
             {
               required: false,
-              whitespace: true
-            }
+              whitespace: true,
+            },
           ]}
           label={<span>Description</span>}
         >
-          <TextArea
+          <Input.TextArea
             placeholder="Input details about the homework. E.g. pages to read, number of exercises, ..."
             autoSize
           />
@@ -130,8 +137,8 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
             {
               type: "object",
               required: true,
-              message: "Please select time!"
-            }
+              message: "Please select time!",
+            },
           ]}
           label="Date"
         >
@@ -141,8 +148,8 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
           <Button
             type="primary"
             htmlType="submit"
-            loading={loading}
-            disabled={loading}
+            loading={status === "loading"}
+            disabled={status === "loading" || status === "success"}
           >
             {homework ? "Edit Homework" : "Add Homework"}
           </Button>
@@ -152,11 +159,4 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
   );
 };
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    visible: state.reducer.drawer.homework,
-    loading: state.reducer.loading.homework
-  };
-};
-
-export default connect(mapStateToProps, null)(HomeworkDrawer);
+export default HomeworkDrawer;

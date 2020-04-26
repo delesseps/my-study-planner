@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import IHomework from "interfaces/IHomework";
+import IHomework from "constants/interfaces/IHomework";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import { Modal } from "antd";
 import { setDate } from "utils";
@@ -30,7 +30,7 @@ const HomeworkDescriptionModal = (homework: IHomework) => {
         )}
       </ModalContent>
     ),
-    onOk() {}
+    onOk() {},
   });
 };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import IEvaluation from "interfaces/IEvaluation";
+import IEvaluation from "constants/interfaces/IEvaluation";
 import { Modal } from "antd";
 import { setDate } from "utils";
 import { ClockCircleOutlined } from "@ant-design/icons";
@@ -33,7 +33,7 @@ const EvaluationDescriptionModal = (evaluation: IEvaluation) => {
         )}
       </ModalContent>
     ),
-    onOk() {}
+    onOk() {},
   });
 };
 

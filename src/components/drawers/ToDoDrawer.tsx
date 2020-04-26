@@ -1,34 +1,35 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Drawer, Input, Tooltip, Button, Radio, Form } from "antd";
-import { ApplicationState } from "store/types";
-import { connect, useDispatch } from "react-redux";
-import { toDoDrawer } from "store/actions";
-import { addToDo } from "store/effects";
-import IToDo from "interfaces/IToDo";
+
+import IToDo from "constants/interfaces/IToDo";
+import { useToDo } from "features/toDo/toDo-hooks";
 
 interface IToDoDrawerProps {
-  visible?: boolean;
-  loading?: boolean;
-  index?: number;
+  visible: boolean;
+  setVisible: Function;
 }
 
-const ToDoDrawer: React.FC<IToDoDrawerProps> = ({
-  visible = false,
-  loading = false
-}) => {
+const ToDoDrawer: React.FC<IToDoDrawerProps> = ({ visible, setVisible }) => {
   const [form] = Form.useForm();
-  const dispatch = useDispatch();
+  const {
+    add: [toDoMutate, { status }],
+  } = useToDo();
 
   const handleSubmit = () => {
-    form.validateFields().then(values => {
-      dispatch(addToDo(values as IToDo));
+    form.validateFields().then((values) => {
+      toDoMutate(values as IToDo);
     });
   };
 
-  const onClose = () => {
-    dispatch(toDoDrawer());
-  };
+  const onClose = useCallback(() => {
+    setVisible(false);
+  }, [setVisible]);
+
+  useEffect(() => {
+    // Close drawer after successful operation
+    if (status === "success") onClose();
+  }, [status, onClose]);
 
   return (
     <Drawer
@@ -45,8 +46,8 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({
             {
               required: true,
               message: "Please input the task name!",
-              whitespace: true
-            }
+              whitespace: true,
+            },
           ]}
           label={<span>Task name</span>}
         >
@@ -65,8 +66,8 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({
           rules={[
             {
               required: true,
-              message: "Please select how urgent is your to-do!"
-            }
+              message: "Please select how urgent is your to-do!",
+            },
           ]}
         >
           <Radio.Group buttonStyle="solid">
@@ -80,8 +81,8 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({
           <Button
             type="primary"
             htmlType="submit"
-            loading={loading}
-            disabled={loading}
+            loading={status === "loading"}
+            disabled={status === "loading" || status === "success"}
           >
             Add To-Do
           </Button>
@@ -91,11 +92,4 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({
   );
 };
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    visible: state.reducer.drawer.toDo,
-    loading: state.reducer.loading.toDo
-  };
-};
-
-export default connect(mapStateToProps, null)(ToDoDrawer);
+export default ToDoDrawer;

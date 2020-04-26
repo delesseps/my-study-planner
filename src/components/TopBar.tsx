@@ -1,45 +1,40 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+import { useToggle } from "react-use";
 import styled from "styled-components";
-import { ReactComponent as Logo } from "assets/logo.svg";
+import { Avatar, Dropdown, Menu, Popover, Empty } from "antd";
+import { Link } from "react-router-dom";
 import {
   CaretDownOutlined,
   LogoutOutlined,
   SettingOutlined,
   UserOutlined,
-  BellOutlined
+  BellOutlined,
 } from "@ant-design/icons";
-import { Avatar, Dropdown, Menu, Skeleton, Popover, Empty } from "antd";
-import { ApplicationState } from "store/types";
-import { connect, useDispatch } from "react-redux";
-import { signOut } from "store/effects";
-import { UserProfile } from "components/modals";
-import IUser from "interfaces/IUser";
-import { Link } from "react-router-dom";
-import { breakpoints } from "theme";
-import { push } from "connected-react-router";
-import { useToggle } from "react-use";
 
-const mapStateToProps = (state: ApplicationState) => ({
-  loading: state.reducer.loading.user,
-  user: state.reducer.user
-});
+import { UserProfile } from "components/modals";
+import IUser from "constants/interfaces/IUser";
+import { breakpoints } from "theme";
+import { useAuth } from "features/auth/auth-context";
+import { ReactComponent as Logo } from "assets/logo.svg";
 
 interface ITopBarProps {
   loading?: boolean;
   user?: IUser;
 }
 
-const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
-  const dispatch = useDispatch();
+const TopBar: React.FC<ITopBarProps> = ({ loading }) => {
+  const { push } = useHistory();
+  const { user, logout } = useAuth();
   const [showProfile, toggleProfile] = useToggle(false);
   const [showNotifications, toggleNotifications] = useToggle(false);
 
   const handleSignOut = () => {
-    dispatch(signOut());
+    logout();
   };
 
   const handleHomeClick = () => {
-    dispatch(push("/dashboard"));
+    push("/dashboard");
   };
 
   const userOptions = (
@@ -99,18 +94,12 @@ const TopBar: React.FC<ITopBarProps> = ({ loading, user }) => {
           src={user?.picture}
         />
         <UserInfoBox>
-          <StyledSkeleton
-            loading={loading}
-            title={{ width: 120 }}
-            paragraph={{ rows: 1, width: 60 }}
-          >
-            <NameCaretWrapper placement="bottomRight" overlay={userOptions}>
-              <Name>
-                {user?.name} <CaretIcon />
-              </Name>
-            </NameCaretWrapper>
-            <Role>{user?.role === "user" ? "Student" : "Administrator"}</Role>
-          </StyledSkeleton>
+          <NameCaretWrapper placement="bottomRight" overlay={userOptions}>
+            <Name>
+              {user?.name} <CaretIcon />
+            </Name>
+          </NameCaretWrapper>
+          <Role>{user?.role === "user" ? "Student" : "Administrator"}</Role>
         </UserInfoBox>
       </UserBox>
     </Wrapper>
@@ -146,7 +135,7 @@ const Title = styled.h2`
   font-weight: 600;
   letter-spacing: 1px;
 
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 
   @media only screen and (max-width: ${breakpoints.bpMobileL}) {
     display: none;
@@ -167,7 +156,7 @@ const BellIcon = styled(BellOutlined)`
   }
 
   && {
-    color: ${props => props.theme.fontColors.textRgba(0.8)};
+    color: ${(props) => props.theme.fontColors.textRgba(0.8)};
   }
 `;
 
@@ -194,7 +183,7 @@ const Name = styled.p`
     font-size: 1.2rem;
   }
 
-  color: ${props => props.theme.fontColors.textRgba(0.9)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.9)};
 `;
 
 const CaretIcon = styled(CaretDownOutlined)`
@@ -210,7 +199,7 @@ const Role = styled.p`
   margin: 0;
   font-size: 1.4rem;
 
-  color: ${props => props.theme.fontColors.textRgba(0.6)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.6)};
 `;
 
 const MenuButton = styled.a`
@@ -241,17 +230,11 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const StyledSkeleton = styled(Skeleton)`
-  &&& .ant-skeleton-paragraph {
-    margin-top: 0;
-  }
-`;
-
 const StyledEmpty = styled(Empty)`
   && {
     width: 20rem;
-    color: ${props => props.theme.fontColors.textRgba(0.8)};
+    color: ${(props) => props.theme.fontColors.textRgba(0.8)};
   }
 `;
 
-export default connect(mapStateToProps, null)(TopBar);
+export default TopBar;

@@ -1,24 +1,21 @@
 import React from "react";
 import { Calendar, Badge, Popover } from "antd";
-import { ApplicationState } from "store/types";
-import { connect } from "react-redux";
-import IEvaluation from "interfaces/IEvaluation";
 import { Moment } from "moment";
-import IHomework from "interfaces/IHomework";
-import { toTitleCase } from "utils";
 import styled from "styled-components";
-interface ICalendarPanelProps {
-  evaluations?: IEvaluation[];
-  homework?: IHomework[];
-}
 
-const CalendarPanel: React.FC<ICalendarPanelProps> = ({
-  evaluations = [],
-  homework = []
-}) => {
+import { useHomework } from "features/homework/homework-hooks";
+import { useEvaluations } from "features/evaluation/evaluation-hooks";
+import { toTitleCase } from "utils";
+import IHomework from "constants/interfaces/IHomework";
+import IEvaluation from "constants/interfaces/IEvaluation";
+
+const CalendarPanel: React.FC = () => {
+  const { homework } = useHomework();
+  const { evaluations } = useEvaluations();
+
   const getListData = (value: Moment) => {
     //Get the evaluations of a specific day in a month
-    const filteredEvaluations = evaluations.filter(evaluation => {
+    const filteredEvaluations = evaluations.filter((evaluation) => {
       let evaluationDate = new Date(evaluation.date);
       return (
         evaluationDate.getDate() === value.date() &&
@@ -28,7 +25,7 @@ const CalendarPanel: React.FC<ICalendarPanelProps> = ({
     });
 
     //Get the homework of a specific day in a month
-    const filteredHomework = homework.filter(currHomework => {
+    const filteredHomework = homework.filter((currHomework) => {
       let homeworkDate = new Date(currHomework.date);
       return (
         homeworkDate.getDate() === value.date() &&
@@ -39,7 +36,7 @@ const CalendarPanel: React.FC<ICalendarPanelProps> = ({
 
     const assignments: IEvaluation[] | IHomework[] = [
       ...filteredEvaluations,
-      ...filteredHomework
+      ...filteredHomework,
     ];
 
     return assignments || [];
@@ -101,7 +98,7 @@ const CalendarPanel: React.FC<ICalendarPanelProps> = ({
           <div className="ant-picker-cell-inner ant-picker-calendar-date">
             <div
               style={{
-                boxShadow: "0 0 0 1px #f9ca24 inset"
+                boxShadow: "0 0 0 1px #f9ca24 inset",
               }}
               className="ant-picker-calendar-date-value"
             >
@@ -129,7 +126,7 @@ const CalendarPanel: React.FC<ICalendarPanelProps> = ({
 
 const Wrapper = styled.span`
   .ant-picker-cell-in-view .ant-picker-calendar-date-value {
-    color: ${props => props.theme.fontColors.text};
+    color: ${(props) => props.theme.fontColors.text};
   }
 
   .ant-picker-cell-selected .ant-picker-calendar-date-value {
@@ -137,18 +134,12 @@ const Wrapper = styled.span`
   }
 
   & i {
-    color: ${props => props.theme.fontColors.text};
+    color: ${(props) => props.theme.fontColors.text};
   }
 `;
 
 const BadgeTitle = styled.span`
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
-const mapStateToProps = (state: ApplicationState) => ({
-  evaluations: state.reducer.user.evaluations,
-  homework: state.reducer.user.homework,
-  config: state.reducer.user.configuration
-});
-
-export default connect(mapStateToProps, null)(CalendarPanel);
+export default CalendarPanel;

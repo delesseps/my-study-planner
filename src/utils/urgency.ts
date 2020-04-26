@@ -1,4 +1,4 @@
-import { Urgency } from "interfaces/IUser";
+import { Urgency } from "constants/interfaces/IUser";
 
 export default function determinePriority(urgency: Urgency) {
   switch (urgency) {

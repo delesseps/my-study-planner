@@ -1,8 +1,21 @@
 import "firebase/messaging";
-import { notifierService } from "services";
 import { firebaseConfig } from "./firebaseConfig";
+import { AxiosRequestConfig } from "axios";
+import { agent } from "utils";
 
 //let onMessageDump: Function | null;
+
+function addToken(registrationToken: string) {
+  const options: AxiosRequestConfig = {
+    url: "/notifier/add-token",
+    method: "post",
+    data: {
+      registrationToken,
+    },
+  };
+
+  return agent.request(options);
+}
 
 export async function initializePush() {
   const registration = await navigator.serviceWorker.ready;
@@ -19,10 +32,10 @@ export async function initializePush() {
           console.log("Have Permission");
           return messaging.getToken();
         })
-        .then(token => {
-          notifierService(token as string);
+        .then((token) => {
+          addToken(token as string);
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.code === "messaging/permission-blocked") {
             console.log("Please unblock notification request manually");
           } else {
@@ -33,10 +46,10 @@ export async function initializePush() {
       messaging.onTokenRefresh(() => {
         messaging
           .getToken()
-          .then(refreshedToken => {
-            notifierService(refreshedToken as string);
+          .then((refreshedToken) => {
+            addToken(refreshedToken as string);
           })
-          .catch(err => {
+          .catch((err) => {
             console.log("Unable to retrieve refreshed token ", err);
           });
       });

@@ -1,11 +1,10 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router";
-import Loading from "components/Loading";
-import { Cookies, withCookies } from "react-cookie";
+import { ThemeProvider } from "styled-components";
 
-import { connect } from "react-redux";
-import { ApplicationState } from "store/types";
-import IUserConfig from "interfaces/IUserConfig";
+import { IUserConfig } from "constants/interfaces/IUser";
+import { Loading } from "components";
+import { GlobalStyle, lightTheme } from "theme";
 
 const SignIn = React.lazy(() => import("routes/SignIn"));
 const SignUp = React.lazy(() => import("routes/SignUp"));
@@ -15,20 +14,22 @@ const ChangePassword = React.lazy(() => import("routes/ChangePassword"));
 const LinkGoogleAccount = React.lazy(() => import("routes/LinkGoogleAccount"));
 
 interface IRouterProps {
-  cookies: Cookies;
   config?: IUserConfig;
 }
 
-const mapStateToProps = (state: ApplicationState) => ({
-  config: state.reducer.user.configuration,
-});
-
-const UnAuthenticatedApp: React.FC<IRouterProps> = ({ cookies, config }) => {
+const UnAuthenticatedApp: React.FC<IRouterProps> = () => {
   return (
-    <React.Fragment>
+    <ThemeProvider theme={lightTheme}>
+      <GlobalStyle />
+
       <React.Suspense fallback={<Loading />}>
         <Switch>
           <Route path="/" exact render={() => <Redirect to="/signin" />} />
+          <Route
+            path="/dashboard"
+            exact
+            render={() => <Redirect to="/signin" />}
+          />
 
           <Route path="/signin" exact component={SignIn} />
           <Route path="/signup" exact component={SignUp} />
@@ -43,18 +44,12 @@ const UnAuthenticatedApp: React.FC<IRouterProps> = ({ cookies, config }) => {
             exact
             render={(props) => <LinkGoogleAccount {...props} />}
           />
-          <Route
-            path="/404"
-            exact
-            render={() =>
-              config && config.darkMode ? <Window404 white /> : <Window404 />
-            }
-          />
+          <Route path="/404" exact render={() => <Window404 />} />
           <Redirect to="/404" />
         </Switch>
       </React.Suspense>
-    </React.Fragment>
+    </ThemeProvider>
   );
 };
 
-export default connect(mapStateToProps, null)(withCookies(UnAuthenticatedApp));
+export default UnAuthenticatedApp;

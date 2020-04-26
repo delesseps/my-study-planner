@@ -1,78 +1,74 @@
 import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router";
-import { connect, useDispatch } from "react-redux";
 import { Alert } from "antd";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
+import ErrorBoundary from "react-error-boundary";
 
-import { FadeIn, Loading, Sidebar, TopBar } from "components";
-import { ApplicationState } from "store/types";
-import { breakpoints } from "theme";
-import { requestUser, signOut } from "store/effects";
+import {
+  FadeIn,
+  Loading,
+  Sidebar,
+  TopBar,
+  FullPageErrorFallback,
+} from "components";
+import { breakpoints, lightTheme, darkTheme, GlobalStyle } from "theme";
 import { initializePush } from "firebase/initialize";
-import IRequestError from "interfaces/IRequestError";
-import IUser from "interfaces/IUser";
+import { useConfig } from "features/user/user-hooks";
+import { useAuth } from "features/auth/auth-context";
 
 const Home = React.lazy(() => import("routes/Home"));
 const Preferences = React.lazy(() => import("routes/Preferences"));
 
-const mapStateToProps = (state: ApplicationState) => ({
-  user: state.reducer.user,
-  error: state.reducer.error.user,
-});
-
-interface IDashboardProps {
-  error: IRequestError | undefined;
-  user: IUser;
-}
-
-const AuthenticatedApp: React.FC<IDashboardProps> = ({ error, user }) => {
-  const dispatch = useDispatch();
+const AuthenticatedApp: React.FC = () => {
+  const { user } = useAuth();
+  const { config } = useConfig();
 
   useEffect(() => {
     initializePush();
   }, []);
 
-  useEffect(() => {
-    dispatch(requestUser());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (error && error.status === 401) dispatch(signOut());
-  }, [error, dispatch]);
-
   return (
-    <FadeIn>
-      <Wrapper>
-        <Sider>
-          <Sidebar />
-        </Sider>
-        <Content>
-          {!user.verified && (
-            <EmailVerificationError
-              message="Check your email and activate your account!"
-              banner
-              closable
-            />
-          )}
-          <TopBar />
-          <React.Suspense fallback={<Loading />}>
-            <Switch>
-              <Route path="/dashboard" exact component={Home} />
-              <Route
-                path="/dashboard/Preferences"
-                exact
-                component={Preferences}
-              />
-              <Redirect to="/dashboard" />
-            </Switch>
-          </React.Suspense>
-        </Content>
-      </Wrapper>
-    </FadeIn>
+    <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
+      <ThemeProvider theme={config.darkMode ? darkTheme : lightTheme}>
+        <GlobalStyle config={config} />
+
+        <FadeIn>
+          <Wrapper>
+            <Sider>
+              <Sidebar />
+            </Sider>
+            <Content>
+              {!user.verified && (
+                <EmailVerificationError
+                  message="Check your email and activate your account!"
+                  banner
+                  closable
+                />
+              )}
+              <TopBar />
+
+              <React.Suspense fallback={<Loading />}>
+                <AppRoutes />
+              </React.Suspense>
+            </Content>
+          </Wrapper>
+        </FadeIn>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 };
 
-const Wrapper = styled.main`
+const AppRoutes = () => {
+  return (
+    <Switch>
+      <Route path="/dashboard" exact component={Home} />
+      <Route path="/dashboard/Preferences" exact component={Preferences} />
+      <Redirect to="/dashboard" />
+    </Switch>
+  );
+};
+
+const Wrapper = styled.div`
   display: flex;
 
   @media only screen and (max-width: ${breakpoints.bpMedium}) {
@@ -105,7 +101,7 @@ const Sider = styled.div`
   }
 `;
 
-const Content = styled.section`
+const Content = styled.main`
   flex: 0 0 92%;
   padding: 4rem 6rem;
 
@@ -129,4 +125,4 @@ const Content = styled.section`
   }
 `;
 
-export default connect(mapStateToProps)(AuthenticatedApp);
+export default AuthenticatedApp;

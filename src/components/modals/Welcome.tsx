@@ -1,33 +1,27 @@
 import React from "react";
-import { ReactComponent as Welcome } from "assets/welcome.svg";
 import { Modal, Button } from "antd";
 import styled from "styled-components";
-import { ApplicationState } from "store/types";
-import { connect, useDispatch } from "react-redux";
-import { welcomeModal } from "store/effects";
+
+import { ReactComponent as Welcome } from "assets/welcome.svg";
 import { breakpoints } from "theme";
+import { useUserModal } from "features/user/user-hooks";
 
-interface IWelcomeModalProps {
-  visible: boolean;
-  loading: boolean;
-}
-
-const WelcomeModal: React.FunctionComponent<IWelcomeModalProps> = ({
-  visible,
-  loading
-}) => {
-  const dispatch = useDispatch();
+const WelcomeModal: React.FC = () => {
+  const {
+    hasModal,
+    close: [closeModal, { status }],
+  } = useUserModal();
 
   const handleClose = () => {
-    dispatch(welcomeModal());
+    closeModal();
   };
 
   return (
     <StyledModal
       style={{
-        position: "relative"
+        position: "relative",
       }}
-      visible={visible}
+      visible={hasModal}
       footer={null}
       onCancel={handleClose}
     >
@@ -47,7 +41,7 @@ const WelcomeModal: React.FunctionComponent<IWelcomeModalProps> = ({
         </Body>
         <Button
           onClick={handleClose}
-          loading={loading}
+          loading={status === "loading"}
           size="large"
           type="primary"
         >
@@ -69,7 +63,7 @@ const StyledModal = styled(Modal)`
   }
 
   & .ant-modal-content {
-    background-color: ${props => props.theme.backgroundColor};
+    background-color: ${(props) => props.theme.backgroundColor};
     border-radius: 10px;
     overflow: hidden;
     width: 65rem;
@@ -110,7 +104,7 @@ const Banner = styled.div`
 
   justify-content: center;
 
-  background-color: ${props => props.theme.colors.main};
+  background-color: ${(props) => props.theme.colors.main};
 
   padding: 2rem 0 1rem 0;
 `;
@@ -141,7 +135,7 @@ const TextWrapper = styled.section`
 `;
 
 const Title = styled.h1`
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
   margin: 0;
   letter-spacing: 1px;
   font-weight: 700;
@@ -154,7 +148,7 @@ const Title = styled.h1`
 `;
 
 const Subtitle = styled.h2`
-  color: ${props => props.theme.fontColors.textRgba(0.7)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.7)};
   font-weight: 600;
   font-size: 1.8rem;
 
@@ -170,7 +164,7 @@ const Subtitle = styled.h2`
 `;
 
 const Body = styled.h3`
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
   margin: 0;
   line-height: 34px;
   text-align: center;
@@ -180,9 +174,4 @@ const Body = styled.h3`
   }
 `;
 
-const mapStateToProps = (state: ApplicationState) => ({
-  visible: state.reducer.user.firstSignIn,
-  loading: state.reducer.loading.welcomeModal
-});
-
-export default connect(mapStateToProps)(WelcomeModal);
+export default WelcomeModal;

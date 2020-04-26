@@ -1,31 +1,25 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Empty } from "antd";
-import { ApplicationState } from "store/types";
-import { connect } from "react-redux";
-import { determinePriorityNumber, determinePriorityDateNumber } from "utils";
+
 import moment from "moment";
+
+import { determinePriorityNumber, determinePriorityDateNumber } from "utils";
 import { RecommendedActionCard } from "components/cards";
+import IEvaluation from "constants/interfaces/IEvaluation";
+import IHomework from "constants/interfaces/IHomework";
+import { useEvaluations } from "features/evaluation/evaluation-hooks";
+import { useHomework } from "features/homework/homework-hooks";
+import { useAuth } from "features/auth/auth-context";
 
-import IEvaluation from "interfaces/IEvaluation";
-import IHomework from "interfaces/IHomework";
-import IUser from "interfaces/IUser";
-
-const mapStateToProps = (state: ApplicationState) => ({
-  user: state.reducer.user
-});
-
-interface IRecommendedActionsPanelProps {
-  user: IUser;
-}
-
-const RecommendedActionsPanel: React.FC<IRecommendedActionsPanelProps> = ({
-  user
-}) => {
+const RecommendedActionsPanel: React.FC = () => {
   const [recommendedActions, setRecommendedActions] = useState<any>([]);
+  const { evaluations } = useEvaluations();
+  const { homework } = useHomework();
+  const { user } = useAuth();
 
   useEffect(() => {
-    const userAssignments = [...user.evaluations, ...user.homework];
+    const userAssignments = [...evaluations, ...homework];
 
     const sortedUserAssignments = userAssignments.sort(
       (a, b) =>
@@ -36,7 +30,7 @@ const RecommendedActionsPanel: React.FC<IRecommendedActionsPanelProps> = ({
     );
 
     setRecommendedActions(sortedUserAssignments);
-  }, [user.evaluations, user.homework, user.toDos]);
+  }, [evaluations, homework, user.toDos]);
 
   return (
     <React.Fragment>
@@ -69,7 +63,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid ${props => props.theme.fontColors.textRgba(0.1)};
+  border-bottom: 1px solid ${(props) => props.theme.fontColors.textRgba(0.1)};
 `;
 
 const Title = styled.h3`
@@ -78,7 +72,7 @@ const Title = styled.h3`
   letter-spacing: 1px;
   margin: 0;
 
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const Content = styled.div`
@@ -96,4 +90,4 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-export default connect(mapStateToProps)(RecommendedActionsPanel);
+export default RecommendedActionsPanel;

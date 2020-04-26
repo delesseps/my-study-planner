@@ -1,26 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 import { Button, Empty } from "antd";
-import { ApplicationState } from "store/types";
-import { connect, useDispatch } from "react-redux";
-import IToDo from "interfaces/IToDo";
-import { toDoDrawer } from "store/actions";
+
 import { ToDoDrawer } from "components/drawers";
 import { ToDoCard } from "components/cards";
+import { useToDo } from "features/toDo/toDo-hooks";
+import { useToggle } from "react-use";
 
-const mapStateToProps = (state: ApplicationState) => ({
-  toDos: state.reducer.user.toDos
-});
-
-interface IEvaluationProps {
-  toDos?: IToDo[];
-}
-
-const ToDo: React.FunctionComponent<IEvaluationProps> = ({ toDos }) => {
-  const dispatch = useDispatch();
+const ToDo: React.FC = () => {
+  const [openDrawer, toggleDrawer] = useToggle(false);
+  const { toDos } = useToDo();
 
   const handleClick = () => {
-    dispatch(toDoDrawer());
+    toggleDrawer(true);
   };
 
   return (
@@ -30,10 +22,10 @@ const ToDo: React.FunctionComponent<IEvaluationProps> = ({ toDos }) => {
         <Button onClick={handleClick} type="primary">
           NEW TO-DO
         </Button>
-        <ToDoDrawer />
+        <ToDoDrawer visible={openDrawer} setVisible={toggleDrawer} />
       </Header>
       <Content>
-        {toDos?.filter(toDo => !toDo.done).length ? (
+        {toDos.filter((toDo) => !toDo.done).length ? (
           toDos.map(
             (toDo, i) =>
               !toDo.done && <ToDoCard index={i} key={toDo._id} toDo={toDo} />
@@ -51,7 +43,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid ${props => props.theme.fontColors.textRgba(0.1)};
+  border-bottom: 1px solid ${(props) => props.theme.fontColors.textRgba(0.1)};
 `;
 
 const Title = styled.h3`
@@ -60,7 +52,7 @@ const Title = styled.h3`
   letter-spacing: 1px;
   margin: 0;
 
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const Content = styled.div`
@@ -78,4 +70,4 @@ const StyledEmpty = styled(Empty)`
   }
 `;
 
-export default connect(mapStateToProps, null)(ToDo);
+export default ToDo;

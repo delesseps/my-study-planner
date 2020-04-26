@@ -1,53 +1,63 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Drawer, DatePicker, Input, Tooltip, Button, Radio, Form } from "antd";
 import moment from "moment";
-import { ApplicationState } from "store/types";
-import { connect, useDispatch } from "react-redux";
-import { addEvaluation, editEvaluation } from "store/effects";
-import IEvaluation from "interfaces/IEvaluation";
-import { evaluationDrawer } from "store/actions";
 
-const { TextArea } = Input;
+import IEvaluation from "constants/interfaces/IEvaluation";
+import { useEvaluations } from "features/evaluation/evaluation-hooks";
 
 interface IEvaluationDrawerProps {
-  visible?: boolean;
-  loading?: boolean;
+  visible: boolean;
+  setVisible: Function;
 
   //Edit optional Props
-  visibleEdit?: boolean;
   evaluation?: IEvaluation;
-  setVisibleEdit?: Function;
   index?: number;
 }
 
 const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
   visible = false,
-  loading = false,
-  visibleEdit,
-  setVisibleEdit,
+  setVisible,
   evaluation,
-  index
+  index,
 }) => {
   const [form] = Form.useForm();
-  const dispatch = useDispatch();
+  const {
+    add: [
+      addEvaluationMutate,
+      { status: addEvaluationStatus, reset: addEvaluationReset },
+    ],
+    edit: [
+      editEvaluationMutate,
+      { status: editEvaluationStatus, reset: editEvaluationReset },
+    ],
+  } = useEvaluations();
+
+  const status = evaluation ? editEvaluationStatus : addEvaluationStatus;
 
   const handleSubmit = () => {
-    form.validateFields().then(values => {
-      if (evaluation && setVisibleEdit && typeof index === "number") {
-        values._id = evaluation._id;
-        return dispatch(
-          editEvaluation(values as IEvaluation, index, setVisibleEdit)
-        );
+    form.validateFields().then((values) => {
+      const newEvaluation: IEvaluation = { ...values } as any;
+
+      if (evaluation && typeof index === "number") {
+        newEvaluation._id = evaluation._id;
+        return editEvaluationMutate({ evaluation: newEvaluation, index });
       }
 
-      dispatch(addEvaluation(values as IEvaluation));
+      addEvaluationMutate(newEvaluation);
     });
   };
 
-  const onClose = () => {
-    setVisibleEdit ? setVisibleEdit(false) : dispatch(evaluationDrawer());
-  };
+  const onClose = useCallback(() => {
+    addEvaluationReset();
+    editEvaluationReset();
+    setVisible(false);
+  }, [addEvaluationReset, editEvaluationReset, setVisible]);
+
+  useEffect(() => {
+    // Close drawer after successful operation
+    if (status === "success") onClose();
+  }, [status, onClose]);
 
   const disabledDate = (current: any) => {
     // Can not select days before today and today
@@ -59,7 +69,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
       destroyOnClose={true}
       title={evaluation ? "Edit evaluation" : "Add new evaluation"}
       onClose={onClose}
-      visible={evaluation ? visibleEdit : visible}
+      visible={visible}
       width={300}
     >
       <Form
@@ -70,7 +80,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           evaluationType: evaluation?.evaluationType,
           urgency: evaluation?.urgency,
           description: evaluation?.description,
-          date: evaluation && moment(evaluation.date)
+          date: evaluation && moment(evaluation.date),
         }}
         layout="vertical"
       >
@@ -80,8 +90,8 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
             {
               required: true,
               message: "Please input the course name!",
-              whitespace: true
-            }
+              whitespace: true,
+            },
           ]}
           label={<span>Course name</span>}
         >
@@ -110,8 +120,8 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           rules={[
             {
               required: true,
-              message: "Please select how urgent is your evaluation!"
-            }
+              message: "Please select how urgent is your evaluation!",
+            },
           ]}
         >
           <Radio.Group buttonStyle="solid">
@@ -125,12 +135,12 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           rules={[
             {
               required: false,
-              whitespace: true
-            }
+              whitespace: true,
+            },
           ]}
           label={<span>Description</span>}
         >
-          <TextArea
+          <Input.TextArea
             placeholder="Input details about the evaluation. E.g. pages to read, good sources, ..."
             autoSize
           />
@@ -142,8 +152,8 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
             {
               type: "object",
               required: true,
-              message: "Please select time!"
-            }
+              message: "Please select time!",
+            },
           ]}
         >
           <DatePicker disabledDate={disabledDate} />
@@ -152,8 +162,8 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           <Button
             type="primary"
             htmlType="submit"
-            loading={loading}
-            disabled={loading}
+            loading={status === "loading"}
+            disabled={status === "loading" || status === "success"}
           >
             {evaluation ? "Edit Evaluation" : "Add Evaluation"}
           </Button>
@@ -163,11 +173,4 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
   );
 };
 
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    visible: state.reducer.drawer.evaluation,
-    loading: state.reducer.loading.evaluation
-  };
-};
-
-export default connect(mapStateToProps, null)(EvaluationDrawer);
+export default EvaluationDrawer;

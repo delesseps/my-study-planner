@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import {
   UserOutlined,
   CheckOutlined,
   EditOutlined,
   DeleteOutlined,
-  ClockCircleOutlined
+  ClockCircleOutlined,
 } from "@ant-design/icons";
 import { Badge, Avatar, Divider, Popconfirm, Tooltip } from "antd";
-import { setDate, determinePriority, determineColor } from "utils";
 import moment from "moment";
-import { useDispatch } from "react-redux";
-import { deleteHomework, editHomework } from "store/effects";
-import IHomework from "interfaces/IHomework";
+import { useToggle } from "react-use";
+
+import { setDate, determinePriority, determineColor } from "utils";
+import IHomework from "constants/interfaces/IHomework";
 import HomeworkDescriptionModal from "components/modals/HomeworkDescription";
+import { useHomework } from "features/homework/homework-hooks";
 
 const HomeworkDrawer = React.lazy(() =>
   import("components/drawers/HomeworkDrawer")
@@ -26,33 +27,36 @@ interface IHomeworkCardProps {
 
 const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
   homework,
-  index
+  index,
 }) => {
-  const [visibleEdit, setVisibleEdit] = useState(false);
-  const dispatch = useDispatch();
+  const [openDrawer, toggleDrawer] = useToggle(false);
+  const {
+    edit: [editMutate],
+    remove: [removeMutate],
+  } = useHomework();
 
   const handleViewMoreClick = () => {
     HomeworkDescriptionModal(homework);
   };
 
   const handleEditClick = () => {
-    setVisibleEdit(true);
+    toggleDrawer(true);
   };
 
   const handleDeleteClick = () => {
-    dispatch(deleteHomework(homework._id, index));
+    removeMutate({ id: homework._id, index });
   };
 
   const handleDoneClick = () => {
     homework.done = true;
-    dispatch(editHomework(homework, index));
+    editMutate({ homework, index });
   };
 
   return (
     <Wrapper>
       <HomeworkDrawer
-        visibleEdit={visibleEdit}
-        setVisibleEdit={setVisibleEdit}
+        visible={openDrawer}
+        setVisible={toggleDrawer}
         homework={homework}
         index={index}
       />
@@ -106,7 +110,7 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
 
 const Wrapper = styled.div`
   padding: 0.8rem 2rem;
-  border: 0.7px solid ${props => props.theme.fontColors.textRgba(0.15)};
+  border: 0.7px solid ${(props) => props.theme.fontColors.textRgba(0.15)};
   border-radius: 5px;
 
   display: flex;
@@ -132,13 +136,13 @@ const AssignmentTitle = styled.h3`
   letter-spacing: 0.5px;
   font-weight: 500;
   font-size: 1.7rem;
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 `;
 
 const AssignmentPriority = styled.h5`
   display: flex;
   align-items: center;
-  color: ${props => props.theme.fontColors.textRgba(0.5)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.5)};
   margin: 0;
 `;
 
@@ -156,7 +160,7 @@ const CheckIcon = styled(CheckOutlined)`
   transition: 0.1s;
 
   &:hover {
-    color: ${props => props.theme.colors.main};
+    color: ${(props) => props.theme.colors.main};
   }
 `;
 const EditIcon = styled(EditOutlined)`
@@ -165,7 +169,7 @@ const EditIcon = styled(EditOutlined)`
   transition: 0.1s;
 
   &:hover {
-    color: ${props => props.theme.colors.main};
+    color: ${(props) => props.theme.colors.main};
   }
 `;
 const DeleteIcon = styled(DeleteOutlined)`
@@ -174,7 +178,7 @@ const DeleteIcon = styled(DeleteOutlined)`
   transition: 0.1s;
 
   &:hover {
-    color: ${props => props.theme.colors.main};
+    color: ${(props) => props.theme.colors.main};
   }
 `;
 
@@ -194,7 +198,7 @@ const UserName = styled.h5`
   font-weight: bold;
   font-size: 1.2rem;
   align-items: center;
-  color: ${props => props.theme.fontColors.textRgba(0.6)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.6)};
   margin: 0;
   margin-left: 0.7rem;
 `;
@@ -204,7 +208,7 @@ const Date = styled.h5`
   display: flex;
   font-weight: 400;
   align-items: center;
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
   margin: 0;
 `;
 
@@ -215,7 +219,7 @@ const ClockIcon = styled(ClockCircleOutlined)`
 
 const ViewMore = styled.span`
   cursor: pointer;
-  color: ${props => props.theme.colors.main};
+  color: ${(props) => props.theme.colors.main};
   margin-left: 0.5rem;
 
   &:hover {
