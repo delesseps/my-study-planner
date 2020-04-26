@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { FadeIn } from "components";
+import { FadeIn, Profiler } from "components";
 import { breakpoints } from "theme";
 import {
   CounterPanel,
@@ -22,41 +22,43 @@ const Home: React.FC = () => {
   const { user } = useAuth();
 
   return (
-    <FadeIn>
-      <Wrapper>
-        <WelcomeModal />
-        <CounterPanelLeft>
-          <CounterPanel user={user} homework />
-        </CounterPanelLeft>
-        <CounterPanelRight>
-          <CounterPanel user={user} />
-        </CounterPanelRight>
+    <Profiler id="Home Screen">
+      <FadeIn>
+        <Wrapper>
+          <WelcomeModal />
+          <CounterPanelLeft>
+            <CounterPanel user={user} homework />
+          </CounterPanelLeft>
+          <CounterPanelRight>
+            <CounterPanel user={user} />
+          </CounterPanelRight>
 
-        <HomeSchedulePanelWrapper>
-          <HomeSchedulePanel />
-        </HomeSchedulePanelWrapper>
+          <HomeSchedulePanelWrapper>
+            <HomeSchedulePanel />
+          </HomeSchedulePanelWrapper>
 
-        <ToDoPanelWrapper>
-          <ToDoPanel />
-        </ToDoPanelWrapper>
+          <ToDoPanelWrapper>
+            <ToDoPanel />
+          </ToDoPanelWrapper>
 
-        <HomeworkPanelWrapper>
-          <HomeworkPanel />
-        </HomeworkPanelWrapper>
+          <HomeworkPanelWrapper>
+            <HomeworkPanel />
+          </HomeworkPanelWrapper>
 
-        <EvaluationPanelWrapper>
-          <EvaluationPanel />
-        </EvaluationPanelWrapper>
+          <EvaluationPanelWrapper>
+            <EvaluationPanel />
+          </EvaluationPanelWrapper>
 
-        <RecommendedActionsPanelWrapper>
-          <RecommendedActionsPanel />
-        </RecommendedActionsPanelWrapper>
+          <RecommendedActionsPanelWrapper>
+            <RecommendedActionsPanel />
+          </RecommendedActionsPanelWrapper>
 
-        <CalendarPanelWrapper>
-          <CalendarPanel />
-        </CalendarPanelWrapper>
-      </Wrapper>
-    </FadeIn>
+          <CalendarPanelWrapper>
+            <CalendarPanel />
+          </CalendarPanelWrapper>
+        </Wrapper>
+      </FadeIn>
+    </Profiler>
   );
 };
 

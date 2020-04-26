@@ -46,16 +46,9 @@ const AuthenticatedApp: React.FC = () => {
                 />
               )}
               <TopBar />
+
               <React.Suspense fallback={<Loading />}>
-                <Switch>
-                  <Route path="/dashboard" exact component={Home} />
-                  <Route
-                    path="/dashboard/Preferences"
-                    exact
-                    component={Preferences}
-                  />
-                  <Redirect to="/dashboard" />
-                </Switch>
+                <AppRoutes />
               </React.Suspense>
             </Content>
           </Wrapper>
@@ -65,7 +58,17 @@ const AuthenticatedApp: React.FC = () => {
   );
 };
 
-const Wrapper = styled.main`
+const AppRoutes = () => {
+  return (
+    <Switch>
+      <Route path="/dashboard" exact component={Home} />
+      <Route path="/dashboard/Preferences" exact component={Preferences} />
+      <Redirect to="/dashboard" />
+    </Switch>
+  );
+};
+
+const Wrapper = styled.div`
   display: flex;
 
   @media only screen and (max-width: ${breakpoints.bpMedium}) {
@@ -98,7 +101,7 @@ const Sider = styled.div`
   }
 `;
 
-const Content = styled.section`
+const Content = styled.main`
   flex: 0 0 92%;
   padding: 4rem 6rem;
 

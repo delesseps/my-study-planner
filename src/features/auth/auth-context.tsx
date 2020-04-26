@@ -16,7 +16,7 @@ import { domain } from "constants/site";
 import ISignInCredentials from "constants/interfaces/ISignInCredentials";
 import ISignUpCredentials from "constants/interfaces/ISignUpCredentials";
 
-interface IAuthContext {
+export interface IAuthContext {
   user: IUser;
   login: [
     MutateFunction<AxiosResponse<IUser>, ISignInCredentials>,
@@ -47,6 +47,7 @@ export function AuthProvider(props: any) {
 
         if (errorCode === 401) {
           logout();
+          window.location.assign((window.location as unknown) as any);
         }
 
         if (failureCount < 3) {
