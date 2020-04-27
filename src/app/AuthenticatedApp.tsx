@@ -17,6 +17,7 @@ import { useConfig } from "features/user/user-hooks";
 import { useAuth } from "features/auth/auth-context";
 
 const Home = React.lazy(() => import("routes/Home"));
+const Schedule = React.lazy(() => import("routes/Schedule"));
 const Preferences = React.lazy(() => import("routes/Preferences"));
 
 const AuthenticatedApp: React.FC = () => {
@@ -34,9 +35,9 @@ const AuthenticatedApp: React.FC = () => {
 
         <FadeIn>
           <Wrapper>
-            <Sider>
-              <Sidebar />
-            </Sider>
+            <Navigation.Wrapper>
+              <Navigation.Sidebar />
+            </Navigation.Wrapper>
             <Content>
               {!user.verified && (
                 <EmailVerificationError
@@ -62,6 +63,7 @@ const AppRoutes = () => {
   return (
     <Switch>
       <Route path="/dashboard" exact component={Home} />
+      <Route path="/schedule" exact component={Schedule} />
       <Route path="/dashboard/Preferences" exact component={Preferences} />
       <Redirect to="/dashboard" />
     </Switch>
@@ -87,19 +89,22 @@ const EmailVerificationError = styled(Alert)`
   z-index: 100;
 `;
 
-const Sider = styled.div`
-  flex: 1;
-  min-height: 100vh;
+const Navigation = {
+  Wrapper: styled.aside`
+    flex: 1;
+    min-height: 100vh;
 
-  @media only screen and (max-width: ${breakpoints.bpMedium}) {
-    min-height: auto;
-    width: 100%;
-    z-index: 1000;
+    @media only screen and (max-width: ${breakpoints.bpMedium}) {
+      min-height: auto;
+      width: 100%;
+      z-index: 1000;
 
-    position: fixed;
-    bottom: 0;
-  }
-`;
+      position: fixed;
+      bottom: 0;
+    }
+  `,
+  Sidebar: styled(Sidebar)``,
+};
 
 const Content = styled.main`
   flex: 0 0 92%;
