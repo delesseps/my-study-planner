@@ -1,67 +1,145 @@
-import React, { useEffect, useCallback, useState } from "react";
-import {
-  Drawer,
-  DatePicker,
-  Input,
-  Button,
-  Form,
-  Select,
-  TimePicker,
-} from "antd";
-import { SelectValue } from "antd/lib/select";
+import React, { useEffect, useCallback, useState, useMemo } from "react";
+import { Drawer, Input, Button, Form, Select, TimePicker } from "antd";
 import moment from "moment";
 
-import IEvaluation from "constants/interfaces/IEvaluation";
-import { Weekdays } from "constants/interfaces";
-import { toTitleCase } from "utils";
-
-const { RangePicker } = TimePicker;
+import { Weekdays, ICourse, ISchedule } from "constants/interfaces";
+import { toTitleCase, hhmmss } from "utils";
+import { useAddCourse, useEditCourse } from "features/course/course-hooks";
 
 interface ICourseDrawerProps {
   visible: boolean;
   setVisible: Function;
 
   //Edit optional Props
-  course?: IEvaluation;
+  course?: ICourse;
   index?: number;
+}
+
+function normalizeWeekday(schedule: ISchedule) {
+  const weekday: Record<string, any> = {};
+
+  for (const entry of Object.entries(schedule)) {
+    const entryValue = entry[1];
+
+    if (entryValue) {
+      const [day] = entry;
+
+      weekday[day] = {
+        time: [
+          moment(hhmmss(entryValue.start), "HH:mm:ss"),
+          moment(hhmmss(entryValue.end), "HH:mm:ss"),
+        ],
+        classroom: entryValue.classroom,
+      };
+    }
+  }
+
+  return weekday;
 }
 
 const CourseDrawer: React.FC<ICourseDrawerProps> = ({
   visible = false,
   setVisible,
   course,
+  index,
 }) => {
   const [form] = Form.useForm();
-  const [selectedDays, setSelectedDays] = useState<string[]>();
+  const [selectedDays, setSelectedDays] = useState<string[]>(() => {
+    const schedule = course?.schedule;
+
+    if (schedule) return Object.keys(schedule);
+
+    return [];
+  });
+  const [
+    addCourse,
+    { status: addCourseStatus, reset: resetAddCourse },
+  ] = useAddCourse();
+  const [
+    editCourse,
+    { status: editCourseStatus, reset: resetEditCourse },
+  ] = useEditCourse();
+
+  const status = course ? editCourseStatus : addCourseStatus;
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      console.log(values);
+      const schedule: Record<string, any> = {};
+
+      // Convert range moment date to seconds
+      values.weekday.forEach((day: string) => {
+        const {
+          classroom,
+          time: [start, end],
+        } = values[day];
+
+        const dayValue = {
+          classroom,
+          start: start.diff(moment().startOf("day"), "seconds"),
+          end: end.diff(moment().startOf("day"), "seconds"),
+        };
+
+        schedule[day] = dayValue;
+      });
+
+      const newCourse = { name: values.course, schedule };
+
+      if (course && typeof index === "number") {
+        return editCourse({
+          course: {
+            ...course,
+            ...newCourse,
+          },
+          index,
+        });
+      }
+
+      addCourse(newCourse);
     });
   };
 
   const onClose = useCallback(() => {
+    resetAddCourse();
+    resetEditCourse();
     setVisible(false);
-  }, [setVisible]);
-
-  const disabledDate = (current: any) => {
-    // Can not select days before today and today
-    return current < moment().startOf("day");
-  };
+  }, [setVisible, resetAddCourse, resetEditCourse]);
 
   const handleSelectedDayChange = (days: string[]) => {
     setSelectedDays(days);
   };
 
+  useEffect(() => {
+    // Close drawer after successful operation
+    if (status === "success") onClose();
+  }, [status, onClose]);
+
+  const weekday = useMemo(() => {
+    const schedule = course?.schedule;
+
+    if (schedule)
+      return { ...normalizeWeekday(schedule), days: Object.keys(schedule) };
+
+    return undefined;
+  }, [course]);
+
   return (
     <Drawer
       destroyOnClose={true}
-      title={"Add new course"}
+      title={course ? "Edit course" : "Add new course"}
       onClose={onClose}
       visible={visible}
       width={300}
     >
-      <Form form={form} onFinish={handleSubmit} layout="vertical">
+      <Form
+        form={form}
+        onFinish={handleSubmit}
+        initialValues={{
+          ...weekday,
+          course: course?.name,
+          weekday: weekday?.days,
+        }}
+        layout="vertical"
+      >
         <Form.Item
           name="course"
           rules={[
@@ -142,8 +220,8 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
           <Button
             type="primary"
             htmlType="submit"
-            // loading={status === "loading"}
-            // disabled={status === "loading" || status === "success"}
+            loading={status === "loading"}
+            disabled={status === "loading" || status === "success"}
           >
             {course ? "Edit Course" : "Add Course"}
           </Button>

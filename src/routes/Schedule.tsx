@@ -1,55 +1,68 @@
 import React, { useState, useCallback } from "react";
 import styled, { keyframes, DefaultTheme } from "styled-components";
 import QueueAnim from "rc-queue-anim";
-import { Button } from "antd";
-import { EnvironmentOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Skeleton, Tooltip, Popconfirm, Empty } from "antd";
+import {
+  EnvironmentOutlined,
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+import { useWindowSize } from "react-use";
 
-import { Weekdays, ICourse } from "constants/interfaces/course";
+import { Weekdays } from "constants/interfaces/course";
+import { useCourses, useDeleteCourse } from "features/course/course-hooks";
+import { hhmmss, toTitleCase } from "utils";
+import { breakpoints } from "theme";
 
 const CourseDrawer = React.lazy(() =>
   import("components/drawers/CourseDrawer")
 );
 
-const mockData: Partial<ICourse>[] = [
-  {
-    _id: "1",
-    name: "Calculo diferencial",
-    schedule: {
-      [Weekdays.monday]: {
-        start: 900,
-        end: 1080,
-        classroom: "FR1-301",
-      },
-      [Weekdays.wednesday]: {
-        start: 1080,
-        end: 1200,
-        classroom: "FR1-608",
-      },
-    },
-  },
-  {
-    _id: "2",
-    name: "Español II",
-    schedule: {
-      [Weekdays.monday]: {
-        start: 1080,
-        end: 1200,
-        classroom: "FR1-301",
-      },
-      [Weekdays.wednesday]: {
-        start: 900,
-        end: 1080,
-        classroom: "FR1-608",
-      },
-    },
-  },
-];
+// const mockData: Partial<ICourse>[] = [
+//   {
+//     _id: "1",
+//     name: "Calculo diferencial",
+//     schedule: {
+//       [Weekdays.monday]: {
+//         start: 900,
+//         end: 1080,
+//         classroom: "FR1-301",
+//       },
+//       [Weekdays.wednesday]: {
+//         start: 1080,
+//         end: 1200,
+//         classroom: "FR1-608",
+//       },
+//     },
+//   },
+//   {
+//     _id: "2",
+//     name: "Español II",
+//     schedule: {
+//       [Weekdays.monday]: {
+//         start: 1080,
+//         end: 1200,
+//         classroom: "FR1-301",
+//       },
+//       [Weekdays.wednesday]: {
+//         start: 900,
+//         end: 1080,
+//         classroom: "FR1-608",
+//       },
+//     },
+//   },
+// ];
 
-const addPadToTime = (number: number) => (number < 10 ? "0" + number : number);
+const days = ([...Object.values(Weekdays)] as any) as Weekdays[];
 
 const Schedule: React.FC = () => {
   const [openDrawer, toggleDrawer] = useState(false);
-  const [currentDay, setCurrentDay] = useState<Weekdays>(Weekdays.monday);
+  const { width } = useWindowSize();
+
+  const [currentDay, setCurrentDay] = useState<Weekdays>(
+    days[new Date().getDay()]
+  );
 
   const WeekdayTab = useCallback(
     ({ day, children }: { day: Weekdays; children: string }) => {
@@ -68,41 +81,130 @@ const Schedule: React.FC = () => {
     },
     [currentDay]
   );
-
+  const isMobile = width <= 425;
   return (
     <Styles.Wrapper>
       <CourseDrawer visible={openDrawer} setVisible={toggleDrawer} />
       <Styles.Tabs>
-        <WeekdayTab day={Weekdays.monday}>Mon</WeekdayTab>
-        <WeekdayTab day={Weekdays.tuesday}>Tus</WeekdayTab>
-        <WeekdayTab day={Weekdays.wednesday}>Wed</WeekdayTab>
-        <WeekdayTab day={Weekdays.thursday}>Thu</WeekdayTab>
-        <WeekdayTab day={Weekdays.friday}>Fri</WeekdayTab>
-        <WeekdayTab day={Weekdays.saturday}>Sat</WeekdayTab>
-        <WeekdayTab day={Weekdays.sunday}>Sun</WeekdayTab>
+        {days.map((day) => (
+          <WeekdayTab day={day}>
+            {isMobile
+              ? toTitleCase(day).slice(0, 2)
+              : toTitleCase(day).slice(0, 3)}
+          </WeekdayTab>
+        ))}
       </Styles.Tabs>
-      <Styles.Body>
-        {mockData?.map(({ _id, name, schedule }: Partial<ICourse>) => {
-          if (schedule && schedule[currentDay]) {
+      <Courses currentDay={currentDay} />
+      <Button
+        key={"add-button"}
+        type="primary"
+        shape="circle"
+        onClick={() => toggleDrawer(true)}
+        icon={<PlusOutlined />}
+        size="large"
+      />
+    </Styles.Wrapper>
+  );
+};
+
+const Courses = ({ currentDay }: { currentDay: Weekdays }) => {
+  const { data: courses, status } = useCourses();
+  const [deleteCourse] = useDeleteCourse();
+  const [openDrawer, toggleDrawer] = useState(false);
+
+  if (status === "loading") {
+    return (
+      <>
+        <Card.Skeleton />
+        <Card.Skeleton />
+      </>
+    );
+  }
+
+  if (!courses?.length) {
+    return (
+      <Card.Empty
+        description={
+          <span>
+            <b>No courses found.</b> <br /> Start adding by clicking the plus
+            sign below.
+          </span>
+        }
+      />
+    );
+  }
+
+  const handleDeleteCourse = (index: number, id: string) => () => {
+    deleteCourse({ index, id });
+  };
+
+  const handleEditClick = () => {
+    toggleDrawer(true);
+  };
+
+  return (
+    <Styles.Body>
+      {courses
+        ?.sort((a, b) => {
+          const scheduleA = a.schedule[currentDay];
+          const scheduleB = b.schedule[currentDay];
+
+          if (scheduleA && scheduleB) {
+            return scheduleA.start - scheduleB.start;
+          }
+
+          return 0;
+        })
+        .map((course, courseIndex) => {
+          if (course.schedule[currentDay]) {
+            const { _id, name, schedule } = course;
             const { start, end } = {
               start: schedule[currentDay]?.start,
               end: schedule[currentDay]?.end,
             };
 
-            const startTime =
-              start &&
-              `${addPadToTime(start / 60)}:${addPadToTime(start % 60)}`;
-            const endTime =
-              end && `${addPadToTime(end / 60)}:${addPadToTime(end % 60)}`;
+            const startTime = start && hhmmss(start);
+            const endTime = end && hhmmss(end);
 
             return (
               <Card.Wrapper key={_id}>
+                <CourseDrawer
+                  visible={openDrawer}
+                  setVisible={toggleDrawer}
+                  course={course}
+                  index={courseIndex}
+                />
                 <Card.Schedule>
-                  <span>{startTime}</span>
-                  <span>-</span>
-                  <span>{endTime}</span>
+                  <time>
+                    <b>{startTime}</b>
+                  </time>
+                  <b>-</b>
+                  <time>
+                    <b>{endTime}</b>
+                  </time>
                 </Card.Schedule>
                 <Card.Content>
+                  <Card.Actions>
+                    <Card.Action onClick={handleEditClick}>
+                      <Tooltip title="Edit" mouseEnterDelay={0.4}>
+                        <Card.EditIcon />
+                      </Tooltip>
+                    </Card.Action>
+                    <Card.Action>
+                      <Tooltip title="delete" mouseEnterDelay={0.4}>
+                        <Popconfirm
+                          title="Are you sure to delete this course?"
+                          arrowPointAtCenter={true}
+                          placement="topRight"
+                          okText="Yes"
+                          cancelText="No"
+                          onConfirm={handleDeleteCourse(courseIndex, _id)}
+                        >
+                          <Card.DeleteIcon />
+                        </Popconfirm>
+                      </Tooltip>
+                    </Card.Action>
+                  </Card.Actions>
                   <Card.CourseName>{name}</Card.CourseName>
                   <CourseLocation.Wrapper>
                     <CourseLocation.Icon />
@@ -115,16 +217,7 @@ const Schedule: React.FC = () => {
             );
           }
         })}
-      </Styles.Body>
-      <Button
-        key={"add-button"}
-        type="primary"
-        shape="circle"
-        onClick={() => toggleDrawer(true)}
-        icon={<PlusOutlined />}
-        size="large"
-      />
-    </Styles.Wrapper>
+    </Styles.Body>
   );
 };
 
@@ -148,13 +241,10 @@ const Styles = {
     align-items: center;
 
     padding-top: 2rem;
+    overflow-x: hidden;
   `,
   Tabs: styled.div`
     display: flex;
-
-    & > *:not(:last-child) {
-      margin-right: 7rem;
-    }
   `,
   Tab: styled.div<{ active?: boolean }>`
     display: flex;
@@ -163,7 +253,22 @@ const Styles = {
 
     width: 6rem;
 
+    @media only screen and (max-width: ${breakpoints.bpMedium}) {
+      font-size: 1.9rem;
+      margin: 0 2rem;
+    }
+
+    @media only screen and (max-width: ${breakpoints.bpMobileL}) {
+      margin: 0 1rem;
+      width: 4rem;
+    }
+
+    @media only screen and (max-width: ${breakpoints.bpMobileS}) {
+      margin: 0 0.5rem;
+    }
+
     padding: 1.3rem 0.7rem;
+    margin: 0 3.5rem;
 
     border-radius: 4px;
 
@@ -198,13 +303,21 @@ const Styles = {
 const Card = {
   Wrapper: styled.div`
     display: flex;
+    position: relative;
 
     border-radius: ${({ theme }) => theme.borderRadius};
 
     background-color: ${({ theme }) => theme.panelBackgroundColor};
 
-    min-width: 47rem;
-    max-width: 47rem;
+    width: 47rem;
+
+    @media only screen and (max-width: ${breakpoints.bpMobileM}) {
+      width: 100%;
+    }
+
+    @media only screen and (max-width: ${breakpoints.bpMobileS}) {
+      width: 95vw;
+    }
 
     box-shadow: ${({ theme }) => theme.shadow1};
 
@@ -239,7 +352,62 @@ const Card = {
     font-weight: 600;
     letter-spacing: 0.6px;
 
+    @media only screen and (max-width: ${breakpoints.bpMobileS}) {
+      font-size: 2rem;
+    }
+
     color: ${({ theme }) => theme.fontColors.text};
+  `,
+  Actions: styled.div`
+    position: absolute;
+
+    bottom: 1.3rem;
+    right: 1rem;
+
+    & > *:not(:last-child) {
+      margin-right: 1rem;
+    }
+  `,
+  Action: styled.button`
+    border: none;
+    background: transparent;
+
+    outline: none;
+  `,
+  EditIcon: styled(EditOutlined)`
+    cursor: pointer;
+    font-size: 1.9rem;
+    transition: color 0.1s;
+
+    &:hover {
+      color: ${(props) => props.theme.colors.main};
+    }
+  `,
+  DeleteIcon: styled(DeleteOutlined)`
+    cursor: pointer;
+    font-size: 1.9rem;
+    transition: color 0.1s;
+
+    &:hover {
+      color: ${(props) => props.theme.colors.main};
+    }
+  `,
+  Skeleton: styled(Skeleton.Button)`
+    min-width: 47rem;
+    max-width: 47rem;
+
+    min-height: 15rem;
+
+    background: rgba(0, 0, 0, 0.1) !important;
+
+    &:not(:last-child) {
+      margin-bottom: 2.5rem;
+    }
+  `,
+  Empty: styled(Empty)`
+    margin: 4rem 0;
+
+    color: ${({ theme }) => theme.fontColors.textRgba(0.8)};
   `,
 };
 

@@ -73,13 +73,9 @@ const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = () => {
   return (
     <StyledBigCalendar
       events={events}
-      views={
-        window.innerWidth === 425
-          ? ["day", "agenda"]
-          : ["week", "day", "agenda"]
-      }
+      views={["week", "day", "agenda"]}
       localizer={localizer}
-      defaultView={window.innerWidth === 425 ? "day" : "week"}
+      defaultView={"week"}
       onSelectEvent={(event: any) => {
         if (event.evaluation) EvaluationDescription(event.evaluation);
 

@@ -1,3 +1,5 @@
+import { Urgency } from "constants/interfaces/IUser";
+
 import moment, { Moment } from "moment";
 
 let REFERENCE = moment();
@@ -33,7 +35,7 @@ export function isThisWeek(momentDate: Moment) {
   );
 }
 
-export default function setDate(momentDate: Moment) {
+export function setDate(momentDate: Moment) {
   if (isToday(momentDate)) {
     return "Today";
   } else if (isYesterday(momentDate)) {
@@ -51,4 +53,75 @@ export default function setDate(momentDate: Moment) {
       return momentDate.format("dddd DD MMMM YYYY"); //Returns date as 'Friday 1 February 2019'
     }
   }
+}
+
+export function determinePriorityNumber(urgency: Urgency) {
+  switch (urgency) {
+    case "chill":
+      return 1;
+    case "normal":
+      return 2;
+    case "important":
+      return 3;
+    default:
+      return 0;
+  }
+}
+
+export function determinePriorityDateNumber(momentDate: Moment) {
+  if (isPast(momentDate)) {
+    return 0;
+  } else if (isToday(momentDate)) {
+    return 10;
+  } else if (isTomorrow(momentDate)) {
+    return 5;
+  } else if (isThisWeek(momentDate)) {
+    return 4;
+  } else {
+    if (isSameMonth(momentDate)) {
+      return 2;
+    } else {
+      return Math.exp(-REFERENCE.diff(momentDate, "months", true) / 10);
+    }
+  }
+}
+
+export function toTitleCase(string: string) {
+  string = string.toLowerCase();
+  return string[0].toUpperCase() + string.slice(1);
+}
+
+export function determinePriority(urgency: Urgency) {
+  switch (urgency) {
+    case "chill":
+      return "Low Priority";
+    case "normal":
+      return "Medium Priority";
+    case "important":
+      return "High Priority";
+    default:
+  }
+}
+
+export function determineColor(urgency: Urgency) {
+  switch (urgency) {
+    case "chill":
+      return "green";
+    case "normal":
+      return "yellow";
+    case "important":
+      return "red";
+    default:
+  }
+}
+
+function pad(num: number) {
+  return ("0" + num).slice(-2);
+}
+
+export function hhmmss(secs: number) {
+  var minutes = Math.floor(secs / 60);
+  var hours = Math.floor(minutes / 60);
+  minutes = minutes % 60;
+  return `${pad(hours)}:${pad(minutes)}`;
 }

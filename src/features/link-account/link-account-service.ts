@@ -10,7 +10,7 @@ export function googleTokenConfirmation(token: string): Promise<string> {
     },
   };
 
-  return agent.request(options);
+  return agent.request(options).then(({ data }) => data);
 }
 
 export function googleAccountLink({
@@ -29,5 +29,5 @@ export function googleAccountLink({
     },
   };
 
-  return agent.request(options);
+  return agent.request(options).then(({ data }) => data);
 }

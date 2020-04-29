@@ -1,7 +1,6 @@
 import React from "react";
 import { AxiosError } from "axios";
 import { Result, Button } from "antd";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 interface Props {
@@ -22,9 +21,9 @@ const FullPageErrorFallback = ({ error, requestError }: Props) => {
         title={"Something Went Wrong"}
         subTitle={"A fatal error has ocurred. Please refresh."}
         extra={
-          <Link to="/">
+          <a href="/">
             <Button type="primary">Back Home</Button>
-          </Link>
+          </a>
         }
       />
     );
@@ -42,9 +41,9 @@ const FullPageErrorFallback = ({ error, requestError }: Props) => {
           : "A fatal error has ocurred. Please refresh."
       }
       extra={
-        <Link to="/">
+        <a href="/">
           <Button type="primary">Back Home</Button>
-        </Link>
+        </a>
       }
     />
   );

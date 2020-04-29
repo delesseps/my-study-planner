@@ -21,11 +21,11 @@ export type ISchedule = {
 };
 
 export interface ICourse {
-  _id?: string;
+  _id: string;
   name: string;
   schedule: ISchedule;
-  evaluations?: IEvaluation[];
-  homework?: IHomework[];
+  evaluations: IEvaluation[];
+  homework: IHomework[];
   members: Partial<IUser>[];
   createdBy: Partial<IUser>;
 }

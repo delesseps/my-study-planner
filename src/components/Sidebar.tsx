@@ -61,11 +61,11 @@ const Styles = {
 
     @media only screen and (max-width: ${breakpoints.bpMedium}) {
       bottom: 0;
-      top: 0;
-      height: auto;
-      width: 100%;
 
-      position: sticky;
+      height: auto;
+      width: 100vw;
+
+      position: fixed;
 
       border-right: none;
       border-top: 1px solid ${(props) => props.theme.fontColors.textRgba(0.1)};

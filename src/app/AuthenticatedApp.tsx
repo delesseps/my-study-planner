@@ -96,7 +96,7 @@ const Navigation = {
 
     @media only screen and (max-width: ${breakpoints.bpMedium}) {
       min-height: auto;
-      width: 100%;
+      width: 100vw;
       z-index: 1000;
 
       position: fixed;

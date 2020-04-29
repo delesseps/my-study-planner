@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle<{ config?: IUserConfig }>`
   body {
     font-size: 1.4rem;      
     background-color: ${(props) => props.theme.backgroundColor} !important;    
-    color: ${(props) => props.theme.fontColors.textRgba(0.65)} !important;    
+    color: ${(props) => props.theme.fontColors.textRgba(0.65)} !important;      
 
     @media only screen and (max-width: ${breakpoints.bpMobileL}) {
       #appzi-launch-button-dba9fa3a-fe42-4320-8ea4-78392d421de8  {

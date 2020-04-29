@@ -1,8 +1,8 @@
 import { agent } from "utils";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosRequestConfig } from "axios";
 import { IUserConfig } from "constants/interfaces/IUser";
 
-export function changeConfig(config: IUserConfig): Promise<AxiosResponse<any>> {
+export function changeConfig(config: IUserConfig): Promise<IUserConfig> {
   const options: AxiosRequestConfig = {
     url: "/user/config",
     method: "patch",
@@ -11,12 +11,10 @@ export function changeConfig(config: IUserConfig): Promise<AxiosResponse<any>> {
     },
   };
 
-  return agent.request(options);
+  return agent.request(options).then(({ data }) => data);
 }
 
-export function uploadProfilePicture(
-  image: string
-): Promise<AxiosResponse<any>> {
+export function uploadProfilePicture(image: string): Promise<any> {
   const options: AxiosRequestConfig = {
     url: "/user/upload_profile_picture",
     method: "post",
@@ -25,7 +23,7 @@ export function uploadProfilePicture(
     },
   };
 
-  return agent.request(options);
+  return agent.request(options).then(({ data }) => data);
 }
 
 export function closeWelcomeModal() {

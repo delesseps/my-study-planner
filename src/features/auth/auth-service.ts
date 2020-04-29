@@ -68,7 +68,7 @@ export function requestChangePassword(email: string): Promise<string> {
     },
   };
 
-  return agent.request(options);
+  return agent.request(options).then(({ data }) => data);
 }
 
 export function changePasswordTokenConfirmation(
@@ -82,7 +82,7 @@ export function changePasswordTokenConfirmation(
     },
   };
 
-  return agent.request(options);
+  return agent.request(options).then(({ data }) => data);
 }
 
 export function changePassword({
@@ -101,5 +101,5 @@ export function changePassword({
     },
   };
 
-  return agent.request(options);
+  return agent.request(options).then(({ data }) => data);
 }
