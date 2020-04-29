@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import styled, { keyframes, DefaultTheme } from "styled-components";
 import QueueAnim from "rc-queue-anim";
 import { Button, Skeleton, Tooltip, Popconfirm, Empty } from "antd";
@@ -87,7 +87,7 @@ const Schedule: React.FC = () => {
       <CourseDrawer visible={openDrawer} setVisible={toggleDrawer} />
       <Styles.Tabs>
         {days.map((day) => (
-          <WeekdayTab day={day}>
+          <WeekdayTab key={day} day={day}>
             {isMobile
               ? toTitleCase(day).slice(0, 2)
               : toTitleCase(day).slice(0, 3)}
@@ -112,16 +112,39 @@ const Courses = ({ currentDay }: { currentDay: Weekdays }) => {
   const [deleteCourse] = useDeleteCourse();
   const [openDrawer, toggleDrawer] = useState(false);
 
+  const handleDeleteCourse = (index: number, id: string) => () => {
+    deleteCourse({ index, id });
+  };
+
+  const handleEditClick = () => {
+    toggleDrawer(true);
+  };
+
+  const currentDayCourses = useMemo(() => {
+    return courses
+      ?.sort((a, b) => {
+        const scheduleA = a.schedule[currentDay];
+        const scheduleB = b.schedule[currentDay];
+
+        if (scheduleA && scheduleB) {
+          return scheduleA.start - scheduleB.start;
+        }
+
+        return 0;
+      })
+      .filter((course) => course.schedule[currentDay]);
+  }, [currentDay, courses]);
+
   if (status === "loading") {
     return (
-      <>
-        <Card.Skeleton />
-        <Card.Skeleton />
-      </>
+      <Placeholder.Wrapper>
+        <Placeholder.Item active />
+        <Placeholder.Item active />
+      </Placeholder.Wrapper>
     );
   }
 
-  if (!courses?.length) {
+  if (!currentDayCourses?.length) {
     return (
       <Card.Empty
         description={
@@ -134,89 +157,70 @@ const Courses = ({ currentDay }: { currentDay: Weekdays }) => {
     );
   }
 
-  const handleDeleteCourse = (index: number, id: string) => () => {
-    deleteCourse({ index, id });
-  };
-
-  const handleEditClick = () => {
-    toggleDrawer(true);
-  };
-
   return (
     <Styles.Body>
-      {courses
-        ?.sort((a, b) => {
-          const scheduleA = a.schedule[currentDay];
-          const scheduleB = b.schedule[currentDay];
+      {currentDayCourses?.map((course, courseIndex) => {
+        if (course.schedule[currentDay]) {
+          const { _id, name, schedule } = course;
+          const { start, end } = {
+            start: schedule[currentDay]?.start,
+            end: schedule[currentDay]?.end,
+          };
 
-          if (scheduleA && scheduleB) {
-            return scheduleA.start - scheduleB.start;
-          }
+          const startTime = start && hhmmss(start);
+          const endTime = end && hhmmss(end);
 
-          return 0;
-        })
-        .map((course, courseIndex) => {
-          if (course.schedule[currentDay]) {
-            const { _id, name, schedule } = course;
-            const { start, end } = {
-              start: schedule[currentDay]?.start,
-              end: schedule[currentDay]?.end,
-            };
-
-            const startTime = start && hhmmss(start);
-            const endTime = end && hhmmss(end);
-
-            return (
-              <Card.Wrapper key={_id}>
-                <CourseDrawer
-                  visible={openDrawer}
-                  setVisible={toggleDrawer}
-                  course={course}
-                  index={courseIndex}
-                />
-                <Card.Schedule>
-                  <time>
-                    <b>{startTime}</b>
-                  </time>
-                  <b>-</b>
-                  <time>
-                    <b>{endTime}</b>
-                  </time>
-                </Card.Schedule>
-                <Card.Content>
-                  <Card.Actions>
-                    <Card.Action onClick={handleEditClick}>
-                      <Tooltip title="Edit" mouseEnterDelay={0.4}>
-                        <Card.EditIcon />
-                      </Tooltip>
-                    </Card.Action>
-                    <Card.Action>
-                      <Tooltip title="delete" mouseEnterDelay={0.4}>
-                        <Popconfirm
-                          title="Are you sure to delete this course?"
-                          arrowPointAtCenter={true}
-                          placement="topRight"
-                          okText="Yes"
-                          cancelText="No"
-                          onConfirm={handleDeleteCourse(courseIndex, _id)}
-                        >
-                          <Card.DeleteIcon />
-                        </Popconfirm>
-                      </Tooltip>
-                    </Card.Action>
-                  </Card.Actions>
-                  <Card.CourseName>{name}</Card.CourseName>
-                  <CourseLocation.Wrapper>
-                    <CourseLocation.Icon />
-                    <CourseLocation.Classroom>
-                      {schedule[currentDay]?.classroom}
-                    </CourseLocation.Classroom>
-                  </CourseLocation.Wrapper>
-                </Card.Content>
-              </Card.Wrapper>
-            );
-          }
-        })}
+          return (
+            <Card.Wrapper key={_id}>
+              <CourseDrawer
+                visible={openDrawer}
+                setVisible={toggleDrawer}
+                course={course}
+                index={courseIndex}
+              />
+              <Card.Schedule>
+                <time>
+                  <b>{startTime}</b>
+                </time>
+                <b>-</b>
+                <time>
+                  <b>{endTime}</b>
+                </time>
+              </Card.Schedule>
+              <Card.Content>
+                <Card.Actions>
+                  <Card.Action onClick={handleEditClick}>
+                    <Tooltip title="Edit" mouseEnterDelay={0.4}>
+                      <Card.EditIcon />
+                    </Tooltip>
+                  </Card.Action>
+                  <Card.Action>
+                    <Tooltip title="delete" mouseEnterDelay={0.4}>
+                      <Popconfirm
+                        title="Are you sure to delete this course?"
+                        arrowPointAtCenter={true}
+                        placement="topRight"
+                        okText="Yes"
+                        cancelText="No"
+                        onConfirm={handleDeleteCourse(courseIndex, _id)}
+                      >
+                        <Card.DeleteIcon />
+                      </Popconfirm>
+                    </Tooltip>
+                  </Card.Action>
+                </Card.Actions>
+                <Card.CourseName>{name}</Card.CourseName>
+                <CourseLocation.Wrapper>
+                  <CourseLocation.Icon />
+                  <CourseLocation.Classroom>
+                    {schedule[currentDay]?.classroom}
+                  </CourseLocation.Classroom>
+                </CourseLocation.Wrapper>
+              </Card.Content>
+            </Card.Wrapper>
+          );
+        }
+      })}
     </Styles.Body>
   );
 };
@@ -392,22 +396,42 @@ const Card = {
       color: ${(props) => props.theme.colors.main};
     }
   `,
-  Skeleton: styled(Skeleton.Button)`
-    min-width: 47rem;
-    max-width: 47rem;
 
-    min-height: 15rem;
-
-    background: rgba(0, 0, 0, 0.1) !important;
-
-    &:not(:last-child) {
-      margin-bottom: 2.5rem;
-    }
-  `,
   Empty: styled(Empty)`
     margin: 4rem 0;
 
     color: ${({ theme }) => theme.fontColors.textRgba(0.8)};
+  `,
+};
+
+const Placeholder = {
+  Wrapper: styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 4rem 0;
+  `,
+  Item: styled(Skeleton.Button)`
+    &&& {
+      width: 47rem;
+    }
+
+    min-height: 12rem;
+
+    @media only screen and (max-width: ${breakpoints.bpMobileM}) {
+      &&& {
+        width: 100%;
+      }
+    }
+
+    @media only screen and (max-width: ${breakpoints.bpMobileS}) {
+      &&& {
+        width: 95vw;
+      }
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 2.5rem;
+    }
   `,
 };
 
