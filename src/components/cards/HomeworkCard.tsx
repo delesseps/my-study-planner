@@ -69,24 +69,32 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
           </AssignmentPriority>
         </Assignment>
         <Actions>
-          <Tooltip title="Done">
-            <CheckIcon onClick={handleDoneClick} />
-          </Tooltip>
+          <Action>
+            <Tooltip title="Done" mouseEnterDelay={0.4}>
+              <CheckIcon onClick={handleDoneClick} />
+            </Tooltip>
+          </Action>
 
-          <Tooltip title="Edit">
-            <EditIcon onClick={handleEditClick} />
-          </Tooltip>
+          <Action>
+            <Tooltip title="Edit" mouseEnterDelay={0.4}>
+              <EditIcon onClick={handleEditClick} />
+            </Tooltip>
+          </Action>
 
-          <Popconfirm
-            title="Are you sure to delete this homework?"
-            arrowPointAtCenter={true}
-            placement="topRight"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={handleDeleteClick}
-          >
-            <DeleteIcon />
-          </Popconfirm>
+          <Action>
+            <Tooltip title="Delete" mouseEnterDelay={0.4}>
+              <Popconfirm
+                title="Are you sure to delete this homework?"
+                arrowPointAtCenter={true}
+                placement="topRight"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={handleDeleteClick}
+              >
+                <DeleteIcon />
+              </Popconfirm>
+            </Tooltip>
+          </Action>
         </Actions>
       </MainInfo>
       <OtherInfo>
@@ -152,6 +160,13 @@ const Actions = styled.div`
   & > *:not(:last-child) {
     margin-right: 1.5rem;
   }
+`;
+
+const Action = styled.button`
+  border: none;
+  background: transparent;
+
+  outline: none;
 `;
 
 const CheckIcon = styled(CheckOutlined)`

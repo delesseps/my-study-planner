@@ -34,18 +34,24 @@ const ToDoCard: React.FC<IToDoCardProps> = ({ toDo, index }) => {
         <TaskTitle>{toDo.task}</TaskTitle>
       </RowWrapper>
       <RowWrapper>
-        <Popconfirm
-          title="Are you sure to delete this to-do?"
-          arrowPointAtCenter={true}
-          okText="Yes"
-          cancelText="No"
-          onConfirm={handleDeleteClick}
-        >
-          <DeleteIcon />
-        </Popconfirm>
-        <Tooltip title="Done">
-          <Checkbox onChange={handleDoneClick} />
-        </Tooltip>
+        <Action>
+          <Tooltip title="Delete" mouseEnterDelay={0.4}>
+            <Popconfirm
+              title="Are you sure to delete this to-do?"
+              arrowPointAtCenter={true}
+              okText="Yes"
+              cancelText="No"
+              onConfirm={handleDeleteClick}
+            >
+              <DeleteIcon />
+            </Popconfirm>
+          </Tooltip>
+        </Action>
+        <Action>
+          <Tooltip title="Done" mouseEnterDelay={0.4}>
+            <Checkbox onChange={handleDoneClick} />
+          </Tooltip>
+        </Action>
       </RowWrapper>
     </Wrapper>
   );
@@ -66,6 +72,13 @@ const Wrapper = styled.div`
 const RowWrapper = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const Action = styled.button`
+  border: none;
+  background: transparent;
+
+  outline: none;
 `;
 
 const TaskTitle = styled.h3`

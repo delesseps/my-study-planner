@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useWindowSize } from "react-use";
 
 import { FadeIn, Profiler } from "components";
 import { breakpoints } from "theme";
@@ -20,6 +21,9 @@ const WelcomeModal = React.lazy(() => import("../components/modals/Welcome"));
 
 const Home: React.FC = () => {
   const { user } = useAuth();
+  const { width } = useWindowSize();
+
+  const isMobile = width <= 425;
 
   return (
     <Profiler id="Home Screen">
@@ -33,9 +37,11 @@ const Home: React.FC = () => {
             <CounterPanel user={user} />
           </CounterPanelRight>
 
-          <HomeSchedulePanelWrapper>
-            <HomeSchedulePanel />
-          </HomeSchedulePanelWrapper>
+          {!isMobile && (
+            <HomeSchedulePanelWrapper>
+              <HomeSchedulePanel />
+            </HomeSchedulePanelWrapper>
+          )}
 
           <ToDoPanelWrapper>
             <ToDoPanel />
@@ -89,11 +95,11 @@ const Wrapper = styled.section`
       "left "
       "right"
       "calendar"
-      "schedule"
       "evaluation"
+      "homework"
       "ractions"
-      "homework "
-      "todo";
+      "todo"
+      "schedule";
     grid-template-columns: 1fr;
   }
 `;
@@ -124,7 +130,6 @@ const CounterPanelRight = styled.div`
 `;
 
 const CalendarPanelWrapper = styled.div`
-  max-height: 40rem;
   align-self: start;
 
   background-color: #fff;

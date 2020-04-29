@@ -8,7 +8,7 @@ export function remove({
 }: {
   id: string;
   index: number;
-}): Promise<any> {
+}): Promise<string> {
   const options: AxiosRequestConfig = {
     url: "/homework/delete",
     method: "delete",
@@ -17,7 +17,7 @@ export function remove({
     },
   };
 
-  return agent.request(options);
+  return agent.request(options).then(({ data }) => data);
 }
 
 export function edit({

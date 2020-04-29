@@ -1,5 +1,4 @@
 import { Urgency } from "./IUser";
-import { Moment } from "moment";
 
 export default interface IEvaluation {
   _id: string;

@@ -1,30 +1,34 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import { HomeOutlined } from "@ant-design/icons";
+import { HomeOutlined, CalendarOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 import { breakpoints } from "theme";
 
-const Sidebar: React.FC = props => {
+const Sidebar: React.FC = () => {
   return (
-    <Wrapper>
-      <Item activeClassName="active" to="/dashboard" exact>
-        <HomeIcon />
-        <Text>Home</Text>
-      </Item>
-    </Wrapper>
+    <Styles.Wrapper>
+      <Styles.Item activeClassName="active" to="/dashboard" exact>
+        <Styles.HomeIcon />
+        <Styles.Text>Home</Styles.Text>
+      </Styles.Item>
+      <Styles.Item activeClassName="active" to="/schedule" exact>
+        <Styles.CalendarIcon />
+        <Styles.Text>Schedule</Styles.Text>
+      </Styles.Item>
+    </Styles.Wrapper>
   );
 };
 
-const fadeIn = keyframes`
+const animations = {
+  fadeIn: keyframes`
    from {
     opacity: 0;
   }
   to {
     opacity: 1;
   }
-`;
-
-const fadeInUp = keyframes`
+`,
+  fadeInUp: keyframes`
     0% {
       transform: translateY(10%);      
     }
@@ -32,9 +36,8 @@ const fadeInUp = keyframes`
     100% {
       transform: translateY(0);     
     }
-`;
-
-const fadeInUpText = keyframes`
+`,
+  fadeInUpText: keyframes`
     0% {
       transform: translateY(50%);
       opacity: 0;
@@ -44,119 +47,127 @@ const fadeInUpText = keyframes`
       transform: translateY(0);
       opacity: 1;
     }
-`;
+`,
+};
 
-const Wrapper = styled.nav`
-  background-color: ${props => props.theme.sidebarBackgroundColor};
-  height: 100%;
-  width: 8%;
-  border-right: 2px solid ${props => props.theme.fontColors.textRgba(0.1)};
+const Styles = {
+  Wrapper: styled.nav`
+    background-color: ${(props) => props.theme.sidebarBackgroundColor};
+    height: 100%;
+    width: 8%;
+    border-right: 2px solid ${(props) => props.theme.fontColors.textRgba(0.1)};
 
-  position: fixed;
-
-  @media only screen and (max-width: ${breakpoints.bpMedium}) {
-    bottom: 0;
-    top: 0;
-    height: auto;
-    width: 100%;
-
-    position: sticky;
-
-    border-right: none;
-    border-top: 1px solid ${props => props.theme.fontColors.textRgba(0.1)};
-    padding: 1rem 0;
-
-    flex-direction: row;
-  }
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  & > a:not(:last-child) {
-    margin-bottom: 3.5rem;
+    position: fixed;
 
     @media only screen and (max-width: ${breakpoints.bpMedium}) {
-      margin-bottom: 0;
-    }
-  }
+      bottom: 0;
 
-  .active {
-    & p {
-      display: initial;
-      animation: ${fadeInUpText} ease-out 0.3s;
-      margin-bottom: -1.3rem;
+      height: auto;
+      width: 100vw;
+
+      position: fixed;
+
+      border-right: none;
+      border-top: 1px solid ${(props) => props.theme.fontColors.textRgba(0.1)};
+      padding: 1rem 0;
+
+      flex-direction: row;
+    }
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    & > a:not(:last-child) {
+      margin-bottom: 3.5rem;
 
       @media only screen and (max-width: ${breakpoints.bpMedium}) {
-        color: ${props => props.theme.colors.main};
+        margin-bottom: 0;
       }
     }
 
-    & i {
-      animation: ${fadeInUp} ease-out 0.3s;
+    .active {
+      & p {
+        display: initial;
+        animation: ${animations.fadeInUpText} ease-out 0.3s;
+        margin-bottom: -1.3rem;
 
-      @media only screen and (max-width: ${breakpoints.bpMedium}) {
-        & > svg {
-          fill: ${props => props.theme.colors.main};
+        @media only screen and (max-width: ${breakpoints.bpMedium}) {
+          color: ${(props) => props.theme.colors.main};
         }
       }
+
+      & i {
+        animation: ${animations.fadeInUp} ease-out 0.3s;
+
+        @media only screen and (max-width: ${breakpoints.bpMedium}) {
+          & > svg {
+            fill: ${(props) => props.theme.colors.main};
+          }
+        }
+      }
+
+      position: relative;
     }
 
-    position: relative;
-  }
+    .active::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-right: 0.5rem solid ${(props) => props.theme.colors.main};
 
-  .active::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-right: 0.5rem solid ${props => props.theme.colors.main};
+      animation: ${animations.fadeIn} 0.5s;
 
-    animation: ${fadeIn} 0.5s;
+      @media only screen and (max-width: ${breakpoints.bpMedium}) {
+        display: none;
+      }
+    }
 
-    @media only screen and (max-width: ${breakpoints.bpMedium}) {
+    & p {
       display: none;
     }
-  }
+  `,
+  Item: styled(NavLink)`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-  & p {
-    display: none;
-  }
-`;
+    width: 100%;
+    height: 9.5rem;
 
-const Item = styled(NavLink)`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    @media only screen and (max-width: ${breakpoints.bpMedium}) {
+      height: 5rem;
+    }
+  `,
+  HomeIcon: styled(HomeOutlined)`
+    font-size: 2.6rem;
+    margin-bottom: 0.7rem;
 
-  width: 100%;
-  height: 9.5rem;
+    & svg {
+      fill: ${(props) => props.theme.fontColors.textRgba(0.8)};
+    }
+  `,
+  CalendarIcon: styled(CalendarOutlined)`
+    font-size: 2.6rem;
+    margin-bottom: 0.7rem;
 
-  @media only screen and (max-width: ${breakpoints.bpMedium}) {
-    height: 5rem;
-  }
-`;
+    & svg {
+      fill: ${(props) => props.theme.fontColors.textRgba(0.8)};
+    }
+  `,
+  Text: styled.p`
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 1.2rem;
 
-const HomeIcon = styled(HomeOutlined)`
-  font-size: 2.6rem;
-  margin-bottom: 0.7rem;
+    font-weight: 500;
+    color: ${(props) => props.theme.fontColors.textRgba(0.8)};
 
-  & svg {
-    fill: ${props => props.theme.fontColors.textRgba(0.8)};
-  }
-`;
-
-const Text = styled.p`
-  text-transform: uppercase;
-  text-align: center;
-  font-size: 1.2rem;
-
-  font-weight: 500;
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
-
-  margin: 0;
-`;
+    margin: 0;
+  `,
+};
 
 export default Sidebar;

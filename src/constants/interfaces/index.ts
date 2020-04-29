@@ -7,3 +7,4 @@ export * from "./ISignInCredentials";
 export * from "./ISignUpCredentials";
 export * from "./IToDo";
 export * from "./IUser";
+export * from "./course";
