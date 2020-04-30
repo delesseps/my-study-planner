@@ -289,12 +289,8 @@ const Card = {
     width: 47rem;
 
     @media only screen and (max-width: ${breakpoints.bpMobileM}) {
-      width: 100%;
-    }
-
-    @media only screen and (max-width: ${breakpoints.bpMobileS}) {
       width: 95vw;
-    }
+    }   
 
     box-shadow: ${({ theme }) => theme.shadow1};
 
