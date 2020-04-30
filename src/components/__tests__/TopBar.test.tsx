@@ -35,6 +35,7 @@ describe("TopBar", () => {
   it("renders correctly", async () => {
     const { asFragment } = await renderTopBar({
       user: {
+        _id: "1231151",
         name: "Karolann Schiller",
         email: "Lolita_Morissette18@hotmail.com",
         picture: "http://lorempixel.com/640/480/city",

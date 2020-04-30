@@ -3,13 +3,13 @@ import IHomework from "./IHomework";
 import IUser from "./IUser";
 
 export enum Weekdays {
+  sunday = "SUNDAY",
   monday = "MONDAY",
   tuesday = "TUESDAY",
   wednesday = "WEDNESDAY",
   thursday = "THURSDAY",
   friday = "FRIDAY",
   saturday = "SATURDAY",
-  sunday = "SUNDAY",
 }
 
 export type ISchedule = {

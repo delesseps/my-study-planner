@@ -18,7 +18,7 @@ function addToken(registrationToken: string) {
 }
 
 export async function initializePush() {
-  const registration = await navigator.serviceWorker.ready;
+  const registration = await navigator.serviceWorker?.ready;
 
   if (registration) {
     const m = await firebaseConfig();

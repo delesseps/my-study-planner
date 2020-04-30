@@ -19,41 +19,6 @@ const CourseDrawer = React.lazy(() =>
   import("components/drawers/CourseDrawer")
 );
 
-// const mockData: Partial<ICourse>[] = [
-//   {
-//     _id: "1",
-//     name: "Calculo diferencial",
-//     schedule: {
-//       [Weekdays.monday]: {
-//         start: 900,
-//         end: 1080,
-//         classroom: "FR1-301",
-//       },
-//       [Weekdays.wednesday]: {
-//         start: 1080,
-//         end: 1200,
-//         classroom: "FR1-608",
-//       },
-//     },
-//   },
-//   {
-//     _id: "2",
-//     name: "Español II",
-//     schedule: {
-//       [Weekdays.monday]: {
-//         start: 1080,
-//         end: 1200,
-//         classroom: "FR1-301",
-//       },
-//       [Weekdays.wednesday]: {
-//         start: 900,
-//         end: 1080,
-//         classroom: "FR1-608",
-//       },
-//     },
-//   },
-// ];
-
 const days = ([...Object.values(Weekdays)] as any) as Weekdays[];
 
 const Schedule: React.FC = () => {
@@ -73,6 +38,7 @@ const Schedule: React.FC = () => {
       return (
         <Styles.Tab
           className={currentDay === day ? "active" : ""}
+          data-testid={currentDay === day ? "active" : ""}
           onClick={changeDay(day)}
         >
           {children}
@@ -97,6 +63,8 @@ const Schedule: React.FC = () => {
       <Courses currentDay={currentDay} />
       <Button
         key={"add-button"}
+        aria-label="Add course"
+        data-testid="add-course"
         type="primary"
         shape="circle"
         onClick={() => toggleDrawer(true)}
@@ -137,7 +105,7 @@ const Courses = ({ currentDay }: { currentDay: Weekdays }) => {
 
   if (status === "loading") {
     return (
-      <Placeholder.Wrapper>
+      <Placeholder.Wrapper data-testid="course-skeleton">
         <Placeholder.Item active />
         <Placeholder.Item active />
       </Placeholder.Wrapper>
@@ -189,25 +157,30 @@ const Courses = ({ currentDay }: { currentDay: Weekdays }) => {
               </Card.Schedule>
               <Card.Content>
                 <Card.Actions>
-                  <Card.Action onClick={handleEditClick}>
-                    <Tooltip title="Edit" mouseEnterDelay={0.4}>
+                  <Tooltip title="Edit" mouseEnterDelay={0.4}>
+                    <Card.Action
+                      aria-label="Edit course"
+                      data-testid="edit-course"
+                      onClick={handleEditClick}
+                    >
                       <Card.EditIcon />
+                    </Card.Action>
+                  </Tooltip>
+
+                  <Popconfirm
+                    title="Are you sure to delete this course?"
+                    arrowPointAtCenter={true}
+                    placement="topRight"
+                    okText="Yes"
+                    cancelText="No"
+                    onConfirm={handleDeleteCourse(courseIndex, _id)}
+                  >
+                    <Tooltip title="Delete" mouseEnterDelay={0.4}>
+                      <Card.Action aria-label="Delete course">
+                        <Card.DeleteIcon data-testid="delete-course" />
+                      </Card.Action>
                     </Tooltip>
-                  </Card.Action>
-                  <Card.Action>
-                    <Tooltip title="delete" mouseEnterDelay={0.4}>
-                      <Popconfirm
-                        title="Are you sure to delete this course?"
-                        arrowPointAtCenter={true}
-                        placement="topRight"
-                        okText="Yes"
-                        cancelText="No"
-                        onConfirm={handleDeleteCourse(courseIndex, _id)}
-                      >
-                        <Card.DeleteIcon />
-                      </Popconfirm>
-                    </Tooltip>
-                  </Card.Action>
+                  </Popconfirm>
                 </Card.Actions>
                 <Card.CourseName>{name}</Card.CourseName>
                 <CourseLocation.Wrapper>
