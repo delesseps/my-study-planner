@@ -101,6 +101,7 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
   const onClose = useCallback(() => {
     resetAddCourse();
     resetEditCourse();
+    form.resetFields();
     setVisible(false);
   }, [setVisible, resetAddCourse, resetEditCourse]);
 

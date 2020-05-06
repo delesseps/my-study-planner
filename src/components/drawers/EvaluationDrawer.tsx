@@ -51,6 +51,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
   const onClose = useCallback(() => {
     addEvaluationReset();
     editEvaluationReset();
+    form.resetFields();
     setVisible(false);
   }, [addEvaluationReset, editEvaluationReset, setVisible]);
 

@@ -48,6 +48,7 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
   const onClose = useCallback(() => {
     addHomeworkReset();
     editHomeworkReset();
+    form.resetFields();
     setVisible(false);
   }, [addHomeworkReset, editHomeworkReset, setVisible]);
 
