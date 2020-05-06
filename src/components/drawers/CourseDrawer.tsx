@@ -102,6 +102,7 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
     resetAddCourse();
     resetEditCourse();
     form.resetFields();
+    setSelectedDays([]);
     setVisible(false);
   }, [setVisible, resetAddCourse, resetEditCourse]);
 
