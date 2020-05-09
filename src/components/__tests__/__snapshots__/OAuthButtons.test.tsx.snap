@@ -7,10 +7,6 @@ exports[`renders correctly 1`] = `
   margin-top: 2.4rem;
 }
 
-.c0 > a:not(:last-child) {
-  margin-bottom: 2rem;
-}
-
 .c1.c1 {
   cursor: pointer;
   display: -webkit-box;
@@ -25,6 +21,7 @@ exports[`renders correctly 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+  padding-bottom: 0;
 }
 
 .c2 {
@@ -36,7 +33,7 @@ exports[`renders correctly 1`] = `
     class="c0"
   >
     <a
-      class="c1 ant-btn ant-btn-default ant-btn-lg ant-btn-block"
+      class="ant-btn c1 ant-btn-lg"
       href="http://localhost:3001/api/auth/google"
     >
       <svg
@@ -44,7 +41,9 @@ exports[`renders correctly 1`] = `
       >
         google_logo.svg
       </svg>
-      Sign in with Google
+      <span>
+        Sign in with Google
+      </span>
     </a>
   </div>
 </DocumentFragment>
