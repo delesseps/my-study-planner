@@ -15,6 +15,14 @@ interface ICourseDrawerProps {
   index?: number;
 }
 
+/*
+  Convert object to : 
+
+  [WEEKDAY]: {
+    time: [momentDate, momentDate],
+    classroom: ""
+  }
+*/
 function normalizeWeekday(schedule: ISchedule) {
   const weekday: Record<string, any> = {};
 
@@ -37,6 +45,14 @@ function normalizeWeekday(schedule: ISchedule) {
   return weekday;
 }
 
+function getSchedule(course?: ICourse) {
+  return function () {
+    const schedule = course?.schedule;
+    if (schedule) return Object.keys(schedule);
+    return [];
+  };
+}
+
 const CourseDrawer: React.FC<ICourseDrawerProps> = ({
   visible = false,
   setVisible,
@@ -44,13 +60,10 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
   index,
 }) => {
   const [form] = Form.useForm();
-  const [selectedDays, setSelectedDays] = useState<string[]>(() => {
-    const schedule = course?.schedule;
+  const [selectedDays, setSelectedDays] = useState<string[]>(
+    getSchedule(course)
+  );
 
-    if (schedule) return Object.keys(schedule);
-
-    return [];
-  });
   const [
     addCourse,
     { status: addCourseStatus, reset: resetAddCourse },
@@ -102,9 +115,8 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
     resetAddCourse();
     resetEditCourse();
     form.resetFields();
-    setSelectedDays([]);
     setVisible(false);
-  }, [setVisible, resetAddCourse, resetEditCourse]);
+  }, [setVisible, resetAddCourse, resetEditCourse, form]);
 
   const handleSelectedDayChange = (days: string[]) => {
     setSelectedDays(days);
@@ -114,6 +126,10 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
     // Close drawer after successful operation
     if (status === "success") onClose();
   }, [status, onClose]);
+
+  useEffect(() => {
+    setSelectedDays(getSchedule(course));
+  }, [visible, setSelectedDays, course]);
 
   const weekday = useMemo(() => {
     const schedule = course?.schedule;

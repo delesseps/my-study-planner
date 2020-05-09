@@ -53,7 +53,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
     editEvaluationReset();
     form.resetFields();
     setVisible(false);
-  }, [addEvaluationReset, editEvaluationReset, setVisible]);
+  }, [addEvaluationReset, editEvaluationReset, setVisible, form]);
 
   useEffect(() => {
     // Close drawer after successful operation

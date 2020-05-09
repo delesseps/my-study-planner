@@ -25,7 +25,7 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({ visible, setVisible }) => {
   const onClose = useCallback(() => {
     form.resetFields();
     setVisible(false);
-  }, [setVisible]);
+  }, [setVisible, form]);
 
   useEffect(() => {
     // Close drawer after successful operation

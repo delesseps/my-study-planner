@@ -50,7 +50,7 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
     editHomeworkReset();
     form.resetFields();
     setVisible(false);
-  }, [addHomeworkReset, editHomeworkReset, setVisible]);
+  }, [addHomeworkReset, editHomeworkReset, setVisible, form]);
 
   useEffect(() => {
     // Close drawer after successful operation

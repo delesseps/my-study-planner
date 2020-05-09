@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import { useWindowSize } from "react-use";
 
-import { Weekdays } from "constants/interfaces/course";
+import { Weekdays, ICourse } from "constants/interfaces/course";
 import { useCourses, useDeleteCourse } from "features/course/course-hooks";
 import { hhmmss, toTitleCase } from "utils";
 import { breakpoints } from "theme";
@@ -77,16 +77,6 @@ const Schedule: React.FC = () => {
 
 const Courses = ({ currentDay }: { currentDay: Weekdays }) => {
   const { data: courses, status } = useCourses();
-  const [deleteCourse] = useDeleteCourse();
-  const [openDrawer, toggleDrawer] = useState(false);
-
-  const handleDeleteCourse = (index: number, id: string) => () => {
-    deleteCourse({ index, id });
-  };
-
-  const handleEditClick = () => {
-    toggleDrawer(true);
-  };
 
   const currentDayCourses = useMemo(() => {
     return courses
@@ -129,74 +119,101 @@ const Courses = ({ currentDay }: { currentDay: Weekdays }) => {
     <Styles.Body>
       {currentDayCourses?.map((course, courseIndex) => {
         if (course.schedule[currentDay]) {
-          const { _id, name, schedule } = course;
-          const { start, end } = {
-            start: schedule[currentDay]?.start,
-            end: schedule[currentDay]?.end,
-          };
-
-          const startTime = start && hhmmss(start);
-          const endTime = end && hhmmss(end);
-
           return (
-            <Card.Wrapper key={_id}>
-              <CourseDrawer
-                visible={openDrawer}
-                setVisible={toggleDrawer}
-                course={course}
-                index={courseIndex}
-              />
-              <Card.Schedule>
-                <time>
-                  <b>{startTime}</b>
-                </time>
-                <b>-</b>
-                <time>
-                  <b>{endTime}</b>
-                </time>
-              </Card.Schedule>
-              <Card.Content>
-                <Card.Actions>
-                  <Tooltip title="Edit" mouseEnterDelay={0.4}>
-                    <Card.Action
-                      aria-label="Edit course"
-                      data-testid="edit-course"
-                      onClick={handleEditClick}
-                    >
-                      <Card.EditIcon />
-                    </Card.Action>
-                  </Tooltip>
-
-                  <Popconfirm
-                    title="Are you sure to delete this course?"
-                    arrowPointAtCenter={true}
-                    placement="topRight"
-                    okText="Yes"
-                    cancelText="No"
-                    onConfirm={handleDeleteCourse(courseIndex, _id)}
-                  >
-                    <Tooltip title="Delete" mouseEnterDelay={0.4}>
-                      <Card.Action aria-label="Delete course">
-                        <Card.DeleteIcon data-testid="delete-course" />
-                      </Card.Action>
-                    </Tooltip>
-                  </Popconfirm>
-                </Card.Actions>
-                <Card.CourseName>{name}</Card.CourseName>
-                <CourseLocation.Wrapper>
-                  <CourseLocation.Icon />
-                  <CourseLocation.Classroom>
-                    {schedule[currentDay]?.classroom}
-                  </CourseLocation.Classroom>
-                </CourseLocation.Wrapper>
-              </Card.Content>
-            </Card.Wrapper>
+            <Course
+              key={course._id}
+              index={courseIndex}
+              course={course}
+              currentDay={currentDay}
+            />
           );
         }
       })}
     </Styles.Body>
   );
 };
+
+interface CourseProps {
+  index: number;
+  course: ICourse;
+  currentDay: Weekdays;
+}
+
+const Course = React.forwardRef<any, CourseProps>(({ index, course, currentDay }, ref) => {
+  const [openDrawer, toggleDrawer] = useState(false);
+  const [deleteCourse] = useDeleteCourse();
+
+  const handleDeleteCourse = (index: number, id: string) => () => {
+    deleteCourse({ index, id });
+  };
+
+  const handleEditClick = () => {
+    toggleDrawer(true);
+  };
+
+  const { _id, name, schedule } = course;
+  const { start, end } = {
+    start: schedule[currentDay]?.start,
+    end: schedule[currentDay]?.end,
+  };
+  const startTime = start && hhmmss(start);
+  const endTime = end && hhmmss(end);
+
+  return (
+    <Card.Wrapper ref={ref}>
+      <CourseDrawer
+        visible={openDrawer}
+        setVisible={toggleDrawer}
+        course={course}
+        index={index}
+      />
+      <Card.Schedule>
+        <time>
+          <b>{startTime}</b>
+        </time>
+        <b>-</b>
+        <time>
+          <b>{endTime}</b>
+        </time>
+      </Card.Schedule>
+      <Card.Content>
+        <Card.Actions>
+          <Tooltip title="Edit" mouseEnterDelay={0.4}>
+            <Card.Action
+              aria-label="Edit course"
+              data-testid="edit-course"
+              onClick={handleEditClick}
+            >
+              <Card.EditIcon />
+            </Card.Action>
+          </Tooltip>
+
+          <Popconfirm
+            title="Are you sure to delete this course?"
+            arrowPointAtCenter={true}
+            placement="topRight"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={handleDeleteCourse(index, _id)}
+          >
+            <Tooltip title="Delete" mouseEnterDelay={0.4}>
+              <Card.Action aria-label="Delete course">
+                <Card.DeleteIcon data-testid="delete-course" />
+              </Card.Action>
+            </Tooltip>
+          </Popconfirm>
+        </Card.Actions>
+        <Card.CourseName>{name}</Card.CourseName>
+        <CourseLocation.Wrapper>
+          <CourseLocation.Icon />
+          <CourseLocation.Classroom>
+            {schedule[currentDay]?.classroom}
+          </CourseLocation.Classroom>
+        </CourseLocation.Wrapper>
+      </Card.Content>
+    </Card.Wrapper>
+  );
+});
 
 const animations = {
   active: (theme: DefaultTheme) => keyframes`
@@ -290,7 +307,7 @@ const Card = {
 
     @media only screen and (max-width: ${breakpoints.bpMobileM}) {
       width: 95vw;
-    }   
+    }
 
     box-shadow: ${({ theme }) => theme.shadow1};
 
