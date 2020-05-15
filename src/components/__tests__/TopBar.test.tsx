@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   fireEvent,
   waitFor,
@@ -6,70 +6,70 @@ import {
   loginAsUser,
   waitForElementToBeRemoved,
   screen,
-} from "test/test-utils";
+} from 'test/test-utils'
 
-import IUser from "constants/interfaces/IUser";
-import TopBar from "components/TopBar";
+import IUser from 'constants/interfaces/IUser'
+import TopBar from 'components/TopBar'
 
-async function renderTopBar({ user }: { user?: IUser } = {}) {
+async function renderTopBar({user}: {user?: IUser} = {}) {
   if (user === undefined) {
-    user = await loginAsUser();
+    user = await loginAsUser()
   } else {
-    await loginAsUser(user);
+    await loginAsUser(user)
   }
 
-  const utils = render(<TopBar />);
+  const utils = render(<TopBar />)
 
   await waitForElementToBeRemoved(
-    () => screen.queryByTestId("full-page-loader"),
-    { timeout: 4000 }
-  );
+    () => screen.queryByTestId('full-page-loader'),
+    {timeout: 4000},
+  )
 
   return {
     ...utils,
     user,
-  };
+  }
 }
 
-describe("TopBar", () => {
-  it("renders correctly", async () => {
-    const { asFragment } = await renderTopBar({
+describe('TopBar', () => {
+  it('renders correctly', async () => {
+    const {asFragment} = await renderTopBar({
       user: {
-        _id: "1231151",
-        name: "Karolann Schiller",
-        email: "Lolita_Morissette18@hotmail.com",
-        picture: "http://lorempixel.com/640/480/city",
+        _id: '1231151',
+        name: 'Karolann Schiller',
+        email: 'Lolita_Morissette18@hotmail.com',
+        picture: 'http://lorempixel.com/640/480/city',
         firstSignIn: false,
         fcm: false,
-        role: "user",
+        role: 'user',
         verified: false,
-        configuration: { darkMode: false },
+        configuration: {darkMode: false},
         evaluations: [],
         homework: [],
         toDos: [],
         semesters: [],
       },
-    });
-    expect(asFragment()).toMatchSnapshot();
-  });
+    })
+    expect(asFragment()).toMatchSnapshot()
+  })
 
-  it("displays user profile", async () => {
-    const { getByText, getByLabelText } = await renderTopBar();
+  it('displays user profile', async () => {
+    const {getByText, getByLabelText} = await renderTopBar()
 
-    fireEvent.mouseOver(getByLabelText("caret-down"));
+    fireEvent.mouseOver(getByLabelText('caret-down'))
 
-    const profileButton = await waitFor(() => getByText("Profile"));
+    const profileButton = await waitFor(() => getByText('Profile'))
 
-    fireEvent.click(profileButton);
+    fireEvent.click(profileButton)
 
-    await waitFor(() => getByText("Done Homework"));
-  });
+    await waitFor(() => getByText('Done Homework'))
+  })
 
-  it("displays notifications", async () => {
-    const { getByText, getByLabelText } = await renderTopBar();
+  it('displays notifications', async () => {
+    const {getByText, getByLabelText} = await renderTopBar()
 
-    fireEvent.click(getByLabelText("bell"));
+    fireEvent.click(getByLabelText('bell'))
 
-    await waitFor(() => getByText("No notifications"));
-  });
-});
+    await waitFor(() => getByText('No notifications'))
+  })
+})

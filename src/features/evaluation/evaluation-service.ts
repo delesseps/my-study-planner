@@ -1,47 +1,47 @@
-import { agent } from "utils";
-import { AxiosRequestConfig } from "axios";
-import IEvaluation from "constants/interfaces/IEvaluation";
+import {agent} from 'utils'
+import {AxiosRequestConfig} from 'axios'
+import IEvaluation from 'constants/interfaces/IEvaluation'
 
 export function remove({
   id,
   index,
 }: {
-  id: string;
-  index: number;
+  id: string
+  index: number
 }): Promise<string> {
   const options: AxiosRequestConfig = {
-    url: "/evaluation/delete",
-    method: "delete",
+    url: '/evaluation/delete',
+    method: 'delete',
     data: {
       _id: id,
     },
-  };
+  }
 
-  return agent.request(options).then(({ data }) => data);
+  return agent.request(options).then(({data}) => data)
 }
 
 export function edit({
   evaluation,
   index,
 }: {
-  evaluation: IEvaluation;
-  index?: number;
+  evaluation: IEvaluation
+  index?: number
 }): Promise<IEvaluation> {
   const options: AxiosRequestConfig = {
-    url: "/evaluation/update",
-    method: "patch",
+    url: '/evaluation/update',
+    method: 'patch',
     data: evaluation,
-  };
+  }
 
-  return agent.request(options).then(({ data }) => data.evaluation);
+  return agent.request(options).then(({data}) => data.evaluation)
 }
 
 export function add(evaluation: IEvaluation): Promise<IEvaluation> {
   const options: AxiosRequestConfig = {
-    url: "/evaluation/add",
-    method: "post",
+    url: '/evaluation/add',
+    method: 'post',
     data: evaluation,
-  };
+  }
 
-  return agent.request(options).then(({ data }) => data.evaluation);
+  return agent.request(options).then(({data}) => data.evaluation)
 }

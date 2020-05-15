@@ -1,2 +1,2 @@
 export const domain =
-  process.env.NODE_ENV === "production" ? "jfelix.info" : "localhost";
+  process.env.NODE_ENV === 'production' ? 'jfelix.info' : 'localhost'

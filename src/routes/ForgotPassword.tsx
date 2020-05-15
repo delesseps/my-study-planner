@@ -1,32 +1,32 @@
-import * as React from "react";
-import styled from "styled-components";
-import { UserOutlined } from "@ant-design/icons";
-import { Button, Input, Alert, Form } from "antd";
-import { Link } from "react-router-dom";
+import * as React from 'react'
+import styled from 'styled-components'
+import {UserOutlined} from '@ant-design/icons'
+import {Button, Input, Alert, Form} from 'antd'
+import {Link} from 'react-router-dom'
 
-import { FadeIn } from "components";
-import { usePasswordChange } from "features/auth/auth-context";
-import { ReactComponent as Logo } from "assets/logo.svg";
-import { ReactComponent as SentMessage } from "assets/message_sent.svg";
-import { AxiosError } from "axios";
+import {FadeIn} from 'components'
+import {usePasswordChange} from 'features/auth/auth-context'
+import {ReactComponent as Logo} from 'assets/logo.svg'
+import {ReactComponent as SentMessage} from 'assets/message_sent.svg'
+import {AxiosError} from 'axios'
 
 const ForgotPassword: React.FunctionComponent = () => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
   const {
-    request: [requestChange, { status, error }],
-  } = usePasswordChange();
+    request: [requestChange, {status, error}],
+  } = usePasswordChange()
 
   const handleSubmit = (): void => {
-    form.validateFields().then((value) => SendRequest(value.email));
-  };
+    form.validateFields().then(value => SendRequest(value.email))
+  }
 
   const SendRequest = async (email: string) => {
-    requestChange(email);
-  };
+    requestChange(email)
+  }
 
-  const success = status === "success";
-  const errorObject = error as AxiosError;
-  const errorCode = errorObject?.response?.status;
+  const success = status === 'success'
+  const errorObject = error as AxiosError
+  const errorCode = errorObject?.response?.status
 
   return (
     <FadeIn>
@@ -53,7 +53,7 @@ const ForgotPassword: React.FunctionComponent = () => {
           <CardTitle>Reset Password</CardTitle>
           <CardBody>
             {success
-              ? "Successfuly sent! Please check your email!"
+              ? 'Successfuly sent! Please check your email!'
               : "Please enter your email address below and we'll send you a link to reset your password"}
           </CardBody>
           {success ? (
@@ -63,21 +63,21 @@ const ForgotPassword: React.FunctionComponent = () => {
               <Form.Item
                 name="email"
                 rules={[
-                  { required: true, message: "Please input your email!" },
+                  {required: true, message: 'Please input your email!'},
                   {
-                    type: "email",
-                    message: "The input is not valid E-mail!",
+                    type: 'email',
+                    message: 'The input is not valid E-mail!',
                   },
                 ]}
               >
                 <Input
-                  prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+                  prefix={<UserOutlined style={{color: 'rgba(0,0,0,.25)'}} />}
                   placeholder="Email address"
                 />
               </Form.Item>
               <Form.Item>
                 <Button
-                  loading={status === "loading" || status === "success"}
+                  loading={status === 'loading' || status === 'success'}
                   block
                   type="primary"
                   size="large"
@@ -96,8 +96,8 @@ const ForgotPassword: React.FunctionComponent = () => {
         </Card>
       </Wrapper>
     </FadeIn>
-  );
-};
+  )
+}
 
 const Wrapper = styled.main`
   display: flex;
@@ -108,15 +108,15 @@ const Wrapper = styled.main`
 
   min-height: 100vh;
 
-  background-color: ${(props) => props.theme.colors.main};
-`;
+  background-color: ${props => props.theme.colors.main};
+`
 
 const LogoBox = styled.div`
   display: flex;
   align-items: center;
 
   margin-bottom: 8rem;
-`;
+`
 
 const StyledLogo = styled(Logo)`
   width: 5rem;
@@ -125,17 +125,17 @@ const StyledLogo = styled(Logo)`
   fill: white;
 
   margin-right: 1rem;
-`;
+`
 
 const Title = styled.h1`
   font-weight: 600;
   margin-bottom: 0;
   color: white;
-`;
+`
 
 const StyledError = styled(Alert)`
   margin-bottom: 1rem;
-`;
+`
 
 const Card = styled.div`
   background-color: #fff;
@@ -155,13 +155,13 @@ const Card = styled.div`
   & > *:not(:last-child) {
     margin-bottom: 2rem;
   }
-`;
+`
 
 const CardTitle = styled.h2`
   font-weight: 300;
   font-size: 2.4rem;
-  color: ${(props) => props.theme.colors.main};
-`;
+  color: ${props => props.theme.colors.main};
+`
 
 const CardBody = styled.h4`
   font-weight: 400;
@@ -170,14 +170,14 @@ const CardBody = styled.h4`
   && {
     margin-bottom: 3rem;
   }
-`;
+`
 
 const StyledForm = styled(Form)`
   width: 100%;
   && {
     margin-bottom: 0;
   }
-`;
+`
 
 const LinkWrapper = styled.div`
   display: flex;
@@ -194,10 +194,10 @@ const LinkWrapper = styled.div`
   & > *:not(:last-child) {
     margin-right: 1rem;
   }
-`;
+`
 
 const StyledLink = styled(Link)`
   font-size: 1.6rem;
-`;
+`
 
-export default ForgotPassword;
+export default ForgotPassword

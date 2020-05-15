@@ -1,33 +1,33 @@
-import { AxiosRequestConfig } from "axios";
-import { agent } from "utils";
+import {AxiosRequestConfig} from 'axios'
+import {agent} from 'utils'
 
 export function googleTokenConfirmation(token: string): Promise<string> {
   const options: AxiosRequestConfig = {
-    url: "/link_account/confirm_token_google",
-    method: "post",
+    url: '/link_account/confirm_token_google',
+    method: 'post',
     data: {
       token,
     },
-  };
+  }
 
-  return agent.request(options).then(({ data }) => data);
+  return agent.request(options).then(({data}) => data)
 }
 
 export function googleAccountLink({
   token,
   email,
 }: {
-  token: string;
-  email: string;
+  token: string
+  email: string
 }): Promise<string> {
   const options: AxiosRequestConfig = {
-    url: "/link_account/google",
-    method: "post",
+    url: '/link_account/google',
+    method: 'post',
     data: {
       token,
       email,
     },
-  };
+  }
 
-  return agent.request(options).then(({ data }) => data);
+  return agent.request(options).then(({data}) => data)
 }

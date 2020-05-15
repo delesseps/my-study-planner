@@ -1,13 +1,13 @@
-import React from "react";
-import styled from "styled-components";
-import SignInForm from "components/SignInForm";
-import { Divider } from "antd";
-import OAuthButtons from "components/OAuthButtons";
-import BannerAuth from "components/BannerAuth";
-import { ReactComponent as Logo } from "assets/logo.svg";
-import { Link } from "react-router-dom";
-import FadeIn from "components/FadeIn";
-import { breakpoints } from "theme";
+import React from 'react'
+import styled from 'styled-components'
+import SignInForm from 'components/SignInForm'
+import {Divider} from 'antd'
+import OAuthButtons from 'components/OAuthButtons'
+import BannerAuth from 'components/BannerAuth'
+import {ReactComponent as Logo} from 'assets/logo.svg'
+import {Link} from 'react-router-dom'
+import FadeIn from 'components/FadeIn'
+import {breakpoints} from 'theme'
 
 const SignIn: React.FC = () => {
   return (
@@ -29,8 +29,8 @@ const SignIn: React.FC = () => {
         </RightSection>
       </Wrapper>
     </FadeIn>
-  );
-};
+  )
+}
 
 const Wrapper = styled.main`
   display: flex;
@@ -39,7 +39,7 @@ const Wrapper = styled.main`
   @media only screen and (max-width: ${breakpoints.bpMedium}) {
     flex-direction: column-reverse;
   }
-`;
+`
 
 const LeftSection = styled.section`
   min-height: 100vh;
@@ -57,7 +57,7 @@ const LeftSection = styled.section`
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
     padding: 2rem;
   }
-`;
+`
 
 const StyledLogo = styled(Logo)`
   fill: #fff;
@@ -68,7 +68,7 @@ const StyledLogo = styled(Logo)`
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
     margin-bottom: 3rem;
   }
-`;
+`
 
 const RightSection = styled.section`
   min-height: 100vh;
@@ -86,7 +86,7 @@ const RightSection = styled.section`
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
     padding: 3rem 0;
   }
-`;
+`
 
 const RightSectionWrapper = styled.div`
   width: 70%;
@@ -94,7 +94,7 @@ const RightSectionWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const SignUp = styled.h4`
   font-weight: 400;
@@ -113,6 +113,6 @@ const SignUp = styled.h4`
       text-decoration: underline;
     }
   }
-`;
+`
 
-export default SignIn;
+export default SignIn

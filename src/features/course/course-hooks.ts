@@ -1,91 +1,91 @@
-import { useQuery, useMutation, queryCache } from "react-query";
-import { message } from "antd";
+import {useQuery, useMutation, queryCache} from 'react-query'
+import {message} from 'antd'
 
-import * as courseService from "./course-service";
-import { ICourse } from "constants/interfaces";
+import * as courseService from './course-service'
+import {ICourse} from 'constants/interfaces'
 
 const courseQueryConfig = {
   staleTime: 1000 * 60 * 60,
   cacheTime: 1000 * 60 * 60,
   useErrorBoundary: true,
-};
+}
 
 export function useCourses() {
-  const data = useQuery(["course"], courseService.get, courseQueryConfig);
-  return data;
+  const data = useQuery(['course'], courseService.get, courseQueryConfig)
+  return data
 }
 
 export function useCourse(courseId: string) {
   const data = useQuery(
-    ["course", { courseId }],
+    ['course', {courseId}],
     courseService.getById,
-    courseQueryConfig
-  );
-  return data;
+    courseQueryConfig,
+  )
+  return data
 }
 
 export function useAddCourse() {
   return useMutation(courseService.add, {
-    onSuccess: (data) => {
-      queryCache.setQueryData(["course"], (previous: ICourse[]) => {
-        const newCourses = [...previous, data];
-        return newCourses;
-      });
+    onSuccess: data => {
+      queryCache.setQueryData(['course'], (previous: ICourse[]) => {
+        const newCourses = [...previous, data]
+        return newCourses
+      })
 
-      message.success("Successfuly added course!");
+      message.success('Successfuly added course!')
     },
     onError: () => {
-      message.error("Error adding course. Please try again.");
+      message.error('Error adding course. Please try again.')
     },
-  });
+  })
 }
 
 export function useDeleteCourse() {
   return useMutation(courseService.remove, {
-    onMutate: ({ index }) => {
-      const previousCourses = queryCache.getQueryData("course") as ICourse;
+    onMutate: ({index}) => {
+      const previousCourses = queryCache.getQueryData('course') as ICourse
 
-      queryCache.setQueryData(["course"], (previous: ICourse[]) => {
-        const newCourses = [...previous];
-        newCourses.splice(index, 1);
+      queryCache.setQueryData(['course'], (previous: ICourse[]) => {
+        const newCourses = [...previous]
+        newCourses.splice(index, 1)
 
-        return newCourses;
-      });
+        return newCourses
+      })
 
-      return () => queryCache.setQueryData("course", previousCourses);
+      return () => queryCache.setQueryData('course', previousCourses)
     },
     onSuccess: () => {
-      message.success("Successfuly removed course!");
+      message.success('Successfuly removed course!')
     },
     onError: (err, previousUserData, rollback: any) => {
-      rollback();
-      message.error("Error removing course. Please try again.");
+      rollback()
+      message.error('Error removing course. Please try again.')
     },
     onSettled: () => {
-      queryCache.refetchQueries("course");
+      queryCache.refetchQueries('course')
     },
-  });
+  })
 }
 
 export function useEditCourse() {
   return useMutation(courseService.edit, {
-    onSuccess: (data, { index }) => {
-      queryCache.setQueryData(["course"], (previous: ICourse[]) => {
-        const newCourses = [...previous];
+    onSuccess: (data, {index}) => {
+      queryCache.setQueryData(['course'], (previous: ICourse[]) => {
+        const newCourses = [...previous]
 
         if (!index) {
-          index = previous.findIndex((elem) => data._id === elem._id);
+          index = previous.findIndex(elem => data._id === elem._id)
         }
 
-        newCourses[index] = data;
+        newCourses[index] = data
 
-        return newCourses;
-      });
+        return newCourses
+      })
 
-      message.success("Successfuly edited course!");
+      message.success('Successfuly edited course!')
     },
     onError: () => {
-      message.error("Error editing course. Please try again.");
+      message.error('Error editing course. Please try again.')
     },
-  });
+  })
 }

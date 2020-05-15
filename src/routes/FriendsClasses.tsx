@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
 const FriendsClasses: React.FC = props => {
-  return <div>Friends and classes</div>;
-};
+  return <div>Friends and classes</div>
+}
 
-export default FriendsClasses;
+export default FriendsClasses

@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { Switch, Route, Redirect } from "react-router";
-import { Alert } from "antd";
-import styled, { ThemeProvider } from "styled-components";
-import ErrorBoundary from "react-error-boundary";
+import React, {useEffect} from 'react'
+import {Switch, Route, Redirect} from 'react-router'
+import {Alert} from 'antd'
+import styled, {ThemeProvider} from 'styled-components'
+import ErrorBoundary from 'react-error-boundary'
 
 import {
   FadeIn,
@@ -10,23 +10,23 @@ import {
   Sidebar,
   TopBar,
   FullPageErrorFallback,
-} from "components";
-import { breakpoints, lightTheme, darkTheme, GlobalStyle } from "theme";
-import { initializePush } from "firebase/initialize";
-import { useConfig } from "features/user/user-hooks";
-import { useAuth } from "features/auth/auth-context";
+} from 'components'
+import {breakpoints, lightTheme, darkTheme, GlobalStyle} from 'theme'
+import {initializePush} from 'firebase/initialize'
+import {useConfig} from 'features/user/user-hooks'
+import {useAuth} from 'features/auth/auth-context'
 
-const Home = React.lazy(() => import("routes/Home"));
-const Schedule = React.lazy(() => import("routes/Schedule"));
-const Preferences = React.lazy(() => import("routes/Preferences"));
+const Home = React.lazy(() => import('routes/Home'))
+const Schedule = React.lazy(() => import('routes/Schedule'))
+const Preferences = React.lazy(() => import('routes/Preferences'))
 
 const AuthenticatedApp: React.FC = () => {
-  const { user } = useAuth();
-  const { config } = useConfig();
+  const {user} = useAuth()
+  const {config} = useConfig()
 
   useEffect(() => {
-    initializePush();
-  }, []);
+    initializePush()
+  }, [])
 
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
@@ -56,8 +56,8 @@ const AuthenticatedApp: React.FC = () => {
         </FadeIn>
       </ThemeProvider>
     </ErrorBoundary>
-  );
-};
+  )
+}
 
 const AppRoutes = () => {
   return (
@@ -67,8 +67,8 @@ const AppRoutes = () => {
       <Route path="/dashboard/Preferences" exact component={Preferences} />
       <Redirect to="/dashboard" />
     </Switch>
-  );
-};
+  )
+}
 
 const Wrapper = styled.div`
   display: flex;
@@ -77,8 +77,8 @@ const Wrapper = styled.div`
     flex-direction: column;
   }
 
-  background-color: ${(props) => props.theme.backgroundColor};
-`;
+  background-color: ${props => props.theme.backgroundColor};
+`
 
 const EmailVerificationError = styled(Alert)`
   position: absolute;
@@ -87,7 +87,7 @@ const EmailVerificationError = styled(Alert)`
 
   width: 100%;
   z-index: 100;
-`;
+`
 
 const Navigation = {
   Wrapper: styled.aside`
@@ -104,7 +104,7 @@ const Navigation = {
     }
   `,
   Sidebar: styled(Sidebar)``,
-};
+}
 
 const Content = styled.main`
   flex: 0 0 92%;
@@ -128,6 +128,6 @@ const Content = styled.main`
   @media only screen and (max-width: ${breakpoints.bpMobileS}) {
     padding: 4rem 0.2rem 10rem 0.2rem;
   }
-`;
+`
 
-export default AuthenticatedApp;
+export default AuthenticatedApp

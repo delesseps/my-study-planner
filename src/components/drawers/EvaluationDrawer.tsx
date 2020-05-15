@@ -1,18 +1,18 @@
-import React, { useEffect, useCallback } from "react";
-import { QuestionCircleOutlined } from "@ant-design/icons";
-import { Drawer, DatePicker, Input, Tooltip, Button, Radio, Form } from "antd";
-import moment from "moment";
+import React, {useEffect, useCallback} from 'react'
+import {QuestionCircleOutlined} from '@ant-design/icons'
+import {Drawer, DatePicker, Input, Tooltip, Button, Radio, Form} from 'antd'
+import moment from 'moment'
 
-import IEvaluation from "constants/interfaces/IEvaluation";
-import { useEvaluations } from "features/evaluation/evaluation-hooks";
+import IEvaluation from 'constants/interfaces/IEvaluation'
+import {useEvaluations} from 'features/evaluation/evaluation-hooks'
 
 interface IEvaluationDrawerProps {
-  visible: boolean;
-  setVisible: Function;
+  visible: boolean
+  setVisible: Function
 
   //Edit optional Props
-  evaluation?: IEvaluation;
-  index?: number;
+  evaluation?: IEvaluation
+  index?: number
 }
 
 const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
@@ -21,54 +21,54 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
   evaluation,
   index,
 }) => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
   const {
     add: [
       addEvaluationMutate,
-      { status: addEvaluationStatus, reset: addEvaluationReset },
+      {status: addEvaluationStatus, reset: addEvaluationReset},
     ],
     edit: [
       editEvaluationMutate,
-      { status: editEvaluationStatus, reset: editEvaluationReset },
+      {status: editEvaluationStatus, reset: editEvaluationReset},
     ],
-  } = useEvaluations();
+  } = useEvaluations()
 
-  const status = evaluation ? editEvaluationStatus : addEvaluationStatus;
+  const status = evaluation ? editEvaluationStatus : addEvaluationStatus
 
   const handleSubmit = () => {
-    form.validateFields().then((values) => {
-      const newEvaluation: IEvaluation = { ...values } as any;
+    form.validateFields().then(values => {
+      const newEvaluation: IEvaluation = {...values} as any
 
-      if (evaluation && typeof index === "number") {
-        newEvaluation._id = evaluation._id;
-        return editEvaluationMutate({ evaluation: newEvaluation, index });
+      if (evaluation && typeof index === 'number') {
+        newEvaluation._id = evaluation._id
+        return editEvaluationMutate({evaluation: newEvaluation, index})
       }
 
-      addEvaluationMutate(newEvaluation);
-    });
-  };
+      addEvaluationMutate(newEvaluation)
+    })
+  }
 
   const onClose = useCallback(() => {
-    addEvaluationReset();
-    editEvaluationReset();
-    form.resetFields();
-    setVisible(false);
-  }, [addEvaluationReset, editEvaluationReset, setVisible, form]);
+    addEvaluationReset()
+    editEvaluationReset()
+    form.resetFields()
+    setVisible(false)
+  }, [addEvaluationReset, editEvaluationReset, setVisible, form])
 
   useEffect(() => {
     // Close drawer after successful operation
-    if (status === "success") onClose();
-  }, [status, onClose]);
+    if (status === 'success') onClose()
+  }, [status, onClose])
 
   const disabledDate = (current: any) => {
     // Can not select days before today and today
-    return current < moment().startOf("day");
-  };
+    return current < moment().startOf('day')
+  }
 
   return (
     <Drawer
       destroyOnClose={true}
-      title={evaluation ? "Edit evaluation" : "Add new evaluation"}
+      title={evaluation ? 'Edit evaluation' : 'Add new evaluation'}
       onClose={onClose}
       visible={visible}
       width={300}
@@ -90,7 +90,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           rules={[
             {
               required: true,
-              message: "Please input the course name!",
+              message: 'Please input the course name!',
               whitespace: true,
             },
           ]}
@@ -101,7 +101,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
         <Form.Item
           label="Evaluation"
           name="evaluationType"
-          rules={[{ required: true, message: "Please select an evaluation!" }]}
+          rules={[{required: true, message: 'Please select an evaluation!'}]}
         >
           <Radio.Group buttonStyle="solid">
             <Radio.Button value="quiz">Quiz</Radio.Button>
@@ -121,7 +121,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           rules={[
             {
               required: true,
-              message: "Please select how urgent is your evaluation!",
+              message: 'Please select how urgent is your evaluation!',
             },
           ]}
         >
@@ -151,9 +151,9 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           name="date"
           rules={[
             {
-              type: "object",
+              type: 'object',
               required: true,
-              message: "Please select time!",
+              message: 'Please select time!',
             },
           ]}
         >
@@ -163,15 +163,15 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           <Button
             type="primary"
             htmlType="submit"
-            loading={status === "loading"}
-            disabled={status === "loading" || status === "success"}
+            loading={status === 'loading'}
+            disabled={status === 'loading' || status === 'success'}
           >
-            {evaluation ? "Edit Evaluation" : "Add Evaluation"}
+            {evaluation ? 'Edit Evaluation' : 'Add Evaluation'}
           </Button>
         </Form.Item>
       </Form>
     </Drawer>
-  );
-};
+  )
+}
 
-export default EvaluationDrawer;
+export default EvaluationDrawer

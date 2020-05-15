@@ -1,56 +1,56 @@
-import React, { useState } from "react";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Input, Alert, Form } from "antd";
-import styled from "styled-components";
-import { AxiosError } from "axios";
+import React, {useState} from 'react'
+import {LockOutlined, UserOutlined} from '@ant-design/icons'
+import {Button, Input, Alert, Form} from 'antd'
+import styled from 'styled-components'
+import {AxiosError} from 'axios'
 
-import ISignUpCredentials from "constants/interfaces/ISignUpCredentials";
-import { breakpoints } from "theme";
-import { FadeIn } from "components";
-import { useAuth } from "features/auth/auth-context";
+import ISignUpCredentials from 'constants/interfaces/ISignUpCredentials'
+import {breakpoints} from 'theme'
+import {FadeIn} from 'components'
+import {useAuth} from 'features/auth/auth-context'
 
 const SignUpForm: React.FC = () => {
-  const [form] = Form.useForm();
-  const [confirmDirty, setConfirmDirty] = useState<Boolean | any>(false);
+  const [form] = Form.useForm()
+  const [confirmDirty, setConfirmDirty] = useState<Boolean | any>(false)
   const {
-    register: [registerMutate, { status, error }],
-  } = useAuth();
+    register: [registerMutate, {status, error}],
+  } = useAuth()
 
   const handleSubmit = (): void => {
-    form.validateFields().then((credentials) => {
-      registerMutate(credentials as ISignUpCredentials);
-    });
-  };
+    form.validateFields().then(credentials => {
+      registerMutate(credentials as ISignUpCredentials)
+    })
+  }
 
   const handleConfirmBlur = (e: React.BaseSyntheticEvent) => {
-    const value = e.target.value;
-    setConfirmDirty({ confirmDirty: confirmDirty || !!value });
-  };
+    const value = e.target.value
+    setConfirmDirty({confirmDirty: confirmDirty || !!value})
+  }
 
   const compareToFirstPassword = (
     rule: any,
     value: string,
-    callback: Function
+    callback: Function,
   ) => {
-    if (value && value !== form.getFieldValue("password")) {
-      callback("The passwords do not match!");
+    if (value && value !== form.getFieldValue('password')) {
+      callback('The passwords do not match!')
     } else {
-      callback();
+      callback()
     }
-  };
+  }
 
   const validateToNextPassword = (
     rule: any,
     value: string,
-    callback: Function
+    callback: Function,
   ) => {
     if (value && confirmDirty) {
-      form.validateFields(["confirm"]);
+      form.validateFields(['confirm'])
     }
-    callback();
-  };
+    callback()
+  }
 
-  const errorCode = (error as AxiosError)?.response?.status;
+  const errorCode = (error as AxiosError)?.response?.status
 
   return (
     <StyledForm form={form} layout="vertical" onFinish={handleSubmit}>
@@ -75,10 +75,10 @@ const SignUpForm: React.FC = () => {
       <Form.Item
         label="Full Name"
         name="name"
-        rules={[{ required: true, message: "Please input your full name!" }]}
+        rules={[{required: true, message: 'Please input your full name!'}]}
       >
         <Input
-          prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          prefix={<UserOutlined style={{color: 'rgba(0,0,0,.25)'}} />}
           placeholder="John Doe"
         />
       </Form.Item>
@@ -86,15 +86,15 @@ const SignUpForm: React.FC = () => {
         label="E-mail"
         name="email"
         rules={[
-          { required: true, message: "Please input your email!" },
+          {required: true, message: 'Please input your email!'},
           {
-            type: "email",
-            message: "The input is not valid E-mail!",
+            type: 'email',
+            message: 'The input is not valid E-mail!',
           },
         ]}
       >
         <Input
-          prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          prefix={<UserOutlined style={{color: 'rgba(0,0,0,.25)'}} />}
           placeholder="john.doe@gmail.com"
         />
       </Form.Item>
@@ -104,20 +104,20 @@ const SignUpForm: React.FC = () => {
         rules={[
           {
             required: true,
-            message: "Please input your password!",
+            message: 'Please input your password!',
           },
           {
             validator: validateToNextPassword,
           },
           {
             min: 6,
-            message: "Password must have a minimum of 6 characters.",
+            message: 'Password must have a minimum of 6 characters.',
           },
         ]}
         hasFeedback
       >
         <Input.Password
-          prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          prefix={<LockOutlined style={{color: 'rgba(0,0,0,.25)'}} />}
           type="password"
           placeholder="Password"
         />
@@ -128,20 +128,20 @@ const SignUpForm: React.FC = () => {
         rules={[
           {
             required: true,
-            message: "Please confirm your password!",
+            message: 'Please confirm your password!',
           },
           {
             validator: compareToFirstPassword,
           },
           {
             min: 6,
-            message: "Password must have a minimum of 6 characters.",
+            message: 'Password must have a minimum of 6 characters.',
           },
         ]}
         hasFeedback
       >
         <Input.Password
-          prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          prefix={<LockOutlined style={{color: 'rgba(0,0,0,.25)'}} />}
           type="password"
           placeholder="Confirm password"
           onBlur={handleConfirmBlur}
@@ -150,7 +150,7 @@ const SignUpForm: React.FC = () => {
       <Form.Item>
         <Button
           data-testid="submit"
-          loading={status === "loading"}
+          loading={status === 'loading'}
           type="primary"
           size="large"
           htmlType="submit"
@@ -159,8 +159,8 @@ const SignUpForm: React.FC = () => {
         </Button>
       </Form.Item>
     </StyledForm>
-  );
-};
+  )
+}
 
 const StyledForm = styled(Form)`
   width: 100%;
@@ -170,17 +170,17 @@ const StyledForm = styled(Form)`
       margin-bottom: 0.8rem;
     }
   }
-`;
+`
 
 const Heading = styled.h1`
   font-weight: bold;
   font-size: 3.6rem;
-  color: ${(props) => props.theme.fontColors.text};
-`;
+  color: ${props => props.theme.fontColors.text};
+`
 
 const SubHeading = styled.h3`
   font-weight: 600;
-  color: ${(props) => props.theme.fontColors.textRgba(0.6)};
-`;
+  color: ${props => props.theme.fontColors.textRgba(0.6)};
+`
 
-export default SignUpForm;
+export default SignUpForm

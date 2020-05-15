@@ -1,22 +1,22 @@
-import React from "react";
-import styled from "styled-components";
-import { Button, Empty } from "antd";
-import { useToggle } from "react-use";
+import React from 'react'
+import styled from 'styled-components'
+import {Button, Empty} from 'antd'
+import {useToggle} from 'react-use'
 
-import { HomeworkCard } from "components/cards";
-import { useHomework } from "features/homework/homework-hooks";
+import {HomeworkCard} from 'components/cards'
+import {useHomework} from 'features/homework/homework-hooks'
 
 const HomeworkDrawer = React.lazy(() =>
-  import("components/drawers/HomeworkDrawer")
-);
+  import('components/drawers/HomeworkDrawer'),
+)
 
 const Homework: React.FC = () => {
-  const [openDrawer, toggleDrawer] = useToggle(false);
-  const { homework } = useHomework();
+  const [openDrawer, toggleDrawer] = useToggle(false)
+  const {homework} = useHomework()
 
   const handleClick = () => {
-    toggleDrawer(true);
-  };
+    toggleDrawer(true)
+  }
 
   return (
     <React.Fragment>
@@ -28,7 +28,7 @@ const Homework: React.FC = () => {
         <HomeworkDrawer visible={openDrawer} setVisible={toggleDrawer} />
       </Header>
       <Content>
-        {homework.filter((currHomework) => !currHomework.done).length ? (
+        {homework.filter(currHomework => !currHomework.done).length ? (
           homework.map(
             (currHomework, i) =>
               !currHomework.done && (
@@ -37,23 +37,23 @@ const Homework: React.FC = () => {
                   key={currHomework._id}
                   homework={currHomework}
                 />
-              )
+              ),
           )
         ) : (
           <StyledEmpty description="No Homework" />
         )}
       </Content>
     </React.Fragment>
-  );
-};
+  )
+}
 
 const Header = styled.div`
   padding: 1.5rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid ${(props) => props.theme.fontColors.textRgba(0.1)};
-`;
+  border-bottom: 1px solid ${props => props.theme.fontColors.textRgba(0.1)};
+`
 
 const Title = styled.h3`
   font-weight: 500;
@@ -61,8 +61,8 @@ const Title = styled.h3`
   letter-spacing: 1px;
   margin: 0;
 
-  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
-`;
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
+`
 
 const Content = styled.div`
   padding: 1.5rem 2rem;
@@ -74,13 +74,13 @@ const Content = styled.div`
   & > *:not(:last-child) {
     margin-bottom: 1.5rem;
   }
-`;
+`
 
 const StyledEmpty = styled(Empty)`
   && {
     margin-top: auto;
     margin-bottom: auto;
   }
-`;
+`
 
-export default Homework;
+export default Homework

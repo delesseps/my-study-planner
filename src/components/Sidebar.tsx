@@ -1,8 +1,8 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
-import { HomeOutlined, CalendarOutlined } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
-import { breakpoints } from "theme";
+import React from 'react'
+import styled, {keyframes} from 'styled-components'
+import {HomeOutlined, CalendarOutlined} from '@ant-design/icons'
+import {NavLink} from 'react-router-dom'
+import {breakpoints} from 'theme'
 
 const Sidebar: React.FC = () => {
   return (
@@ -16,8 +16,8 @@ const Sidebar: React.FC = () => {
         <Styles.Text>Schedule</Styles.Text>
       </Styles.Item>
     </Styles.Wrapper>
-  );
-};
+  )
+}
 
 const animations = {
   fadeIn: keyframes`
@@ -48,14 +48,14 @@ const animations = {
       opacity: 1;
     }
 `,
-};
+}
 
 const Styles = {
   Wrapper: styled.nav`
-    background-color: ${(props) => props.theme.sidebarBackgroundColor};
+    background-color: ${props => props.theme.sidebarBackgroundColor};
     height: 100%;
     width: 8%;
-    border-right: 2px solid ${(props) => props.theme.fontColors.textRgba(0.1)};
+    border-right: 2px solid ${props => props.theme.fontColors.textRgba(0.1)};
 
     position: fixed;
 
@@ -68,7 +68,7 @@ const Styles = {
       position: fixed;
 
       border-right: none;
-      border-top: 1px solid ${(props) => props.theme.fontColors.textRgba(0.1)};
+      border-top: 1px solid ${props => props.theme.fontColors.textRgba(0.1)};
       padding: 1rem 0;
 
       flex-direction: row;
@@ -94,7 +94,7 @@ const Styles = {
         margin-bottom: -1.3rem;
 
         @media only screen and (max-width: ${breakpoints.bpMedium}) {
-          color: ${(props) => props.theme.colors.main};
+          color: ${props => props.theme.colors.main};
         }
       }
 
@@ -103,7 +103,7 @@ const Styles = {
 
         @media only screen and (max-width: ${breakpoints.bpMedium}) {
           & > svg {
-            fill: ${(props) => props.theme.colors.main};
+            fill: ${props => props.theme.colors.main};
           }
         }
       }
@@ -112,11 +112,11 @@ const Styles = {
     }
 
     .active::after {
-      content: "";
+      content: '';
       position: absolute;
       width: 100%;
       height: 100%;
-      border-right: 0.5rem solid ${(props) => props.theme.colors.main};
+      border-right: 0.5rem solid ${props => props.theme.colors.main};
 
       animation: ${animations.fadeIn} 0.5s;
 
@@ -147,7 +147,7 @@ const Styles = {
     margin-bottom: 0.7rem;
 
     & svg {
-      fill: ${(props) => props.theme.fontColors.textRgba(0.8)};
+      fill: ${props => props.theme.fontColors.textRgba(0.8)};
     }
   `,
   CalendarIcon: styled(CalendarOutlined)`
@@ -155,7 +155,7 @@ const Styles = {
     margin-bottom: 0.7rem;
 
     & svg {
-      fill: ${(props) => props.theme.fontColors.textRgba(0.8)};
+      fill: ${props => props.theme.fontColors.textRgba(0.8)};
     }
   `,
   Text: styled.p`
@@ -164,10 +164,10 @@ const Styles = {
     font-size: 1.2rem;
 
     font-weight: 500;
-    color: ${(props) => props.theme.fontColors.textRgba(0.8)};
+    color: ${props => props.theme.fontColors.textRgba(0.8)};
 
     margin: 0;
   `,
-};
+}
 
-export default Sidebar;
+export default Sidebar

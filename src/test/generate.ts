@@ -1,8 +1,8 @@
-import faker from "faker";
-import IHomework from "constants/interfaces/IHomework";
-import IUser, { Urgency } from "constants/interfaces/IUser";
-import IEvaluation from "constants/interfaces/IEvaluation";
-import { Weekdays, ICourse } from "constants/interfaces";
+import faker from 'faker'
+import IHomework from 'constants/interfaces/IHomework'
+import IUser, {Urgency} from 'constants/interfaces/IUser'
+import IEvaluation from 'constants/interfaces/IEvaluation'
+import {Weekdays, ICourse} from 'constants/interfaces'
 
 export function buildUser(overrides?: Record<string, string>): IUser {
   return {
@@ -12,7 +12,7 @@ export function buildUser(overrides?: Record<string, string>): IUser {
     picture: faker.image.image(),
     firstSignIn: false,
     fcm: false,
-    role: "user",
+    role: 'user',
     verified: false,
     configuration: {
       darkMode: false,
@@ -22,7 +22,7 @@ export function buildUser(overrides?: Record<string, string>): IUser {
     toDos: [],
     semesters: [],
     ...overrides,
-  };
+  }
 }
 
 export function buildHomework(overrides?: Record<string, string>): IHomework {
@@ -39,17 +39,17 @@ export function buildHomework(overrides?: Record<string, string>): IHomework {
       picture: faker.image.image(),
     },
     ...overrides,
-  };
+  }
 }
 
 export function buildEvaluation(
-  overrides?: Record<string, string>
+  overrides?: Record<string, string>,
 ): IEvaluation {
   return {
     _id: faker.random.uuid(),
     subject: faker.name.jobTitle(),
     date: faker.date.recent().toISOString(),
-    evaluationType: "quiz",
+    evaluationType: 'quiz',
     urgency: Urgency.normal,
     description: faker.name.jobDescriptor(),
     done: false,
@@ -59,11 +59,11 @@ export function buildEvaluation(
       picture: faker.image.image(),
     },
     ...overrides,
-  };
+  }
 }
 
 export function buildCourse(overrides?: Record<string, string>): ICourse {
-  const weekdays = Object.values(Weekdays);
+  const weekdays = Object.values(Weekdays)
 
   return {
     _id: faker.random.uuid(),
@@ -72,12 +72,12 @@ export function buildCourse(overrides?: Record<string, string>): ICourse {
       [weekdays[Math.floor(Math.random() * weekdays.length)]]: {
         start: 900,
         end: 1080,
-        classroom: "Virtual",
+        classroom: 'Virtual',
       },
       [weekdays[Math.floor(Math.random() * weekdays.length)]]: {
         start: 1080,
         end: 1200,
-        classroom: "FR1-301",
+        classroom: 'FR1-301',
       },
     },
     members: [],
@@ -89,5 +89,5 @@ export function buildCourse(overrides?: Record<string, string>): ICourse {
       picture: faker.image.image(),
     },
     ...overrides,
-  };
+  }
 }

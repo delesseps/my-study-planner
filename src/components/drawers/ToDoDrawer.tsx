@@ -1,41 +1,41 @@
-import React, { useEffect, useCallback } from "react";
-import { QuestionCircleOutlined } from "@ant-design/icons";
-import { Drawer, Input, Tooltip, Button, Radio, Form } from "antd";
+import React, {useEffect, useCallback} from 'react'
+import {QuestionCircleOutlined} from '@ant-design/icons'
+import {Drawer, Input, Tooltip, Button, Radio, Form} from 'antd'
 
-import IToDo from "constants/interfaces/IToDo";
-import { useToDo } from "features/toDo/toDo-hooks";
+import IToDo from 'constants/interfaces/IToDo'
+import {useToDo} from 'features/toDo/toDo-hooks'
 
 interface IToDoDrawerProps {
-  visible: boolean;
-  setVisible: Function;
+  visible: boolean
+  setVisible: Function
 }
 
-const ToDoDrawer: React.FC<IToDoDrawerProps> = ({ visible, setVisible }) => {
-  const [form] = Form.useForm();
+const ToDoDrawer: React.FC<IToDoDrawerProps> = ({visible, setVisible}) => {
+  const [form] = Form.useForm()
   const {
-    add: [toDoMutate, { status }],
-  } = useToDo();
+    add: [toDoMutate, {status}],
+  } = useToDo()
 
   const handleSubmit = () => {
-    form.validateFields().then((values) => {
-      toDoMutate(values as IToDo);
-    });
-  };
+    form.validateFields().then(values => {
+      toDoMutate(values as IToDo)
+    })
+  }
 
   const onClose = useCallback(() => {
-    form.resetFields();
-    setVisible(false);
-  }, [setVisible, form]);
+    form.resetFields()
+    setVisible(false)
+  }, [setVisible, form])
 
   useEffect(() => {
     // Close drawer after successful operation
-    if (status === "success") onClose();
-  }, [status, onClose]);
+    if (status === 'success') onClose()
+  }, [status, onClose])
 
   return (
     <Drawer
       destroyOnClose={true}
-      title={"Add new to-do"}
+      title={'Add new to-do'}
       onClose={onClose}
       visible={visible}
       width={300}
@@ -46,7 +46,7 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({ visible, setVisible }) => {
           rules={[
             {
               required: true,
-              message: "Please input the task name!",
+              message: 'Please input the task name!',
               whitespace: true,
             },
           ]}
@@ -67,7 +67,7 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({ visible, setVisible }) => {
           rules={[
             {
               required: true,
-              message: "Please select how urgent is your to-do!",
+              message: 'Please select how urgent is your to-do!',
             },
           ]}
         >
@@ -82,15 +82,15 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({ visible, setVisible }) => {
           <Button
             type="primary"
             htmlType="submit"
-            loading={status === "loading"}
-            disabled={status === "loading" || status === "success"}
+            loading={status === 'loading'}
+            disabled={status === 'loading' || status === 'success'}
           >
             Add To-Do
           </Button>
         </Form.Item>
       </Form>
     </Drawer>
-  );
-};
+  )
+}
 
-export default ToDoDrawer;
+export default ToDoDrawer

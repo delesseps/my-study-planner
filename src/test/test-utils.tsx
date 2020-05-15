@@ -1,45 +1,45 @@
-import React, { ReactElement } from "react";
-import * as rtl from "@testing-library/react";
-import { ReactQueryConfigProvider } from "react-query";
-import { AuthProvider } from "features/auth/auth-context";
-import { ThemeProvider, DefaultTheme } from "styled-components";
-import { Router } from "react-router-dom";
-import { createMemoryHistory, MemoryHistory } from "history";
-import MockAdapter from "axios-mock-adapter";
-import "jest-styled-components";
+import React, {ReactElement} from 'react'
+import * as rtl from '@testing-library/react'
+import {ReactQueryConfigProvider} from 'react-query'
+import {AuthProvider} from 'features/auth/auth-context'
+import {ThemeProvider, DefaultTheme} from 'styled-components'
+import {Router} from 'react-router-dom'
+import {createMemoryHistory, MemoryHistory} from 'history'
+import MockAdapter from 'axios-mock-adapter'
+import 'jest-styled-components'
 
-import { lightTheme } from "theme";
-import { buildUser } from "./generate";
-import { agent } from "utils";
-import { domain } from "constants/site";
-import IUser from "constants/interfaces/IUser";
+import {lightTheme} from 'theme'
+import {buildUser} from './generate'
+import {agent} from 'utils'
+import {domain} from 'constants/site'
+import IUser from 'constants/interfaces/IUser'
 
-export const mockAxios = new MockAdapter(agent);
+export const mockAxios = new MockAdapter(agent)
 
 const queryConfig = {
   retry: 0,
-};
+}
 
 interface renderOptions {
-  route?: string;
-  initialEntries?: string[];
-  history?: MemoryHistory;
-  theme?: DefaultTheme;
+  route?: string
+  initialEntries?: string[]
+  history?: MemoryHistory
+  theme?: DefaultTheme
 
-  [x: string]: any;
+  [x: string]: any
 }
 
 const customRender = (
   ui: ReactElement<any>,
   {
-    route = "/",
+    route = '/',
     initialEntries = [route],
-    history = createMemoryHistory({ initialEntries }),
+    history = createMemoryHistory({initialEntries}),
     theme = lightTheme,
     ...rest
-  }: renderOptions = {}
+  }: renderOptions = {},
 ) => {
-  const Wrapper: React.FC = ({ children }) => {
+  const Wrapper: React.FC = ({children}) => {
     return (
       <ReactQueryConfigProvider config={queryConfig}>
         <Router history={history}>
@@ -48,8 +48,8 @@ const customRender = (
           </AuthProvider>
         </Router>
       </ReactQueryConfigProvider>
-    );
-  };
+    )
+  }
 
   return {
     ...rtl.render(ui, {
@@ -60,33 +60,33 @@ const customRender = (
     // to reference it in our tests (just try to avoid using
     // this to test implementation details).
     history,
-  };
-};
+  }
+}
 
 async function loginAsUser(user: IUser = buildUser()) {
   function setCookie(name: string, value: any, domain: string) {
-    document.cookie = `${name}=${value};domain=${domain}`;
+    document.cookie = `${name}=${value};domain=${domain}`
     //@ts-ignore
-    global.document = {};
+    global.document = {}
   }
 
-  setCookie("IS_LOGGED_IN", true, domain);
+  setCookie('IS_LOGGED_IN', true, domain)
 
-  mockAxios.onGet("/user/current").reply(200, { user });
+  mockAxios.onGet('/user/current').reply(200, {user})
 
-  return user;
+  return user
 }
 
 async function waitForElementToBeRemoved(...args: any) {
   try {
     // @ts-ignore
-    await rtl.waitForElementToBeRemoved(...args);
+    await rtl.waitForElementToBeRemoved(...args)
   } catch (error) {
     // @ts-ignore
-    rtl.screen.debug();
-    throw error;
+    rtl.screen.debug()
+    throw error
   }
 }
 
-export * from "@testing-library/react";
-export { customRender as render, waitForElementToBeRemoved, loginAsUser };
+export * from '@testing-library/react'
+export {customRender as render, waitForElementToBeRemoved, loginAsUser}

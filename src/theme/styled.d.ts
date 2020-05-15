@@ -1,23 +1,23 @@
-import "styled-components";
+import 'styled-components'
 
-declare module "styled-components" {
+declare module 'styled-components' {
   export interface DefaultTheme {
     colors: {
-      main: string;
-      mainRgba: Function;
-    };
+      main: string
+      mainRgba: Function
+    }
     fontColors: {
-      text: string;
-      textRgba: Function;
-    };
-    backgroundColor: string;
-    sidebarBackgroundColor: string;
-    panelBackgroundColor: string;
-    scrollbarBackgroundColor: string;
-    tableCellBackgroundColor: string;
-    bigCalendarCurrentDay: string;
-    hoverColor: string;
-    shadow1: string;
-    borderRadius: string;
+      text: string
+      textRgba: Function
+    }
+    backgroundColor: string
+    sidebarBackgroundColor: string
+    panelBackgroundColor: string
+    scrollbarBackgroundColor: string
+    tableCellBackgroundColor: string
+    bigCalendarCurrentDay: string
+    hoverColor: string
+    shadow1: string
+    borderRadius: string
   }
 }

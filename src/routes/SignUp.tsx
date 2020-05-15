@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "styled-components";
-import { Divider } from "antd";
-import { OAuthButtons, BannerAuth, FadeIn, SignUpForm } from "components";
-import { ReactComponent as Logo } from "assets/logo.svg";
-import { Link } from "react-router-dom";
-import { breakpoints } from "theme";
+import React from 'react'
+import styled from 'styled-components'
+import {Divider} from 'antd'
+import {OAuthButtons, BannerAuth, FadeIn, SignUpForm} from 'components'
+import {ReactComponent as Logo} from 'assets/logo.svg'
+import {Link} from 'react-router-dom'
+import {breakpoints} from 'theme'
 
 const SignUp: React.FC = () => {
   return (
@@ -26,8 +26,8 @@ const SignUp: React.FC = () => {
         </RightSection>
       </Wrapper>
     </FadeIn>
-  );
-};
+  )
+}
 
 const Wrapper = styled.main`
   display: flex;
@@ -36,7 +36,7 @@ const Wrapper = styled.main`
   @media only screen and (max-width: ${breakpoints.bpMedium}) {
     flex-direction: column-reverse;
   }
-`;
+`
 
 const LeftSection = styled.section`
   min-height: 100vh;
@@ -54,7 +54,7 @@ const LeftSection = styled.section`
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
     padding: 2rem;
   }
-`;
+`
 
 const StyledLogo = styled(Logo)`
   fill: #fff;
@@ -65,7 +65,7 @@ const StyledLogo = styled(Logo)`
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
     margin-bottom: 3rem;
   }
-`;
+`
 
 const RightSection = styled.section`
   min-height: 100vh;
@@ -87,7 +87,7 @@ const RightSection = styled.section`
       margin: 0;
     }
   }
-`;
+`
 
 const RightSectionWrapper = styled.div`
   width: 70%;
@@ -95,7 +95,7 @@ const RightSectionWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const SignIn = styled.h4`
   font-weight: 400;
@@ -114,6 +114,6 @@ const SignIn = styled.h4`
       text-decoration: underline;
     }
   }
-`;
+`
 
-export default SignUp;
+export default SignUp

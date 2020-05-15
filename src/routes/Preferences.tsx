@@ -1,36 +1,36 @@
-import React from "react";
-import styled from "styled-components";
-import { List, Switch } from "antd";
+import React from 'react'
+import styled from 'styled-components'
+import {List, Switch} from 'antd'
 
-import { IUserConfig } from "constants/interfaces/IUser";
-import { breakpoints } from "theme";
-import { useConfig } from "features/user/user-hooks";
+import {IUserConfig} from 'constants/interfaces/IUser'
+import {breakpoints} from 'theme'
+import {useConfig} from 'features/user/user-hooks'
 
 const appereanceSettings = [
   {
-    name: "Dark Mode",
-    description: "Make My Study Planner cooler for your eyes.",
-    action: "DARK_MODE",
-    configProperty: "darkMode",
+    name: 'Dark Mode',
+    description: 'Make My Study Planner cooler for your eyes.',
+    action: 'DARK_MODE',
+    configProperty: 'darkMode',
   },
-];
+]
 
 const Preferences: React.FC = () => {
-  const { config, change } = useConfig();
+  const {config, change} = useConfig()
 
   const handleChange = (action: string) => (
     checked: boolean,
-    event: MouseEvent
+    event: MouseEvent,
   ) => {
-    const newConfig: IUserConfig = config;
+    const newConfig: IUserConfig = config
 
     switch (action) {
-      case "DARK_MODE":
-        newConfig.darkMode = checked;
-        return change(newConfig);
+      case 'DARK_MODE':
+        newConfig.darkMode = checked
+        return change(newConfig)
       default:
     }
-  };
+  }
 
   return (
     <Wrapper>
@@ -56,8 +56,8 @@ const Preferences: React.FC = () => {
         )}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
 const Wrapper = styled.section`
   display: flex;
@@ -74,7 +74,7 @@ const Wrapper = styled.section`
   align-items: center;
 
   margin-top: 8rem;
-`;
+`
 
 const Title = styled.h4`
   font-weight: 500;
@@ -88,24 +88,24 @@ const Title = styled.h4`
     margin-left: 1rem;
   }
 
-  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
-`;
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
+`
 
 const StyledList = styled(List)`
   min-width: 100%;
-  background-color: ${(props) => props.theme.panelBackgroundColor};
+  background-color: ${props => props.theme.panelBackgroundColor};
 
   &:not(:last-child) {
     margin-bottom: 3rem;
   }
-`;
+`
 
 const Name = styled.span`
-  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
-`;
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
+`
 
 const Description = styled.span`
-  color: ${(props) => props.theme.fontColors.textRgba(0.6)};
-`;
+  color: ${props => props.theme.fontColors.textRgba(0.6)};
+`
 
-export default Preferences;
+export default Preferences

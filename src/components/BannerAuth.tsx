@@ -1,9 +1,9 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
-import { ReactComponent as LogoSharp } from "assets/logo_sharp.svg";
-import { ReactComponent as Stars } from "assets/stars.svg";
-import { ReactComponent as Check } from "assets/check.svg";
-import { breakpoints } from "theme";
+import React from 'react'
+import styled, {keyframes} from 'styled-components'
+import {ReactComponent as LogoSharp} from 'assets/logo_sharp.svg'
+import {ReactComponent as Stars} from 'assets/stars.svg'
+import {ReactComponent as Check} from 'assets/check.svg'
+import {breakpoints} from 'theme'
 
 const BannerAuth: React.FC = () => (
   <Wrapper>
@@ -20,7 +20,7 @@ const BannerAuth: React.FC = () => (
     </SVGWrapper>
     <Text>Continue and get things done!</Text>
   </Wrapper>
-);
+)
 
 const twinkle = keyframes`
   from {
@@ -30,7 +30,7 @@ const twinkle = keyframes`
   to {
     opacity: 0.5;
   }
-`;
+`
 
 const Wrapper = styled.div`
   width: 100%;
@@ -41,7 +41,7 @@ const Wrapper = styled.div`
 
   margin-top: auto;
   margin-bottom: auto;
-`;
+`
 
 const Text = styled.h2`
   color: #fff;
@@ -50,7 +50,7 @@ const Text = styled.h2`
   line-height: 4.1rem;
 
   font-weight: 400;
-`;
+`
 
 const SVGWrapper = styled.div`
   margin: 7rem 0;
@@ -63,22 +63,22 @@ const SVGWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
+`
 
 //Selects a random star and make it twinkle with a specific delay
 const twinkleRandomItem = () => {
-  let styles = "";
+  let styles = ''
 
   for (let i = 0; i < 20; i++) {
     styles += `
       & path:nth-child(${i + 1}) {
         animation-delay: ${i - 1}s;        
       }
-    `;
+    `
   }
 
-  return styles;
-};
+  return styles
+}
 
 const StyledLogoSharp = styled(LogoSharp)`
   width: 40rem;
@@ -86,7 +86,7 @@ const StyledLogoSharp = styled(LogoSharp)`
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
     width: 33rem;
   }
-`;
+`
 
 const StyledStars = styled(Stars)`
   margin-bottom: -70px;
@@ -108,7 +108,7 @@ const StyledStars = styled(Stars)`
   }
 
   ${twinkleRandomItem()};
-`;
+`
 
 const StyledCheck = styled(Check)`
   position: absolute;
@@ -121,6 +121,6 @@ const StyledCheck = styled(Check)`
   @media only screen and (max-width: ${breakpoints.bpLargest}) {
     bottom: 2rem;
   }
-`;
+`
 
-export default BannerAuth;
+export default BannerAuth

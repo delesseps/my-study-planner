@@ -1,12 +1,12 @@
-export { default as BannerAuth } from "./BannerAuth";
-export { default as FadeIn } from "./FadeIn";
-export { default as Loading } from "./Loading";
-export { default as OAuthButtons } from "./OAuthButtons";
-export { default as Section404 } from "./Section404";
-export { default as Sidebar } from "./Sidebar";
-export { default as SignInForm } from "./SignInForm";
-export { default as SignUpForm } from "./SignUpForm";
-export { default as TopBar } from "./TopBar";
-export { default as UploadPicture } from "./UploadPicture";
-export { default as FullPageErrorFallback } from "./FullPageErrorFallback";
-export { default as Profiler } from "./Profiler";
+export {default as BannerAuth} from './BannerAuth'
+export {default as FadeIn} from './FadeIn'
+export {default as Loading} from './Loading'
+export {default as OAuthButtons} from './OAuthButtons'
+export {default as Section404} from './Section404'
+export {default as Sidebar} from './Sidebar'
+export {default as SignInForm} from './SignInForm'
+export {default as SignUpForm} from './SignUpForm'
+export {default as TopBar} from './TopBar'
+export {default as UploadPicture} from './UploadPicture'
+export {default as FullPageErrorFallback} from './FullPageErrorFallback'
+export {default as Profiler} from './Profiler'

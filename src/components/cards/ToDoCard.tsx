@@ -1,31 +1,31 @@
-import React from "react";
-import styled from "styled-components";
-import { DeleteOutlined } from "@ant-design/icons";
-import { Badge, Checkbox, Popconfirm, Tooltip } from "antd";
+import React from 'react'
+import styled from 'styled-components'
+import {DeleteOutlined} from '@ant-design/icons'
+import {Badge, Checkbox, Popconfirm, Tooltip} from 'antd'
 
-import { determineColor } from "utils";
-import { useToDo } from "features/toDo/toDo-hooks";
-import IToDo from "constants/interfaces/IToDo";
+import {determineColor} from 'utils'
+import {useToDo} from 'features/toDo/toDo-hooks'
+import IToDo from 'constants/interfaces/IToDo'
 
 interface IToDoCardProps {
-  toDo: IToDo;
-  index: number;
+  toDo: IToDo
+  index: number
 }
 
-const ToDoCard: React.FC<IToDoCardProps> = ({ toDo, index }) => {
+const ToDoCard: React.FC<IToDoCardProps> = ({toDo, index}) => {
   const {
     remove: [removeMutate],
     edit: [editMutate],
-  } = useToDo();
+  } = useToDo()
 
   const handleDeleteClick = () => {
-    removeMutate({ id: toDo._id, index });
-  };
+    removeMutate({id: toDo._id, index})
+  }
 
   const handleDoneClick = () => {
-    toDo.done = true;
-    editMutate({ toDo, index });
-  };
+    toDo.done = true
+    editMutate({toDo, index})
+  }
 
   return (
     <Wrapper>
@@ -54,8 +54,8 @@ const ToDoCard: React.FC<IToDoCardProps> = ({ toDo, index }) => {
         </Action>
       </RowWrapper>
     </Wrapper>
-  );
-};
+  )
+}
 
 const Wrapper = styled.div`
   display: flex;
@@ -63,23 +63,23 @@ const Wrapper = styled.div`
 
   padding: 2rem 2rem;
 
-  border-top: 0.5px solid ${(props) => props.theme.fontColors.textRgba(0.2)};
-  border-bottom: 0.5px solid ${(props) => props.theme.fontColors.textRgba(0.2)};
+  border-top: 0.5px solid ${props => props.theme.fontColors.textRgba(0.2)};
+  border-bottom: 0.5px solid ${props => props.theme.fontColors.textRgba(0.2)};
 
   width: 100%;
-`;
+`
 
 const RowWrapper = styled.div`
   display: flex;
   align-items: center;
-`;
+`
 
 const Action = styled.button`
   border: none;
   background: transparent;
 
   outline: none;
-`;
+`
 
 const TaskTitle = styled.h3`
   text-transform: capitalize;
@@ -88,8 +88,8 @@ const TaskTitle = styled.h3`
 
   letter-spacing: 1px;
   font-size: 1.7rem;
-  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
-`;
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
+`
 
 const DeleteIcon = styled(DeleteOutlined)`
   cursor: pointer;
@@ -98,8 +98,8 @@ const DeleteIcon = styled(DeleteOutlined)`
   margin-right: 1.5rem;
 
   &:hover {
-    color: ${(props) => props.theme.colors.main};
+    color: ${props => props.theme.colors.main};
   }
-`;
+`
 
-export default ToDoCard;
+export default ToDoCard

@@ -1,58 +1,56 @@
-import React, { useState, useCallback, useMemo } from "react";
-import styled, { keyframes, DefaultTheme } from "styled-components";
-import QueueAnim from "rc-queue-anim";
-import { Button, Skeleton, Tooltip, Popconfirm, Empty } from "antd";
+import React, {useState, useCallback, useMemo} from 'react'
+import styled, {keyframes, DefaultTheme} from 'styled-components'
+import QueueAnim from 'rc-queue-anim'
+import {Button, Skeleton, Tooltip, Popconfirm, Empty} from 'antd'
 import {
   EnvironmentOutlined,
   PlusOutlined,
   EditOutlined,
   DeleteOutlined,
-} from "@ant-design/icons";
-import { useWindowSize } from "react-use";
+} from '@ant-design/icons'
+import {useWindowSize} from 'react-use'
 
-import { Weekdays, ICourse } from "constants/interfaces/course";
-import { useCourses, useDeleteCourse } from "features/course/course-hooks";
-import { hhmmss, toTitleCase } from "utils";
-import { breakpoints } from "theme";
+import {Weekdays, ICourse} from 'constants/interfaces/course'
+import {useCourses, useDeleteCourse} from 'features/course/course-hooks'
+import {hhmmss, toTitleCase} from 'utils'
+import {breakpoints} from 'theme'
 
-const CourseDrawer = React.lazy(() =>
-  import("components/drawers/CourseDrawer")
-);
+const CourseDrawer = React.lazy(() => import('components/drawers/CourseDrawer'))
 
-const days = ([...Object.values(Weekdays)] as any) as Weekdays[];
+const days = ([...Object.values(Weekdays)] as any) as Weekdays[]
 
 const Schedule: React.FC = () => {
-  const [openDrawer, toggleDrawer] = useState(false);
-  const { width } = useWindowSize();
+  const [openDrawer, toggleDrawer] = useState(false)
+  const {width} = useWindowSize()
 
   const [currentDay, setCurrentDay] = useState<Weekdays>(
-    days[new Date().getDay()]
-  );
+    days[new Date().getDay()],
+  )
 
   const WeekdayTab = useCallback(
-    ({ day, children }: { day: Weekdays; children: string }) => {
+    ({day, children}: {day: Weekdays; children: string}) => {
       const changeDay = (day: Weekdays) => () => {
-        setCurrentDay(day);
-      };
+        setCurrentDay(day)
+      }
 
       return (
         <Styles.Tab
-          className={currentDay === day ? "active" : ""}
-          data-testid={currentDay === day ? "active" : ""}
+          className={currentDay === day ? 'active' : ''}
+          data-testid={currentDay === day ? 'active' : ''}
           onClick={changeDay(day)}
         >
           {children}
         </Styles.Tab>
-      );
+      )
     },
-    [currentDay]
-  );
-  const isMobile = width <= 425;
+    [currentDay],
+  )
+  const isMobile = width <= 425
   return (
     <Styles.Wrapper>
       <CourseDrawer visible={openDrawer} setVisible={toggleDrawer} />
       <Styles.Tabs>
-        {days.map((day) => (
+        {days.map(day => (
           <WeekdayTab key={day} day={day}>
             {isMobile
               ? toTitleCase(day).slice(0, 2)
@@ -62,7 +60,7 @@ const Schedule: React.FC = () => {
       </Styles.Tabs>
       <Courses currentDay={currentDay} />
       <Button
-        key={"add-button"}
+        key={'add-button'}
         aria-label="Add course"
         data-testid="add-course"
         type="primary"
@@ -72,34 +70,34 @@ const Schedule: React.FC = () => {
         size="large"
       />
     </Styles.Wrapper>
-  );
-};
+  )
+}
 
-const Courses = ({ currentDay }: { currentDay: Weekdays }) => {
-  const { data: courses, status } = useCourses();
+const Courses = ({currentDay}: {currentDay: Weekdays}) => {
+  const {data: courses, status} = useCourses()
 
   const currentDayCourses = useMemo(() => {
     return courses
       ?.sort((a, b) => {
-        const scheduleA = a.schedule[currentDay];
-        const scheduleB = b.schedule[currentDay];
+        const scheduleA = a.schedule[currentDay]
+        const scheduleB = b.schedule[currentDay]
 
         if (scheduleA && scheduleB) {
-          return scheduleA.start - scheduleB.start;
+          return scheduleA.start - scheduleB.start
         }
 
-        return 0;
+        return 0
       })
-      .filter((course) => course.schedule[currentDay]);
-  }, [currentDay, courses]);
+      .filter(course => course.schedule[currentDay])
+  }, [currentDay, courses])
 
-  if (status === "loading") {
+  if (status === 'loading') {
     return (
       <Placeholder.Wrapper data-testid="course-skeleton">
         <Placeholder.Item active />
         <Placeholder.Item active />
       </Placeholder.Wrapper>
-    );
+    )
   }
 
   if (!currentDayCourses?.length) {
@@ -112,7 +110,7 @@ const Courses = ({ currentDay }: { currentDay: Weekdays }) => {
           </span>
         }
       />
-    );
+    )
   }
 
   return (
@@ -126,94 +124,96 @@ const Courses = ({ currentDay }: { currentDay: Weekdays }) => {
               course={course}
               currentDay={currentDay}
             />
-          );
+          )
         }
       })}
     </Styles.Body>
-  );
-};
-
-interface CourseProps {
-  index: number;
-  course: ICourse;
-  currentDay: Weekdays;
+  )
 }
 
-const Course = React.forwardRef<any, CourseProps>(({ index, course, currentDay }, ref) => {
-  const [openDrawer, toggleDrawer] = useState(false);
-  const [deleteCourse] = useDeleteCourse();
+interface CourseProps {
+  index: number
+  course: ICourse
+  currentDay: Weekdays
+}
 
-  const handleDeleteCourse = (index: number, id: string) => () => {
-    deleteCourse({ index, id });
-  };
+const Course = React.forwardRef<any, CourseProps>(
+  ({index, course, currentDay}, ref) => {
+    const [openDrawer, toggleDrawer] = useState(false)
+    const [deleteCourse] = useDeleteCourse()
 
-  const handleEditClick = () => {
-    toggleDrawer(true);
-  };
+    const handleDeleteCourse = (index: number, id: string) => () => {
+      deleteCourse({index, id})
+    }
 
-  const { _id, name, schedule } = course;
-  const { start, end } = {
-    start: schedule[currentDay]?.start,
-    end: schedule[currentDay]?.end,
-  };
-  const startTime = start && hhmmss(start);
-  const endTime = end && hhmmss(end);
+    const handleEditClick = () => {
+      toggleDrawer(true)
+    }
 
-  return (
-    <Card.Wrapper ref={ref}>
-      <CourseDrawer
-        visible={openDrawer}
-        setVisible={toggleDrawer}
-        course={course}
-        index={index}
-      />
-      <Card.Schedule>
-        <time>
-          <b>{startTime}</b>
-        </time>
-        <b>-</b>
-        <time>
-          <b>{endTime}</b>
-        </time>
-      </Card.Schedule>
-      <Card.Content>
-        <Card.Actions>
-          <Tooltip title="Edit" mouseEnterDelay={0.4}>
-            <Card.Action
-              aria-label="Edit course"
-              data-testid="edit-course"
-              onClick={handleEditClick}
-            >
-              <Card.EditIcon />
-            </Card.Action>
-          </Tooltip>
+    const {_id, name, schedule} = course
+    const {start, end} = {
+      start: schedule[currentDay]?.start,
+      end: schedule[currentDay]?.end,
+    }
+    const startTime = start && hhmmss(start)
+    const endTime = end && hhmmss(end)
 
-          <Popconfirm
-            title="Are you sure to delete this course?"
-            arrowPointAtCenter={true}
-            placement="topRight"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={handleDeleteCourse(index, _id)}
-          >
-            <Tooltip title="Delete" mouseEnterDelay={0.4}>
-              <Card.Action aria-label="Delete course">
-                <Card.DeleteIcon data-testid="delete-course" />
+    return (
+      <Card.Wrapper ref={ref}>
+        <CourseDrawer
+          visible={openDrawer}
+          setVisible={toggleDrawer}
+          course={course}
+          index={index}
+        />
+        <Card.Schedule>
+          <time>
+            <b>{startTime}</b>
+          </time>
+          <b>-</b>
+          <time>
+            <b>{endTime}</b>
+          </time>
+        </Card.Schedule>
+        <Card.Content>
+          <Card.Actions>
+            <Tooltip title="Edit" mouseEnterDelay={0.4}>
+              <Card.Action
+                aria-label="Edit course"
+                data-testid="edit-course"
+                onClick={handleEditClick}
+              >
+                <Card.EditIcon />
               </Card.Action>
             </Tooltip>
-          </Popconfirm>
-        </Card.Actions>
-        <Card.CourseName>{name}</Card.CourseName>
-        <CourseLocation.Wrapper>
-          <CourseLocation.Icon />
-          <CourseLocation.Classroom>
-            {schedule[currentDay]?.classroom}
-          </CourseLocation.Classroom>
-        </CourseLocation.Wrapper>
-      </Card.Content>
-    </Card.Wrapper>
-  );
-});
+
+            <Popconfirm
+              title="Are you sure to delete this course?"
+              arrowPointAtCenter={true}
+              placement="topRight"
+              okText="Yes"
+              cancelText="No"
+              onConfirm={handleDeleteCourse(index, _id)}
+            >
+              <Tooltip title="Delete" mouseEnterDelay={0.4}>
+                <Card.Action aria-label="Delete course">
+                  <Card.DeleteIcon data-testid="delete-course" />
+                </Card.Action>
+              </Tooltip>
+            </Popconfirm>
+          </Card.Actions>
+          <Card.CourseName>{name}</Card.CourseName>
+          <CourseLocation.Wrapper>
+            <CourseLocation.Icon />
+            <CourseLocation.Classroom>
+              {schedule[currentDay]?.classroom}
+            </CourseLocation.Classroom>
+          </CourseLocation.Wrapper>
+        </Card.Content>
+      </Card.Wrapper>
+    )
+  },
+)
 
 const animations = {
   active: (theme: DefaultTheme) => keyframes`
@@ -224,7 +224,7 @@ const animations = {
     background-color: ${theme.colors.main};   
   }
 `,
-};
+}
 
 const Styles = {
   Wrapper: styled.section`
@@ -240,7 +240,7 @@ const Styles = {
   Tabs: styled.div`
     display: flex;
   `,
-  Tab: styled.div<{ active?: boolean }>`
+  Tab: styled.div<{active?: boolean}>`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -268,20 +268,19 @@ const Styles = {
 
     font-size: 2.2rem;
     font-weight: 500;
-    color: ${({ theme }) => theme.fontColors.text};
+    color: ${({theme}) => theme.fontColors.text};
 
     cursor: pointer;
 
     transition: 0.2s ease-out;
 
     &:not(.active):hover {
-      background-color: ${({ theme }) => theme.colors.mainRgba(0.1)};
+      background-color: ${({theme}) => theme.colors.mainRgba(0.1)};
     }
 
     &.active {
       color: white;
-      animation: ${({ theme }) => animations.active(theme)} 0.3s ease-out
-        forwards;
+      animation: ${({theme}) => animations.active(theme)} 0.3s ease-out forwards;
     }
   `,
   Body: styled(QueueAnim)`
@@ -292,16 +291,16 @@ const Styles = {
 
     margin: 4rem 0;
   `,
-};
+}
 
 const Card = {
   Wrapper: styled.div`
     display: flex;
     position: relative;
 
-    border-radius: ${({ theme }) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.borderRadius};
 
-    background-color: ${({ theme }) => theme.panelBackgroundColor};
+    background-color: ${({theme}) => theme.panelBackgroundColor};
 
     width: 47rem;
 
@@ -309,7 +308,7 @@ const Card = {
       width: 95vw;
     }
 
-    box-shadow: ${({ theme }) => theme.shadow1};
+    box-shadow: ${({theme}) => theme.shadow1};
 
     &:not(:last-child) {
       margin-bottom: 2.5rem;
@@ -327,10 +326,10 @@ const Card = {
     font-weight: 500;
     font-size: 1.2rem;
 
-    border-top-left-radius: ${({ theme }) => theme.borderRadius};
-    border-bottom-left-radius: ${({ theme }) => theme.borderRadius};
+    border-top-left-radius: ${({theme}) => theme.borderRadius};
+    border-bottom-left-radius: ${({theme}) => theme.borderRadius};
 
-    background-color: ${({ theme }) => theme.colors.main};
+    background-color: ${({theme}) => theme.colors.main};
   `,
   Content: styled.div`
     width: 100%;
@@ -346,7 +345,7 @@ const Card = {
       font-size: 2rem;
     }
 
-    color: ${({ theme }) => theme.fontColors.text};
+    color: ${({theme}) => theme.fontColors.text};
   `,
   Actions: styled.div`
     position: absolute;
@@ -370,7 +369,7 @@ const Card = {
     transition: color 0.1s;
 
     &:hover {
-      color: ${(props) => props.theme.colors.main};
+      color: ${props => props.theme.colors.main};
     }
   `,
   DeleteIcon: styled(DeleteOutlined)`
@@ -379,16 +378,16 @@ const Card = {
     transition: color 0.1s;
 
     &:hover {
-      color: ${(props) => props.theme.colors.main};
+      color: ${props => props.theme.colors.main};
     }
   `,
 
   Empty: styled(Empty)`
     margin: 4rem 0;
 
-    color: ${({ theme }) => theme.fontColors.textRgba(0.8)};
+    color: ${({theme}) => theme.fontColors.textRgba(0.8)};
   `,
-};
+}
 
 const Placeholder = {
   Wrapper: styled.div`
@@ -419,7 +418,7 @@ const Placeholder = {
       margin-bottom: 2.5rem;
     }
   `,
-};
+}
 
 const CourseLocation = {
   Wrapper: styled.div`
@@ -439,6 +438,6 @@ const CourseLocation = {
   Icon: styled(EnvironmentOutlined)`
     font-size: 1.8rem;
   `,
-};
+}
 
-export default Schedule;
+export default Schedule

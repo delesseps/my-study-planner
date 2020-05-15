@@ -1,20 +1,20 @@
-import React from "react";
-import { Switch, Route, Redirect } from "react-router";
-import { ThemeProvider } from "styled-components";
+import React from 'react'
+import {Switch, Route, Redirect} from 'react-router'
+import {ThemeProvider} from 'styled-components'
 
-import { IUserConfig } from "constants/interfaces/IUser";
-import { Loading } from "components";
-import { GlobalStyle, lightTheme } from "theme";
+import {IUserConfig} from 'constants/interfaces/IUser'
+import {Loading} from 'components'
+import {GlobalStyle, lightTheme} from 'theme'
 
-const SignIn = React.lazy(() => import("routes/SignIn"));
-const SignUp = React.lazy(() => import("routes/SignUp"));
-const Window404 = React.lazy(() => import("routes/Route404"));
-const ForgotPassword = React.lazy(() => import("routes/ForgotPassword"));
-const ChangePassword = React.lazy(() => import("routes/ChangePassword"));
-const LinkGoogleAccount = React.lazy(() => import("routes/LinkGoogleAccount"));
+const SignIn = React.lazy(() => import('routes/SignIn'))
+const SignUp = React.lazy(() => import('routes/SignUp'))
+const Window404 = React.lazy(() => import('routes/Route404'))
+const ForgotPassword = React.lazy(() => import('routes/ForgotPassword'))
+const ChangePassword = React.lazy(() => import('routes/ChangePassword'))
+const LinkGoogleAccount = React.lazy(() => import('routes/LinkGoogleAccount'))
 
 interface IRouterProps {
-  config?: IUserConfig;
+  config?: IUserConfig
 }
 
 const UnAuthenticatedApp: React.FC<IRouterProps> = () => {
@@ -37,19 +37,19 @@ const UnAuthenticatedApp: React.FC<IRouterProps> = () => {
           <Route
             path="/change_password/:token"
             exact
-            render={(props) => <ChangePassword {...props} />}
+            render={props => <ChangePassword {...props} />}
           />
           <Route
             path="/link/google/:token/:email"
             exact
-            render={(props) => <LinkGoogleAccount {...props} />}
+            render={props => <LinkGoogleAccount {...props} />}
           />
           <Route path="/404" exact render={() => <Window404 />} />
           <Redirect to="/404" />
         </Switch>
       </React.Suspense>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default UnAuthenticatedApp;
+export default UnAuthenticatedApp

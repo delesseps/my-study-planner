@@ -1,9 +1,8 @@
-export default interface IAxiosErrorResponse {    
-    data: {
-        errors: {
-            message: string;
-        }
-    };
-    status: number;
+export default interface IAxiosErrorResponse {
+  data: {
+    errors: {
+      message: string
+    }
+  }
+  status: number
 }
-  

@@ -1,39 +1,39 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Input, Checkbox, Alert, Form } from "antd";
-import styled from "styled-components";
-import { AxiosError } from "axios";
+import React from 'react'
+import {Link} from 'react-router-dom'
+import {LockOutlined, UserOutlined} from '@ant-design/icons'
+import {Button, Input, Checkbox, Alert, Form} from 'antd'
+import styled from 'styled-components'
+import {AxiosError} from 'axios'
 
-import ISignInCredentials from "constants/interfaces/ISignInCredentials";
-import { breakpoints } from "theme";
-import { FadeIn } from "components";
-import { useAuth } from "features/auth/auth-context";
+import ISignInCredentials from 'constants/interfaces/ISignInCredentials'
+import {breakpoints} from 'theme'
+import {FadeIn} from 'components'
+import {useAuth} from 'features/auth/auth-context'
 
 const errors: Record<string, string> = {
-  400: "Incorrect e-mail or password.",
-  404: "The user does not exist. Please create an account.",
-};
+  400: 'Incorrect e-mail or password.',
+  404: 'The user does not exist. Please create an account.',
+}
 
 const SignInForm: React.FC = () => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
   const {
-    login: [loginMutate, { status, error }],
-  } = useAuth();
+    login: [loginMutate, {status, error}],
+  } = useAuth()
 
   const handleSubmit = (): void => {
-    form.validateFields().then((credentials) => {
-      loginMutate(credentials as ISignInCredentials);
-    });
-  };
+    form.validateFields().then(credentials => {
+      loginMutate(credentials as ISignInCredentials)
+    })
+  }
 
-  const errorCode = (error as AxiosError)?.response?.status;
+  const errorCode = (error as AxiosError)?.response?.status
 
   return (
     <StyledForm
       form={form}
       layout="vertical"
-      initialValues={{ remember: false }}
+      initialValues={{remember: false}}
       onFinish={handleSubmit}
     >
       <Form.Item>
@@ -51,25 +51,25 @@ const SignInForm: React.FC = () => {
         label="E-mail"
         name="email"
         rules={[
-          { required: true, message: "Please input your email!" },
+          {required: true, message: 'Please input your email!'},
           {
-            type: "email",
-            message: "The input is not valid E-mail!",
+            type: 'email',
+            message: 'The input is not valid E-mail!',
           },
         ]}
       >
         <Input
-          prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          prefix={<UserOutlined style={{color: 'rgba(0,0,0,.25)'}} />}
           placeholder="john.doe@gmail.com"
         />
       </Form.Item>
       <Form.Item
         label="Password"
         name="password"
-        rules={[{ required: true, message: "Please input your password!" }]}
+        rules={[{required: true, message: 'Please input your password!'}]}
       >
         <Input.Password
-          prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          prefix={<LockOutlined style={{color: 'rgba(0,0,0,.25)'}} />}
           type="password"
           placeholder="Password"
         />
@@ -85,7 +85,7 @@ const SignInForm: React.FC = () => {
       <Form.Item>
         <Button
           data-testid="submit"
-          loading={status === "loading"}
+          loading={status === 'loading'}
           type="primary"
           size="large"
           htmlType="submit"
@@ -94,8 +94,8 @@ const SignInForm: React.FC = () => {
         </Button>
       </Form.Item>
     </StyledForm>
-  );
-};
+  )
+}
 
 const StyledForm = styled(Form)`
   width: 100%;
@@ -105,18 +105,18 @@ const StyledForm = styled(Form)`
       margin-bottom: 0.8rem;
     }
   }
-`;
+`
 
 const Heading = styled.h1`
   font-weight: bold;
   font-size: 3.6rem;
-  color: ${(props) => props.theme.fontColors.text};
-`;
+  color: ${props => props.theme.fontColors.text};
+`
 
 const SubHeading = styled.h3`
   font-weight: 600;
-  color: ${(props) => props.theme.fontColors.textRgba(0.6)};
-`;
+  color: ${props => props.theme.fontColors.textRgba(0.6)};
+`
 
 const OptionsWrapper = styled.div`
   display: flex;
@@ -129,7 +129,7 @@ const OptionsWrapper = styled.div`
       margin-bottom: 1rem;
     }
   }
-`;
+`
 
 const ForgotPassword = styled(Link)`
   cursor: pointer;
@@ -137,6 +137,6 @@ const ForgotPassword = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
-`;
+`
 
-export default SignInForm;
+export default SignInForm

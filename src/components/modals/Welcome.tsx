@@ -1,25 +1,25 @@
-import React from "react";
-import { Modal, Button } from "antd";
-import styled from "styled-components";
+import React from 'react'
+import {Modal, Button} from 'antd'
+import styled from 'styled-components'
 
-import { ReactComponent as Welcome } from "assets/welcome.svg";
-import { breakpoints } from "theme";
-import { useUserModal } from "features/user/user-hooks";
+import {ReactComponent as Welcome} from 'assets/welcome.svg'
+import {breakpoints} from 'theme'
+import {useUserModal} from 'features/user/user-hooks'
 
 const WelcomeModal: React.FC = () => {
   const {
     hasModal,
-    close: [closeModal, { status }],
-  } = useUserModal();
+    close: [closeModal, {status}],
+  } = useUserModal()
 
   const handleClose = () => {
-    closeModal();
-  };
+    closeModal()
+  }
 
   return (
     <StyledModal
       style={{
-        position: "relative",
+        position: 'relative',
       }}
       visible={hasModal}
       footer={null}
@@ -41,7 +41,7 @@ const WelcomeModal: React.FC = () => {
         </Body>
         <Button
           onClick={handleClose}
-          loading={status === "loading"}
+          loading={status === 'loading'}
           size="large"
           type="primary"
         >
@@ -49,8 +49,8 @@ const WelcomeModal: React.FC = () => {
         </Button>
       </TextWrapper>
     </StyledModal>
-  );
-};
+  )
+}
 
 const StyledModal = styled(Modal)`
   @media only screen and (max-width: ${breakpoints.bpMobileL}) {
@@ -63,7 +63,7 @@ const StyledModal = styled(Modal)`
   }
 
   & .ant-modal-content {
-    background-color: ${(props) => props.theme.backgroundColor};
+    background-color: ${props => props.theme.backgroundColor};
     border-radius: 10px;
     overflow: hidden;
     width: 65rem;
@@ -96,7 +96,7 @@ const StyledModal = styled(Modal)`
   }
 
   border-radius: 9px;
-`;
+`
 
 const Banner = styled.div`
   width: 100%;
@@ -104,15 +104,15 @@ const Banner = styled.div`
 
   justify-content: center;
 
-  background-color: ${(props) => props.theme.colors.main};
+  background-color: ${props => props.theme.colors.main};
 
   padding: 2rem 0 1rem 0;
-`;
+`
 
 const StyledWelcome = styled(Welcome)`
   width: 35rem;
   height: auto;
-`;
+`
 
 const TextWrapper = styled.section`
   display: flex;
@@ -132,10 +132,10 @@ const TextWrapper = styled.section`
     height: 70%;
     justify-content: space-around;
   }
-`;
+`
 
 const Title = styled.h1`
-  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
   margin: 0;
   letter-spacing: 1px;
   font-weight: 700;
@@ -145,10 +145,10 @@ const Title = styled.h1`
   @media only screen and (max-width: ${breakpoints.bpMobileL}) {
     text-align: center;
   }
-`;
+`
 
 const Subtitle = styled.h2`
-  color: ${(props) => props.theme.fontColors.textRgba(0.7)};
+  color: ${props => props.theme.fontColors.textRgba(0.7)};
   font-weight: 600;
   font-size: 1.8rem;
 
@@ -161,10 +161,10 @@ const Subtitle = styled.h2`
   && {
     margin-bottom: 4rem;
   }
-`;
+`
 
 const Body = styled.h3`
-  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
   margin: 0;
   line-height: 34px;
   text-align: center;
@@ -172,6 +172,6 @@ const Body = styled.h3`
   && {
     margin-bottom: 2.5rem;
   }
-`;
+`
 
-export default WelcomeModal;
+export default WelcomeModal

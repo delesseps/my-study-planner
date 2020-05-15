@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
 const Grades: React.FC = props => {
-  return <div>Grades</div>;
-};
+  return <div>Grades</div>
+}
 
-export default Grades;
+export default Grades

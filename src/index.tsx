@@ -1,23 +1,23 @@
-import "stop-runaway-react-effects/hijack";
-import React from "react";
-import ReactDOM from "react-dom";
-import { ReactQueryDevtools } from "react-query-devtools";
+import 'stop-runaway-react-effects/hijack'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {ReactQueryDevtools} from 'react-query-devtools'
 
-import * as serviceWorker from "./serviceWorker";
+import * as serviceWorker from './serviceWorker'
 
-import App from "app/App";
+import App from 'app/App'
 
-import { AppProviders } from "features";
+import {AppProviders} from 'features'
 
-if ("serviceWorker" in navigator) {
+if ('serviceWorker' in navigator) {
   navigator.serviceWorker
-    .register("./firebase-messaging-sw.js")
+    .register('./firebase-messaging-sw.js')
     .then(function (registration) {
-      console.log("Registration successful, scope is:", registration.scope);
+      console.log('Registration successful, scope is:', registration.scope)
     })
     .catch(function (err) {
-      console.log("Service worker registration failed, error:", err);
-    });
+      console.log('Service worker registration failed, error:', err)
+    })
 }
 
 ReactDOM.render(
@@ -25,7 +25,7 @@ ReactDOM.render(
     <App />
     <ReactQueryDevtools initialIsOpen={false} />
   </AppProviders>,
-  document.getElementById("root")
-);
+  document.getElementById('root'),
+)
 
-serviceWorker.register();
+serviceWorker.register()

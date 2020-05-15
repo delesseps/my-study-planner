@@ -1,18 +1,18 @@
-import React, { useEffect, useCallback } from "react";
-import { QuestionCircleOutlined } from "@ant-design/icons";
-import { Drawer, DatePicker, Input, Tooltip, Button, Radio, Form } from "antd";
-import moment from "moment";
+import React, {useEffect, useCallback} from 'react'
+import {QuestionCircleOutlined} from '@ant-design/icons'
+import {Drawer, DatePicker, Input, Tooltip, Button, Radio, Form} from 'antd'
+import moment from 'moment'
 
-import IHomework from "constants/interfaces/IHomework";
-import { useHomework } from "features/homework/homework-hooks";
+import IHomework from 'constants/interfaces/IHomework'
+import {useHomework} from 'features/homework/homework-hooks'
 
 interface IHomeworkDrawerProps {
-  visible: boolean;
-  setVisible: Function;
+  visible: boolean
+  setVisible: Function
 
   //Edit optional Props
-  homework?: IHomework;
-  index?: number;
+  homework?: IHomework
+  index?: number
 }
 
 const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
@@ -21,51 +21,51 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
   homework,
   index,
 }) => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
   const {
-    add: [addHomework, { status: addHomeworkStatus, reset: addHomeworkReset }],
+    add: [addHomework, {status: addHomeworkStatus, reset: addHomeworkReset}],
     edit: [
       editHomework,
-      { status: editHomeworkStatus, reset: editHomeworkReset },
+      {status: editHomeworkStatus, reset: editHomeworkReset},
     ],
-  } = useHomework();
+  } = useHomework()
 
-  const status = homework ? editHomeworkStatus : addHomeworkStatus;
+  const status = homework ? editHomeworkStatus : addHomeworkStatus
 
   const handleSubmit = () => {
-    form.validateFields().then((values) => {
-      const newHomework: IHomework = { ...values } as any;
+    form.validateFields().then(values => {
+      const newHomework: IHomework = {...values} as any
 
-      if (homework && typeof index === "number") {
-        newHomework._id = homework._id;
-        return editHomework({ homework: newHomework, index });
+      if (homework && typeof index === 'number') {
+        newHomework._id = homework._id
+        return editHomework({homework: newHomework, index})
       }
 
-      addHomework(newHomework);
-    });
-  };
+      addHomework(newHomework)
+    })
+  }
 
   const onClose = useCallback(() => {
-    addHomeworkReset();
-    editHomeworkReset();
-    form.resetFields();
-    setVisible(false);
-  }, [addHomeworkReset, editHomeworkReset, setVisible, form]);
+    addHomeworkReset()
+    editHomeworkReset()
+    form.resetFields()
+    setVisible(false)
+  }, [addHomeworkReset, editHomeworkReset, setVisible, form])
 
   useEffect(() => {
     // Close drawer after successful operation
-    if (status === "success") onClose();
-  }, [status, onClose]);
+    if (status === 'success') onClose()
+  }, [status, onClose])
 
   const disabledDate = (current: any) => {
     // Can not select days before today and today
-    return current < moment().startOf("day");
-  };
+    return current < moment().startOf('day')
+  }
 
   return (
     <Drawer
       destroyOnClose={true}
-      title={homework ? "Edit homework" : "Add new homework"}
+      title={homework ? 'Edit homework' : 'Add new homework'}
       onClose={onClose}
       visible={visible}
       width={300}
@@ -86,7 +86,7 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
           rules={[
             {
               required: true,
-              message: "Please input the course name!",
+              message: 'Please input the course name!',
               whitespace: true,
             },
           ]}
@@ -107,7 +107,7 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
           rules={[
             {
               required: true,
-              message: "Please select how urgent is your homework!",
+              message: 'Please select how urgent is your homework!',
             },
           ]}
         >
@@ -136,9 +136,9 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
           name="date"
           rules={[
             {
-              type: "object",
+              type: 'object',
               required: true,
-              message: "Please select time!",
+              message: 'Please select time!',
             },
           ]}
           label="Date"
@@ -149,15 +149,15 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
           <Button
             type="primary"
             htmlType="submit"
-            loading={status === "loading"}
-            disabled={status === "loading" || status === "success"}
+            loading={status === 'loading'}
+            disabled={status === 'loading' || status === 'success'}
           >
-            {homework ? "Edit Homework" : "Add Homework"}
+            {homework ? 'Edit Homework' : 'Add Homework'}
           </Button>
         </Form.Item>
       </Form>
     </Drawer>
-  );
-};
+  )
+}
 
-export default HomeworkDrawer;
+export default HomeworkDrawer

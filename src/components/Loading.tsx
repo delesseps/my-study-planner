@@ -1,19 +1,19 @@
-import React from "react";
-import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
-import { ReactComponent as Logo } from "assets/logo.svg";
-import styled, { keyframes } from "styled-components";
+import React from 'react'
+import {LoadingOutlined} from '@ant-design/icons'
+import {Spin} from 'antd'
+import {ReactComponent as Logo} from 'assets/logo.svg'
+import styled, {keyframes} from 'styled-components'
 
 const Loading: React.FC = () => {
-  const antIcon = <LoadingOutlined style={{ fontSize: 25 }} spin />;
+  const antIcon = <LoadingOutlined style={{fontSize: 25}} spin />
 
   return (
     <Wrapper data-testid="full-page-loader">
       <StyledLogo />
       <Spin indicator={antIcon} />
     </Wrapper>
-  );
-};
+  )
+}
 
 const fadeInUp = keyframes`
     0% {
@@ -25,7 +25,7 @@ const fadeInUp = keyframes`
       transform: translateY(0);
       opacity: 1;
     }
-`;
+`
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,13 +42,13 @@ const Wrapper = styled.div`
   & > div {
     animation: ${fadeInUp} 0.8s;
   }
-`;
+`
 
 const StyledLogo = styled(Logo)`
   width: 5rem;
   height: 5rem;
   margin-bottom: 0.9rem;
   animation: ${fadeInUp} 0.8s;
-`;
+`
 
-export default Loading;
+export default Loading

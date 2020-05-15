@@ -1,13 +1,13 @@
-import { useMutation } from "react-query";
+import {useMutation} from 'react-query'
 
-import * as linkAccountService from "./link-account-service";
+import * as linkAccountService from './link-account-service'
 
 export function useLinkAccount() {
-  const googleAccountLink = useMutation(linkAccountService.googleAccountLink);
+  const googleAccountLink = useMutation(linkAccountService.googleAccountLink)
 
   const googleTokenConfirmation = useMutation(
-    linkAccountService.googleTokenConfirmation
-  );
+    linkAccountService.googleTokenConfirmation,
+  )
 
-  return { googleAccountLink, googleTokenConfirmation };
+  return {googleAccountLink, googleTokenConfirmation}
 }

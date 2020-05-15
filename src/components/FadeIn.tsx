@@ -1,10 +1,10 @@
 //Display fade animation after loading
-import * as React from "react";
-import styled, { keyframes } from "styled-components";
+import * as React from 'react'
+import styled, {keyframes} from 'styled-components'
 
-const FadeIn = ({ children }: { children: React.ReactElement }) => {
-  return <Wrapper>{children}</Wrapper>;
-};
+const FadeIn = ({children}: {children: React.ReactElement}) => {
+  return <Wrapper>{children}</Wrapper>
+}
 
 const fadeIn = keyframes`
    from {
@@ -13,10 +13,10 @@ const fadeIn = keyframes`
   to {
     opacity: 1;
   }
-`;
+`
 
 const Wrapper = styled.div`
   animation: ${fadeIn} 0.5s;
-`;
+`
 
-export default FadeIn;
+export default FadeIn

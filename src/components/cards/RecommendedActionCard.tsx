@@ -1,51 +1,51 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { Badge, Divider } from "antd";
+import React, {useEffect, useState} from 'react'
+import styled from 'styled-components'
+import {Badge, Divider} from 'antd'
 
-import IEvaluation from "constants/interfaces/IEvaluation";
-import IHomework from "constants/interfaces/IHomework";
-import { determineColor } from "utils";
-import HomeworkDescriptionModal from "components/modals/HomeworkDescription";
-import EvaluationDescriptionModal from "components/modals/EvaluationDescription";
-import { useHomework } from "features/homework/homework-hooks";
-import { useEvaluations } from "features/evaluation/evaluation-hooks";
+import IEvaluation from 'constants/interfaces/IEvaluation'
+import IHomework from 'constants/interfaces/IHomework'
+import {determineColor} from 'utils'
+import HomeworkDescriptionModal from 'components/modals/HomeworkDescription'
+import EvaluationDescriptionModal from 'components/modals/EvaluationDescription'
+import {useHomework} from 'features/homework/homework-hooks'
+import {useEvaluations} from 'features/evaluation/evaluation-hooks'
 
 interface IRecommendedActionCardProps {
-  assignment: IHomework | IEvaluation | any;
+  assignment: IHomework | IEvaluation | any
 }
 
 const RecommendedActionCard: React.FC<IRecommendedActionCardProps> = ({
   assignment,
 }) => {
-  const [recommendedAction, setRecommendedAction] = useState("");
+  const [recommendedAction, setRecommendedAction] = useState('')
   const {
     edit: [editHomeworkMutate],
-  } = useHomework();
+  } = useHomework()
   const {
     edit: [editEvaluationMutate],
-  } = useEvaluations();
+  } = useEvaluations()
 
   useEffect(() => {
     assignment.evaluationType
-      ? setRecommendedAction("Start studying for ")
-      : setRecommendedAction("Start Working on ");
-  }, [assignment]);
+      ? setRecommendedAction('Start studying for ')
+      : setRecommendedAction('Start Working on ')
+  }, [assignment])
 
   const handleViewMoreClick = () => {
     assignment.evaluationType
       ? EvaluationDescriptionModal(assignment)
-      : HomeworkDescriptionModal(assignment);
-  };
+      : HomeworkDescriptionModal(assignment)
+  }
 
   const handleMarkAsDone = () => {
-    assignment.done = true;
+    assignment.done = true
 
     if (assignment.evaluationType) {
-      return editEvaluationMutate({ evaluation: assignment });
+      return editEvaluationMutate({evaluation: assignment})
     }
 
-    editHomeworkMutate({ homework: assignment });
-  };
+    editHomeworkMutate({homework: assignment})
+  }
 
   return (
     <Wrapper>
@@ -62,8 +62,8 @@ const RecommendedActionCard: React.FC<IRecommendedActionCardProps> = ({
         <Done onClick={handleMarkAsDone}>Done</Done>
       </ActionContainer>
     </Wrapper>
-  );
-};
+  )
+}
 
 const Wrapper = styled.div`
   display: flex;
@@ -71,16 +71,16 @@ const Wrapper = styled.div`
 
   padding: 2rem 2rem;
 
-  border-top: 0.5px solid ${(props) => props.theme.fontColors.textRgba(0.2)};
-  border-bottom: 0.5px solid ${(props) => props.theme.fontColors.textRgba(0.2)};
+  border-top: 0.5px solid ${props => props.theme.fontColors.textRgba(0.2)};
+  border-bottom: 0.5px solid ${props => props.theme.fontColors.textRgba(0.2)};
 
   width: 100%;
-`;
+`
 
 const RowWrapper = styled.div`
   display: flex;
   align-items: center;
-`;
+`
 
 const RecommendationTitle = styled.h3`
   margin-bottom: 0;
@@ -88,31 +88,31 @@ const RecommendationTitle = styled.h3`
 
   letter-spacing: 1px;
   font-size: 1.7rem;
-  color: ${(props) => props.theme.fontColors.textRgba(0.8)};
-`;
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
+`
 
 const ActionContainer = styled.div`
   display: flex;
   align-items: center;
-`;
+`
 
 const ViewMore = styled.span`
   cursor: pointer;
-  color: ${(props) => props.theme.colors.main};
+  color: ${props => props.theme.colors.main};
   margin-left: 1.3rem;
 
   &:hover {
     text-decoration: underline;
   }
-`;
+`
 
 const Done = styled.span`
   cursor: pointer;
-  color: ${(props) => props.theme.colors.main};
+  color: ${props => props.theme.colors.main};
 
   &:hover {
     text-decoration: underline;
   }
-`;
+`
 
-export default RecommendedActionCard;
+export default RecommendedActionCard

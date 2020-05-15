@@ -1,18 +1,18 @@
-import React, { useEffect, useCallback, useState, useMemo } from "react";
-import { Drawer, Input, Button, Form, Select, TimePicker } from "antd";
-import moment from "moment";
+import React, {useEffect, useCallback, useState, useMemo} from 'react'
+import {Drawer, Input, Button, Form, Select, TimePicker} from 'antd'
+import moment from 'moment'
 
-import { Weekdays, ICourse, ISchedule } from "constants/interfaces";
-import { toTitleCase, hhmmss } from "utils";
-import { useAddCourse, useEditCourse } from "features/course/course-hooks";
+import {Weekdays, ICourse, ISchedule} from 'constants/interfaces'
+import {toTitleCase, hhmmss} from 'utils'
+import {useAddCourse, useEditCourse} from 'features/course/course-hooks'
 
 interface ICourseDrawerProps {
-  visible: boolean;
-  setVisible: Function;
+  visible: boolean
+  setVisible: Function
 
   //Edit optional Props
-  course?: ICourse;
-  index?: number;
+  course?: ICourse
+  index?: number
 }
 
 /*
@@ -24,33 +24,33 @@ interface ICourseDrawerProps {
   }
 */
 function normalizeWeekday(schedule: ISchedule) {
-  const weekday: Record<string, any> = {};
+  const weekday: Record<string, any> = {}
 
   for (const entry of Object.entries(schedule)) {
-    const entryValue = entry[1];
+    const entryValue = entry[1]
 
     if (entryValue) {
-      const [day] = entry;
+      const [day] = entry
 
       weekday[day] = {
         time: [
-          moment(hhmmss(entryValue.start), "HH:mm:ss"),
-          moment(hhmmss(entryValue.end), "HH:mm:ss"),
+          moment(hhmmss(entryValue.start), 'HH:mm:ss'),
+          moment(hhmmss(entryValue.end), 'HH:mm:ss'),
         ],
         classroom: entryValue.classroom,
-      };
+      }
     }
   }
 
-  return weekday;
+  return weekday
 }
 
 function getSchedule(course?: ICourse) {
   return function () {
-    const schedule = course?.schedule;
-    if (schedule) return Object.keys(schedule);
-    return [];
-  };
+    const schedule = course?.schedule
+    if (schedule) return Object.keys(schedule)
+    return []
+  }
 }
 
 const CourseDrawer: React.FC<ICourseDrawerProps> = ({
@@ -59,91 +59,91 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
   course,
   index,
 }) => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
   const [selectedDays, setSelectedDays] = useState<string[]>(
-    getSchedule(course)
-  );
+    getSchedule(course),
+  )
 
   const [
     addCourse,
-    { status: addCourseStatus, reset: resetAddCourse },
-  ] = useAddCourse();
+    {status: addCourseStatus, reset: resetAddCourse},
+  ] = useAddCourse()
   const [
     editCourse,
-    { status: editCourseStatus, reset: resetEditCourse },
-  ] = useEditCourse();
+    {status: editCourseStatus, reset: resetEditCourse},
+  ] = useEditCourse()
 
-  const status = course ? editCourseStatus : addCourseStatus;
+  const status = course ? editCourseStatus : addCourseStatus
 
   const handleSubmit = () => {
-    form.validateFields().then((values) => {
-      const schedule: Record<string, any> = {};
+    form.validateFields().then(values => {
+      const schedule: Record<string, any> = {}
 
       // Convert range moment date to seconds
       values.weekday.forEach((day: string) => {
         const {
           classroom,
           time: [start, end],
-        } = values[day];
+        } = values[day]
 
         const dayValue = {
           classroom,
-          start: start.diff(moment().startOf("day"), "seconds"),
-          end: end.diff(moment().startOf("day"), "seconds"),
-        };
+          start: start.diff(moment().startOf('day'), 'seconds'),
+          end: end.diff(moment().startOf('day'), 'seconds'),
+        }
 
-        schedule[day] = dayValue;
-      });
+        schedule[day] = dayValue
+      })
 
-      const newCourse = { name: values.course, schedule };
+      const newCourse = {name: values.course, schedule}
 
-      if (course && typeof index === "number") {
+      if (course && typeof index === 'number') {
         return editCourse({
           course: {
             ...course,
             ...newCourse,
           },
           index,
-        });
+        })
       }
 
-      addCourse(newCourse);
-    });
-  };
+      addCourse(newCourse)
+    })
+  }
 
   const onClose = useCallback(() => {
-    resetAddCourse();
-    resetEditCourse();
-    form.resetFields();
-    setVisible(false);
-  }, [setVisible, resetAddCourse, resetEditCourse, form]);
+    resetAddCourse()
+    resetEditCourse()
+    form.resetFields()
+    setVisible(false)
+  }, [setVisible, resetAddCourse, resetEditCourse, form])
 
   const handleSelectedDayChange = (days: string[]) => {
-    setSelectedDays(days);
-  };
+    setSelectedDays(days)
+  }
 
   useEffect(() => {
     // Close drawer after successful operation
-    if (status === "success") onClose();
-  }, [status, onClose]);
+    if (status === 'success') onClose()
+  }, [status, onClose])
 
   useEffect(() => {
-    setSelectedDays(getSchedule(course));
-  }, [visible, setSelectedDays, course]);
+    setSelectedDays(getSchedule(course))
+  }, [visible, setSelectedDays, course])
 
   const weekday = useMemo(() => {
-    const schedule = course?.schedule;
+    const schedule = course?.schedule
 
     if (schedule)
-      return { ...normalizeWeekday(schedule), days: Object.keys(schedule) };
+      return {...normalizeWeekday(schedule), days: Object.keys(schedule)}
 
-    return undefined;
-  }, [course]);
+    return undefined
+  }, [course])
 
   return (
     <Drawer
       destroyOnClose={true}
-      title={course ? "Edit course" : "Add new course"}
+      title={course ? 'Edit course' : 'Add new course'}
       onClose={onClose}
       visible={visible}
       width={300}
@@ -163,7 +163,7 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
           rules={[
             {
               required: true,
-              message: "Please input the course name!",
+              message: 'Please input the course name!',
               whitespace: true,
             },
           ]}
@@ -178,8 +178,8 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
           rules={[
             {
               required: true,
-              message: "Please input at least one day!",
-              type: "array",
+              message: 'Please input at least one day!',
+              type: 'array',
             },
           ]}
         >
@@ -188,7 +188,7 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
             mode="multiple"
             placeholder="Select day(s) of the week"
           >
-            {Object.keys(Weekdays).map((key) => (
+            {Object.keys(Weekdays).map(key => (
               <Select.Option key={key} value={(Weekdays as any)[key]}>
                 {toTitleCase(key)}
               </Select.Option>
@@ -197,15 +197,15 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
         </Form.Item>
 
         {!!selectedDays?.length &&
-          selectedDays.map((day) => (
+          selectedDays.map(day => (
             <Form.Item key={day} label={<b>{toTitleCase(day)}</b>}>
               <Form.Item
-                name={[day, "time"]}
+                name={[day, 'time']}
                 rules={[
                   {
-                    type: "array",
+                    type: 'array',
                     required: true,
-                    message: "Please select time!",
+                    message: 'Please select time!',
                   },
                 ]}
               >
@@ -219,11 +219,11 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
               </Form.Item>
 
               <Form.Item
-                name={[day, "classroom"]}
+                name={[day, 'classroom']}
                 rules={[
                   {
                     required: true,
-                    message: "Please input the classroom!",
+                    message: 'Please input the classroom!',
                     whitespace: true,
                   },
                 ]}
@@ -238,15 +238,15 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
           <Button
             type="primary"
             htmlType="submit"
-            loading={status === "loading"}
-            disabled={status === "loading" || status === "success"}
+            loading={status === 'loading'}
+            disabled={status === 'loading' || status === 'success'}
           >
-            {course ? "Edit Course" : "Add Course"}
+            {course ? 'Edit Course' : 'Add Course'}
           </Button>
         </Form.Item>
       </Form>
     </Drawer>
-  );
-};
+  )
+}
 
-export default CourseDrawer;
+export default CourseDrawer

@@ -1,55 +1,55 @@
-import React from "react";
-import { UserOutlined } from "@ant-design/icons";
-import { Upload, message, Avatar } from "antd";
-import { RcFile } from "antd/lib/upload";
-import styled from "styled-components";
+import React from 'react'
+import {UserOutlined} from '@ant-design/icons'
+import {Upload, message, Avatar} from 'antd'
+import {RcFile} from 'antd/lib/upload'
+import styled from 'styled-components'
 
-import IUser from "constants/interfaces/IUser";
-import { UploadFile } from "antd/lib/upload/interface";
-import { useProfilePicture } from "features/user/user-hooks";
+import IUser from 'constants/interfaces/IUser'
+import {UploadFile} from 'antd/lib/upload/interface'
+import {useProfilePicture} from 'features/user/user-hooks'
 
 function getBase64(img: any): Promise<string | ArrayBuffer | null> {
-  const reader = new FileReader();
+  const reader = new FileReader()
 
   return new Promise((resolve, reject) => {
     reader.onload = () => {
-      resolve(reader.result);
-    };
+      resolve(reader.result)
+    }
 
-    reader.readAsDataURL(img);
-  });
+    reader.readAsDataURL(img)
+  })
 }
 
 function beforeUpload(file: RcFile) {
-  const isJPG = file.type === "image/jpeg";
-  const isPNG = file.type === "image/png";
+  const isJPG = file.type === 'image/jpeg'
+  const isPNG = file.type === 'image/png'
 
   if (!isJPG && !isPNG) {
-    message.error("You can only upload JPG or PNG file!");
+    message.error('You can only upload JPG or PNG file!')
   }
 
-  const isLt2M = file.size / 1024 / 1024 < 2;
+  const isLt2M = file.size / 1024 / 1024 < 2
 
   if (!isLt2M) {
-    message.error("Image must smaller than 2MB!");
+    message.error('Image must smaller than 2MB!')
   }
 
-  return (isJPG || isPNG) && isLt2M;
+  return (isJPG || isPNG) && isLt2M
 }
 
 interface IUploadPictureProps {
-  user?: IUser;
+  user?: IUser
 }
 
 const UploadPicture: React.FC<IUploadPictureProps> = () => {
-  const { picture, change } = useProfilePicture();
+  const {picture, change} = useProfilePicture()
 
   const handleUpload = async (file: UploadFile) => {
-    const imageUrl = await getBase64(file);
+    const imageUrl = await getBase64(file)
 
-    change(imageUrl as string);
-    return imageUrl as string;
-  };
+    change(imageUrl as string)
+    return imageUrl as string
+  }
 
   return (
     <StyledUpload
@@ -61,8 +61,8 @@ const UploadPicture: React.FC<IUploadPictureProps> = () => {
     >
       <Avatar shape="square" size={120} icon={<UserOutlined />} src={picture} />
     </StyledUpload>
-  );
-};
+  )
+}
 
 const StyledUpload = styled(Upload)`
   cursor: pointer;
@@ -74,6 +74,6 @@ const StyledUpload = styled(Upload)`
   &&:hover ~ i {
     opacity: 1;
   }
-`;
+`
 
-export default UploadPicture;
+export default UploadPicture
