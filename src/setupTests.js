@@ -25,6 +25,7 @@ Object.defineProperty(document, 'cookie', {
 })
 
 global.console = {
+  log: console.log,
   warn: jest.fn(),
   error: jest.fn(),
 }

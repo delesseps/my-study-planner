@@ -9,6 +9,12 @@ import {
   screen,
 } from 'test/test-utils'
 import App from 'app/App'
+import {
+  buildUser,
+  buildHomework,
+  buildEvaluation,
+  buildToDo,
+} from 'test/generate'
 
 async function renderHome({
   user,
@@ -43,5 +49,49 @@ describe('Counter Panel', () => {
     screen.getByText('To-Dos')
 
     screen.getByText(user.name)
+  })
+
+  test('renders home screen with homework, evaluations and to-dos', async () => {
+    const nextWeekDate = new Date()
+    nextWeekDate.setDate(nextWeekDate.getDate() + 7)
+
+    const pastWeekDate = new Date()
+    pastWeekDate.setDate(pastWeekDate.getDate() - 7)
+
+    const user = buildUser()
+    const homework = [
+      buildHomework({date: pastWeekDate.toISOString()}),
+      buildHomework({
+        date: nextWeekDate.toISOString(),
+      }),
+      buildHomework({date: new Date().toISOString()}),
+      buildHomework({date: new Date().toISOString()}),
+    ]
+    const evaluations = [buildEvaluation()]
+    const toDos = [buildToDo()]
+
+    user.evaluations = evaluations
+    user.homework = homework
+    user.toDos = toDos
+
+    await renderHome({user})
+
+    homework.map(({subject}) => {
+      screen.getByText(`Start working on ${subject}`)
+      screen.getByText(subject)
+    })
+
+    screen.getByText(`Start studying for ${evaluations[0].subject}`)
+    screen.getByRole('heading', {
+      name: `${evaluations[0].evaluationType} : ${evaluations[0].subject}`,
+    })
+
+    screen.getByText(toDos[0].task)
+
+    // 1 evaluation this week
+    expect(screen.getByTestId('evaluation-count')).toHaveTextContent('1')
+
+    // 2 homework this week
+    expect(screen.getByTestId('homework-count')).toHaveTextContent('2')
   })
 })

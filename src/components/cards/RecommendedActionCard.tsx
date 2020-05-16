@@ -28,7 +28,7 @@ const RecommendedActionCard: React.FC<IRecommendedActionCardProps> = ({
   useEffect(() => {
     assignment.evaluationType
       ? setRecommendedAction('Start studying for ')
-      : setRecommendedAction('Start Working on ')
+      : setRecommendedAction('Start working on ')
   }, [assignment])
 
   const handleViewMoreClick = () => {

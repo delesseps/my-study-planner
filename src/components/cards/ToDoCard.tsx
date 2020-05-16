@@ -78,6 +78,10 @@ const Action = styled.button`
   border: none;
   background: transparent;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   outline: none;
 `
 

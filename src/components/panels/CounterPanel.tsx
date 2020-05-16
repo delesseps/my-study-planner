@@ -36,7 +36,9 @@ const Counter: React.FC<ICounterProps> = ({user, homework}) => {
         <Title>{homework ? 'Homework' : 'Evaluations'}</Title>
         <Subtitle>This week</Subtitle>
       </Header>
-      <Count>{homework ? homeworkCount : evaluationCount}</Count>
+      <Count data-testid={homework ? 'homework-count' : 'evaluation-count'}>
+        {homework ? homeworkCount : evaluationCount}
+      </Count>
     </>
   )
 }

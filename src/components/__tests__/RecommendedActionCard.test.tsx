@@ -134,7 +134,7 @@ describe('Recommended action card', () => {
     fireEvent.click(screen.getByText('Done'))
 
     waitForElementToBeRemoved(
-      screen.getByText(`Start Working on ${homework.subject}`),
+      screen.getByText(`Start working on ${homework.subject}`),
     ).then()
   })
 

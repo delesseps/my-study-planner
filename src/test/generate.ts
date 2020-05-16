@@ -3,6 +3,7 @@ import IHomework from 'constants/interfaces/IHomework'
 import IUser, {Urgency} from 'constants/interfaces/IUser'
 import IEvaluation from 'constants/interfaces/IEvaluation'
 import {Weekdays, ICourse} from 'constants/interfaces'
+import IToDo from 'constants/interfaces/IToDo'
 
 export function buildUser(overrides?: Record<string, string>): IUser {
   return {
@@ -58,6 +59,16 @@ export function buildEvaluation(
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,
       picture: faker.image.image(),
     },
+    ...overrides,
+  }
+}
+
+export function buildToDo(overrides?: Record<string, string>): IToDo {
+  return {
+    _id: faker.random.uuid(),
+    task: faker.name.jobType(),
+    urgency: Urgency.normal,
+    done: false,
     ...overrides,
   }
 }
