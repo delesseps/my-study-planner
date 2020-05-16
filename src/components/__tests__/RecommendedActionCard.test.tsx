@@ -127,26 +127,26 @@ describe('Recommended action card', () => {
   })
 
   test('marks homework as done', async () => {
-    const {getByText, homework} = await renderCardWithHomework()
+    const {homework} = await renderCardWithHomework()
 
     mockAxios.onPatch('/homework/update').reply(200, {homework: {}})
 
-    fireEvent.click(getByText('Done'))
+    fireEvent.click(screen.getByText('Done'))
 
-    waitForElementToBeRemoved(() =>
-      getByText(`Start Working on ${homework.subject}`),
-    )
+    waitForElementToBeRemoved(
+      screen.getByText(`Start Working on ${homework.subject}`),
+    ).then()
   })
 
   test('marks evaluation as done', async () => {
-    const {getByText, evaluation} = await renderCardWithEvaluation()
+    const {evaluation} = await renderCardWithEvaluation()
 
     mockAxios.onPatch('evaluation/update').reply(200)
 
-    fireEvent.click(getByText('Done'))
+    fireEvent.click(screen.getByText('Done'))
 
-    waitForElementToBeRemoved(() =>
-      getByText(`Start studying for ${evaluation.subject}`),
-    )
+    waitForElementToBeRemoved(
+      screen.getByText(`Start studying for ${evaluation.subject}`),
+    ).then()
   })
 })

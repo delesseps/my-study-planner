@@ -24,6 +24,11 @@ Object.defineProperty(document, 'cookie', {
   value: '',
 })
 
+global.console = {
+  warn: jest.fn(),
+  error: jest.fn(),
+}
+
 afterEach(() => {
   queryCache.clear()
   jest.clearAllMocks()

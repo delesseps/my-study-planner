@@ -9,7 +9,6 @@ import {
   screen,
   mockAxios,
   fireEvent,
-  waitFor,
 } from 'test/test-utils'
 import App from 'app/App'
 import {buildCourse} from 'test/generate'
@@ -71,30 +70,31 @@ describe('Schedule Route', () => {
     expect(selectedDay).toBe(dayToChangeInto)
 
     const currentDaySchedule = course.schedule[day]
-    waitFor(() => getByText(course.name))
-    waitFor(() => getByText(currentDaySchedule!.classroom))
-    waitFor(() => getByText(hhmmss(currentDaySchedule!.start)))
-    waitFor(() => getByText(hhmmss(currentDaySchedule!.end)))
+
+    await screen.findByText(course.name)
+    await screen.findByText(currentDaySchedule!.classroom)
+    await screen.findByText(hhmmss(currentDaySchedule!.start))
+    await screen.findByText(hhmmss(currentDaySchedule!.end))
   })
 
   test('can delete course', async () => {
     mockAxios.onDelete('/course/delete').reply(200)
-    const {getByTestId, getByText, courses} = await renderSchedule()
+    const {courses} = await renderSchedule()
 
     const course = courses[0]
     const days = Object.keys(course.schedule)
     const day = days[0] as Weekdays
     const dayToChangeInto = toTitleCase(day.slice(0, 3))
 
-    fireEvent.click(getByText(dayToChangeInto))
+    fireEvent.click(screen.getByText(dayToChangeInto))
 
-    await waitFor(() => getByTestId('delete-course'))
-    fireEvent.click(getByTestId('delete-course'))
+    await screen.findByTestId('delete-course')
+    fireEvent.click(await screen.findByTestId('delete-course'))
 
     // Confirm popover
-    await waitFor(() => screen.getByText('Yes'))
-    fireEvent.click(getByText('Yes'))
+    await screen.findByText('Yes')
+    fireEvent.click(screen.getByText('Yes'))
 
-    getByText('No courses found.')
+    screen.getByText('No courses found.')
   })
 })
