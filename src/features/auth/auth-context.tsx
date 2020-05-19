@@ -42,12 +42,13 @@ export function AuthProvider(props: any) {
     authService.getUser,
     {
       cacheTime: 1000 * 60 * 60,
-      retry: async (failureCount, error) => {
+      retry: (failureCount, error) => {
         const errorCode = (error as AxiosError)?.response?.status
 
         if (errorCode === 401) {
-          await logout()
-          window.location.assign((window.location as unknown) as any)
+          logout().then(() =>
+            window.location.assign((window.location as unknown) as any),
+          )
         }
 
         if (failureCount < 3) {
