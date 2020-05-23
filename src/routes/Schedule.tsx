@@ -91,8 +91,6 @@ const Courses = ({currentDay}: {currentDay: Weekdays}) => {
       .filter(course => course.schedule[currentDay])
   }, [currentDay, courses])
 
-  console.log(currentDayCourses)
-
   if (status === 'loading') {
     return (
       <Placeholder.Wrapper data-testid="course-skeleton">
