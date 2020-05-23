@@ -41,6 +41,7 @@ export function AuthProvider(props: any) {
     isLoggedIn ? 'user' : null,
     authService.getUser,
     {
+      staleTime: 1000 * 60,
       cacheTime: 1000 * 60 * 60,
       retry: (failureCount, error) => {
         const errorCode = (error as AxiosError)?.response?.status

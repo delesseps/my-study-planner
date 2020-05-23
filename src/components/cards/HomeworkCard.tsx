@@ -82,7 +82,7 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
           </Action>
 
           <Action>
-            <Tooltip title="Delete" mouseEnterDelay={0.4}>
+            <Tooltip title="Delete" mouseEnterDelay={1}>
               <Popconfirm
                 title="Are you sure to delete this homework?"
                 arrowPointAtCenter={true}

@@ -33,13 +33,7 @@ export function add(course: Partial<ICourse>): Promise<ICourse> {
   return agent.request(options).then(({data}) => data.course)
 }
 
-export function remove({
-  id,
-  index,
-}: {
-  id: string
-  index: number
-}): Promise<string> {
+export function remove({id}: {id: string}): Promise<string> {
   const options: AxiosRequestConfig = {
     url: '/course/delete',
     method: 'delete',
@@ -51,13 +45,7 @@ export function remove({
   return agent.request(options).then(({data}) => data)
 }
 
-export function edit({
-  course,
-  index,
-}: {
-  course: ICourse
-  index?: number
-}): Promise<ICourse> {
+export function edit({course}: {course: ICourse}): Promise<ICourse> {
   const options: AxiosRequestConfig = {
     url: '/course/update',
     method: 'patch',

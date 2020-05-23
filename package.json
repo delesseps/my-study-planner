@@ -10,7 +10,6 @@
     "test:coverage": "react-app-rewired test --coverage --watchAll=false",
     "check-format": "npm run prettier -- --list-different",
     "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|tsx|json)\"",
-    "format": "npm run prettier -- --write",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
     "eject": "react-scripts eject"
   },

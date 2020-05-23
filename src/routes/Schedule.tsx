@@ -91,6 +91,8 @@ const Courses = ({currentDay}: {currentDay: Weekdays}) => {
       .filter(course => course.schedule[currentDay])
   }, [currentDay, courses])
 
+  console.log(currentDayCourses)
+
   if (status === 'loading') {
     return (
       <Placeholder.Wrapper data-testid="course-skeleton">
@@ -115,15 +117,10 @@ const Courses = ({currentDay}: {currentDay: Weekdays}) => {
 
   return (
     <Styles.Body>
-      {currentDayCourses?.map((course, courseIndex) => {
+      {currentDayCourses?.map(course => {
         if (course.schedule[currentDay]) {
           return (
-            <Course
-              key={course._id}
-              index={courseIndex}
-              course={course}
-              currentDay={currentDay}
-            />
+            <Course key={course._id} course={course} currentDay={currentDay} />
           )
         }
       })}
@@ -132,18 +129,17 @@ const Courses = ({currentDay}: {currentDay: Weekdays}) => {
 }
 
 interface CourseProps {
-  index: number
   course: ICourse
   currentDay: Weekdays
 }
 
 const Course = React.forwardRef<any, CourseProps>(
-  ({index, course, currentDay}, ref) => {
+  ({course, currentDay}, ref) => {
     const [openDrawer, toggleDrawer] = useState(false)
     const [deleteCourse] = useDeleteCourse()
 
-    const handleDeleteCourse = (index: number, id: string) => () => {
-      deleteCourse({index, id})
+    const handleDeleteCourse = (id: string) => () => {
+      deleteCourse({id})
     }
 
     const handleEditClick = () => {
@@ -164,7 +160,6 @@ const Course = React.forwardRef<any, CourseProps>(
           visible={openDrawer}
           setVisible={toggleDrawer}
           course={course}
-          index={index}
         />
         <Card.Schedule>
           <time>
@@ -193,9 +188,9 @@ const Course = React.forwardRef<any, CourseProps>(
               placement="topRight"
               okText="Yes"
               cancelText="No"
-              onConfirm={handleDeleteCourse(index, _id)}
+              onConfirm={handleDeleteCourse(_id)}
             >
-              <Tooltip title="Delete" mouseEnterDelay={0.4}>
+              <Tooltip title="Delete" mouseEnterDelay={1}>
                 <Card.Action aria-label="Delete course">
                   <Card.DeleteIcon data-testid="delete-course" />
                 </Card.Action>
