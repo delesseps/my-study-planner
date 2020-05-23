@@ -12,7 +12,6 @@ interface ICourseDrawerProps {
 
   //Edit optional Props
   course?: ICourse
-  index?: number
 }
 
 /*
@@ -57,7 +56,6 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
   visible = false,
   setVisible,
   course,
-  index,
 }) => {
   const [form] = Form.useForm()
   const [selectedDays, setSelectedDays] = useState<string[]>(
@@ -97,13 +95,12 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
 
       const newCourse = {name: values.course, schedule}
 
-      if (course && typeof index === 'number') {
+      if (course) {
         return editCourse({
           course: {
             ...course,
             ...newCourse,
           },
-          index,
         })
       }
 

@@ -24,11 +24,15 @@ Object.defineProperty(document, 'cookie', {
   value: '',
 })
 
-global.console = {
-  log: console.log,
-  warn: jest.fn(),
-  error: jest.fn(),
-}
+beforeAll(() => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+  jest.spyOn(console, 'warn').mockImplementation(() => {})
+})
+
+afterAll(() => {
+  console.error.mockRestore()
+  console.warn.mockRestore()
+})
 
 afterEach(() => {
   queryCache.clear()

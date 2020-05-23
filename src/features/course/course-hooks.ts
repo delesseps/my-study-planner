@@ -42,11 +42,13 @@ export function useAddCourse() {
 
 export function useDeleteCourse() {
   return useMutation(courseService.remove, {
-    onMutate: ({index}) => {
+    onMutate: ({id}) => {
       const previousCourses = queryCache.getQueryData('course') as ICourse
 
       queryCache.setQueryData(['course'], (previous: ICourse[]) => {
         const newCourses = [...previous]
+        const index = newCourses.findIndex(course => course._id === id)
+
         newCourses.splice(index, 1)
 
         return newCourses
@@ -69,13 +71,10 @@ export function useDeleteCourse() {
 
 export function useEditCourse() {
   return useMutation(courseService.edit, {
-    onSuccess: (data, {index}) => {
+    onSuccess: (data, {course: {_id: id}}) => {
       queryCache.setQueryData(['course'], (previous: ICourse[]) => {
         const newCourses = [...previous]
-
-        if (!index) {
-          index = previous.findIndex(elem => data._id === elem._id)
-        }
+        const index = newCourses.findIndex(course => course._id === id)
 
         newCourses[index] = data
 

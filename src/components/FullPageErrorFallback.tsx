@@ -41,9 +41,9 @@ const FullPageErrorFallback = ({error, requestError}: Props) => {
           : 'A fatal error has ocurred. Please refresh.'
       }
       extra={
-        <a href="/">
-          <Button type="primary">Back Home</Button>
-        </a>
+        <Button type="primary">
+          <a href="/">Back Home</a>
+        </Button>
       }
     />
   )
@@ -57,6 +57,10 @@ const Styles = {
     justify-content: center;
 
     min-height: 100vh;
+
+    & > *:first-of-type {
+      margin: 0 auto;
+    }
   `,
 }
 
