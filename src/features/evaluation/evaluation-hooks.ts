@@ -27,7 +27,7 @@ export function useEvaluations() {
       })
 
       message.success(
-        data.done ? 'Great Job!' : 'Successfuly edited evaluation!',
+        data.done ? 'Great Job!' : 'Successfully edited evaluation!',
       )
     },
     onError: () => {
@@ -50,7 +50,7 @@ export function useEvaluations() {
         }
       })
 
-      message.success('Successfuly added evaluation!')
+      message.success('Successfully added evaluation!')
     },
     onError: () => {
       message.error('Error adding evaluation. Please try again.')
@@ -69,7 +69,7 @@ export function useEvaluations() {
         }
       })
 
-      message.success('Successfuly removed evaluation!')
+      message.success('Successfully removed evaluation!')
     },
     onError: () => {
       message.error('Error removing evaluation. Please try again.')
