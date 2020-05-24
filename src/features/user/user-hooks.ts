@@ -65,7 +65,7 @@ export function useUserModal() {
 
       queryCache.setQueryData('user', (previous: IUser) => ({
         ...previous,
-        firstSignIn: true,
+        firstSignIn: false,
       }))
 
       return () => queryCache.setQueryData('user', previousUserData)
