@@ -103,9 +103,9 @@ describe('Counter Panel', () => {
     screen.getByText(toDos[0].task)
 
     // 1 evaluation this week
-    expect(screen.getByTestId('evaluation-count')).toHaveTextContent('1')
+    expect(screen.getByTestId('evaluation-count')).toHaveTextContent(/1/i)
 
     // 2 homework this week
-    expect(screen.getByTestId('homework-count')).toHaveTextContent('2')
+    expect(screen.getByTestId('homework-count')).toHaveTextContent(/2/i)
   })
 })
