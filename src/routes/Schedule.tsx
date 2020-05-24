@@ -62,7 +62,6 @@ const Schedule: React.FC = () => {
       <Button
         key={'add-button'}
         aria-label="Add course"
-        data-testid="add-course"
         type="primary"
         shape="circle"
         onClick={() => toggleDrawer(true)}
@@ -114,7 +113,7 @@ const Courses = ({currentDay}: {currentDay: Weekdays}) => {
   }
 
   return (
-    <Styles.Body>
+    <Styles.Body duration={[450, 0]} interval={[100, 0]}>
       {currentDayCourses?.map(course => {
         if (course.schedule[currentDay]) {
           return (

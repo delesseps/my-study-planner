@@ -5,7 +5,7 @@ import IEvaluation from 'constants/interfaces/IEvaluation'
 import {Weekdays, ICourse} from 'constants/interfaces'
 import IToDo from 'constants/interfaces/IToDo'
 
-export function buildUser(overrides?: Record<string, string>): IUser {
+export function buildUser(overrides?: Record<string, any>): IUser {
   return {
     _id: faker.random.uuid(),
     name: `${faker.name.firstName()} ${faker.name.lastName()}`,
@@ -26,7 +26,7 @@ export function buildUser(overrides?: Record<string, string>): IUser {
   }
 }
 
-export function buildHomework(overrides?: Record<string, string>): IHomework {
+export function buildHomework(overrides?: Record<string, any>): IHomework {
   return {
     _id: faker.random.uuid(),
     subject: faker.name.jobTitle(),
@@ -63,7 +63,7 @@ export function buildEvaluation(
   }
 }
 
-export function buildToDo(overrides?: Record<string, string>): IToDo {
+export function buildToDo(overrides?: Record<string, any>): IToDo {
   return {
     _id: faker.random.uuid(),
     task: faker.name.jobType(),
@@ -73,7 +73,7 @@ export function buildToDo(overrides?: Record<string, string>): IToDo {
   }
 }
 
-export function buildCourse(overrides?: Record<string, string>): ICourse {
+export function buildCourse(overrides?: Record<string, any>): ICourse {
   const weekdays = Object.values(Weekdays)
 
   return {

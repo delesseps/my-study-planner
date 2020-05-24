@@ -198,6 +198,7 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
             <Form.Item key={day} label={<b>{toTitleCase(day)}</b>}>
               <Form.Item
                 name={[day, 'time']}
+                label="Time"
                 rules={[
                   {
                     type: 'array',
@@ -212,11 +213,13 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
                   use12Hours
                   format="HH:mm"
                   minuteStep={15}
+                  data-testid={`course-range-picker`}
                 />
               </Form.Item>
 
               <Form.Item
                 name={[day, 'classroom']}
+                label={<span>Classroom</span>}
                 rules={[
                   {
                     required: true,
@@ -224,9 +227,8 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
                     whitespace: true,
                   },
                 ]}
-                noStyle
               >
-                <Input placeholder="Classroom" />
+                <Input placeholder="FR1-301" />
               </Form.Item>
             </Form.Item>
           ))}

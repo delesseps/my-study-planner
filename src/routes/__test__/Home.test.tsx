@@ -7,6 +7,7 @@ import {
   render,
   waitForElementToBeRemoved,
   screen,
+  mockAxios,
 } from 'test/test-utils'
 import App from 'app/App'
 import {
@@ -15,6 +16,7 @@ import {
   buildEvaluation,
   buildToDo,
 } from 'test/generate'
+import userEvent from '@testing-library/user-event'
 
 async function renderHome({
   user,
@@ -49,6 +51,18 @@ describe('Counter Panel', () => {
     screen.getByText('To-Dos')
 
     screen.getByText(user.name)
+  })
+
+  test('renders first sign in and can close it', async () => {
+    mockAxios.onPost('/user/welcome').reply(200, 'success')
+    const user = buildUser({firstSignIn: true})
+    await renderHome({user})
+
+    screen.getByRole('heading', {name: /welcome to my study planner alpha!/i})
+
+    userEvent.click(screen.getByRole('button', {name: /get started/i}))
+
+    expect(screen.queryByText(/welcome to my study planner alpha!/i)).toBeNull()
   })
 
   test('renders home screen with homework, evaluations and to-dos', async () => {

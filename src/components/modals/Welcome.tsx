@@ -24,6 +24,7 @@ const WelcomeModal: React.FC = () => {
       visible={hasModal}
       footer={null}
       onCancel={handleClose}
+      destroyOnClose
     >
       <Banner>
         <StyledWelcome />
@@ -138,7 +139,7 @@ const Title = styled.h1`
   color: ${props => props.theme.fontColors.textRgba(0.8)};
   margin: 0;
   letter-spacing: 1px;
-  font-weight: 700;
+  font-weight: 800;
 
   font-size: 3rem;
 
@@ -159,15 +160,16 @@ const Subtitle = styled.h2`
   }
 
   && {
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
   }
 `
 
-const Body = styled.h3`
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
+const Body = styled.p`
+  color: ${props => props.theme.fontColors.textRgba(0.6)};
   margin: 0;
   line-height: 34px;
   text-align: center;
+  font-size: 1.5rem;
 
   && {
     margin-bottom: 2.5rem;

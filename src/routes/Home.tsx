@@ -29,7 +29,7 @@ const Home: React.FC = () => {
     <Profiler id="Home Screen">
       <FadeIn>
         <Wrapper>
-          <WelcomeModal />
+          {user.firstSignIn && <WelcomeModal />}
           <CounterPanelLeft>
             <CounterPanel user={user} homework />
           </CounterPanelLeft>
