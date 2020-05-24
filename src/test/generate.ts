@@ -73,22 +73,34 @@ export function buildToDo(overrides?: Record<string, any>): IToDo {
   }
 }
 
-export function buildCourse(overrides?: Record<string, any>): ICourse {
+function getRandomWeekday({exclude}: {exclude?: string} = {}): Weekdays {
   const weekdays = Object.values(Weekdays)
+  const index = Math.floor(Math.random() * (weekdays.length - 1))
+  const weekday = weekdays[index]
+
+  // Avoid collision of random values
+  if (weekday === exclude) return getRandomWeekday({exclude})
+
+  return weekday
+}
+
+export function buildCourse(overrides?: Record<string, any>): ICourse {
+  const firstDay = getRandomWeekday()
+  const secondDay = getRandomWeekday({exclude: firstDay})
 
   return {
     _id: faker.random.uuid(),
-    name: faker.name.jobTitle(),
+    name: faker.lorem.word(),
     schedule: {
-      [weekdays[Math.floor(Math.random() * weekdays.length)]]: {
-        start: 900,
-        end: 1080,
-        classroom: 'Virtual',
+      [firstDay]: {
+        start: 54000,
+        end: 64800,
+        classroom: faker.lorem.word(),
       },
-      [weekdays[Math.floor(Math.random() * weekdays.length)]]: {
-        start: 1080,
-        end: 1200,
-        classroom: 'FR1-301',
+      [secondDay]: {
+        start: 64800,
+        end: 72000,
+        classroom: faker.lorem.word(),
       },
     },
     members: [],

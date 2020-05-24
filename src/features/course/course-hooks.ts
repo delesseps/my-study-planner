@@ -32,7 +32,7 @@ export function useAddCourse() {
         return newCourses
       })
 
-      message.success('Successfuly added course!')
+      message.success('Successfully added course!')
     },
     onError: () => {
       message.error('Error adding course. Please try again.')
@@ -57,7 +57,7 @@ export function useDeleteCourse() {
       return () => queryCache.setQueryData('course', previousCourses)
     },
     onSuccess: () => {
-      message.success('Successfuly removed course!')
+      message.success('Successfully removed course!')
     },
     onError: (err, previousUserData, rollback: any) => {
       rollback()
@@ -81,7 +81,7 @@ export function useEditCourse() {
         return newCourses
       })
 
-      message.success('Successfuly edited course!')
+      message.success('Successfully edited course!')
     },
     onError: () => {
       message.error('Error editing course. Please try again.')

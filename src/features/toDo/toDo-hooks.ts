@@ -21,7 +21,7 @@ export function useToDo() {
         }
       })
 
-      message.success(data.done ? 'Great Job!' : 'Successfuly edited to-do!')
+      message.success(data.done ? 'Great Job!' : 'Successfully edited to-do!')
     },
     onError: () => {
       message.error('Error marking to-do as done. Please try again.')
@@ -39,7 +39,7 @@ export function useToDo() {
         }
       })
 
-      message.success('Successfuly added to-do!')
+      message.success('Successfully added to-do!')
     },
     onError: () => {
       message.error('Error adding to-do. Please try again.')
@@ -58,7 +58,7 @@ export function useToDo() {
         }
       })
 
-      message.success('Successfuly removed to-do!')
+      message.success('Successfully removed to-do!')
     },
     onError: () => {
       message.error('Error removing to-do. Please try again.')

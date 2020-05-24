@@ -76,7 +76,6 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
   const handleSubmit = () => {
     form.validateFields().then(values => {
       const schedule: Record<string, any> = {}
-
       // Convert range moment date to seconds
       values.weekday.forEach((day: string) => {
         const {

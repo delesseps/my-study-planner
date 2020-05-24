@@ -61,7 +61,7 @@ const Schedule: React.FC = () => {
       <Courses currentDay={currentDay} />
       <Button
         key={'add-button'}
-        aria-label="Add course"
+        aria-label="Open add course"
         type="primary"
         shape="circle"
         onClick={() => toggleDrawer(true)}
@@ -170,11 +170,7 @@ const Course = React.forwardRef<any, CourseProps>(
         <Card.Content>
           <Card.Actions>
             <Tooltip title="Edit" mouseEnterDelay={0.4}>
-              <Card.Action
-                aria-label="Edit course"
-                data-testid="edit-course"
-                onClick={handleEditClick}
-              >
+              <Card.Action aria-label="Edit course" onClick={handleEditClick}>
                 <Card.EditIcon />
               </Card.Action>
             </Tooltip>
@@ -189,7 +185,7 @@ const Course = React.forwardRef<any, CourseProps>(
             >
               <Tooltip title="Delete" mouseEnterDelay={1}>
                 <Card.Action aria-label="Delete course">
-                  <Card.DeleteIcon data-testid="delete-course" />
+                  <Card.DeleteIcon />
                 </Card.Action>
               </Tooltip>
             </Popconfirm>

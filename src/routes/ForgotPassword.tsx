@@ -53,7 +53,7 @@ const ForgotPassword: React.FunctionComponent = () => {
           <CardTitle>Reset Password</CardTitle>
           <CardBody>
             {success
-              ? 'Successfuly sent! Please check your email!'
+              ? 'Successfully sent! Please check your email!'
               : "Please enter your email address below and we'll send you a link to reset your password"}
           </CardBody>
           {success ? (

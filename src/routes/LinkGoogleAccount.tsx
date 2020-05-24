@@ -84,7 +84,7 @@ const LinkGoogleAccount: React.FunctionComponent<ILinkGoogleAccountProps> = ({
             <CardTitle>Link account to Google</CardTitle>
             <CardBody>
               {linkSuccess
-                ? 'Successfuly linked account!'
+                ? 'Successfully linked account!'
                 : 'To continue through Google you must link your account. This action can not be undone!'}
             </CardBody>
             {linkSuccess ? (

@@ -117,7 +117,7 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
             <CardTitle>Change Password</CardTitle>
             <CardBody>
               {success
-                ? 'Successfuly changed password!'
+                ? 'Successfully changed password!'
                 : 'Please enter your new password.'}
             </CardBody>
             {success ? (

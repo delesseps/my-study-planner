@@ -26,7 +26,9 @@ export function useHomework() {
         }
       })
 
-      message.success(data.done ? 'Great Job!' : 'Successfuly edited homework!')
+      message.success(
+        data.done ? 'Great Job!' : 'Successfully edited homework!',
+      )
     },
     onError: () => {
       message.error('Error editing homework. Please try again.')
@@ -48,7 +50,7 @@ export function useHomework() {
         }
       })
 
-      message.success('Successfuly added homework!')
+      message.success('Successfully added homework!')
     },
     onError: () => {
       message.error('Error adding homework. Please try again.')
@@ -67,7 +69,7 @@ export function useHomework() {
         }
       })
 
-      message.success('Successfuly removed homework!')
+      message.success('Successfully removed homework!')
     },
     onError: () => {
       message.error('Error removing homework. Please try again.')
