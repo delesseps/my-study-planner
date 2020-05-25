@@ -29,7 +29,7 @@ function TestComponent() {
 }
 
 describe('CourseAutoComplete', () => {
-  test('renders and displays courses options', async () => {
+  test('renders, displays courses options and can filter through them', async () => {
     const courses = [buildCourse(), buildCourse(), buildCourse()]
     mockAxios.onGet('/course').reply(200, {course: courses})
 
@@ -41,5 +41,9 @@ describe('CourseAutoComplete', () => {
     await screen.findByText(courses[0].name)
     await screen.findByText(courses[1].name)
     await screen.findByText(courses[2].name)
+
+    userEvent.type(screen.getByLabelText(/course name/i), courses[0].name)
+    expect(screen.queryByText(courses[1].name)).toBeNull()
+    expect(screen.queryByText(courses[2].name)).toBeNull()
   })
 })

@@ -23,7 +23,17 @@ const CourseAutoComplete = (props: any) => {
     return [autocomplete]
   }, [courses])
   return (
-    <AutoComplete options={autocompleteCourses} {...props}>
+    <AutoComplete
+      options={autocompleteCourses}
+      filterOption={(inputValue, option) => {
+        if (option?.value) {
+          return (
+            option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+          )
+        }
+      }}
+      {...props}
+    >
       <Styles.Input placeholder="Search or add your own course" />
     </AutoComplete>
   )
