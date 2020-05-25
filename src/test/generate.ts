@@ -90,7 +90,7 @@ export function buildCourse(overrides?: Record<string, any>): ICourse {
 
   return {
     _id: faker.random.uuid(),
-    name: faker.lorem.word(),
+    name: faker.name.jobTitle(),
     schedule: {
       [firstDay]: {
         start: 54000,
