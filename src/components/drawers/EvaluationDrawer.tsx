@@ -5,6 +5,7 @@ import moment from 'moment'
 
 import IEvaluation from 'constants/interfaces/IEvaluation'
 import {useEvaluations} from 'features/evaluation/evaluation-hooks'
+import {CourseAutocomplete} from 'components'
 
 interface IEvaluationDrawerProps {
   visible: boolean
@@ -96,7 +97,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           ]}
           label={<span>Course name</span>}
         >
-          <Input />
+          <CourseAutocomplete />
         </Form.Item>
         <Form.Item
           label="Evaluation"
