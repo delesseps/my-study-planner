@@ -1,0 +1,7 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "integrationFolder": "cypress/e2e",
+  "env": {
+    "api_url": "http://localhost:3001/api"
+  }
+}
