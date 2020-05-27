@@ -88,7 +88,9 @@ const Courses = ({currentDay}: {currentDay: Weekdays}) => {
         return 0
       })
       .filter(course => course.schedule[currentDay])
-  }, [currentDay, courses])
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [courses, currentDay])
 
   if (status === 'loading') {
     return (

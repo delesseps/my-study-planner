@@ -92,7 +92,7 @@ describe('Counter Panel', () => {
 
     homework.map(({subject}) => {
       screen.getByText(`Start working on ${subject}`)
-      screen.getByText(subject)
+      return screen.getByText(subject)
     })
 
     screen.getByText(`Start studying for ${evaluations[0].subject}`)

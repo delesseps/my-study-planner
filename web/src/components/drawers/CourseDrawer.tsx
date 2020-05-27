@@ -134,7 +134,7 @@ const CourseDrawer: React.FC<ICourseDrawerProps> = ({
       return {...normalizeWeekday(schedule), days: Object.keys(schedule)}
 
     return undefined
-  }, [course])
+  }, [course?.schedule])
 
   return (
     <Drawer

@@ -26,7 +26,7 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({visible, setVisible}) => {
     toDoMutateReset()
     form.resetFields()
     setVisible(false)
-  }, [setVisible, form])
+  }, [setVisible, form, toDoMutateReset])
 
   useEffect(() => {
     // Close drawer after successful operation
