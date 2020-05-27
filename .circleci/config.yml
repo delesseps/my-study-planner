@@ -37,6 +37,7 @@ workflows:
           requires:
             - install_and_test
           post-steps:
+            - run: npm run setup
             - run: npx cypress cache path
             - run: npx cypress cache list
             - run: npx cypress info
