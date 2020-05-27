@@ -13,7 +13,7 @@ interface IToDoDrawerProps {
 const ToDoDrawer: React.FC<IToDoDrawerProps> = ({visible, setVisible}) => {
   const [form] = Form.useForm()
   const {
-    add: [toDoMutate, {status}],
+    add: [toDoMutate, {reset: toDoMutateReset, status}],
   } = useToDo()
 
   const handleSubmit = () => {
@@ -23,6 +23,7 @@ const ToDoDrawer: React.FC<IToDoDrawerProps> = ({visible, setVisible}) => {
   }
 
   const onClose = useCallback(() => {
+    toDoMutateReset()
     form.resetFields()
     setVisible(false)
   }, [setVisible, form])
