@@ -3,7 +3,6 @@ const path = require('path')
 module.exports = {
   extends: [
     'react-app',
-    'plugin:react-hooks/recommended',
     'plugin:jest-dom/recommended',
     'plugin:testing-library/recommended',
     'plugin:testing-library/react',
