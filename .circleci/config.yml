@@ -32,8 +32,7 @@ workflows:
       - install_and_test
       - cypress/install:
           executor: cypress/base-12-6-0
-          name: 'Linux install'
-          build: cross-env CI=false npm run build
+          build: npm run build
           yarn: true
           requires:
             - install_and_test
@@ -43,7 +42,7 @@ workflows:
             - run: npx cypress info
       - cypress/run:
           requires:
-            - 'Linux install'
+            - cypress/install
           browser: chrome
           executor: cypress/browsers-chrome78-ff70
           record: true # record results on Cypress dashboard
