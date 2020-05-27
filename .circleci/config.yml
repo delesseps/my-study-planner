@@ -34,6 +34,8 @@ workflows:
       - cypress/install:
           name: 'Linux install'
           build: npm run build
+          working_directory: ~/mern
+          yarn: true
           requires:
             - build
           post-steps:
