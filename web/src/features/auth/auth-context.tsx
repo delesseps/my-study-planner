@@ -89,8 +89,8 @@ export function AuthProvider(props: any) {
   const logout = useCallback(
     () =>
       authService.logout().finally(() => {
-        queryCache.clear()
         removeCookie('IS_LOGGED_IN', {path: '/', domain})
+        queryCache.clear()
       }),
     [removeCookie],
   )

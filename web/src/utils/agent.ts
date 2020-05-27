@@ -1,13 +1,8 @@
 import axios from 'axios'
 import {message} from 'antd'
 
-const BASE_URL =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3001/api'
-    : 'https://msp-api.jfelix.info/api'
-
 const instance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: process.env.REACT_APP_API_URL,
   withCredentials: true,
   timeout: 10000,
 })
