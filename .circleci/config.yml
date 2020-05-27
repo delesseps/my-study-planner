@@ -6,7 +6,7 @@ orbs:
 jobs:
   install_and_test:
     docker:
-      - image: circleci/node:10.18.1
+      - image: circleci/node:12.13.0
     steps:
       - checkout
       - restore_cache:
@@ -20,13 +20,6 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
-      - run:
-          name: Install Docker Compose
-          command: |
-            set -x
-            curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
 
       - run: yarn test
       - codecov/upload:
@@ -44,6 +37,11 @@ workflows:
           requires:
             - install_and_test
           post-steps:
+            - run: |
+                set -x
+                curl -L https://github.com/docker/compose/releases/download/1.25.3/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+                chmod +x /usr/local/bin/docker-compose
+            - setup_remote_docker
             - run: npm run setup
             - run: npx cypress cache path
             - run: npx cypress cache list
@@ -54,5 +52,5 @@ workflows:
           yarn: true
           browser: chrome
           executor: cypress/browsers-chrome78-ff70
-          record: true
           start: 'npm run test:e2e'
+          wait-on: 'http://localhost:3000'
