@@ -46,5 +46,5 @@ workflows:
           yarn: true
           browser: chrome
           executor: cypress/browsers-chrome78-ff70
-          record: true # record results on Cypress dashboard
-          start: 'npm run test:e2e' # start server before running tests
+          record: true
+          start: 'npm run test:e2e'
