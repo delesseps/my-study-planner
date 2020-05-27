@@ -1,2 +1,1 @@
-export const domain =
-  process.env.NODE_ENV === 'production' ? 'jfelix.info' : 'localhost'
+export const domain = process.env.REACT_APP_DOMAIN as string

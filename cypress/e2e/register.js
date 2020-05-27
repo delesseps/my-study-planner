@@ -1,7 +1,7 @@
 import {buildUser} from '../support/generate'
 
 describe('Register', () => {
-  it('should login', () => {
+  it('should register', () => {
     const user = buildUser()
 
     cy.visit('/signup')

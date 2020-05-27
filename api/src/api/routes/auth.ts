@@ -81,6 +81,9 @@ export default (app: Router) => {
     }),
     passport.authenticate('local'),
     (req: Request, res: Response, next: NextFunction) => {
+      const logger: Logger = Container.get('logger')
+      logger.debug('Calling Sign-In endpoint with body: %o', req.body)
+
       try {
         if (req.body.remember) {
           req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000 //Expires in 30 days
