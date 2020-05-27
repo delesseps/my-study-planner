@@ -4,7 +4,7 @@ orbs:
   cypress: cypress-io/cypress@1.23.0
 
 jobs:
-  build:
+  install_and_test:
     docker:
       - image: circleci/node:10.18.1
     steps:
@@ -29,14 +29,14 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - install_and_test
       - cypress/install:
           executor: cypress/base-12-6-0
           name: 'Linux install'
-          build: npm run build
+          build: cross-env CI=false npm run build
           yarn: true
           requires:
-            - build
+            - install_and_test
           post-steps:
             - run: npx cypress cache path
             - run: npx cypress cache list

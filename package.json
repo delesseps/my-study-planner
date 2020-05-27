@@ -15,7 +15,7 @@
     "setup": "cd api && npm run build:docker",
     "build": "run-p build:*",
     "build:api": "cd api && npm run build && cd ..",
-    "build:web": "cd web && cross-env REACT_APP_DOMAIN=localhost REACT_APP_API_URL=http://localhost:3001/api npm run build && cd ..",
+    "build:web": "cd web && cross-env CI=false REACT_APP_DOMAIN=localhost REACT_APP_API_URL=http://localhost:3001/api npm run build && cd ..",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "test": "cd web && npm run test",
