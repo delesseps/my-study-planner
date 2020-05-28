@@ -47,6 +47,7 @@ workflows:
           browser: chrome
           executor: cypress/browsers-chrome78-ff70
           post-install:
+            - run: ls
             - run: |
                 set -x
                 curl -L https://github.com/docker/compose/releases/download/1.25.3/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
