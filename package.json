@@ -6,7 +6,7 @@
     "postinstall": "run-p install:*",
     "install:api": "cd api && npm install",
     "install:web": "cd web && yarn",
-    "start": "run-s start:*",
+    "start": "run-p start:*",
     "start:api": "cd api && cross-env MONGODB_URI=mongodb://localhost:27017/my-study-planner REDIS_URL=redis://localhost:6379 npm run start",
     "start:web": "cd web && serve --no-clipboard --single --listen 3000 build",
     "dev": "npm-run-all dev:*",
