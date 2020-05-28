@@ -37,12 +37,6 @@ workflows:
           requires:
             - install_and_test
           post-steps:
-            - run: |
-                set -x
-                curl -L https://github.com/docker/compose/releases/download/1.25.3/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-                chmod +x /usr/local/bin/docker-compose
-            - setup_remote_docker
-            - run: npm run setup
             - run: npx cypress cache path
             - run: npx cypress cache list
             - run: npx cypress info
@@ -52,5 +46,12 @@ workflows:
           yarn: true
           browser: chrome
           executor: cypress/browsers-chrome78-ff70
+          post-install:
+            - run: |
+                set -x
+                curl -L https://github.com/docker/compose/releases/download/1.25.3/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+                chmod +x /usr/local/bin/docker-compose
+            - setup_remote_docker
+            - run: npm run setup
           start: 'npm run test:e2e'
           wait-on: 'http://localhost:3000'
