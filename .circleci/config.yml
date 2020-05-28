@@ -53,5 +53,5 @@ workflows:
                 chmod +x /usr/local/bin/docker-compose
             - setup_remote_docker
             - run: npm run setup
-          start: 'npm run test:e2e'
+          start: 'npm run start'
           wait-on: 'http://localhost:3000'
