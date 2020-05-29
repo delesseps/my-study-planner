@@ -41,6 +41,11 @@ export default (app: Router) => {
         })
       } catch (e) {
         console.log('🔥 error ', e)
+
+        if (e.code === 11000) {
+          e['status'] = 409
+        }
+
         return next(e)
       }
     },
@@ -86,7 +91,10 @@ export default (app: Router) => {
 
       try {
         if (req.body.remember) {
-          req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000 //Expires in 30 days
+          const expires = new Date()
+          expires.setTime(expires.getTime() + 30 * 24 * 60 * 60 * 1000) //Expires in 30 days
+
+          req.session.cookie.expires = expires
         } else {
           req.session.cookie.expires = false
         }

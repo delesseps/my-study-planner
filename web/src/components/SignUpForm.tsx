@@ -9,6 +9,12 @@ import {breakpoints} from 'theme'
 import {FadeIn} from 'components'
 import {useAuth} from 'features/auth/auth-context'
 
+const errors: Record<string, string> = {
+  400: 'Incorrect e-mail or password.',
+  409: 'User already exists. Please try again with a different email.',
+  500: 'Server error. Please try again.',
+}
+
 const SignUpForm: React.FC = () => {
   const [form] = Form.useForm()
   const [confirmDirty, setConfirmDirty] = useState<Boolean | any>(false)
@@ -63,12 +69,7 @@ const SignUpForm: React.FC = () => {
       {errorCode && (
         <FadeIn>
           <Form.Item>
-            <Alert
-              message="User already exists. Please try again with a different email."
-              type="error"
-              showIcon
-              closable
-            />
+            <Alert message={errors[errorCode]} type="error" showIcon closable />
           </Form.Item>
         </FadeIn>
       )}

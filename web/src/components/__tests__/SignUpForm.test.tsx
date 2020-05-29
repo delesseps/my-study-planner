@@ -101,7 +101,7 @@ describe('SignUpForm', () => {
   it('will display error when account exists', async () => {
     const {getByText, getByLabelText, getByTestId} = render(<SignUpForm />)
 
-    mockAxios.onPost('auth/signup').reply(500, {
+    mockAxios.onPost('auth/signup').reply(409, {
       errors: {
         message:
           'E11000 duplicate key error collection: test.users index: email_1 dup key: { email: "" }',

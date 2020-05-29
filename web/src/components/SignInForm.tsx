@@ -13,6 +13,7 @@ import {useAuth} from 'features/auth/auth-context'
 const errors: Record<string, string> = {
   400: 'Incorrect e-mail or password.',
   404: 'The user does not exist. Please create an account.',
+  500: 'Server error. Please try again.',
 }
 
 const SignInForm: React.FC = () => {

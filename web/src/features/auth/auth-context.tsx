@@ -65,10 +65,10 @@ export function AuthProvider(props: any) {
     onSuccess: (data, {remember}) => {
       queryCache.setQueryData(['user'], data)
 
-      const maxAge = 30 * 24 * 60 * 60 * 1000 //Expires in 30 days
-
+      const expires = new Date()
+      expires.setTime(expires.getTime() + 30 * 24 * 60 * 60 * 1000) //Expires in 30 days
       setCookie('IS_LOGGED_IN', true, {
-        ...(remember && {maxAge}),
+        ...(remember && {expires}),
         httpOnly: false,
         domain,
       })
