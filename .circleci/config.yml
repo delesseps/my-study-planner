@@ -4,9 +4,8 @@ orbs:
   cypress: cypress-io/cypress@1.23.0
 
 executors:
-  chrome-mongo-redis:
+  mongo-redis:
     docker:
-      - image: cypress/browsers:node12.16.2-chrome81-ff75
       - image: circleci/mongo:latest
       - image: circleci/redis:latest
 
@@ -50,8 +49,7 @@ workflows:
           requires:
             - cypress/install
           yarn: true
-          browser: chrome
-          executor: chrome-mongo-redis
+          executor: mongo-redis
           build: 'npm run build'
           start: 'npm run start'
           wait-on: 'http://localhost:3000'
