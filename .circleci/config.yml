@@ -6,7 +6,7 @@ orbs:
 executors:
   node-mongo-redis:
     docker:
-      - image: cypress/base-12-6-0
+      - image: cypress/base:12-6-0
       - image: circleci/mongo:latest
       - image: circleci/redis:latest
 
