@@ -1,6 +1,10 @@
 import {buildUser} from '../support/generate'
 
 describe('Register', () => {
+  beforeEach(() => {
+    cy.unregisterServiceWorkers()
+  })
+
   it('should register', () => {
     const user = buildUser()
 

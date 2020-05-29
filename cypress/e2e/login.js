@@ -1,6 +1,10 @@
 import {buildUser} from '../support/generate'
 
 describe('Login', () => {
+  beforeEach(() => {
+    cy.unregisterServiceWorkers()
+  })
+
   it('should login', () => {
     cy.createUser().then(user => {
       cy.clearCookies().visit('/signin')
