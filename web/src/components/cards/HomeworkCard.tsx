@@ -82,18 +82,20 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
           </Action>
 
           <Action>
-            <Tooltip title="Delete" mouseEnterDelay={1}>
-              <Popconfirm
-                title="Are you sure to delete this homework?"
-                arrowPointAtCenter={true}
-                placement="topRight"
-                okText="Yes"
-                cancelText="No"
-                onConfirm={handleDeleteClick}
-              >
-                <DeleteIcon />
-              </Popconfirm>
-            </Tooltip>
+            <Popconfirm
+              title="Are you sure to delete this homework?"
+              arrowPointAtCenter={true}
+              placement="topRight"
+              okText="Yes"
+              cancelText="No"
+              onConfirm={handleDeleteClick}
+            >
+              <div aria-label="Delete Homework">
+                <Tooltip title="Delete" mouseEnterDelay={1}>
+                  <DeleteIcon />
+                </Tooltip>
+              </div>
+            </Popconfirm>
           </Action>
         </Actions>
       </MainInfo>
@@ -108,7 +110,8 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
         </User>
         <Date>
           <ClockIcon />
-          {setDate(moment(homework.date))} <Divider type="vertical" />
+          <span>{setDate(moment(homework.date))}</span>
+          <Divider type="vertical" />
           <ViewMore onClick={handleViewMoreClick}> View More</ViewMore>
         </Date>
       </OtherInfo>
@@ -218,10 +221,11 @@ const UserName = styled.h5`
   margin-left: 0.7rem;
 `
 
-const Date = styled.h5`
+const Date = styled.div`
   letter-spacing: 1px;
   display: flex;
   font-weight: 400;
+  font-size: 1.328rem;
   align-items: center;
   color: ${props => props.theme.fontColors.textRgba(0.8)};
   margin: 0;

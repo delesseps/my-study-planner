@@ -1,12 +1,30 @@
-import {buildUser} from './generate'
+import {buildUser, buildHomework} from './generate'
 
-Cypress.Commands.add('createUser', overrides => {
-  const user = buildUser(overrides)
+Cypress.Commands.add('createUser', (overrides = {}) => {
+  const user = buildUser({overrides})
   cy.request({
     url: `${Cypress.env('api_url')}/auth/signup`,
     method: 'POST',
     body: {email: user.email, name: user.name, password: user.password},
-  }).then(response => ({...response.body.user, ...user}))
+  }).then(res => ({...res.body.user, ...user}))
+})
+
+Cypress.Commands.add('addHomework', (overrides = {}) => {
+  const homework = buildHomework({overrides})
+  cy.request({
+    url: `${Cypress.env('api_url')}/homework/add`,
+    method: 'POST',
+    body: {
+      date: homework.date,
+      description: homework.description,
+      subject: homework.subject,
+      urgency: homework.urgency,
+    },
+  }).then(res => ({...res.body.homework, ...homework}))
+})
+
+Cypress.Commands.add('closeWelcome', () => {
+  cy.findByRole('button', {name: /get started/i}).click()
 })
 
 Cypress.Commands.add('assertDashboardHome', () => {

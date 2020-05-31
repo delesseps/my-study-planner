@@ -1,4 +1,4 @@
-import {build, fake, perBuild} from '@jackfranklin/test-data-bot'
+import {build, fake, perBuild, oneOf} from '@jackfranklin/test-data-bot'
 
 export const buildUser = build('User', {
   fields: {
@@ -18,5 +18,16 @@ export const buildUser = build('User', {
     homework: [],
     toDos: [],
     semesters: [],
+  },
+})
+
+export const buildHomework = build('Homework', {
+  fields: {
+    _id: fake(f => f.random.uuid()),
+    subject: fake(f => f.name.jobTitle()),
+    date: new Date().toISOString(),
+    urgency: oneOf('chill', 'normal', 'important'),
+    description: fake(f => f.name.jobDescriptor()),
+    done: perBuild(() => false),
   },
 })

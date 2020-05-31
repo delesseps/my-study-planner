@@ -27,7 +27,7 @@ const Homework: React.FC = () => {
         </Button>
         <HomeworkDrawer visible={openDrawer} setVisible={toggleDrawer} />
       </Header>
-      <Content>
+      <Content data-testid="homework-cards">
         {homework.filter(currHomework => !currHomework.done).length ? (
           homework.map(
             (currHomework, i) =>

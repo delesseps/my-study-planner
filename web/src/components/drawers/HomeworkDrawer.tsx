@@ -139,12 +139,12 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
             {
               type: 'object',
               required: true,
-              message: 'Please select time!',
+              message: 'Please select date!',
             },
           ]}
           label="Date"
         >
-          <DatePicker autoFocus={false} disabledDate={disabledDate} />
+          <DatePicker data-testid="date-picker" disabledDate={disabledDate} />
         </Form.Item>
         <Form.Item>
           <Button

@@ -7,7 +7,7 @@ const Homework = new mongoose.Schema<IHomework>({
   urgency: {
     type: String,
     required: true,
-    enum: ['IMPORTANT', 'MODERATE', 'CHILL'],
+    enum: ['IMPORTANT', 'NORMAL', 'CHILL'],
   },
   description: {type: String, required: true},
   done: {type: Boolean, required: true, default: false},

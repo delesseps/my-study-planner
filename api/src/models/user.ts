@@ -61,7 +61,7 @@ const User = new mongoose.Schema(
         urgency: {
           type: String,
           required: true,
-          enum: ['IMPORTANT', 'MODERATE', 'CHILL'],
+          enum: ['IMPORTANT', 'NORMAL', 'CHILL'],
         },
         done: {type: Boolean, default: false},
       },

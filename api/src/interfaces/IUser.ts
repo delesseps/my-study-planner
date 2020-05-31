@@ -2,7 +2,7 @@ import {IEvaluation, IToDo, IHomework, IUserConfig} from '.'
 
 export enum Urgency {
   important = 'IMPORTANT',
-  moderate = 'MODERATE',
+  moderate = 'NORMAL',
   chill = 'CHILL',
 }
 
