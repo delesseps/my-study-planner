@@ -75,13 +75,13 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
             </Tooltip>
           </Action>
 
-          <Action>
+          <Action aria-label="Open edit homework drawer">
             <Tooltip title="Edit" mouseEnterDelay={0.4}>
               <EditIcon onClick={handleEditClick} />
             </Tooltip>
           </Action>
 
-          <Action>
+          <Action aria-label="Delete Homework">
             <Popconfirm
               title="Are you sure to delete this homework?"
               arrowPointAtCenter={true}
@@ -90,11 +90,9 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
               cancelText="No"
               onConfirm={handleDeleteClick}
             >
-              <div aria-label="Delete Homework">
-                <Tooltip title="Delete" mouseEnterDelay={1}>
-                  <DeleteIcon />
-                </Tooltip>
-              </div>
+              <Tooltip title="Delete" mouseEnterDelay={1}>
+                <DeleteIcon />
+              </Tooltip>
             </Popconfirm>
           </Action>
         </Actions>

@@ -32,7 +32,7 @@ const Evaluation: React.FC<IEvaluationProps> = () => {
         </Button>
         <EvaluationDrawer visible={openDrawer} setVisible={toggleDrawer} />
       </Header>
-      <Content>
+      <Content data-testid="evaluations-cards">
         {evaluations?.filter(evaluation => !evaluation.done).length ? (
           evaluations.map(
             (evaluation, i) =>

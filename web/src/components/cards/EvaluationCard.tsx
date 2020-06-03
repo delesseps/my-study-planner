@@ -78,25 +78,25 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
             </Tooltip>
           </Action>
 
-          <Action>
+          <Action aria-label="Open edit evaluation drawer">
             <Tooltip title="Edit" mouseEnterDelay={0.4}>
               <EditIcon onClick={handleEditClick} />
             </Tooltip>
           </Action>
 
-          <Action>
-            <Tooltip title="Delete" mouseEnterDelay={1}>
-              <Popconfirm
-                title="Are you sure to delete this evaluation?"
-                arrowPointAtCenter={true}
-                placement="topRight"
-                okText="Yes"
-                cancelText="No"
-                onConfirm={handleDeleteClick}
-              >
+          <Action aria-label="Delete Evaluation">
+            <Popconfirm
+              title="Are you sure to delete this evaluation?"
+              arrowPointAtCenter={true}
+              placement="topRight"
+              okText="Yes"
+              cancelText="No"
+              onConfirm={handleDeleteClick}
+            >
+              <Tooltip title="Delete" mouseEnterDelay={1}>
                 <DeleteIcon />
-              </Popconfirm>
-            </Tooltip>
+              </Tooltip>
+            </Popconfirm>
           </Action>
         </Actions>
       </MainInfo>
@@ -109,9 +109,11 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
           />
           <UserName>{evaluation.createdBy.name}</UserName>
         </User>
+
         <Date>
           <ClockIcon />
-          {setDate(moment(evaluation.date))} <Divider type="vertical" />
+          <span>{setDate(moment(evaluation.date))}</span>
+          <Divider type="vertical" />
           <ViewMore onClick={handleViewMoreClick}> View More</ViewMore>
         </Date>
       </OtherInfo>

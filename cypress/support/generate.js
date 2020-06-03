@@ -31,3 +31,15 @@ export const buildHomework = build('Homework', {
     done: perBuild(() => false),
   },
 })
+
+export const buildEvaluation = build('Evaluation', {
+  fields: {
+    _id: fake(f => f.random.uuid()),
+    subject: fake(f => f.name.jobTitle()),
+    date: new Date().toISOString(),
+    urgency: oneOf('chill', 'normal', 'important'),
+    description: fake(f => f.name.jobDescriptor()),
+    done: perBuild(() => false),
+    evaluationType: oneOf('quiz', 'test'),
+  },
+})

@@ -158,7 +158,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
             },
           ]}
         >
-          <DatePicker disabledDate={disabledDate} />
+          <DatePicker data-testid="date-picker" disabledDate={disabledDate} />
         </Form.Item>
         <Form.Item>
           <Button

@@ -1,4 +1,4 @@
-import {buildUser, buildHomework} from './generate'
+import {buildUser, buildHomework, buildEvaluation} from './generate'
 
 Cypress.Commands.add('createUser', (overrides = {}) => {
   const user = buildUser({overrides})
@@ -21,6 +21,21 @@ Cypress.Commands.add('addHomework', (overrides = {}) => {
       urgency: homework.urgency,
     },
   }).then(res => ({...res.body.homework, ...homework}))
+})
+
+Cypress.Commands.add('addEvaluation', (overrides = {}) => {
+  const evaluation = buildEvaluation({overrides})
+  cy.request({
+    url: `${Cypress.env('api_url')}/evaluation/add`,
+    method: 'POST',
+    body: {
+      date: evaluation.date,
+      description: evaluation.description,
+      subject: evaluation.subject,
+      urgency: evaluation.urgency,
+      evaluationType: evaluation.evaluationType,
+    },
+  }).then(res => ({...res.body.evaluation, ...evaluation}))
 })
 
 Cypress.Commands.add('getUserEmail', email => {

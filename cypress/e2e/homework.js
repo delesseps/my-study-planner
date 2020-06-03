@@ -1,28 +1,5 @@
 import {buildHomework} from '../support/generate'
-
-function yyyymmdd(date) {
-  var d = new Date(date),
-    month = '' + (d.getMonth() + 1),
-    day = '' + d.getDate(),
-    year = d.getFullYear()
-
-  if (month.length < 2) month = '0' + month
-  if (day.length < 2) day = '0' + day
-
-  return [year, month, day].join('-')
-}
-
-function determinePriority(urgency) {
-  switch (urgency) {
-    case 'chill':
-      return 'Low Priority'
-    case 'normal':
-      return 'Medium Priority'
-    case 'important':
-      return 'High Priority'
-    default:
-  }
-}
+import {yyyymmdd, determinePriority} from '../support/utils'
 
 describe('Homework', () => {
   it('should add homework', () => {
@@ -46,10 +23,48 @@ describe('Homework', () => {
       cy.findByTestId('homework-cards').within(() => {
         cy.findByText(user.name)
         cy.findByText(/today/i)
-        cy.findByText(homework.subject)
+        cy.findByRole('heading', {
+          name: homework.subject,
+        })
         cy.findByText(new RegExp(determinePriority(homework.urgency)))
       })
     })
+  })
+
+  it('should edit homework', () => {
+    cy.createUser()
+      .addHomework()
+      .then(homework => {
+        const newHomework = buildHomework()
+
+        cy.visit('/').closeWelcome()
+        cy.findByRole('button', {name: /Open edit homework drawer/i}).click()
+
+        cy.findByLabelText(/course name/i)
+          .clear()
+          .type(newHomework.subject)
+
+        cy.findByRole('radio', {
+          name: new RegExp(newHomework.urgency, 'i'),
+        }).click({
+          force: true,
+        })
+
+        cy.findByLabelText(/description/i)
+          .clear()
+          .type(newHomework.description)
+
+        cy.findByRole('button', {name: /^edit homework$/i}).click()
+
+        cy.findByTestId('homework-cards').within(() => {
+          cy.findByText(homework.createdBy.name)
+          cy.findByText(/today/i)
+          cy.findByRole('heading', {
+            name: newHomework.subject,
+          })
+          cy.findByText(new RegExp(determinePriority(newHomework.urgency)))
+        })
+      })
   })
 
   it('should remove homework', () => {
@@ -59,7 +74,8 @@ describe('Homework', () => {
         cy.visit('/').closeWelcome()
         cy.findByLabelText(/delete homework/i).click()
         cy.findByRole('button', {name: /yes/i}).click()
-        cy.findAllByText(homework.subject).should('not.exist')
+        cy.findByText(homework.subject).should('not.exist')
+        cy.findByText(/No.* Homework/i)
       })
   })
 })
