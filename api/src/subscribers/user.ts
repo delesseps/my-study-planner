@@ -5,6 +5,7 @@ import {IUser} from '../interfaces/IUser'
 import * as mongoose from 'mongoose'
 import MailerService from '../services/mailer'
 import LoggerInstance from '../loaders/logger'
+import config from '../config'
 
 @EventSubscriber()
 export default class UserSubscriber {
@@ -44,7 +45,6 @@ export default class UserSubscriber {
       // Start your email sequence or whatever
       // MailService.startSequence('user.welcome', { email, name })
       const mailerInstance = Container.get(MailerService)
-
       const result = await mailerInstance.SendWelcomeEmail(user)
 
       if (!result) throw new Error('Could not get result from service')

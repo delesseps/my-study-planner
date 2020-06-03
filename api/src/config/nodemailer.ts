@@ -16,7 +16,7 @@ oauth2Client.setCredentials({
 
 const accessToken = oauth2Client.getAccessToken()
 
-const transporter = nodemailer.createTransport({
+let transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     type: 'OAuth2',
@@ -27,5 +27,18 @@ const transporter = nodemailer.createTransport({
     accessToken,
   },
 } as any)
+
+if (process.env.NODE_ENV !== 'production') {
+  transporter = nodemailer.createTransport({
+    // @ts-ignore
+    host: config.nodemailer.host,
+    port: config.nodemailer.port,
+    auth: {
+      user: config.nodemailer.username,
+      pass: config.nodemailer.password,
+    },
+  })
+  console.log(transporter)
+}
 
 export default transporter

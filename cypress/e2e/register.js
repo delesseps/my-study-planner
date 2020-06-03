@@ -1,4 +1,5 @@
 import {buildUser} from '../support/generate'
+import {decodeQuotedPrintable} from '../support/utils'
 
 describe('Register', () => {
   beforeEach(() => {
@@ -47,5 +48,32 @@ describe('Register', () => {
     cy.findByLabelText(/confirm password/i).type(user.password)
     cy.findByRole('button', {name: /sign up/i}).click()
     cy.findByText(/server error/i)
+  })
+
+  it.only('should send email and confirm email', () => {
+    cy.createUser().then(user => {
+      cy.visit('/dashboard').closeWelcome()
+
+      cy.getUserEmail(user.email).then(email => {
+        const headers = email.Content.Headers
+        const body = email.Content.Body
+        const matchLinkHrefReg = /<a[^>]* href=3D"(?<link>[^"]*)"/g
+        const confirmLink = matchLinkHrefReg.exec(body).groups.link
+
+        expect(headers.From[0]).to.eql(
+          'My Study Planner <mystudyplanner.noreply@gmail.com>',
+        )
+        expect(headers.Subject[0]).to.eql('Welcome to My Study Planner!!')
+        expect(headers.To[0]).to.eql(user.email.toLowerCase())
+
+        cy.request({
+          url: decodeQuotedPrintable(confirmLink),
+          method: 'GET',
+        })
+        cy.reload()
+          .findByText(/Check your email and activate your account.*/i)
+          .should('not.exist')
+      })
+    })
   })
 })

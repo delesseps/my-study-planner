@@ -23,6 +23,13 @@ Cypress.Commands.add('addHomework', (overrides = {}) => {
   }).then(res => ({...res.body.homework, ...homework}))
 })
 
+Cypress.Commands.add('getUserEmail', email => {
+  cy.request({
+    url: `http://localhost:8025/api/v2/search?kind=to&query=${email}`,
+    method: 'GET',
+  }).then(res => res.body.items[0])
+})
+
 Cypress.Commands.add('closeWelcome', () => {
   cy.findByRole('button', {name: /get started/i}).click()
 })

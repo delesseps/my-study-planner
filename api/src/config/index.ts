@@ -34,6 +34,8 @@ export default {
   nodemailer: {
     username: process.env.NODEMAILER_USERNAME,
     password: process.env.NODEMAILER_PASSWORD,
+    port: parseInt(process.env.NODEMAILER_PORT, 10),
+    host: process.env.NODEMAILER_HOST,
   },
 
   /**

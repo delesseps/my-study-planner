@@ -9,6 +9,7 @@ executors:
       - image: cypress/base:12.6.0
       - image: circleci/mongo:latest
       - image: circleci/redis:latest
+      - image: mailhog/mailhog:latest
 
 jobs:
   install_and_test:
