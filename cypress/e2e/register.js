@@ -50,7 +50,7 @@ describe('Register', () => {
     cy.findByText(/server error/i)
   })
 
-  it.only('should send email and confirm email', () => {
+  it('should send email and confirm email', () => {
     cy.createUser().then(user => {
       cy.visit('/dashboard').closeWelcome()
 
