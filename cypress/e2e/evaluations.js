@@ -2,6 +2,12 @@ import {buildEvaluation} from '../support/generate'
 import {yyyymmdd, determinePriority, toTitleCase} from '../support/utils'
 
 describe('Evaluation', () => {
+  before(() => {
+    Cypress.on('uncaught:exception', (err, runnable) => {
+      return false
+    })
+  })
+
   it('should add evaluations', () => {
     cy.createUser().then(user => {
       const evaluation = buildEvaluation()

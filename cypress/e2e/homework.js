@@ -2,6 +2,16 @@ import {buildHomework} from '../support/generate'
 import {yyyymmdd, determinePriority} from '../support/utils'
 
 describe('Homework', () => {
+  before(() => {
+    Cypress.on('uncaught:exception', (err, runnable) => {
+      return false
+    })
+  })
+
+  beforeEach(() => {
+    cy.unregisterServiceWorkers()
+  })
+
   it('should add homework', () => {
     cy.createUser().then(user => {
       const homework = buildHomework()

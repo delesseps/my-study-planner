@@ -38,7 +38,6 @@ if (process.env.NODE_ENV !== 'production') {
       pass: config.nodemailer.password,
     },
   })
-  console.log(transporter)
 }
 
 export default transporter
