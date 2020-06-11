@@ -19,6 +19,9 @@ import {useAuth} from 'features/auth/auth-context'
 const Home = React.lazy(() => import('routes/Home'))
 const Schedule = React.lazy(() => import('routes/Schedule'))
 const Preferences = React.lazy(() => import('routes/Preferences'))
+const Courses = React.lazy(() => import('routes/Courses'))
+
+const WelcomeModal = React.lazy(() => import('../components/modals/Welcome'))
 
 const AuthenticatedApp: React.FC = () => {
   const {user} = useAuth()
@@ -39,6 +42,7 @@ const AuthenticatedApp: React.FC = () => {
               <Navigation.Sidebar />
             </Navigation.Wrapper>
             <Content>
+              {user.firstSignIn && <WelcomeModal />}
               {!user.verified && (
                 <EmailVerificationError
                   message="Check your email and activate your account!"
@@ -64,6 +68,7 @@ const AppRoutes = () => {
     <Switch>
       <Route path="/dashboard" exact component={Home} />
       <Route path="/schedule" exact component={Schedule} />
+      <Route path="/courses" exact component={Courses} />
       <Route path="/dashboard/Preferences" exact component={Preferences} />
       <Redirect to="/dashboard" />
     </Switch>

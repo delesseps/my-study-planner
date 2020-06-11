@@ -17,7 +17,6 @@ import {useAuth} from 'features/auth/auth-context'
 const HomeSchedulePanel = React.lazy(() =>
   import('../components/panels/HomeSchedulePanel'),
 )
-const WelcomeModal = React.lazy(() => import('../components/modals/Welcome'))
 
 const Home: React.FC = () => {
   const {user} = useAuth()
@@ -29,7 +28,6 @@ const Home: React.FC = () => {
     <Profiler id="Home Screen">
       <FadeIn>
         <Wrapper>
-          {user.firstSignIn && <WelcomeModal />}
           <CounterPanelLeft>
             <CounterPanel user={user} homework />
           </CounterPanelLeft>

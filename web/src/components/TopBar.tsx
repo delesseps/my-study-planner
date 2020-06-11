@@ -41,21 +41,21 @@ const TopBar: React.FC<ITopBarProps> = ({loading}) => {
     <Menu>
       <Menu.Item>
         <MenuButton onClick={toggleProfile}>
-          <UserOutlined />
+          <UserOutlined aria-hidden />
           Profile
         </MenuButton>
       </Menu.Item>
       <Menu.Item>
         <StyledLink to="/dashboard/preferences">
           <MenuButtonLink>
-            <SettingOutlined />
+            <SettingOutlined aria-hidden />
             Preferences
           </MenuButtonLink>
         </StyledLink>
       </Menu.Item>
       <Menu.Item>
         <MenuButton onClick={handleSignOut}>
-          <LogoutOutlined />
+          <LogoutOutlined aria-hidden />
           Logout
         </MenuButton>
       </Menu.Item>
@@ -94,12 +94,12 @@ const TopBar: React.FC<ITopBarProps> = ({loading}) => {
           src={user?.picture}
         />
         <UserInfoBox>
-          <NameCaretWrapper placement="bottomRight" overlay={userOptions}>
-            <Name>
-              {user?.name} <CaretIcon />
+          <UserDropdown placement="bottomRight" overlay={userOptions}>
+            <Name data-testid="user-dropdown" onClick={e => e.preventDefault()}>
+              {user.name} <CaretIcon aria-hidden />
             </Name>
-          </NameCaretWrapper>
-          <Role>{user?.role === 'user' ? 'Student' : 'Administrator'}</Role>
+          </UserDropdown>
+          <Role>{user.role === 'user' ? 'Student' : 'Administrator'}</Role>
         </UserInfoBox>
       </UserBox>
     </Wrapper>
@@ -167,12 +167,12 @@ const UserInfoBox = styled.div`
   margin-left: 1.5rem;
 `
 
-const NameCaretWrapper = styled(Dropdown)`
+const UserDropdown = styled(Dropdown)`
   display: flex;
   align-items: center;
 `
 
-const Name = styled.p`
+const Name = styled.a`
   font-weight: 500;
   font-size: 1.6rem;
   margin: 0;

@@ -12,7 +12,7 @@ const Evaluation = new mongoose.Schema({
     enum: [...Object.values(Urgency)],
   },
   description: {type: String, required: true},
-  done: {type: Boolean, required: true, default: false},
+  done: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

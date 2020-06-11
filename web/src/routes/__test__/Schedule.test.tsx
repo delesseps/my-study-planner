@@ -127,7 +127,7 @@ describe('Schedule Route', () => {
 
     await renderSchedule({courses: []})
 
-    const openCourseDrawer = screen.getByLabelText('Open add course')
+    const openCourseDrawer = screen.getByLabelText('Open add course drawer')
     userEvent.click(openCourseDrawer)
 
     const addCourseButton = screen.getByRole('button', {name: 'Add Course'})

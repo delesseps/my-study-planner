@@ -28,8 +28,8 @@ export function markAsDone({
   index?: number
 }): Promise<IHomework> {
   const options: AxiosRequestConfig = {
-    url: '/homework/update',
-    method: 'patch',
+    url: '/homework/done',
+    method: 'post',
     data: {
       id: homeworkId,
     },

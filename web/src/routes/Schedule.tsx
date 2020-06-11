@@ -60,8 +60,7 @@ const Schedule: React.FC = () => {
       </Styles.Tabs>
       <Courses currentDay={currentDay} />
       <Button
-        key={'add-button'}
-        aria-label="Open add course"
+        aria-label="Open add course drawer"
         type="primary"
         shape="circle"
         onClick={() => toggleDrawer(true)}

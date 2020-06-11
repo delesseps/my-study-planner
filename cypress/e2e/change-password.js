@@ -1,7 +1,7 @@
 import {decodeQuotedPrintable} from '../support/utils'
 
 describe('Change Password', () => {
-  it.only('should change password', () => {
+  it('should change password', () => {
     cy.createUser().then(user => {
       cy.clearCookies().visit('/forgot_password')
       cy.findByLabelText(/E-mail/i).type(user.email)

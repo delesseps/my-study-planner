@@ -7,7 +7,7 @@ export default interface IEvaluation {
   date: string
   urgency: Urgency
   description: string
-  done: boolean
+  done: string[]
   createdBy: {
     _id: string
     name: string

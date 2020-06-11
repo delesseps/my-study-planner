@@ -35,6 +35,30 @@ export default (app: Router): void => {
     },
   )
 
+  route.post(
+    '/done',
+    celebrate({
+      body: {
+        id: Joi.string().required(),
+      },
+    }),
+    isAuthorized,
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const evaluationServiceInstance = Container.get(EvaluationService)
+        const evaluation = await evaluationServiceInstance.MarkAsDone(
+          req.user._id as string,
+          req.body.id as string,
+        )
+
+        res.json({evaluation}).status(200)
+      } catch (e) {
+        LoggerInstance.error(e)
+        next(e)
+      }
+    },
+  )
+
   route.patch(
     '/update',
     celebrate({

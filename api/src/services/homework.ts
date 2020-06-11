@@ -60,7 +60,7 @@ export default class HomeworkService {
         .populate({path: 'createdBy', select: '_id name picture'})
 
       if (!homeworkRecord) {
-        throw new Error('Could not mark as done homework')
+        throw new Error('Could not mark homework as done')
       }
 
       return homeworkRecord

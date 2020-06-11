@@ -72,7 +72,7 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
           </AssignmentPriority>
         </Assignment>
         <Actions>
-          <Action>
+          <Action aria-label="Mark evaluation as done">
             <Tooltip title="Done" mouseEnterDelay={0.4}>
               <CheckIcon onClick={handleDoneClick} />
             </Tooltip>

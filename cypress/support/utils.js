@@ -40,3 +40,14 @@ export function toTitleCase(string) {
   string = string.toLowerCase()
   return string[0].toUpperCase() + string.slice(1)
 }
+
+function pad(num) {
+  return ('0' + num).slice(-2)
+}
+
+export function hhmmss(secs) {
+  var minutes = Math.floor(secs / 60)
+  var hours = Math.floor(minutes / 60)
+  minutes = minutes % 60
+  return `${pad(hours)}:${pad(minutes)}`
+}

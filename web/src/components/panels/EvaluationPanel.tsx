@@ -6,6 +6,7 @@ import {useToggle} from 'react-use'
 import {EvaluationCard} from 'components/cards'
 import IEvaluation from 'constants/interfaces/IEvaluation'
 import {useEvaluations} from 'features/evaluation/evaluation-hooks'
+import {useAuth} from 'features/auth/auth-context'
 
 const EvaluationDrawer = React.lazy(() =>
   import('components/drawers/EvaluationDrawer'),
@@ -18,10 +19,15 @@ interface IEvaluationProps {
 const Evaluation: React.FC<IEvaluationProps> = () => {
   const [openDrawer, toggleDrawer] = useToggle(false)
   const {evaluations} = useEvaluations()
+  const {user} = useAuth()
 
   const handleClick = () => {
     toggleDrawer(true)
   }
+
+  const filteredEvaluations = React.useMemo(() => {
+    return evaluations.filter(evaluation => !evaluation.done.includes(user._id))
+  }, [evaluations, user._id])
 
   return (
     <React.Fragment>
@@ -33,17 +39,14 @@ const Evaluation: React.FC<IEvaluationProps> = () => {
         <EvaluationDrawer visible={openDrawer} setVisible={toggleDrawer} />
       </Header>
       <Content data-testid="evaluations-cards">
-        {evaluations?.filter(evaluation => !evaluation.done).length ? (
-          evaluations.map(
-            (evaluation, i) =>
-              !evaluation.done && (
-                <EvaluationCard
-                  index={i}
-                  key={evaluation._id}
-                  evaluation={evaluation}
-                />
-              ),
-          )
+        {filteredEvaluations.length ? (
+          filteredEvaluations.map((evaluation, i) => (
+            <EvaluationCard
+              index={i}
+              key={evaluation._id}
+              evaluation={evaluation}
+            />
+          ))
         ) : (
           <StyledEmpty description="No Evaluations" />
         )}

@@ -1,6 +1,6 @@
 import React from 'react'
-import styled, {keyframes} from 'styled-components'
-import {HomeOutlined, CalendarOutlined} from '@ant-design/icons'
+import styled, {keyframes, css} from 'styled-components'
+import {HomeOutlined, CalendarOutlined, BookOutlined} from '@ant-design/icons'
 import {NavLink} from 'react-router-dom'
 import {breakpoints} from 'theme'
 
@@ -8,12 +8,16 @@ const Sidebar: React.FC = () => {
   return (
     <Styles.Wrapper>
       <Styles.Item activeClassName="active" to="/dashboard" exact>
-        <Styles.HomeIcon />
+        <Styles.HomeIcon aria-hidden />
         <Styles.Text>Home</Styles.Text>
       </Styles.Item>
       <Styles.Item activeClassName="active" to="/schedule" exact>
-        <Styles.CalendarIcon />
+        <Styles.CalendarIcon aria-hidden />
         <Styles.Text>Schedule</Styles.Text>
+      </Styles.Item>
+      <Styles.Item activeClassName="active" to="/courses" exact>
+        <Styles.CoursesIcon aria-hidden />
+        <Styles.Text>Courses</Styles.Text>
       </Styles.Item>
     </Styles.Wrapper>
   )
@@ -48,6 +52,17 @@ const animations = {
       opacity: 1;
     }
 `,
+}
+
+const Shared = {
+  Icon: css`
+    font-size: 2.6rem;
+    margin-bottom: 0.7rem;
+
+    & svg {
+      fill: ${props => props.theme.fontColors.textRgba(0.8)};
+    }
+  `,
 }
 
 const Styles = {
@@ -143,20 +158,13 @@ const Styles = {
     }
   `,
   HomeIcon: styled(HomeOutlined)`
-    font-size: 2.6rem;
-    margin-bottom: 0.7rem;
-
-    & svg {
-      fill: ${props => props.theme.fontColors.textRgba(0.8)};
-    }
+    ${Shared.Icon}
   `,
   CalendarIcon: styled(CalendarOutlined)`
-    font-size: 2.6rem;
-    margin-bottom: 0.7rem;
-
-    & svg {
-      fill: ${props => props.theme.fontColors.textRgba(0.8)};
-    }
+    ${Shared.Icon}
+  `,
+  CoursesIcon: styled(BookOutlined)`
+    ${Shared.Icon}
   `,
   Text: styled.p`
     text-transform: uppercase;

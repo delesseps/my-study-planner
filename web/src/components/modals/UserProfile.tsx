@@ -51,11 +51,13 @@ const UserProfileModal: React.FunctionComponent<IUserProfileModalProps> = ({
           <Role>{user.role === 'user' ? 'Student' : 'Administrator'}</Role>
           <CounterRow>
             <CounterWrapper>
-              <Count>{doneHomework}</Count>
+              <Count data-testid="done-homework-count">{doneHomework}</Count>
               <Assignment>Done Homework</Assignment>
             </CounterWrapper>
             <CounterWrapper>
-              <Count>{doneEvaluations}</Count>
+              <Count data-testid="done-evaluation-count">
+                {doneEvaluations}
+              </Count>
               <Assignment>Done Evaluations</Assignment>
             </CounterWrapper>
           </CounterRow>

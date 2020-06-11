@@ -21,9 +21,7 @@ const Homework: React.FC = () => {
   }
 
   const filteredHomework = React.useMemo(() => {
-    return homework.filter(
-      currHomework => !currHomework.done.includes(user._id),
-    )
+    return homework.filter(homework => !homework.done.includes(user._id))
   }, [homework, user._id])
 
   return (

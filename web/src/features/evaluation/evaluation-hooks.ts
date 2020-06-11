@@ -26,9 +26,7 @@ export function useEvaluations() {
         }
       })
 
-      message.success(
-        data.done ? 'Great Job!' : 'Successfully edited evaluation!',
-      )
+      message.success('Successfully edited evaluation!')
     },
     onError: () => {
       message.error('Error editing evaluation. Please try again.')
@@ -79,4 +77,30 @@ export function useEvaluations() {
   const evaluations = useMemo(() => user.evaluations, [user.evaluations])
 
   return {evaluations, edit, add, remove}
+}
+
+export function useEvaluationMarkAsDone() {
+  return useMutation(evaluationService.markAsDone, {
+    onSuccess: (data, {index}) => {
+      queryCache.setQueryData(['user'], (previous: IUser) => {
+        const newEvaluations = [...previous.evaluations]
+
+        if (!index) {
+          index = previous.evaluations.findIndex(elem => data._id === elem._id)
+        }
+
+        newEvaluations[index] = data
+
+        return {
+          ...previous,
+          evaluations: newEvaluations,
+        }
+      })
+
+      message.success('Great Job!')
+    },
+    onError: () => {
+      message.error('Error marking evaluation as done. Please try again.')
+    },
+  })
 }

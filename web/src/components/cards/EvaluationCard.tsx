@@ -14,7 +14,10 @@ import moment from 'moment'
 import IEvaluation from 'constants/interfaces/IEvaluation'
 import {setDate, determinePriority, determineColor} from 'utils'
 import EvaluationDescriptionModal from 'components/modals/EvaluationDescription'
-import {useEvaluations} from 'features/evaluation/evaluation-hooks'
+import {
+  useEvaluations,
+  useEvaluationMarkAsDone,
+} from 'features/evaluation/evaluation-hooks'
 
 const EvaluationDrawer = React.lazy(() =>
   import('components/drawers/EvaluationDrawer'),
@@ -31,9 +34,10 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
 }) => {
   const [openDrawer, toggleDrawer] = useToggle(false)
   const {
-    edit: [editMutate],
     remove: [removeMutate],
   } = useEvaluations()
+
+  const [markEvaluationAsDone] = useEvaluationMarkAsDone()
 
   const handleViewMoreClick = () => {
     EvaluationDescriptionModal(evaluation)
@@ -48,8 +52,7 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
   }
 
   const handleDoneClick = () => {
-    evaluation.done = true
-    editMutate({evaluation, index})
+    markEvaluationAsDone({evaluationId: evaluation._id, index})
   }
 
   return (
@@ -72,7 +75,7 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
           </AssignmentPriority>
         </Assignment>
         <Actions>
-          <Action>
+          <Action aria-label="Mark homework as done">
             <Tooltip title="Done" mouseEnterDelay={0.4}>
               <CheckIcon onClick={handleDoneClick} />
             </Tooltip>

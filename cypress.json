@@ -4,5 +4,7 @@
   "env": {
     "api_url": "http://localhost:3001/api"
   },
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "viewportWidth": 1366,
+  "viewportHeight": 768
 }

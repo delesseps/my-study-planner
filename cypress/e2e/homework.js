@@ -41,7 +41,7 @@ describe('Homework', () => {
     })
   })
 
-  it.only('should edit homework', () => {
+  it('should edit homework', () => {
     cy.createUser()
       .addHomework()
       .then(homework => {
@@ -82,6 +82,12 @@ describe('Homework', () => {
       .addHomework()
       .then(homework => {
         cy.visit('/').closeWelcome()
+        cy.findByLabelText(/mark .* as done/i).click()
+        cy.findByText(new RegExp(homework.subject, 'g')).should('not.exist')
+        cy.findByText(/no.* homework/i)
+        cy.findByTestId(/user-dropdown/i).trigger('mouseover')
+        cy.findByRole('menuitem', {name: /profile/i}).click()
+        cy.findByTestId(/done-homework-count/).should('have.text', 1)
       })
   })
 
@@ -92,8 +98,8 @@ describe('Homework', () => {
         cy.visit('/').closeWelcome()
         cy.findByLabelText(/delete homework/i).click()
         cy.findByRole('button', {name: /yes/i}).click()
-        cy.findByText(homework.subject).should('not.exist')
-        cy.findByText(/No.* Homework/i)
+        cy.findByText(new RegExp(homework.subject, 'g')).should('not.exist')
+        cy.findByText(/no.* homework/i)
       })
   })
 })

@@ -20,6 +20,24 @@ export function remove({
   return agent.request(options).then(({data}) => data)
 }
 
+export function markAsDone({
+  evaluationId,
+  index,
+}: {
+  evaluationId: string
+  index?: number
+}): Promise<IEvaluation> {
+  const options: AxiosRequestConfig = {
+    url: '/evaluation/done',
+    method: 'post',
+    data: {
+      id: evaluationId,
+    },
+  }
+
+  return agent.request(options).then(({data}) => data.evaluation)
+}
+
 export function edit({
   evaluation,
   index,

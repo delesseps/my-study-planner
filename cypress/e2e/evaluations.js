@@ -88,14 +88,33 @@ describe('Evaluation', () => {
       })
   })
 
-  it.only('should remove evaluation', () => {
+  it('should mark evaluation as done', () => {
+    cy.createUser()
+      .addEvaluation()
+      .then(evaluation => {
+        cy.visit('/').closeWelcome()
+        cy.findByLabelText(/mark .* as done/i).click()
+        cy.findByRole('heading', {
+          name: `${evaluation.evaluationType} : ${evaluation.subject}`,
+        }).should('not.exist')
+        cy.findByText(/no.* evaluations/i)
+        cy.findByTestId(/user-dropdown/i).trigger('mouseover')
+        cy.findByRole('menuitem', {name: /profile/i}).click()
+        cy.findByTestId(/done-evaluation-count/).should('have.text', 1)
+      })
+  })
+
+  it('should remove evaluation', () => {
     cy.createUser()
       .addEvaluation()
       .then(evaluation => {
         cy.visit('/').closeWelcome()
         cy.findByLabelText(/delete evaluation/i).click()
         cy.findByRole('button', {name: /yes/i}).click()
-        cy.findByText(evaluation.subject).should('not.exist')
+        cy.findByRole('heading', {
+          name: `${evaluation.evaluationType} : ${evaluation.subject}`,
+        }).should('not.exist')
+        cy.findByText(/no.* evaluations/i)
       })
   })
 })
