@@ -15,7 +15,9 @@ export function useHomework() {
         const newHomework = [...previous.homework]
 
         if (!index) {
-          index = previous.homework.findIndex(elem => data._id === elem._id)
+          index = previous.homework.findIndex(
+            homework => data._id === homework._id,
+          )
         }
 
         newHomework[index] = data
@@ -26,9 +28,7 @@ export function useHomework() {
         }
       })
 
-      message.success(
-        data.done ? 'Great Job!' : 'Successfully edited homework!',
-      )
+      message.success('Successfully edited homework!')
     },
     onError: () => {
       message.error('Error editing homework. Please try again.')
@@ -79,4 +79,32 @@ export function useHomework() {
   const homework = useMemo(() => user.homework, [user.homework])
 
   return {homework, edit, add, remove}
+}
+
+export function useHomeworkMarkAsDone() {
+  return useMutation(homeworkService.markAsDone, {
+    onSuccess: (data, {index}) => {
+      queryCache.setQueryData(['user'], (previous: IUser) => {
+        const newHomework = [...previous.homework]
+
+        if (!index) {
+          index = previous.homework.findIndex(
+            homework => data._id === homework._id,
+          )
+        }
+
+        newHomework[index] = data
+
+        return {
+          ...previous,
+          homework: newHomework,
+        }
+      })
+
+      message.success('Great Job!')
+    },
+    onError: () => {
+      message.error('Error marking homework as done. Please try again.')
+    },
+  })
 }

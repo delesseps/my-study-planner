@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {Document, Model} from 'mongoose'
 import {IUser} from '../../interfaces/IUser'
-import {ICourse} from '../../interfaces'
+import {ICourse, IHomework, IEvaluation} from '../../interfaces'
 
 declare global {
   namespace Express {
@@ -23,6 +23,8 @@ declare global {
   namespace Models {
     export type UserModel = Model<IUser & Document>
     export type CourseModel = Model<ICourse & Document>
+    export type homeworkModel = Model<IHomework & Document>
+    export type evaluationModel = Model<IEvaluation & Document>
   }
 }
 

@@ -3,13 +3,13 @@ import {isAuthorized} from '../middlewares'
 import Container from 'typedi'
 import UserService from '../../services/user'
 import uploadProfilePictureLimiter from '../middlewares/uploadProfilePictureLimiter'
-import IUserConfig from '../../interfaces/IUserConfig'
+import {IUserConfig} from '../../interfaces'
 import {Joi, celebrate} from 'celebrate'
 import LoggerInstance from '../../loaders/logger'
 
 const route = Router()
 
-export default (app: Router) => {
+export default (app: Router): void => {
   app.use('/user', route)
 
   route.get(

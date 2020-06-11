@@ -1,25 +1,28 @@
-import {IEvaluation, IToDo, IHomework, IUserConfig} from '.'
+import {IEvaluation, IToDo, IHomework} from '.'
 
 export enum Urgency {
-  important = 'IMPORTANT',
-  moderate = 'NORMAL',
-  chill = 'CHILL',
+  important = 'important',
+  moderate = 'normal',
+  chill = 'chill',
+}
+export interface IUserConfig {
+  darkMode: boolean
 }
 
 export interface IUser {
   _id?: string
   name: string
   email: string
-  verified: boolean
-  verificationToken: string
-  role: string
-  fcm: boolean
-  firstSignIn: boolean
+  verified?: boolean
+  verificationToken?: string
+  role?: string
+  fcm?: boolean
+  firstSignIn?: boolean
   picture?: string
   password?: string
   googleId?: string
   registrationToken?: string
-  configuration: IUserConfig
+  configuration?: IUserConfig
   evaluations?: IEvaluation[]
   toDos?: IToDo[]
   homework?: IHomework[]

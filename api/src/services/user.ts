@@ -1,13 +1,14 @@
 import {Service, Inject} from 'typedi'
+import winston from 'winston'
+
 import {IUser} from '../interfaces/IUser'
 import cloudinary from '../loaders/cloudinary'
-import IUserConfig from '../interfaces/IUserConfig'
-
+import {IUserConfig} from '../interfaces'
 @Service()
 export default class UserService {
   constructor(
     @Inject('userModel') private userModel: Models.UserModel,
-    @Inject('logger') private logger,
+    @Inject('logger') private logger: winston.Logger,
   ) {}
 
   public async UploadProfileImage(user: IUser, image: string): Promise<string> {

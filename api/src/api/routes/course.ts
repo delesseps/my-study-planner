@@ -9,7 +9,7 @@ import {homeworkJoi, evaluationJoi} from '../validation'
 
 const route = Router()
 
-export default (app: Router) => {
+export default (app: Router): void => {
   app.use('/course', route)
 
   route.get('/', isAuthorized, async (req: Request, res: Response) => {
@@ -35,8 +35,9 @@ export default (app: Router) => {
     async (req: Request, res: Response) => {
       try {
         const {id} = req.query
+        const {userId} = req.user._id
         const courseServiceInstance = Container.get(CourseService)
-        const course = await courseServiceInstance.getById(id as string)
+        const course = await courseServiceInstance.getById(userId, id as string)
 
         res.json({course}).status(200)
       } catch (e) {

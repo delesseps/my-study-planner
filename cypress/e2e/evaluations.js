@@ -88,7 +88,7 @@ describe('Evaluation', () => {
       })
   })
 
-  it('should remove evaluation', () => {
+  it.only('should remove evaluation', () => {
     cy.createUser()
       .addEvaluation()
       .then(evaluation => {

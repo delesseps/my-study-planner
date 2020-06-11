@@ -1,4 +1,4 @@
-import {Urgency} from './IUser'
+import {Urgency, IUser} from './IUser'
 
 export default interface IEvaluation {
   _id: string
@@ -8,9 +8,5 @@ export default interface IEvaluation {
   urgency: Urgency
   description: string
   done: boolean
-  createdBy: {
-    _id: string
-    name: string
-    picture: string
-  }
+  createdBy: Partial<IUser>
 }

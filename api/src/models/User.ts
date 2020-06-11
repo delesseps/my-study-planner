@@ -1,6 +1,8 @@
-import {IUser} from '../interfaces/IUser'
-import {evaluationSchema, homeworkSchema} from './subdocuments'
+import * as bcrypt from 'bcrypt'
 import * as mongoose from 'mongoose'
+
+import config from '../config'
+import {IUser} from '../interfaces/IUser'
 
 const User = new mongoose.Schema(
   {
@@ -53,8 +55,35 @@ const User = new mongoose.Schema(
         default: false,
       },
     },
-    homework: [homeworkSchema],
-    evaluations: [evaluationSchema],
+
+    friends: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Friend',
+      },
+    ],
+
+    notifications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Notification',
+      },
+    ],
+
+    homework: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Homework',
+      },
+    ],
+
+    evaluations: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Evaluation',
+      },
+    ],
+
     toDos: [
       {
         task: {type: String, required: true},
@@ -86,5 +115,22 @@ const User = new mongoose.Schema(
   },
   {timestamps: true},
 )
+
+User.pre('save', function (this: IUser & mongoose.Document, next) {
+  if (!this.isModified('password')) {
+    return next()
+  }
+
+  bcrypt.genSalt(config.saltRounds, (err, salt) => {
+    if (err) return next(err)
+
+    bcrypt.hash(this.password, salt, (err, hash) => {
+      if (err) return next(err)
+
+      this.password = hash
+      next()
+    })
+  })
+})
 
 export default mongoose.model<IUser & mongoose.Document>('User', User)

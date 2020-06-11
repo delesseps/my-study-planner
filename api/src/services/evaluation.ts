@@ -1,10 +1,15 @@
 import {Service, Inject} from 'typedi'
 import {IUser} from '../interfaces/IUser'
 import IEvaluation from '../interfaces/IEvaluation'
+import winston from 'winston'
 
 @Service()
 export default class EvaluationService {
-  constructor(@Inject('userModel') private userModel: Models.UserModel) {}
+  constructor(
+    @Inject('userModel') private userModel: Models.UserModel,
+    @Inject('evaluationModel') private evaluationModel: Models.evaluationModel,
+    @Inject('logger') private logger: winston.Logger,
+  ) {}
 
   public async Add(user: IUser, evaluation: IEvaluation): Promise<IEvaluation> {
     try {
@@ -15,23 +20,26 @@ export default class EvaluationService {
         picture: user.picture,
       }
 
-      const userRecord: IUser = await this.userModel
-        .findByIdAndUpdate(
-          user._id,
-          {
-            $push: {evaluations: evaluation},
-          },
-          {new: true},
-        )
-        .populate({path: 'evaluations.createdBy', select: '_id name picture'})
+      const evaluationRecord = await (
+        await this.evaluationModel.create(evaluation)
+      )
+        .populate({path: 'createdBy', select: '_id name picture'})
+        .execPopulate()
 
-      if (!userRecord) {
+      const userRecord: IUser = await this.userModel.findByIdAndUpdate(
+        user._id,
+        {
+          $push: {evaluations: evaluationRecord._id},
+        },
+      )
+
+      if (!userRecord || !evaluationRecord) {
         throw new Error('Could not add evaluation')
       }
 
-      return userRecord.evaluations[userRecord.evaluations.length - 1] //Get just added evaluation
+      return evaluationRecord
     } catch (e) {
-      console.log(e)
+      this.logger.error(e)
       throw e
     }
   }
@@ -47,54 +55,55 @@ export default class EvaluationService {
         picture: user.picture,
       }
 
-      const userRecord = await this.userModel
+      const evaluationRecord = await this.evaluationModel
         .findOneAndUpdate(
           {
-            _id: user._id,
-            'evaluations._id': evaluation._id,
+            createdBy: {_id: user._id},
+            _id: evaluation._id,
           },
           {
             $set: {
-              'evaluations.$.subject': evaluation.subject,
-              'evaluations.$.evaluationType': evaluation.evaluationType,
-              'evaluations.$.date': evaluation.date,
-              'evaluations.$.urgency': evaluation.urgency,
-              'evaluations.$.description': evaluation.description,
-              'evaluations.$.done': evaluation.done,
-              'evaluations.$.createdBy': evaluation.createdBy,
+              subject: evaluation.subject,
+              evaluationType: evaluation.evaluationType,
+              date: evaluation.date,
+              urgency: evaluation.urgency,
+              description: evaluation.description,
+              done: evaluation.done,
+              createdBy: evaluation.createdBy,
             },
           },
           {new: true},
         )
-        .populate({path: 'evaluations.createdBy', select: '_id name picture'})
+        .populate({path: 'createdBy', select: '_id name picture'})
 
-      if (!userRecord) {
+      if (!evaluationRecord) {
         throw new Error('Could not update evaluation')
       }
 
-      return evaluation
+      return evaluationRecord
     } catch (e) {
-      console.log(e)
+      this.logger.error(e)
       throw e
     }
   }
 
   public async Delete(
-    id: string,
+    userId: string,
     evaluationId: string,
-  ): Promise<{user: IUser}> {
+  ): Promise<IEvaluation> {
     try {
-      const userRecord = await this.userModel.findByIdAndUpdate(id, {
-        $pull: {evaluations: {_id: evaluationId}},
+      const deletedRecord = await this.evaluationModel.findOneAndRemove({
+        _id: evaluationId,
+        createdBy: {_id: userId},
       })
 
-      if (!userRecord) {
+      if (!deletedRecord) {
         throw new Error('Could not delete evaluation')
       }
 
-      return userRecord.toObject()
+      return deletedRecord
     } catch (e) {
-      console.log(e)
+      this.logger.error(e)
       throw e
     }
   }

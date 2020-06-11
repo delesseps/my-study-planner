@@ -1,6 +1,6 @@
 import {createGlobalStyle, css} from 'styled-components'
 
-import {IUserConfig} from 'constants/interfaces/IUser'
+import {IUserConfig} from 'constants/interfaces'
 import breakpoints from './breakpoints'
 
 const GlobalStyle = createGlobalStyle<{config?: IUserConfig}>`

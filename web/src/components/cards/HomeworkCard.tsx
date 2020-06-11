@@ -14,7 +14,10 @@ import {useToggle} from 'react-use'
 import {setDate, determinePriority, determineColor} from 'utils'
 import IHomework from 'constants/interfaces/IHomework'
 import HomeworkDescriptionModal from 'components/modals/HomeworkDescription'
-import {useHomework} from 'features/homework/homework-hooks'
+import {
+  useHomework,
+  useHomeworkMarkAsDone,
+} from 'features/homework/homework-hooks'
 
 const HomeworkDrawer = React.lazy(() =>
   import('components/drawers/HomeworkDrawer'),
@@ -31,9 +34,10 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
 }) => {
   const [openDrawer, toggleDrawer] = useToggle(false)
   const {
-    edit: [editMutate],
     remove: [removeMutate],
   } = useHomework()
+
+  const [markHomeworkAsDone] = useHomeworkMarkAsDone()
 
   const handleViewMoreClick = () => {
     HomeworkDescriptionModal(homework)
@@ -48,8 +52,7 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
   }
 
   const handleDoneClick = () => {
-    homework.done = true
-    editMutate({homework, index})
+    markHomeworkAsDone({homeworkId: homework._id, index})
   }
 
   return (

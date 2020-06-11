@@ -6,7 +6,7 @@ export default interface IHomework {
   date: string
   urgency: Urgency
   description: string
-  done: Boolean
+  done: string[]
   createdBy: {
     _id: string
     name: string

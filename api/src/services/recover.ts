@@ -1,8 +1,4 @@
 import {Service, Inject} from 'typedi'
-import {
-  EventDispatcher,
-  EventDispatcherInterface,
-} from '../decorators/eventDispatcher'
 import redisClient from '../loaders/redis'
 import * as bcrypt from 'bcrypt'
 import {Logger} from 'winston'
@@ -12,7 +8,6 @@ import config from '../config'
 export default class RecoverService {
   constructor(
     @Inject('userModel') private userModel: Models.UserModel,
-    @EventDispatcher() private eventDispatcher: EventDispatcherInterface,
     @Inject('logger') private logger: Logger,
   ) {}
 
@@ -50,8 +45,7 @@ export default class RecoverService {
         throw err
       }
 
-      const saltRounds = parseInt(config.saltRounds, 10)
-      const hashedPassword = await bcrypt.hash(password, saltRounds)
+      const hashedPassword = await bcrypt.hash(password, config.saltRounds)
 
       const userRecord = await this.userModel.findOneAndUpdate(
         {email: userEmail},

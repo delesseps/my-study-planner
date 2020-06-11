@@ -41,7 +41,7 @@ describe('Homework', () => {
     })
   })
 
-  it('should edit homework', () => {
+  it.only('should edit homework', () => {
     cy.createUser()
       .addHomework()
       .then(homework => {
@@ -74,6 +74,14 @@ describe('Homework', () => {
           })
           cy.findByText(new RegExp(determinePriority(newHomework.urgency)))
         })
+      })
+  })
+
+  it('should mark homework as done', () => {
+    cy.createUser()
+      .addHomework()
+      .then(homework => {
+        cy.visit('/').closeWelcome()
       })
   })
 

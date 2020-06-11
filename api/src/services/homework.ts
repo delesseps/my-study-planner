@@ -1,93 +1,120 @@
 import {Service, Inject} from 'typedi'
 import {IUser} from '../interfaces/IUser'
 import IHomework from '../interfaces/IHomework'
+import winston from 'winston'
 
 @Service()
 export default class HomeworkService {
-  constructor(@Inject('userModel') private userModel: Models.UserModel) {}
+  constructor(
+    @Inject('userModel') private userModel: Models.UserModel,
+    @Inject('homeworkModel') private homeworkModel: Models.homeworkModel,
+    @Inject('logger') private logger: winston.Logger,
+  ) {}
 
   public async Add(user: IUser, homework: IHomework): Promise<IHomework> {
     try {
-      homework.done = false
       homework.createdBy = {
         _id: user._id,
-        name: user.name,
-        picture: user.picture,
       }
 
-      const userRecord: IUser = await this.userModel
-        .findByIdAndUpdate(
-          user._id,
-          {
-            $push: {homework},
-          },
-          {new: true},
-        )
-        .populate({path: 'homework.createdBy', select: '_id name picture'})
+      const homeworkRecord = await (await this.homeworkModel.create(homework))
+        .populate({path: 'createdBy', select: '_id name picture'})
+        .execPopulate()
 
-      if (!userRecord) {
+      const userRecord: IUser = await this.userModel.findByIdAndUpdate(
+        user._id,
+        {
+          $push: {homework: homeworkRecord._id},
+        },
+      )
+
+      if (!userRecord || !homeworkRecord) {
         throw new Error('Could not add homework')
       }
 
-      return userRecord.homework[userRecord.homework.length - 1] //Get just added homework
+      return homeworkRecord
     } catch (e) {
-      console.log(e)
+      this.logger.error(e)
+      throw e
+    }
+  }
+
+  public async MarkAsDone(
+    userId: string,
+    homeworkId: string,
+  ): Promise<IHomework> {
+    try {
+      const homeworkRecord = await this.homeworkModel
+        .findOneAndUpdate(
+          {
+            createdBy: {_id: userId},
+            _id: homeworkId,
+          },
+          {
+            $push: {
+              done: userId,
+            },
+          },
+          {new: true},
+        )
+        .populate({path: 'createdBy', select: '_id name picture'})
+
+      if (!homeworkRecord) {
+        throw new Error('Could not mark as done homework')
+      }
+
+      return homeworkRecord
+    } catch (e) {
+      this.logger.error(e)
       throw e
     }
   }
 
   public async Update(user: IUser, homework: IHomework): Promise<IHomework> {
     try {
-      homework.createdBy = {
-        _id: user._id,
-        name: user.name,
-        picture: user.picture,
-      }
-
-      const userRecord = await this.userModel
+      const homeworkRecord = await this.homeworkModel
         .findOneAndUpdate(
           {
-            _id: user._id,
-            'homework._id': homework._id,
+            createdBy: {_id: user._id},
+            _id: homework._id,
           },
           {
             $set: {
-              'homework.$.subject': homework.subject,
-              'homework.$.date': homework.date,
-              'homework.$.urgency': homework.urgency,
-              'homework.$.description': homework.description,
-              'homework.$.done': homework.done,
-              'homework.$.createdBy': homework.createdBy,
+              subject: homework.subject,
+              date: homework.date,
+              urgency: homework.urgency,
+              description: homework.description,
             },
           },
           {new: true},
         )
-        .populate({path: 'homework.createdBy', select: '_id name picture'})
+        .populate({path: 'createdBy', select: '_id name picture'})
 
-      if (!userRecord) {
+      if (!homeworkRecord) {
         throw new Error('Could not update homework')
       }
 
-      return homework
+      return homeworkRecord
     } catch (e) {
-      console.log(e)
+      this.logger.error(e)
       throw e
     }
   }
 
-  public async Delete(id: string, homeworkId: string): Promise<{user: IUser}> {
+  public async Delete(userId: string, homeworkId: string): Promise<IHomework> {
     try {
-      const userRecord = await this.userModel.findByIdAndUpdate(id, {
-        $pull: {homework: {_id: homeworkId}},
+      const deletedRecord = await this.homeworkModel.findOneAndRemove({
+        _id: homeworkId,
+        createdBy: {_id: userId},
       })
 
-      if (!userRecord) {
-        throw new Error('Could not delete homework')
+      if (!deletedRecord) {
+        throw new Error('Could not delete evaluation')
       }
 
-      return userRecord.toObject()
+      return deletedRecord
     } catch (e) {
-      console.log(e)
+      this.logger.error(e)
       throw e
     }
   }

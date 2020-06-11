@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import {List, Switch} from 'antd'
 
-import {IUserConfig} from 'constants/interfaces/IUser'
+import {IUserConfig} from 'constants/interfaces'
 import {breakpoints} from 'theme'
 import {useConfig} from 'features/user/user-hooks'
 

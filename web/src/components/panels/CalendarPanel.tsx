@@ -34,6 +34,7 @@ const CalendarPanel: React.FC = () => {
       )
     })
 
+    // @ts-ignore
     const assignments: IEvaluation[] | IHomework[] = [
       ...filteredEvaluations,
       ...filteredHomework,
@@ -47,6 +48,8 @@ const CalendarPanel: React.FC = () => {
 
     const popoverContent = (
       <ul>
+        {/*
+        // @ts-ignore */}
         {listData.map((item: any) => {
           let status:
             | 'success'

@@ -2,7 +2,6 @@ import {Service, Inject} from 'typedi'
 import * as bcrypt from 'bcrypt'
 import {IUser, IUserInputDTO} from '../interfaces/IUser'
 import * as cryptoRandomString from 'crypto-random-string'
-import config from '../config'
 import events from '../subscribers/events'
 import {
   EventDispatcher,
@@ -19,17 +18,11 @@ export default class AuthService {
 
   public async SignUp(userInputDTO: IUserInputDTO): Promise<{user: IUser}> {
     try {
-      const saltRounds = parseInt(config.saltRounds, 10)
-
-      const hashedPassword = await bcrypt.hash(
-        userInputDTO.password,
-        saltRounds,
-      )
       const verificationToken = cryptoRandomString({length: 32})
 
       const userRecord = await this.userModel.create({
         ...userInputDTO,
-        password: hashedPassword,
+        password: userInputDTO.password,
         verificationToken,
       })
 
@@ -115,18 +108,26 @@ export default class AuthService {
     }
   }
 
-  public async SignInGoogle(profile): Promise<IUser | string> {
+  public async SignInGoogle(
+    profile: Record<any, any>,
+  ): Promise<IUser | string> {
     try {
       let userRecord = await this.userModel
         .findOne({email: profile.email})
         .populate([
           {
-            path: 'evaluations.createdBy',
-            select: '_id name picture',
+            path: 'evaluations',
+            populate: {
+              path: 'createdBy',
+              select: '_id name picture',
+            },
           },
           {
-            path: 'homework.createdBy',
-            select: '_id name picture',
+            path: 'homework',
+            populate: {
+              path: 'createdBy',
+              select: '_id name picture',
+            },
           },
         ])
 
@@ -170,18 +171,24 @@ export default class AuthService {
     }
   }
 
-  public async deserializeUser(email: string) {
+  public async deserializeUser(email: string): Promise<IUser> {
     const userRecord = await this.userModel.findOne({email}).populate([
       {
-        path: 'evaluations.createdBy',
-        select: '_id name picture',
+        path: 'evaluations',
+        populate: {
+          path: 'createdBy',
+          select: '_id name picture',
+        },
       },
       {
-        path: 'homework.createdBy',
-        select: '_id name picture',
+        path: 'homework',
+        populate: {
+          path: 'createdBy',
+          select: '_id name picture',
+        },
       },
     ])
-
+    console.log(userRecord)
     if (!userRecord) throw new Error('User not found')
 
     userRecord.evaluations = userRecord.evaluations.sort(

@@ -1,4 +1,4 @@
-import {Router, Request, Response} from 'express'
+import {Router, Request, Response, NextFunction} from 'express'
 import {isAuthorized} from '../middlewares'
 import {celebrate, Joi} from 'celebrate'
 import {Container} from 'typedi'
@@ -6,10 +6,11 @@ import EvaluationService from '../../services/evaluation'
 import IEvaluation from '../../interfaces/IEvaluation'
 import {IUser} from '../../interfaces/IUser'
 import {evaluationDTOJoi, evaluationJoi} from '../validation'
+import LoggerInstance from '../../loaders/logger'
 
 const route = Router()
 
-export default (app: Router) => {
+export default (app: Router): void => {
   app.use('/evaluation', route)
 
   route.post(
@@ -18,7 +19,7 @@ export default (app: Router) => {
       body: Joi.object(evaluationDTOJoi),
     }),
     isAuthorized,
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const evaluationServiceInstance = Container.get(EvaluationService)
         const evaluation = await evaluationServiceInstance.Add(
@@ -28,8 +29,8 @@ export default (app: Router) => {
 
         res.json({evaluation}).status(200)
       } catch (e) {
-        console.log(e)
-        throw e
+        LoggerInstance.error(e)
+        next(e)
       }
     },
   )
@@ -40,7 +41,7 @@ export default (app: Router) => {
       body: Joi.object(evaluationJoi),
     }),
     isAuthorized,
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const evaluationServiceInstance = Container.get(EvaluationService)
         const evaluation = await evaluationServiceInstance.Update(
@@ -50,8 +51,8 @@ export default (app: Router) => {
 
         res.json({evaluation}).status(200)
       } catch (e) {
-        console.log(e)
-        throw e
+        LoggerInstance.error(e)
+        next(e)
       }
     },
   )
@@ -64,7 +65,7 @@ export default (app: Router) => {
       }),
     }),
     isAuthorized,
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const evaluationServiceInstance = Container.get(EvaluationService)
 
@@ -72,8 +73,8 @@ export default (app: Router) => {
 
         res.json('done').status(200)
       } catch (e) {
-        console.log(e)
-        throw e
+        LoggerInstance.error(e)
+        next(e)
       }
     },
   )

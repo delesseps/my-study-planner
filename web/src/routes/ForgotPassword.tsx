@@ -69,6 +69,7 @@ const ForgotPassword: React.FunctionComponent = () => {
                     message: 'The input is not valid E-mail!',
                   },
                 ]}
+                label="E-mail"
               >
                 <Input
                   prefix={<UserOutlined style={{color: 'rgba(0,0,0,.25)'}} />}

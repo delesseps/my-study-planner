@@ -1,5 +1,4 @@
 import {ICourse} from '../interfaces'
-import {evaluationSchema, homeworkSchema} from './subdocuments'
 import * as mongoose from 'mongoose'
 
 const Course = new mongoose.Schema(
@@ -23,8 +22,18 @@ const Course = new mongoose.Schema(
         ref: 'User',
       },
     ],
-    homework: [homeworkSchema],
-    evaluations: [evaluationSchema],
+    homework: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Homework',
+      },
+    ],
+    evaluations: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Evaluation',
+      },
+    ],
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

@@ -19,5 +19,6 @@ module.exports = {
     '@typescript-eslint/camelcase': 0,
     '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/ban-ts-ignore': 0,
+    '@typescript-eslint/ban-ts-comment': 0,
   },
 }

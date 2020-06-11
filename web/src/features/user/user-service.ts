@@ -1,6 +1,6 @@
 import {agent} from 'utils'
 import {AxiosRequestConfig} from 'axios'
-import {IUserConfig} from 'constants/interfaces/IUser'
+import {IUserConfig} from 'constants/interfaces'
 
 export function changeConfig(config: IUserConfig): Promise<IUserConfig> {
   const options: AxiosRequestConfig = {

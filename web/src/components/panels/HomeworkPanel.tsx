@@ -5,6 +5,7 @@ import {useToggle} from 'react-use'
 
 import {HomeworkCard} from 'components/cards'
 import {useHomework} from 'features/homework/homework-hooks'
+import {useAuth} from 'features/auth/auth-context'
 
 const HomeworkDrawer = React.lazy(() =>
   import('components/drawers/HomeworkDrawer'),
@@ -13,10 +14,17 @@ const HomeworkDrawer = React.lazy(() =>
 const Homework: React.FC = () => {
   const [openDrawer, toggleDrawer] = useToggle(false)
   const {homework} = useHomework()
+  const {user} = useAuth()
 
   const handleClick = () => {
     toggleDrawer(true)
   }
+
+  const filteredHomework = React.useMemo(() => {
+    return homework.filter(
+      currHomework => !currHomework.done.includes(user._id),
+    )
+  }, [homework, user._id])
 
   return (
     <React.Fragment>
@@ -28,17 +36,10 @@ const Homework: React.FC = () => {
         <HomeworkDrawer visible={openDrawer} setVisible={toggleDrawer} />
       </Header>
       <Content data-testid="homework-cards">
-        {homework.filter(currHomework => !currHomework.done).length ? (
-          homework.map(
-            (currHomework, i) =>
-              !currHomework.done && (
-                <HomeworkCard
-                  index={i}
-                  key={currHomework._id}
-                  homework={currHomework}
-                />
-              ),
-          )
+        {filteredHomework.length ? (
+          filteredHomework.map((homework, i) => (
+            <HomeworkCard index={i} key={homework._id} homework={homework} />
+          ))
         ) : (
           <StyledEmpty description="No Homework" />
         )}

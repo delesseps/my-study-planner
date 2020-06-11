@@ -77,29 +77,6 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
     setConfirmDirty({confirmDirty: confirmDirty || !!value})
   }
 
-  const compareToFirstPassword = (
-    rule: any,
-    value: string,
-    callback: Function,
-  ) => {
-    if (value && value !== form.getFieldValue('password')) {
-      callback('The passwords do not match!')
-    } else {
-      callback()
-    }
-  }
-
-  const validateToNextPassword = (
-    rule: any,
-    value: string,
-    callback: Function,
-  ) => {
-    if (value && confirmDirty) {
-      form.validateFields(['confirm'])
-    }
-    callback()
-  }
-
   const success = passwordChangeStatus === 'success'
   const passwordChangeLoading = success || passwordChangeStatus === 'loading'
 
@@ -132,13 +109,11 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
                       message: 'Please input your password!',
                     },
                     {
-                      validator: validateToNextPassword,
-                    },
-                    {
                       min: 6,
                       message: 'Password must have a minimum of 6 characters.',
                     },
                   ]}
+                  label="New Password"
                   hasFeedback
                 >
                   <Input.Password
@@ -149,19 +124,28 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
                 </Form.Item>
                 <Form.Item
                   name="confirm"
+                  dependencies={['password']}
                   rules={[
                     {
                       required: true,
                       message: 'Please confirm your password!',
                     },
-                    {
-                      validator: compareToFirstPassword,
-                    },
+                    ({getFieldValue}) => ({
+                      validator(rule, value) {
+                        if (!value || getFieldValue('password') === value) {
+                          return Promise.resolve()
+                        }
+                        return Promise.reject(
+                          'The two passwords that you entered do not match!',
+                        )
+                      },
+                    }),
                     {
                       min: 6,
                       message: 'Password must have a minimum of 6 characters.',
                     },
                   ]}
+                  label="Confirm New Password"
                   hasFeedback
                 >
                   <Input.Password

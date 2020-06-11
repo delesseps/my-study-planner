@@ -33,7 +33,7 @@ export function buildHomework(overrides?: Record<string, any>): IHomework {
     date: new Date().toISOString(),
     urgency: Urgency.normal,
     description: faker.name.jobDescriptor(),
-    done: false,
+    done: [],
     createdBy: {
       _id: faker.random.uuid(),
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,

@@ -20,6 +20,24 @@ export function remove({
   return agent.request(options).then(({data}) => data)
 }
 
+export function markAsDone({
+  homeworkId,
+  index,
+}: {
+  homeworkId: string
+  index?: number
+}): Promise<IHomework> {
+  const options: AxiosRequestConfig = {
+    url: '/homework/update',
+    method: 'patch',
+    data: {
+      id: homeworkId,
+    },
+  }
+
+  return agent.request(options).then(({data}) => data.homework)
+}
+
 export function edit({
   homework,
   index,

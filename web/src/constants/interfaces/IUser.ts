@@ -14,7 +14,7 @@ export interface IUserConfig {
 }
 
 export default interface IUser {
-  _id: String
+  _id: string
   name: string
   email: string
   role: string

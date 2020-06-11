@@ -2,7 +2,7 @@ import React from 'react'
 import {Switch, Route, Redirect} from 'react-router'
 import {ThemeProvider} from 'styled-components'
 
-import {IUserConfig} from 'constants/interfaces/IUser'
+import {IUserConfig} from 'constants/interfaces'
 import {Loading} from 'components'
 import {GlobalStyle, lightTheme} from 'theme'
 

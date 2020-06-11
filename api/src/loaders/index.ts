@@ -5,18 +5,38 @@ import Logger from './logger'
 import jobsLoader from './jobs'
 import './events'
 
-export default async ({expressApp}) => {
+export default async ({
+  expressApp,
+}: {
+  expressApp: Express.Application
+}): Promise<void> => {
   const mongoConnection = await mongooseLoader()
   Logger.info('✌️ DB loaded and connected!')
 
   const models = [
     {
       name: 'userModel',
-      model: require('../models/user').default,
+      model: require('../models/User').default,
+    },
+    {
+      name: 'homeworkModel',
+      model: require('../models/Homework').default,
+    },
+    {
+      name: 'evaluationModel',
+      model: require('../models/Evaluation').default,
     },
     {
       name: 'courseModel',
-      model: require('../models/course').default,
+      model: require('../models/Course').default,
+    },
+    {
+      name: 'notificationModel',
+      model: require('../models/Notification').default,
+    },
+    {
+      name: 'friendModel',
+      model: require('../models/Friend').default,
     },
   ]
 

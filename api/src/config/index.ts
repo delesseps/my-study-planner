@@ -61,7 +61,7 @@ export default {
   /**
    * Salt rounds for bcrypt
    */
-  saltRounds: process.env.SALT_ROUNDS,
+  saltRounds: parseInt(process.env.SALT_ROUNDS, 10),
 
   /**
    * Used by winston logger

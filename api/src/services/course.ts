@@ -4,14 +4,12 @@ import {ICourse} from '../interfaces'
 
 @Service()
 export default class CourseService {
-  constructor(
-    @Inject('userModel') private userModel: Models.UserModel,
-    @Inject('courseModel') private courseModel: Models.CourseModel,
-  ) {}
+  constructor(@Inject('courseModel') private courseModel: Models.CourseModel) {}
 
   public async get(user: IUser): Promise<ICourse[]> {
     try {
       const courseRecords = await this.courseModel
+        // @ts-ignore
         .find({members: user._id})
         .select('name schedule members homework evaluations createdBy')
 
@@ -26,10 +24,11 @@ export default class CourseService {
     }
   }
 
-  public async getById(id: string) {
+  public async getById(userId: string, id: string): Promise<ICourse> {
     try {
       const courseRecord = await this.courseModel
-        .findById(id)
+        // @ts-ignore
+        .findOne({_id: id, members: userId})
         .select('name schedule members homework evaluations createdBy')
 
       if (!courseRecord) {
@@ -58,10 +57,8 @@ export default class CourseService {
         throw new Error('Course cannot be created')
       }
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       courseRecord.createdAt = undefined
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       courseRecord.updatedAt = undefined
       courseRecord.__v = undefined
@@ -82,6 +79,7 @@ export default class CourseService {
         .findOneAndUpdate(
           {
             _id: course._id,
+            // @ts-ignore
             members: user._id,
           },
           course,
@@ -114,6 +112,7 @@ export default class CourseService {
     try {
       const response = await this.courseModel.deleteOne({
         _id: courseId,
+        // @ts-ignore
         members: userId,
       })
 
