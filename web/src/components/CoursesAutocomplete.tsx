@@ -6,6 +6,10 @@ import styled from 'styled-components'
 const CourseAutoComplete = (props: any) => {
   const {data: courses} = useCourses()
   const autocompleteCourses = React.useMemo(() => {
+    if (courses === undefined || !courses.length) {
+      return []
+    }
+
     const autocomplete: {
       label: string | React.ReactNode
       options: {key: string; value: string}[]

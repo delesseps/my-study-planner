@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import {Switch, Route, Redirect} from 'react-router'
 import {Alert} from 'antd'
 import styled, {ThemeProvider} from 'styled-components'
-import ErrorBoundary from 'react-error-boundary'
+import {ErrorBoundary} from 'react-error-boundary'
 
 import {
   FadeIn,

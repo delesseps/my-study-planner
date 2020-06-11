@@ -19,7 +19,7 @@ async function selectTime(time) {
 }
 
 describe('Schedule', () => {
-  it.only('should add course', () => {
+  it('should add course', () => {
     cy.createUser().then(user => {
       const course = buildCourse()
 
@@ -59,6 +59,25 @@ describe('Schedule', () => {
       cy.document()
         .findByRole('button', {name: /^add course$/i})
         .click()
+      cy.findByText(/successfully added course!/i)
+
+      let day = days[0]
+      let classSchedule = course.schedule[day]
+      let dayToChangeInto = toTitleCase(day.slice(0, 3))
+
+      cy.findByText(dayToChangeInto).click()
+      cy.findByText(course.name)
+      cy.findByText(hhmmss(classSchedule.start))
+      cy.findByText(hhmmss(classSchedule.end))
+
+      day = days[1]
+      classSchedule = course.schedule[day]
+      dayToChangeInto = toTitleCase(day.slice(0, 3))
+
+      cy.findByText(dayToChangeInto).click()
+      cy.findByText(course.name)
+      cy.findByText(hhmmss(classSchedule.start))
+      cy.findByText(hhmmss(classSchedule.end))
     })
   })
 })

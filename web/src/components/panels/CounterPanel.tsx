@@ -17,18 +17,17 @@ const Counter: React.FC<ICounterProps> = ({user, homework}) => {
     //Get amount of evaluations this week
     setEvaluationCount(
       user.evaluations.filter(
-        evaluation => isThisWeek(moment(evaluation.date)) && !evaluation.done,
+        ({date, done}) => isThisWeek(moment(date)) && !done.includes(user._id),
       ).length,
     )
 
     //Get amount of homework this week
     setHomeworkCount(
       user.homework.filter(
-        currHomework =>
-          isThisWeek(moment(currHomework.date)) && !currHomework.done,
+        ({date, done}) => isThisWeek(moment(date)) && !done.includes(user._id),
       ).length,
     )
-  }, [user.homework, user.evaluations])
+  }, [user.homework, user.evaluations, user._id])
 
   return (
     <>

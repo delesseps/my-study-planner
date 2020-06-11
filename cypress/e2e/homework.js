@@ -38,6 +38,9 @@ describe('Homework', () => {
         })
         cy.findByText(new RegExp(determinePriority(homework.urgency)))
       })
+
+      cy.findByTestId(/homework-count/i).should('have.text', 1)
+      cy.findByText(new RegExp(`start working on ${homework.subject}`, 'i'))
     })
   })
 
@@ -83,6 +86,7 @@ describe('Homework', () => {
       .then(homework => {
         cy.visit('/').closeWelcome()
         cy.findByLabelText(/mark .* as done/i).click()
+        cy.findByText(/great job/i)
         cy.findByText(new RegExp(homework.subject, 'g')).should('not.exist')
         cy.findByText(/no.* homework/i)
         cy.findByTestId(/user-dropdown/i).trigger('mouseover')
@@ -100,6 +104,11 @@ describe('Homework', () => {
         cy.findByRole('button', {name: /yes/i}).click()
         cy.findByText(new RegExp(homework.subject, 'g')).should('not.exist')
         cy.findByText(/no.* homework/i)
+
+        cy.findByTestId(/homework-count/i).should('have.text', 0)
+        cy.findByText(
+          new RegExp(`start working on ${homework.subject}`, 'i'),
+        ).should('not.exist')
       })
   })
 })

@@ -44,6 +44,9 @@ describe('Evaluation', () => {
         })
         cy.findByText(new RegExp(determinePriority(evaluation.urgency)))
       })
+
+      cy.findByTestId(/evaluation-count/i).should('have.text', 1)
+      cy.findByText(new RegExp(`start studying for ${evaluation.subject}`, 'i'))
     })
   })
 
@@ -94,6 +97,7 @@ describe('Evaluation', () => {
       .then(evaluation => {
         cy.visit('/').closeWelcome()
         cy.findByLabelText(/mark .* as done/i).click()
+        cy.findByText(/great job/i)
         cy.findByRole('heading', {
           name: `${evaluation.evaluationType} : ${evaluation.subject}`,
         }).should('not.exist')
@@ -115,6 +119,11 @@ describe('Evaluation', () => {
           name: `${evaluation.evaluationType} : ${evaluation.subject}`,
         }).should('not.exist')
         cy.findByText(/no.* evaluations/i)
+
+        cy.findByTestId(/evaluation-count/i).should('have.text', 0)
+        cy.findByText(
+          new RegExp(`start studying for ${evaluation.subject}`, 'i'),
+        ).should('not.exist')
       })
   })
 })

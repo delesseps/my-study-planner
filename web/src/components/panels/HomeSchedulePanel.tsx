@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import BigCalendar from 'react-big-calendar'
+import {Calendar, momentLocalizer} from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import moment from 'moment'
 import {toTitleCase} from 'utils'
@@ -13,8 +13,9 @@ import {Urgency} from 'constants/interfaces/IUser'
 import IHomework from 'constants/interfaces/IHomework'
 import {useHomework} from 'features/homework/homework-hooks'
 import {useEvaluations} from 'features/evaluation/evaluation-hooks'
+import {useAuth} from 'features/auth/auth-context'
 
-const localizer = BigCalendar.momentLocalizer(moment)
+const localizer = momentLocalizer(moment)
 
 function determineColor(urgency: Urgency, alpha = 1) {
   switch (urgency) {
@@ -37,11 +38,12 @@ const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = () => {
   const [events, setEvents] = useState<IScheduleEvent[]>([])
   const {homework} = useHomework()
   const {evaluations} = useEvaluations()
+  const {user} = useAuth()
 
   useEffect(() => {
     //Adds and normalizes evaluations which are not done to events
     const filteredEvaluations: IScheduleEvent[] = evaluations
-      .filter(evaluation => !evaluation.done)
+      .filter(({done}) => !done.includes(user._id))
       .map(evaluation => ({
         title: `${toTitleCase(evaluation.evaluationType)}: ${
           evaluation.subject
@@ -56,22 +58,23 @@ const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = () => {
 
     //Adds and normalizes homework which are not done to events
     const filteredHomework: IScheduleEvent[] = homework
-      .filter(currHomework => !currHomework.done)
-      .map(currHomework => ({
-        title: 'HW: ' + currHomework.subject,
-        start: new Date(currHomework.date),
-        end: new Date(currHomework.date),
+      .filter(({done}) => !done.includes(user._id))
+      .map(homework => ({
+        title: 'HW: ' + homework.subject,
+        start: new Date(homework.date),
+        end: new Date(homework.date),
         allDay: true,
-        urgency: currHomework.urgency,
+        urgency: homework.urgency,
         type: 'homework',
-        homework: currHomework,
+        homework: homework,
       }))
 
     setEvents([...filteredEvaluations, ...filteredHomework])
-  }, [evaluations, homework])
+  }, [evaluations, homework, user._id])
 
   return (
-    <StyledBigCalendar
+    <StyledCalendar
+      // @ts-ignore
       events={events}
       views={['week', 'day', 'agenda']}
       localizer={localizer}
@@ -91,7 +94,7 @@ const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = () => {
   )
 }
 
-const StyledBigCalendar = styled(BigCalendar)`
+const StyledCalendar = styled(Calendar)`
   @media only screen and (max-width: ${breakpoints.bpMobileL}) {
     .rbc-toolbar {
       flex-direction: column;

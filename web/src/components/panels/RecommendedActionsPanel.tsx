@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import {Empty} from 'antd'
 
@@ -13,24 +13,26 @@ import {useHomework} from 'features/homework/homework-hooks'
 import {useAuth} from 'features/auth/auth-context'
 
 const RecommendedActionsPanel: React.FC = () => {
-  const [recommendedActions, setRecommendedActions] = useState<any>([])
   const {evaluations} = useEvaluations()
   const {homework} = useHomework()
   const {user} = useAuth()
 
-  useEffect(() => {
+  const recommendedActions = React.useMemo(() => {
     const userAssignments = [...evaluations, ...homework]
 
-    const sortedUserAssignments = userAssignments.sort(
-      (a, b) =>
-        determinePriorityNumber(b.urgency) +
-        determinePriorityDateNumber(moment(b.date)) -
-        (determinePriorityNumber(a.urgency) +
-          determinePriorityDateNumber(moment(a.date))),
-    )
-
-    setRecommendedActions(sortedUserAssignments)
-  }, [evaluations, homework, user.toDos])
+    return userAssignments
+      .sort(
+        (a, b) =>
+          determinePriorityNumber(b.urgency) +
+          determinePriorityDateNumber(moment(b.date)) -
+          (determinePriorityNumber(a.urgency) +
+            determinePriorityDateNumber(moment(a.date))),
+      )
+      .filter(
+        (assignment: IEvaluation | IHomework) =>
+          !assignment.done.includes(user._id),
+      )
+  }, [evaluations, homework, user._id])
 
   return (
     <React.Fragment>
@@ -38,18 +40,13 @@ const RecommendedActionsPanel: React.FC = () => {
         <Title>Recommended Actions</Title>
       </Header>
       <Content>
-        {recommendedActions.filter(
-          (assignment: IEvaluation | IHomework) => !assignment.done,
-        ).length ? (
-          recommendedActions.map(
-            (assignment: IEvaluation | IHomework) =>
-              !assignment.done && (
-                <RecommendedActionCard
-                  key={assignment._id}
-                  assignment={assignment}
-                />
-              ),
-          )
+        {recommendedActions.length ? (
+          recommendedActions.map((assignment: IEvaluation | IHomework) => (
+            <RecommendedActionCard
+              key={assignment._id}
+              assignment={assignment}
+            />
+          ))
         ) : (
           <StyledEmpty description="No Recomendations" />
         )}
