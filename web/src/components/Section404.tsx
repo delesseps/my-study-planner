@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import {Button} from 'antd'
-import {useHistory} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 
 import {ReactComponent as SVG404White} from 'assets/404-white.svg'
 import {ReactComponent as SVG404} from 'assets/404.svg'
@@ -11,10 +11,10 @@ interface I404Props {
 }
 
 const Section404: React.FunctionComponent<I404Props> = ({white}) => {
-  const {push} = useHistory()
+  const navigate = useNavigate()
 
   const handleClick = () => {
-    push('/signin')
+    navigate('/signin')
   }
 
   return (

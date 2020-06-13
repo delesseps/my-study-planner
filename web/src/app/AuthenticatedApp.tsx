@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react'
-import {Switch, Route, Redirect} from 'react-router'
+import React from 'react'
+import {Routes, Route, Navigate} from 'react-router'
 import {Alert} from 'antd'
 import styled, {ThemeProvider} from 'styled-components'
 import {ErrorBoundary} from 'react-error-boundary'
@@ -15,6 +15,7 @@ import {breakpoints, lightTheme, darkTheme, GlobalStyle} from 'theme'
 import {initializePush} from 'firebase/initialize'
 import {useConfig} from 'features/user/user-hooks'
 import {useAuth} from 'features/auth/auth-context'
+import {switcher} from 'theme/antd/theme-switcher'
 
 const Home = React.lazy(() => import('routes/Home'))
 const Schedule = React.lazy(() => import('routes/Schedule'))
@@ -27,9 +28,19 @@ const AuthenticatedApp: React.FC = () => {
   const {user} = useAuth()
   const {config} = useConfig()
 
-  useEffect(() => {
+  React.useEffect(() => {
     initializePush()
   }, [])
+
+  React.useEffect(() => {
+    config.darkMode
+      ? switcher({
+          theme: 'dark',
+        })
+      : switcher({
+          theme: 'light',
+        })
+  }, [config.darkMode])
 
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
@@ -37,7 +48,7 @@ const AuthenticatedApp: React.FC = () => {
         <GlobalStyle config={config} />
 
         <FadeIn>
-          <Wrapper>
+          <Wrapper className="dark-theme">
             <Navigation.Wrapper>
               <Navigation.Sidebar />
             </Navigation.Wrapper>
@@ -65,13 +76,13 @@ const AuthenticatedApp: React.FC = () => {
 
 const AppRoutes = () => {
   return (
-    <Switch>
-      <Route path="/dashboard" exact component={Home} />
-      <Route path="/schedule" exact component={Schedule} />
-      <Route path="/courses" exact component={Courses} />
-      <Route path="/dashboard/Preferences" exact component={Preferences} />
-      <Redirect to="/dashboard" />
-    </Switch>
+    <Routes>
+      <Route path="/dashboard" element={<Home />} />
+      <Route path="/schedule" element={<Schedule />} />
+      <Route path="/courses" element={<Courses />} />
+      <Route path="/dashboard/Preferences" element={<Preferences />} />
+      <Route path="*" element={<Navigate replace to="/dashboard" />} />
+    </Routes>
   )
 }
 

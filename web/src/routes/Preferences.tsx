@@ -6,7 +6,7 @@ import {IUserConfig} from 'constants/interfaces'
 import {breakpoints} from 'theme'
 import {useConfig} from 'features/user/user-hooks'
 
-const appereanceSettings = [
+const appearanceSettings = [
   {
     name: 'Dark Mode',
     description: 'Make My Study Planner cooler for your eyes.',
@@ -27,6 +27,9 @@ const Preferences: React.FC = () => {
     switch (action) {
       case 'DARK_MODE':
         newConfig.darkMode = checked
+        // newConfig.darkMode
+        //   ? less.modifyVars(darkVars)
+        //   : less.modifyVars(lightVars)
         return change(newConfig)
       default:
     }
@@ -34,11 +37,11 @@ const Preferences: React.FC = () => {
 
   return (
     <Wrapper>
-      <Title>Appereance</Title>
+      <Title>Appearance</Title>
       <StyledList
         bordered
         itemLayout="horizontal"
-        dataSource={appereanceSettings}
+        dataSource={appearanceSettings}
         renderItem={(setting: any) => (
           <List.Item
             actions={[

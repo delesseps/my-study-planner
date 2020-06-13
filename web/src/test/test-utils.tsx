@@ -3,8 +3,7 @@ import * as rtl from '@testing-library/react'
 import {ReactQueryConfigProvider} from 'react-query'
 import {AuthProvider} from 'features/auth/auth-context'
 import {ThemeProvider, DefaultTheme} from 'styled-components'
-import {Router} from 'react-router-dom'
-import {createMemoryHistory, MemoryHistory} from 'history'
+import {MemoryRouter} from 'react-router-dom'
 import MockAdapter from 'axios-mock-adapter'
 import 'jest-styled-components'
 
@@ -23,7 +22,6 @@ const queryConfig = {
 interface renderOptions {
   route?: string
   initialEntries?: string[]
-  history?: MemoryHistory
   theme?: DefaultTheme
 
   [x: string]: any
@@ -34,7 +32,6 @@ const customRender = (
   {
     route = '/',
     initialEntries = [route],
-    history = createMemoryHistory({initialEntries}),
     theme = lightTheme,
     ...rest
   }: renderOptions = {},
@@ -42,11 +39,11 @@ const customRender = (
   const Wrapper: React.FC = ({children}) => {
     return (
       <ReactQueryConfigProvider config={queryConfig}>
-        <Router history={history}>
+        <MemoryRouter initialEntries={initialEntries}>
           <AuthProvider>
             <ThemeProvider theme={theme}>{children}</ThemeProvider>
           </AuthProvider>
-        </Router>
+        </MemoryRouter>
       </ReactQueryConfigProvider>
     )
   }
@@ -56,10 +53,6 @@ const customRender = (
       wrapper: Wrapper,
       ...rest,
     }),
-    // adding `history` to the returned utilities to allow us
-    // to reference it in our tests (just try to avoid using
-    // this to test implementation details).
-    history,
   }
 }
 

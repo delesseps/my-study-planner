@@ -2,23 +2,20 @@ import React, {useEffect} from 'react'
 import {AxiosError} from 'axios'
 import {LockOutlined} from '@ant-design/icons'
 import {Button, Input, message, Form} from 'antd'
-import {Link, match, useHistory} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import styled from 'styled-components'
+import {useParams, useNavigate} from 'react-router'
 
 import {ReactComponent as Logo} from 'assets/logo.svg'
 import {ReactComponent as ChangePasswordDone} from 'assets/change_password_done.svg'
 import {FadeIn, Loading} from 'components'
 import {usePasswordChange} from 'features/auth/auth-context'
 
-interface IChangePasswordProps {
-  match: match<{email: string; token: string}>
-}
-
-const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
-  match,
-}) => {
+const ChangePassword: React.FC = () => {
+  const [confirmDirty, setConfirmDirty] = React.useState<Boolean | any>(false)
   const [form] = Form.useForm()
-  const {push} = useHistory()
+  const navigate = useNavigate()
+
   const {
     confirmToken: [
       confirmToken,
@@ -29,11 +26,11 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
       {status: passwordChangeStatus, error: passwordChangeError},
     ],
   } = usePasswordChange()
-  const [confirmDirty, setConfirmDirty] = React.useState<Boolean | any>(false)
+  const params = useParams()
 
   useEffect(() => {
-    confirmToken(match.params.token)
-  }, [match.params.token, confirmToken])
+    confirmToken(params.token)
+  }, [params.token, confirmToken])
 
   React.useEffect(() => {
     const error = tokenConfirmationError as AxiosError
@@ -41,13 +38,13 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
 
     if (errorCode) {
       message.error('Invalid link')
-      push('/forgot_password')
+      navigate('/forgot_password')
     }
 
     if (!errorCode && error) {
       throw new Error(error.toString())
     }
-  }, [tokenConfirmationError, push])
+  }, [tokenConfirmationError, navigate])
 
   React.useEffect(() => {
     const error = passwordChangeError as AxiosError
@@ -55,20 +52,20 @@ const ChangePassword: React.FunctionComponent<IChangePasswordProps> = ({
 
     if (errorCode) {
       message.error('An error has occured please try again!')
-      push('/forgot_password')
+      navigate('/forgot_password')
     }
 
     if (!errorCode && error) {
       throw new Error(error.toString())
     }
-  }, [passwordChangeError, push])
+  }, [passwordChangeError, navigate])
 
   const handleSubmit = (): void => {
     form.validateFields().then(credentials => SendRequest(credentials.password))
   }
 
   const SendRequest = async (password: string) => {
-    const {token} = match.params
+    const {token} = params
     changePassword({token, password})
   }
 

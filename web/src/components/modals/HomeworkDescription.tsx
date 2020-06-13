@@ -38,7 +38,7 @@ const ModalTime = styled.h5`
   display: flex;
   font-weight: 400;
   align-items: center;
-  color: rgba(27, 27, 27, 0.8);
+
   margin: 0;
 `
 
@@ -53,7 +53,6 @@ const ModalTitle = styled.h3`
   margin: 0;
   font-weight: 500;
   font-size: 1.7rem;
-  color: rgba(27, 27, 27, 0.8);
 
   width: 26rem;
   word-wrap: break-word;

@@ -4,7 +4,7 @@ export const evaluationDTOJoi = {
   subject: Joi.string().required(),
   evaluationType: Joi.string().valid('quiz', 'test').required(),
   urgency: Joi.string().valid('chill', 'normal', 'important').required(),
-  description: Joi.string().allow(null, ''),
+  description: Joi.string().allow(''),
   date: Joi.date().required(),
 }
 
@@ -13,9 +13,8 @@ export const evaluationJoi = {
   subject: Joi.string().required(),
   evaluationType: Joi.string().valid('quiz', 'test').required(),
   urgency: Joi.string().valid('chill', 'normal', 'important').required(),
-  description: Joi.string().allow(null, ''),
+  description: Joi.string().allow(''),
   date: Joi.date().required(),
-  done: Joi.boolean().default(false),
   createdBy: Joi.object({
     _id: Joi.string().required(),
     name: Joi.string().required(),

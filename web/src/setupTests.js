@@ -24,6 +24,13 @@ Object.defineProperty(document, 'cookie', {
   value: '',
 })
 
+Object.defineProperty(window, 'less', {
+  writable: true,
+  value: {
+    modifyVars: jest.fn(),
+  },
+})
+
 beforeAll(() => {
   jest.spyOn(console, 'error').mockImplementation(() => {})
   jest.spyOn(console, 'warn').mockImplementation(() => {})

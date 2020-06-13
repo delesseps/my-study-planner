@@ -7,15 +7,15 @@ import {breakpoints} from 'theme'
 const Sidebar: React.FC = () => {
   return (
     <Styles.Wrapper>
-      <Styles.Item activeClassName="active" to="/dashboard" exact>
+      <Styles.Item activeClassName="active" to="/dashboard">
         <Styles.HomeIcon aria-hidden />
         <Styles.Text>Home</Styles.Text>
       </Styles.Item>
-      <Styles.Item activeClassName="active" to="/schedule" exact>
+      <Styles.Item activeClassName="active" to="/schedule">
         <Styles.CalendarIcon aria-hidden />
         <Styles.Text>Schedule</Styles.Text>
       </Styles.Item>
-      <Styles.Item activeClassName="active" to="/courses" exact>
+      <Styles.Item activeClassName="active" to="/courses">
         <Styles.CoursesIcon aria-hidden />
         <Styles.Text>Courses</Styles.Text>
       </Styles.Item>

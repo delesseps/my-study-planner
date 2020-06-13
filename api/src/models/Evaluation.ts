@@ -11,7 +11,7 @@ const Evaluation = new mongoose.Schema({
     required: true,
     enum: [...Object.values(Urgency)],
   },
-  description: {type: String, required: true},
+  description: {type: String, default: ''},
   done: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,

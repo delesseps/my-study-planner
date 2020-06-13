@@ -1,5 +1,5 @@
 import React from 'react'
-import {useHistory} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import {useToggle} from 'react-use'
 import styled from 'styled-components'
 import {Avatar, Dropdown, Menu, Popover, Empty} from 'antd'
@@ -24,7 +24,7 @@ interface ITopBarProps {
 }
 
 const TopBar: React.FC<ITopBarProps> = ({loading}) => {
-  const {push} = useHistory()
+  const navigate = useNavigate()
   const {user, logout} = useAuth()
   const [showProfile, toggleProfile] = useToggle(false)
   const [showNotifications, toggleNotifications] = useToggle(false)
@@ -34,7 +34,7 @@ const TopBar: React.FC<ITopBarProps> = ({loading}) => {
   }
 
   const handleHomeClick = () => {
-    push('/dashboard')
+    navigate('/dashboard')
   }
 
   const userOptions = (
@@ -47,10 +47,8 @@ const TopBar: React.FC<ITopBarProps> = ({loading}) => {
       </Menu.Item>
       <Menu.Item>
         <StyledLink to="/dashboard/preferences">
-          <MenuButtonLink>
-            <SettingOutlined aria-hidden />
-            Preferences
-          </MenuButtonLink>
+          <SettingOutlined aria-hidden />
+          Preferences
         </StyledLink>
       </Menu.Item>
       <Menu.Item>
@@ -212,15 +210,13 @@ const MenuButton = styled.a`
   }
 `
 
-const MenuButtonLink = styled.p`
+const StyledLink = styled(Link)`
   color: ${({theme}) => theme.fontColors.textRgba(0.85)};
   margin: 0;
   & svg {
     margin-right: 2rem;
   }
-`
 
-const StyledLink = styled(Link)`
   & > a {
     color: inherit;
 

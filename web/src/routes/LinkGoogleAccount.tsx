@@ -1,22 +1,17 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import {Button, message} from 'antd'
-import {match, useHistory} from 'react-router-dom'
 
 import {useLinkAccount} from 'features/link-account/link-account-hooks'
 import {AxiosError} from 'axios'
 import {FadeIn, Loading} from 'components'
 import {ReactComponent as Logo} from 'assets/logo.svg'
 import {ReactComponent as Done} from 'assets/change_password_done.svg'
+import {useParams, useNavigate} from 'react-router'
 
-interface ILinkGoogleAccountProps {
-  match: match<{token: string; email: string}>
-}
-
-const LinkGoogleAccount: React.FunctionComponent<ILinkGoogleAccountProps> = ({
-  match,
-}) => {
-  const {push} = useHistory()
+const LinkGoogleAccount: React.FC = () => {
+  const params = useParams()
+  const navigate = useNavigate()
 
   const {
     googleTokenConfirmation: [
@@ -27,8 +22,8 @@ const LinkGoogleAccount: React.FunctionComponent<ILinkGoogleAccountProps> = ({
   } = useLinkAccount()
 
   React.useEffect(() => {
-    confirmToken(match.params.token)
-  }, [match.params.token, confirmToken])
+    confirmToken(params.token)
+  }, [params.token, confirmToken])
 
   React.useEffect(() => {
     const error = tokenConfirmationError as AxiosError
@@ -36,13 +31,13 @@ const LinkGoogleAccount: React.FunctionComponent<ILinkGoogleAccountProps> = ({
 
     if (errorCode) {
       message.error('Invalid link')
-      push('/signin')
+      navigate('/signin')
     }
 
     if (!errorCode && error) {
       throw new Error(error.toString())
     }
-  }, [tokenConfirmationError, push])
+  }, [tokenConfirmationError, navigate])
 
   React.useEffect(() => {
     const error = linkError as AxiosError
@@ -50,21 +45,21 @@ const LinkGoogleAccount: React.FunctionComponent<ILinkGoogleAccountProps> = ({
 
     if (errorCode) {
       message.error('An error has occured please try again!')
-      push('/signin')
+      navigate('/signin')
     }
 
     if (!errorCode && error) {
       throw new Error(error.toString())
     }
-  }, [linkError, push])
+  }, [linkError, navigate])
 
   const handleLinkClick = async () => {
-    const {token, email} = match.params
+    const {token, email} = params
     linkAccount({token, email})
   }
 
   const handleRedirectClick = () => {
-    push('/signin')
+    navigate('/signin')
   }
 
   const linkSuccess = linkStatus === 'success'

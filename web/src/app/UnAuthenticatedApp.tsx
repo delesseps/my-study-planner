@@ -1,5 +1,5 @@
 import React from 'react'
-import {Switch, Route, Redirect} from 'react-router'
+import {Routes, Route, Navigate} from 'react-router'
 import {ThemeProvider} from 'styled-components'
 
 import {IUserConfig} from 'constants/interfaces'
@@ -23,30 +23,21 @@ const UnAuthenticatedApp: React.FC<IRouterProps> = () => {
       <GlobalStyle />
 
       <React.Suspense fallback={<Loading />}>
-        <Switch>
-          <Route path="/" exact render={() => <Redirect to="/signin" />} />
-          <Route
-            path="/dashboard"
-            exact
-            render={() => <Redirect to="/signin" />}
-          />
+        <Routes>
+          <Route path="/" element={<Navigate to="/signin" />} />
+          <Route path="/dashboard" element={<Navigate to="/signin" />} />
 
-          <Route path="/signin" exact component={SignIn} />
-          <Route path="/signup" exact component={SignUp} />
-          <Route path="/forgot_password" exact component={ForgotPassword} />
-          <Route
-            path="/change_password/:token"
-            exact
-            render={props => <ChangePassword {...props} />}
-          />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgot_password" element={<ForgotPassword />} />
+          <Route path="/change_password/:token" element={<ChangePassword />} />
           <Route
             path="/link/google/:token/:email"
-            exact
-            render={props => <LinkGoogleAccount {...props} />}
+            element={<LinkGoogleAccount />}
           />
-          <Route path="/404" exact render={() => <Window404 />} />
-          <Redirect to="/404" />
-        </Switch>
+          <Route path="/404" element={<Window404 />} />
+          <Route path="*" element={<Navigate replace to="/404" />} />
+        </Routes>
       </React.Suspense>
     </ThemeProvider>
   )
