@@ -2,17 +2,16 @@ const gulp = require('gulp')
 const gulpless = require('gulp-less')
 const postcss = require('gulp-postcss')
 const debug = require('gulp-debug')
-const cssnano = require('cssnano')
+var csso = require('gulp-csso')
 const autoprefixer = require('autoprefixer')
-const path = require('path')
 const NpmImportPlugin = require('less-plugin-npm-import')
 
 gulp.task('less', function () {
-  const plugins = [autoprefixer(), cssnano()]
+  const plugins = [autoprefixer()]
 
   return gulp
     .src('src/theme/antd/*-theme.less')
-    .pipe(debug({title: 'files:'}))
+    .pipe(debug({title: 'Less files:'}))
     .pipe(
       gulpless({
         javascriptEnabled: true,
@@ -20,5 +19,10 @@ gulp.task('less', function () {
       }),
     )
     .pipe(postcss(plugins))
+    .pipe(
+      csso({
+        debug: true,
+      }),
+    )
     .pipe(gulp.dest('./public'))
 })
