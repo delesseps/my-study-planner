@@ -36,7 +36,7 @@ const Courses = (props: Props) => {
           }
         />
       ) : (
-        <div>courses</div>
+        courses.map(course => <div>{course.name}</div>)
       )}
       <Button
         key={'add-button'}

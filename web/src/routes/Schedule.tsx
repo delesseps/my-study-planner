@@ -171,7 +171,10 @@ const Course = React.forwardRef<any, CourseProps>(
         <Card.Content>
           <Card.Actions>
             <Tooltip title="Edit" mouseEnterDelay={0.4}>
-              <Card.Action aria-label="Edit course" onClick={handleEditClick}>
+              <Card.Action
+                aria-label="Open edit course drawer"
+                onClick={handleEditClick}
+              >
                 <Card.EditIcon />
               </Card.Action>
             </Tooltip>

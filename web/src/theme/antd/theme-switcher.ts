@@ -54,9 +54,10 @@ function themeSwitcher({
   function insertStyle(linkElement: HTMLElement) {
     const insertionPointElement = findCommentNode(insertionPoint)
     if (!insertionPointElement) {
-      throw new Error(
+      console.warn(
         'Insertion point does not exist. Be sure to add comment on head and that it matches with insertionPoint property',
       )
+      return document.head.appendChild(linkElement)
     }
 
     const {parentNode} = insertionPointElement

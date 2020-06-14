@@ -1,4 +1,10 @@
-import {buildUser, buildHomework, buildEvaluation} from './generate'
+import {
+  buildUser,
+  buildHomework,
+  buildEvaluation,
+  buildCourse,
+} from './generate'
+import {toTitleCase} from './utils'
 
 Cypress.Commands.add('createUser', (overrides = {}) => {
   const user = buildUser({overrides})
@@ -36,6 +42,23 @@ Cypress.Commands.add('addEvaluation', (overrides = {}) => {
       evaluationType: evaluation.evaluationType,
     },
   }).then(res => ({...res.body.evaluation, ...evaluation}))
+})
+
+Cypress.Commands.add('addCourse', (overrides = {}) => {
+  const course = buildCourse({overrides})
+  cy.request({
+    url: `${Cypress.env('api_url')}/course/add`,
+    method: 'POST',
+    body: {
+      name: course.name,
+      schedule: course.schedule,
+    },
+  }).then(res => ({...res.body.course, ...course}))
+})
+
+Cypress.Commands.add('changeToCourseDay', day => {
+  const dayToChangeInto = toTitleCase(day.slice(0, 3))
+  cy.findByText(dayToChangeInto).click()
 })
 
 Cypress.Commands.add('getUserEmail', email => {
