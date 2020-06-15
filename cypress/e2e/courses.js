@@ -1,7 +1,7 @@
 import {buildCourse} from '../support/generate'
 
 describe('Courses', () => {
-  it.only('should show current courses', () => {
+  it('should show current courses', () => {
     const courses = [buildCourse(), buildCourse()]
 
     cy.createUser().addCourse(courses[0]).addCourse(courses[1])

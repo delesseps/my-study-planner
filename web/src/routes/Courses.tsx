@@ -107,7 +107,7 @@ const Course = {
     padding: 2.5rem;
     background-color: ${({bgColor}) => bgColor};
 
-    box-shadow: ${({theme}) => theme.shadow1}
+    box-shadow: ${({theme}) => theme.shadow1};
 
     color: ${({bgColor}) => {
       const luminance = getLuminance(bgColor)
