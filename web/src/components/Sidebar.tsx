@@ -7,7 +7,7 @@ import {breakpoints} from 'theme'
 const Sidebar: React.FC = () => {
   return (
     <Styles.Wrapper>
-      <Styles.Item activeClassName="active" to="/dashboard">
+      <Styles.Item activeClassName="active" caseSensitive to="/dashboard">
         <Styles.HomeIcon aria-hidden />
         <Styles.Text>Home</Styles.Text>
       </Styles.Item>

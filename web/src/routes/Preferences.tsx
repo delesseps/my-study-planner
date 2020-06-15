@@ -18,18 +18,12 @@ const appearanceSettings = [
 const Preferences: React.FC = () => {
   const {config, change} = useConfig()
 
-  const handleChange = (action: string) => (
-    checked: boolean,
-    event: MouseEvent,
-  ) => {
+  const handleChange = (action: string) => (checked: boolean) => {
     const newConfig: IUserConfig = config
 
     switch (action) {
       case 'DARK_MODE':
         newConfig.darkMode = checked
-        // newConfig.darkMode
-        //   ? less.modifyVars(darkVars)
-        //   : less.modifyVars(lightVars)
         return change(newConfig)
       default:
     }
@@ -46,6 +40,7 @@ const Preferences: React.FC = () => {
           <List.Item
             actions={[
               <Switch
+                aria-label={`Trigger ${setting.name}`}
                 checked={config[setting.configProperty]}
                 onChange={handleChange(setting.action)}
               />,

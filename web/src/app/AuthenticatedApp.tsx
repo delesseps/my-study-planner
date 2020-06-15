@@ -48,7 +48,7 @@ const AuthenticatedApp: React.FC = () => {
         <GlobalStyle config={config} />
 
         <FadeIn>
-          <Wrapper className="dark-theme">
+          <Wrapper>
             <Navigation.Wrapper>
               <Navigation.Sidebar />
             </Navigation.Wrapper>
