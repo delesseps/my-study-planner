@@ -7,7 +7,7 @@ import {ErrorBoundary} from 'react-error-boundary'
 import {
   FadeIn,
   Loading,
-  Sidebar,
+  Navigation,
   TopBar,
   FullPageErrorFallback,
 } from 'components'
@@ -49,9 +49,7 @@ const AuthenticatedApp: React.FC = () => {
 
         <FadeIn>
           <Wrapper>
-            <Navigation.Wrapper>
-              <Navigation.Sidebar />
-            </Navigation.Wrapper>
+            <Navigation />
             <Content>
               {user.firstSignIn && <WelcomeModal />}
               {!user.verified && (
@@ -105,25 +103,8 @@ const EmailVerificationError = styled(Alert)`
   z-index: 100;
 `
 
-const Navigation = {
-  Wrapper: styled.aside`
-    flex: 1;
-    min-height: 100vh;
-
-    @media only screen and (max-width: ${breakpoints.bpMedium}) {
-      min-height: auto;
-      width: 100vw;
-      z-index: 1000;
-
-      position: fixed;
-      bottom: 0;
-    }
-  `,
-  Sidebar: styled(Sidebar)``,
-}
-
 const Content = styled.main`
-  flex: 0 0 92%;
+  flex: 1;
   padding: 4rem 6rem;
 
   position: relative;

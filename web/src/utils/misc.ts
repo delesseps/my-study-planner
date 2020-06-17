@@ -125,3 +125,24 @@ export function hhmmss(secs: number) {
   minutes = minutes % 60
   return `${pad(hours)}:${pad(minutes)}`
 }
+
+const defaultColors = [
+  '#0068ff',
+  '#cf74ff',
+  '#ed7071',
+  '#fadb39',
+  '#985E2B',
+  '#ecf1fa',
+]
+
+export function getColorByText({
+  text,
+  customColors = defaultColors,
+}: {
+  text: string
+  customColors?: string[]
+}) {
+  const textCode = text.charCodeAt(0) // Get string ASCII code
+  const index = textCode % (customColors.length - 1)
+  return customColors[index]
+}

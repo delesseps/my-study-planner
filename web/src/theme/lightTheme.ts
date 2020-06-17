@@ -10,13 +10,13 @@ const theme: DefaultTheme = {
     textRgba: (alpha: number): string => `rgba(39, 39, 39, ${alpha})`,
   },
   backgroundColor: '#FAFAFA',
-  sidebarBackgroundColor: '#F7F7F7',
+  navigationBackgroundColor: '#fff',
   panelBackgroundColor: '#fff',
   scrollbarBackgroundColor: '#fff',
   tableCellBackgroundColor: '#fff',
   bigCalendarCurrentDay: '#eaf6ff',
   hoverColor: '#dcf5f2',
-  shadow1: '0px 4px 12px rgba(0, 0, 0, 0.1);',
+  shadow1: '0px 4px 12px rgba(0, 0, 0, 0.05);',
   borderRadius: '4px',
 }
 

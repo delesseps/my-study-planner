@@ -10,7 +10,7 @@ const theme: DefaultTheme = {
     textRgba: (alpha: number): string => `rgba(255, 255, 255, ${alpha})`,
   },
   backgroundColor: '#424242',
-  sidebarBackgroundColor: '#303030',
+  navigationBackgroundColor: '#303030',
   panelBackgroundColor: '#303030',
   scrollbarBackgroundColor: '#303030',
   tableCellBackgroundColor: '#424242',

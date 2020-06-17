@@ -1,9 +1,7 @@
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
 import {useToggle} from 'react-use'
 import styled from 'styled-components'
 import {Avatar, Dropdown, Menu, Popover, Empty} from 'antd'
-import {Link} from 'react-router-dom'
 import {
   CaretDownOutlined,
   LogoutOutlined,
@@ -11,12 +9,12 @@ import {
   UserOutlined,
   BellOutlined,
 } from '@ant-design/icons'
+import {Link} from 'react-router-dom'
 
 import {UserProfile} from 'components/modals'
 import IUser from 'constants/interfaces/IUser'
 import {breakpoints} from 'theme'
 import {useAuth} from 'features/auth/auth-context'
-import {ReactComponent as Logo} from 'assets/logo.svg'
 
 interface ITopBarProps {
   loading?: boolean
@@ -24,17 +22,12 @@ interface ITopBarProps {
 }
 
 const TopBar: React.FC<ITopBarProps> = ({loading}) => {
-  const navigate = useNavigate()
   const {user, logout} = useAuth()
   const [showProfile, toggleProfile] = useToggle(false)
   const [showNotifications, toggleNotifications] = useToggle(false)
 
   const handleSignOut = () => {
     logout()
-  }
-
-  const handleHomeClick = () => {
-    navigate('/dashboard')
   }
 
   const userOptions = (
@@ -67,10 +60,7 @@ const TopBar: React.FC<ITopBarProps> = ({loading}) => {
         visible={showProfile}
         setVisible={toggleProfile}
       />
-      <LogoBox onClick={handleHomeClick}>
-        <StyledLogo />
-        <Title>My Study Planner</Title>
-      </LogoBox>
+
       <UserBox>
         <Popover
           content={
@@ -106,37 +96,11 @@ const TopBar: React.FC<ITopBarProps> = ({loading}) => {
 
 const Wrapper = styled.section`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 
   @media only screen and (max-width: ${breakpoints.bpMobileL}) {
     padding: 0 1.5rem;
-  }
-`
-
-const LogoBox = styled.div`
-  display: flex;
-  align-items: center;
-
-  cursor: pointer;
-`
-
-const StyledLogo = styled(Logo)`
-  width: 5rem;
-  height: 5rem;
-
-  margin-right: 1.5rem;
-`
-
-const Title = styled.h2`
-  margin-bottom: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-
-  color: ${props => props.theme.fontColors.textRgba(0.8)};
-
-  @media only screen and (max-width: ${breakpoints.bpMobileL}) {
-    display: none;
   }
 `
 

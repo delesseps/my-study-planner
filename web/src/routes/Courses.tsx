@@ -7,23 +7,9 @@ import QueueAnim from 'rc-queue-anim'
 
 import {useCourses} from 'features/course/course-hooks'
 import {breakpoints} from 'theme'
+import {getColorByText} from 'utils'
 
 const CourseDrawer = React.lazy(() => import('components/drawers/CourseDrawer'))
-
-const coursesColors = [
-  '#0068ff',
-  '#cf74ff',
-  '#ed7071',
-  '#fadb39',
-  '#985E2B',
-  '#ecf1fa',
-]
-
-function getColor(text: string) {
-  const textCode = text.charCodeAt(0) // Get string ASCII code
-  const index = textCode % (coursesColors.length - 1)
-  return coursesColors[index]
-}
 
 const Courses = () => {
   const {data: courses, status} = useCourses()
@@ -53,13 +39,18 @@ const Courses = () => {
       ) : (
         <Styles.Courses duration={[450, 0]} interval={[100, 0]}>
           {courses.map(({_id, name, schedule}) => (
-            <Course.Wrapper bgColor={getColor(name)} key={_id}>
+            <Course.Wrapper bgColor={getColorByText({text: name})} key={_id}>
               <Course.Header>
                 <Course.Name>{name}</Course.Name>
                 <Course.Days>
-                  {Object.keys(schedule).map(day => (
-                    <Course.Day key={day}>{day.toLowerCase()}</Course.Day>
-                  ))}
+                  {Object.keys(schedule).map((day, i, array) => {
+                    const separator = i === array.length - 2 ? ' and ' : ', '
+                    const shouldHaveSeparator = i !== array.length - 1
+
+                    return `${day.toLowerCase()}s${
+                      shouldHaveSeparator ? separator : ''
+                    }`
+                  })}
                 </Course.Days>
               </Course.Header>
               <Button type="primary">View Course</Button>
@@ -85,12 +76,17 @@ const Styles = {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    max-width: 600px;
+    margin: 0 auto;
     margin-top: 4rem;
   `,
   AddCourse: styled(Button)`
     margin-top: 2rem;
   `,
   Courses: styled(QueueAnim)`
+    width: 100%;
+
     & > *:not(:last-child) {
       margin-bottom: 2rem;
     }
@@ -102,7 +98,7 @@ const Course = {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-width: 40rem;
+    width: 100%;
 
     padding: 2.5rem;
     background-color: ${({bgColor}) => bgColor};
@@ -126,21 +122,18 @@ const Course = {
   Name: styled.h1`
     color: inherit;
     font-weight: 900;
-    font-size: 1.9rem;
-    margin: 0;
+    font-size: 2.8rem;
+    margin-bottom: 0.5rem;
   `,
-  Days: styled.div`
-    display: flex;
-    margin-top: 0.5rem;
-
-    & > *:not(:last-child) {
-      margin-right: 1rem;
-    }
-  `,
-  Day: styled.p`
+  Days: styled.p`
     color: inherit;
-    text-transform: capitalize;
     margin: 0;
+    font-size: 1.52rem;
+    max-width: 20rem;
+
+    &::first-letter {
+      text-transform: capitalize;
+    }
   `,
 }
 

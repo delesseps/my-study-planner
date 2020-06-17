@@ -11,7 +11,7 @@ declare module 'styled-components' {
       textRgba: Function
     }
     backgroundColor: string
-    sidebarBackgroundColor: string
+    navigationBackgroundColor: string
     panelBackgroundColor: string
     scrollbarBackgroundColor: string
     tableCellBackgroundColor: string
