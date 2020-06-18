@@ -15,7 +15,7 @@ import {breakpoints, lightTheme, darkTheme, GlobalStyle} from 'theme'
 import {initializePush} from 'firebase/initialize'
 import {useConfig} from 'features/user/user-hooks'
 import {useAuth} from 'features/auth/auth-context'
-import {switcher} from 'theme/antd/theme-switcher'
+import {useThemeSwitcher} from 'theme/antd/theme-switcher'
 
 const Home = React.lazy(() => import('routes/Home'))
 const Schedule = React.lazy(() => import('routes/Schedule'))
@@ -27,6 +27,7 @@ const WelcomeModal = React.lazy(() => import('../components/modals/Welcome'))
 const AuthenticatedApp: React.FC = () => {
   const {user} = useAuth()
   const {config} = useConfig()
+  const {themes, switcher, status} = useThemeSwitcher()
 
   React.useEffect(() => {
     initializePush()
@@ -35,12 +36,16 @@ const AuthenticatedApp: React.FC = () => {
   React.useEffect(() => {
     config.darkMode
       ? switcher({
-          theme: 'dark',
+          theme: themes.dark,
         })
       : switcher({
-          theme: 'light',
+          theme: themes.light,
         })
-  }, [config.darkMode])
+  }, [config.darkMode, themes, switcher])
+
+  if (status === 'LOADING') {
+    return <Loading />
+  }
 
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>

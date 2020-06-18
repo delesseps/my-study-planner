@@ -39,8 +39,8 @@ const Styles = {
 
     padding: 3rem 1.5rem;
 
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 
     min-height: 100vh;
     position: sticky;

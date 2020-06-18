@@ -127,12 +127,12 @@ export function hhmmss(secs: number) {
 }
 
 const defaultColors = [
-  '#0068ff',
-  '#cf74ff',
+  '#6BC8B5',
+  '#FDF4C4',
   '#ed7071',
-  '#fadb39',
-  '#985E2B',
-  '#ecf1fa',
+  '#E04857',
+  '#AC765C',
+  '#F6AE80',
 ]
 
 export function getColorByText({

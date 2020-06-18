@@ -4,7 +4,7 @@ import ReactGA from 'react-ga'
 import {Loading} from 'components'
 import {useAuth} from 'features/auth/auth-context'
 import {useLocation} from 'react-router'
-import {switcher} from 'theme/antd/theme-switcher'
+import {useThemeSwitcher} from 'theme/antd/theme-switcher'
 
 const AuthenticatedApp = React.lazy(() => import('./AuthenticatedApp'))
 const UnAuthenticatedApp = React.lazy(() => import('./UnAuthenticatedApp'))
@@ -12,6 +12,7 @@ const UnAuthenticatedApp = React.lazy(() => import('./UnAuthenticatedApp'))
 const App: React.FC = () => {
   const {user} = useAuth()
   const location = useLocation()
+  const {themes, switcher} = useThemeSwitcher()
 
   React.useEffect(() => {
     //@ts-ignore
@@ -22,8 +23,8 @@ const App: React.FC = () => {
   }, [location])
 
   React.useEffect(() => {
-    if (user === undefined) switcher({theme: 'light'})
-  }, [user])
+    if (user === undefined) switcher({theme: themes.light})
+  }, [user, themes, switcher])
 
   return (
     <React.Suspense fallback={<Loading />}>
