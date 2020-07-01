@@ -5,6 +5,7 @@ import {ThemeProvider} from 'styled-components'
 import {IUserConfig} from 'constants/interfaces'
 import {Loading} from 'components'
 import {GlobalStyle, lightTheme} from 'theme'
+import {useThemeSwitcher} from 'theme/antd/theme-switcher'
 
 const SignIn = React.lazy(() => import('routes/SignIn'))
 const SignUp = React.lazy(() => import('routes/SignUp'))
@@ -18,6 +19,12 @@ interface IRouterProps {
 }
 
 const UnAuthenticatedApp: React.FC<IRouterProps> = () => {
+  const {status} = useThemeSwitcher()
+
+  if (status === 'LOADING') {
+    return <Loading />
+  }
+
   return (
     <ThemeProvider theme={lightTheme}>
       <GlobalStyle />
