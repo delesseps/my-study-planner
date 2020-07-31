@@ -24,7 +24,7 @@ history.listen(location => {
 const AppProviders: React.FC = ({children}) => {
   React.useEffect(() => {
     //@ts-ignore
-    if (!window.GA_INITIALIZED) {
+    if (!window.GA_INITIALIZED && process.env.NODE_ENV !== 'development') {
       initGA()
       //@ts-ignore
       window.GA_INITIALIZED = true

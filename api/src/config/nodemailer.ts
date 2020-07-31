@@ -17,27 +17,27 @@ oauth2Client.setCredentials({
 const accessToken = oauth2Client.getAccessToken()
 
 let transporter = nodemailer.createTransport({
-  service: 'gmail',
+  // @ts-ignore
+  host: config.nodemailer.host,
+  port: config.nodemailer.port,
   auth: {
-    type: 'OAuth2',
-    user: 'mystudyplanner.noreply@gmail.com',
-    clientId: config.googleClientID,
-    clientSecret: config.googleClientSecret,
-    refreshToken: config.googleRefreshToken,
-    accessToken,
+    user: config.nodemailer.username,
+    pass: config.nodemailer.password,
   },
-} as any)
+})
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
   transporter = nodemailer.createTransport({
-    // @ts-ignore
-    host: config.nodemailer.host,
-    port: config.nodemailer.port,
+    service: 'gmail',
     auth: {
-      user: config.nodemailer.username,
-      pass: config.nodemailer.password,
+      type: 'OAuth2',
+      user: 'mystudyplanner.noreply@gmail.com',
+      clientId: config.googleClientID,
+      clientSecret: config.googleClientSecret,
+      refreshToken: config.googleRefreshToken,
+      accessToken,
     },
-  })
+  } as any)
 }
 
 export default transporter
