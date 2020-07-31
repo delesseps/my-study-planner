@@ -6,7 +6,10 @@ const serviceAccount = config.firebase
 console.log(config.firebase)
 
 if (process.env.NODE_ENV === 'production') {
-  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n')
+  serviceAccount.private_key = Buffer.from(
+    serviceAccount.private_key,
+    'base64',
+  ).toString()
 
   console.log(serviceAccount)
   admin.initializeApp({
