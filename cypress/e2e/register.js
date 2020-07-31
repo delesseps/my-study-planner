@@ -61,7 +61,7 @@ describe('Register', () => {
         const confirmLink = matchLinkHrefReg.exec(body).groups.link
 
         expect(headers.From[0]).to.eql(
-          'My Study Planner <mystudyplanner.noreply@gmail.com>',
+          'My Study Planner <mystudyplanner.noreply@jfelix.info>',
         )
         expect(headers.Subject[0]).to.eql('Welcome to My Study Planner!!')
         expect(headers.To[0]).to.eql(user.email.toLowerCase())
