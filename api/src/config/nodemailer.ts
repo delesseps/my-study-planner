@@ -1,8 +1,6 @@
 import * as nodemailer from 'nodemailer'
 import config from '.'
 
-console.log(config.nodemailer)
-
 let transporter = nodemailer.createTransport({
   // @ts-ignore
   host: config.nodemailer.host,
