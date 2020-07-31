@@ -16,7 +16,7 @@ export default class MailerService {
   public async SendWelcomeEmail(user: Partial<IUser>) {
     try {
       const messageStatus = await transporter.sendMail({
-        from: '"My Study Planner" <mystudyplanner.noreply@gmail.com>',
+        from: '"My Study Planner" <mystudyplanner.noreply@jfelix.info>',
         to: user.email,
         subject: 'Welcome to My Study Planner!!',
         html: verificationEmail(user),
@@ -64,7 +64,7 @@ export default class MailerService {
 
       //Send email to user
       const messageStatus = await transporter.sendMail({
-        from: '"My Study Planner" <mystudyplanner.noreply@gmail.com>',
+        from: '"My Study Planner" <mystudyplanner.noreply@jfelix.info>',
         to: userRecord.email,
         subject: 'My Study Planner recover password link',
         html: recoverPasswordEmail(userRecord.name, token),

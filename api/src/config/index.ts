@@ -49,7 +49,6 @@ export default {
   googleClientID: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   googleCallbackUrl: process.env.GOOGLE_CALLBACK_URL,
-  googleRefreshToken: process.env.GOOGLE_REFRESH_TOKEN,
 
   /**
    * Cloudinary credentials
