@@ -18,7 +18,7 @@ describe('Change Password', () => {
           matchLinkHrefReg.exec(body).groups.link,
         )
         expect(headers.From[0]).to.eql(
-          'My Study Planner <mystudyplanner.noreply@gmail.com>',
+          'My Study Planner <mystudyplanner.noreply@jfelix.info>',
         )
         expect(headers.Subject[0]).to.eql(
           'My Study Planner recover password link',
