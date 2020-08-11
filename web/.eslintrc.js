@@ -7,13 +7,14 @@ module.exports = {
     'plugin:testing-library/recommended',
     'plugin:testing-library/react',
     'plugin:prettier/recommended',
-    'eslint-config-prettier/@typescript-eslint',
+    'prettier',
+    'prettier/@typescript-eslint',
   ],
   rules: {
     'additional-typescript-only-rule': 'off',
     'additional-rule': 'off',
-    'prettier/prettier': 'error',
     '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
+    'prettier/prettier': 'error',
   },
   overrides: [
     {
