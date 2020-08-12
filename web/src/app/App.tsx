@@ -4,7 +4,7 @@ import ReactGA from 'react-ga'
 import {Loading} from 'components'
 import {useAuth} from 'features/auth/auth-context'
 import {useLocation} from 'react-router'
-import {useThemeSwitcher} from 'theme/antd/theme-switcher'
+import {useThemeSwitcher} from 'react-css-theme-switcher'
 
 const AuthenticatedApp = React.lazy(() => import('./AuthenticatedApp'))
 const UnAuthenticatedApp = React.lazy(() => import('./UnAuthenticatedApp'))

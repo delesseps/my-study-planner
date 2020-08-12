@@ -1,6 +1,11 @@
 import {build, fake, perBuild, oneOf} from '@jackfranklin/test-data-bot'
 
-export const buildUser = build('User', {
+import IUser from '../types/IUser'
+import IHomework from '../types/IHomework'
+import {ICourse} from '../types'
+import IEvaluation from '../types/IEvaluation'
+
+export const buildUser = build<IUser>('User', {
   fields: {
     _id: fake(f => f.random.uuid()),
     name: fake(f => f.name.findName()),
@@ -21,7 +26,7 @@ export const buildUser = build('User', {
   },
 })
 
-export const buildHomework = build('Homework', {
+export const buildHomework = build<Omit<IHomework, 'createdBy'>>('Homework', {
   fields: {
     _id: fake(f => f.random.uuid()),
     subject: fake(f => f.name.jobTitle()),
@@ -32,19 +37,22 @@ export const buildHomework = build('Homework', {
   },
 })
 
-export const buildEvaluation = build('Evaluation', {
-  fields: {
-    _id: fake(f => f.random.uuid()),
-    subject: fake(f => f.name.jobTitle()),
-    date: new Date().toISOString(),
-    urgency: oneOf('chill', 'normal', 'important'),
-    description: fake(f => f.name.jobDescriptor()),
-    done: [],
-    evaluationType: oneOf('quiz', 'test'),
+export const buildEvaluation = build<Omit<IEvaluation, 'createdBy'>>(
+  'Evaluation',
+  {
+    fields: {
+      _id: fake(f => f.random.uuid()),
+      subject: fake(f => f.name.jobTitle()),
+      date: new Date().toISOString(),
+      urgency: oneOf('chill', 'normal', 'important'),
+      description: fake(f => f.name.jobDescriptor()),
+      done: [],
+      evaluationType: oneOf('quiz', 'test'),
+    },
   },
-})
+)
 
-function getRandomWeekday({exclude} = {}) {
+function getRandomWeekday({exclude}: {exclude?: string} = {}): string {
   const weekdays = [
     'SUNDAY',
     'MONDAY',
@@ -63,7 +71,7 @@ function getRandomWeekday({exclude} = {}) {
   return weekday
 }
 
-export const buildCourse = build('Course', {
+export const buildCourse = build<ICourse>('Course', {
   fields: {
     _id: fake(f => f.random.uuid()),
     name: fake(f => f.name.jobTitle()),

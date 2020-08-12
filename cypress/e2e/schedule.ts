@@ -1,7 +1,8 @@
 import {buildCourse} from '../support/generate'
 import {toTitleCase, hhmmss} from '../support/utils'
+import {Weekdays} from '../types'
 
-async function selectTime(time) {
+async function selectTime(time: number) {
   const formattedTime = hhmmss(time)
   const minutes = formattedTime.slice(3)
   let hours = formattedTime.slice(0, 2)
@@ -23,7 +24,7 @@ describe('Schedule', () => {
     cy.createUser().then(user => {
       const course = buildCourse()
 
-      const days = Object.keys(course.schedule)
+      const days = Object.keys(course.schedule) as Weekdays[]
 
       cy.visit('/schedule').closeWelcome()
       cy.findByLabelText(/open add course drawer/i).click()
@@ -40,10 +41,10 @@ describe('Schedule', () => {
         const classSchedule = course.schedule[days[index]]
 
         cy.wrap(el).find('input').first().click({force: true})
-        await selectTime(classSchedule.start)
+        await selectTime(classSchedule!.start)
 
         cy.wrap(el).find('input').last().click({force: true})
-        await selectTime(classSchedule.end)
+        await selectTime(classSchedule!.end)
 
         cy.findAllByText(/ok/i).click({force: true, multiple: true})
       })
@@ -53,7 +54,7 @@ describe('Schedule', () => {
         .each((el, index) => {
           const classSchedule = course.schedule[days[index]]
 
-          cy.wrap(el).type(classSchedule.classroom)
+          cy.wrap(el).type(classSchedule!.classroom)
         })
 
       cy.document()
@@ -67,8 +68,8 @@ describe('Schedule', () => {
 
       cy.findByText(dayToChangeInto).click()
       cy.findByText(course.name)
-      cy.findByText(hhmmss(classSchedule.start))
-      cy.findByText(hhmmss(classSchedule.end))
+      cy.findByText(hhmmss(classSchedule!.start))
+      cy.findByText(hhmmss(classSchedule!.end))
 
       day = days[1]
       classSchedule = course.schedule[day]
@@ -76,8 +77,8 @@ describe('Schedule', () => {
 
       cy.findByText(dayToChangeInto).click()
       cy.findByText(course.name)
-      cy.findByText(hhmmss(classSchedule.start))
-      cy.findByText(hhmmss(classSchedule.end))
+      cy.findByText(hhmmss(classSchedule!.start))
+      cy.findByText(hhmmss(classSchedule!.end))
     })
   })
 
@@ -86,8 +87,9 @@ describe('Schedule', () => {
       .addCourse()
       .then(course => {
         const newCourse = buildCourse()
-        const newCourseDays = Object.keys(newCourse.schedule)
-        const oldCourseDays = Object.keys(course.schedule)
+        const newCourseDays = Object.keys(newCourse.schedule) as Weekdays[]
+        const oldCourseDays = Object.keys(course.schedule) as Weekdays[]
+
         cy.visit('/schedule').closeWelcome()
 
         cy.changeToCourseDay(oldCourseDays[0])
@@ -115,10 +117,10 @@ describe('Schedule', () => {
           const classSchedule = newCourse.schedule[newCourseDays[index]]
 
           cy.wrap(el).find('input').first().click({force: true})
-          await selectTime(classSchedule.start)
+          await selectTime(classSchedule!.start)
 
           cy.wrap(el).find('input').last().click({force: true})
-          await selectTime(classSchedule.end)
+          await selectTime(classSchedule!.end)
 
           cy.findAllByText(/ok/i).click({force: true, multiple: true})
         })
@@ -128,7 +130,7 @@ describe('Schedule', () => {
           .each((el, index) => {
             const classSchedule = newCourse.schedule[newCourseDays[index]]
 
-            cy.wrap(el).clear().type(classSchedule.classroom)
+            cy.wrap(el).clear().type(classSchedule!.classroom)
           })
 
         cy.document()
@@ -141,16 +143,16 @@ describe('Schedule', () => {
 
         let classSchedule = newCourse.schedule[day]
         cy.findByText(newCourse.name)
-        cy.findByText(hhmmss(classSchedule.start))
-        cy.findByText(hhmmss(classSchedule.end))
+        cy.findByText(hhmmss(classSchedule!.start))
+        cy.findByText(hhmmss(classSchedule!.end))
 
         day = newCourseDays[1]
         cy.changeToCourseDay(day)
 
         classSchedule = newCourse.schedule[day]
         cy.findByText(newCourse.name)
-        cy.findByText(hhmmss(classSchedule.start))
-        cy.findByText(hhmmss(classSchedule.end))
+        cy.findByText(hhmmss(classSchedule!.start))
+        cy.findByText(hhmmss(classSchedule!.end))
       })
   })
 

@@ -4,6 +4,7 @@ import {Skeleton, Empty, Button} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
 import {getLuminance} from 'polished'
 import QueueAnim from 'rc-queue-anim'
+import {Link} from 'react-router-dom'
 
 import {useCourses} from 'features/course/course-hooks'
 import {breakpoints} from 'theme'
@@ -53,14 +54,16 @@ const Courses = () => {
                   })}
                 </Course.Days>
               </Course.Header>
-              <Button type="primary">View Course</Button>
+              <Link to={`/course/${_id}`}>
+                <Button type="primary">View Course</Button>
+              </Link>
             </Course.Wrapper>
           ))}
         </Styles.Courses>
       )}
       <Styles.AddCourse
         key={'add-button'}
-        aria-label="Open add course"
+        aria-label="Open add course drawer"
         type="primary"
         shape="circle"
         onClick={() => toggleDrawer(true)}

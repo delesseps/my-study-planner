@@ -27,15 +27,16 @@ export default (app: Router): void => {
   route.get(
     '/:id',
     celebrate({
-      query: Joi.object({
+      params: Joi.object({
         id: Joi.string().required(),
       }),
     }),
     isAuthorized,
     async (req: Request, res: Response) => {
       try {
-        const {id} = req.query
-        const {userId} = req.user._id
+        const {id} = req.params
+        const userId: string = req.user._id
+
         const courseServiceInstance = Container.get(CourseService)
         const course = await courseServiceInstance.getById(userId, id as string)
 

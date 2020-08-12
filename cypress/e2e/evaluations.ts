@@ -1,5 +1,5 @@
 import {buildEvaluation} from '../support/generate'
-import {yyyymmdd, determinePriority, toTitleCase} from '../support/utils'
+import {yyyymmdd, determinePriority} from '../support/utils'
 
 describe('Evaluation', () => {
   before(() => {
@@ -40,9 +40,11 @@ describe('Evaluation', () => {
         cy.findByText(user.name)
         cy.findByText(/today/i)
         cy.findByRole('heading', {
-          name: `${evaluation.evaluationType} : ${evaluation.subject}`,
+          name: `${evaluation.evaluationType}: ${evaluation.subject}`,
         })
-        cy.findByText(new RegExp(determinePriority(evaluation.urgency)))
+        cy.findByText(
+          new RegExp(determinePriority(evaluation.urgency) as string),
+        )
       })
 
       cy.findByTestId(/evaluation-count/i).should('have.text', 1)
@@ -55,7 +57,7 @@ describe('Evaluation', () => {
       .addEvaluation()
       .then(evaluation => {
         const newEvaluation = buildEvaluation()
-
+        console.log(evaluation)
         cy.visit('/').closeWelcome()
         cy.findByRole('button', {name: /Open edit evaluation drawer/i}).click()
 
@@ -84,9 +86,11 @@ describe('Evaluation', () => {
           cy.findByText(evaluation.createdBy.name)
           cy.findByText(/today/i)
           cy.findByRole('heading', {
-            name: `${newEvaluation.evaluationType} : ${newEvaluation.subject}`,
+            name: `${newEvaluation.evaluationType}: ${newEvaluation.subject}`,
           })
-          cy.findByText(new RegExp(determinePriority(newEvaluation.urgency)))
+          cy.findByText(
+            new RegExp(determinePriority(newEvaluation.urgency) as string),
+          )
         })
       })
   })

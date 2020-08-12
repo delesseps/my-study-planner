@@ -11957,6 +11957,11 @@ react-cookie@4.0.3:
     hoist-non-react-statics "^3.0.0"
     universal-cookie "^4.0.0"
 
+react-css-theme-switcher@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/react-css-theme-switcher/-/react-css-theme-switcher-0.1.6.tgz#9b765e4ffa7d1ce092ff11c5524b1466990e9eaf"
+  integrity sha512-GG5OqeWTWJFH3Vbd42Tj0QVUwh/uBN/ki7EOTUL99wbzxulX8bof3NOdRHzY6j7746HNZ72s8Ko4TjO3GaWdxA==
+
 react-dev-utils@^10.2.1:
   version "10.2.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-10.2.1.tgz#f6de325ae25fa4d546d09df4bb1befdc6dd19c19"
@@ -13826,11 +13831,6 @@ text-table@0.2.0, text-table@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
-
-theme-switcher@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/theme-switcher/-/theme-switcher-1.0.2.tgz#0bdaf40b970d11d1c86d901673a8d49858701de1"
-  integrity sha512-3uX+OkjUSIgkdn22IUONi/ITNMJD+tUhI2h3zp3tDKs/LmWuFktax6nYb/BwPaxtmBNqdv6fTMKfT5BLM9eQGA==
 
 throat@^4.0.0:
   version "4.1.0"

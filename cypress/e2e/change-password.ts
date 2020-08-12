@@ -15,7 +15,7 @@ describe('Change Password', () => {
         const body = email.Content.Body
         const matchLinkHrefReg = /<a[^>]*href=3D"(?<link>[^"]*)"/g
         const resetPasswordLink = decodeQuotedPrintable(
-          matchLinkHrefReg.exec(body).groups.link,
+          (matchLinkHrefReg.exec(body) as any).groups.link,
         )
         expect(headers.From[0]).to.eql(
           'My Study Planner <mystudyplanner.noreply@jfelix.info>',

@@ -92,8 +92,6 @@ describe('Login', () => {
           expect(expiry).to.be.greaterThan(expiryBeforeTime)
           expect(expiry).to.be.lessThan(expiryAfterTime)
         })
-
-      Cypress.Cookies.debug()
     })
   })
 })

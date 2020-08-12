@@ -36,7 +36,7 @@ describe('Homework', () => {
         cy.findByRole('heading', {
           name: homework.subject,
         })
-        cy.findByText(new RegExp(determinePriority(homework.urgency)))
+        cy.findByText(new RegExp(determinePriority(homework.urgency) as string))
       })
 
       cy.findByTestId(/homework-count/i).should('have.text', 1)
@@ -75,7 +75,9 @@ describe('Homework', () => {
           cy.findByRole('heading', {
             name: newHomework.subject,
           })
-          cy.findByText(new RegExp(determinePriority(newHomework.urgency)))
+          cy.findByText(
+            new RegExp(determinePriority(newHomework.urgency) as string),
+          )
         })
       })
   })

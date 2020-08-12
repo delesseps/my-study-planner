@@ -6,7 +6,7 @@ import ReactGA from 'react-ga'
 
 import {AuthProvider} from './auth/auth-context'
 import {gaTrackingID} from 'constants/site'
-import {ThemeSwitcherProvider} from 'theme/antd/theme-switcher'
+import {ThemeSwitcherProvider} from 'react-css-theme-switcher'
 
 const queryConfig = {}
 
@@ -36,6 +36,7 @@ const AppProviders: React.FC = ({children}) => {
           <ThemeSwitcherProvider
             themeMap={themes}
             insertionPoint={'theme-insertion-point'}
+            defaultTheme="light"
           >
             <AuthProvider>{children}</AuthProvider>
           </ThemeSwitcherProvider>

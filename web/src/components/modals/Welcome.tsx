@@ -142,6 +142,7 @@ const Title = styled.h1`
   font-weight: 800;
 
   font-size: 3rem;
+  text-align: center;
 
   @media only screen and (max-width: ${breakpoints.bpMobileL}) {
     text-align: center;
@@ -167,9 +168,11 @@ const Subtitle = styled.h2`
 const Body = styled.p`
   color: ${props => props.theme.fontColors.textRgba(0.6)};
   margin: 0;
-  line-height: 34px;
+  padding: 0 3.5rem;
+
+  line-height: 1.7;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.45rem;
 
   && {
     margin-bottom: 2.5rem;

@@ -15,7 +15,8 @@ import {breakpoints, lightTheme, darkTheme, GlobalStyle} from 'theme'
 import {initializePush} from 'firebase/initialize'
 import {useConfig} from 'features/user/user-hooks'
 import {useAuth} from 'features/auth/auth-context'
-import {useThemeSwitcher} from 'theme/antd/theme-switcher'
+import {useThemeSwitcher} from 'react-css-theme-switcher'
+import {CourseDetails} from 'routes'
 
 const Home = React.lazy(() => import('routes/Home'))
 const Schedule = React.lazy(() => import('routes/Schedule'))
@@ -43,7 +44,7 @@ const AuthenticatedApp: React.FC = () => {
         })
   }, [config.darkMode, themes, switcher])
 
-  if (status === 'LOADING') {
+  if (status === 'loading') {
     return <Loading />
   }
 
@@ -83,6 +84,7 @@ const AppRoutes = () => {
       <Route path="/dashboard" element={<Home />} />
       <Route path="/schedule" element={<Schedule />} />
       <Route path="/courses" element={<Courses />} />
+      <Route path="/course/:id" element={<CourseDetails />} />
       <Route path="/dashboard/Preferences" element={<Preferences />} />
       <Route path="*" element={<Navigate replace to="/dashboard" />} />
     </Routes>

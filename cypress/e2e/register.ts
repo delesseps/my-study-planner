@@ -58,7 +58,7 @@ describe('Register', () => {
         const headers = email.Content.Headers
         const body = email.Content.Body
         const matchLinkHrefReg = /<a[^>]* href=3D"(?<link>[^"]*)"/g
-        const confirmLink = matchLinkHrefReg.exec(body).groups.link
+        const confirmLink = (matchLinkHrefReg.exec(body) as any).groups.link
 
         expect(headers.From[0]).to.eql(
           'My Study Planner <mystudyplanner.noreply@jfelix.info>',

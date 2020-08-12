@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import {ReactQueryDevtools} from 'react-query-devtools'
 
 import * as serviceWorker from './serviceWorker'
-import 'theme/antd/theme-switcher'
 
 import App from 'app/App'
 
