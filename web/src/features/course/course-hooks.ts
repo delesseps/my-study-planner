@@ -27,9 +27,13 @@ export function useCourse(courseId: string) {
 export function useAddCourse() {
   return useMutation(courseService.add, {
     onSuccess: data => {
-      queryCache.setQueryData(['course'], (previous: ICourse[]) => {
-        const newCourses = [...previous, data]
-        return newCourses
+      queryCache.setQueryData<ICourse[]>(['course'], previous => {
+        if (previous) {
+          const newCourses = [...previous, data]
+          return newCourses
+        }
+
+        return []
       })
 
       message.success('Successfully added course!')
@@ -45,13 +49,15 @@ export function useDeleteCourse() {
     onMutate: ({id}) => {
       const previousCourses = queryCache.getQueryData('course') as ICourse
 
-      queryCache.setQueryData(['course'], (previous: ICourse[]) => {
-        const newCourses = [...previous]
-        const index = newCourses.findIndex(course => course._id === id)
+      queryCache.setQueryData<ICourse[]>(['course'], previous => {
+        if (previous) {
+          const newCourses = [...previous]
+          const index = newCourses.findIndex(course => course._id === id)
 
-        newCourses.splice(index, 1)
+          newCourses.splice(index, 1)
 
-        return newCourses
+          return newCourses
+        }
       })
 
       return () => queryCache.setQueryData('course', previousCourses)
@@ -64,7 +70,7 @@ export function useDeleteCourse() {
       message.error('Error removing course. Please try again.')
     },
     onSettled: () => {
-      queryCache.refetchQueries('course')
+      queryCache.invalidateQueries('course')
     },
   })
 }
@@ -72,13 +78,15 @@ export function useDeleteCourse() {
 export function useEditCourse() {
   return useMutation(courseService.edit, {
     onSuccess: (data, {course: {_id: id}}) => {
-      queryCache.setQueryData(['course'], (previous: ICourse[]) => {
-        const newCourses = [...previous]
-        const index = newCourses.findIndex(course => course._id === id)
+      queryCache.setQueryData<ICourse[]>(['course'], previous => {
+        if (previous) {
+          const newCourses = [...previous]
+          const index = newCourses.findIndex(course => course._id === id)
 
-        newCourses[index] = data
+          newCourses[index] = data
 
-        return newCourses
+          return newCourses
+        }
       })
 
       message.success('Successfully edited course!')

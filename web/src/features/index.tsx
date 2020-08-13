@@ -1,14 +1,12 @@
 import * as React from 'react'
 import {CookiesProvider} from 'react-cookie'
-import {ReactQueryConfigProvider} from 'react-query'
+import {ReactQueryConfigProvider, ReactQueryProviderConfig} from 'react-query'
 import {BrowserRouter} from 'react-router-dom'
 import ReactGA from 'react-ga'
 
 import {AuthProvider} from './auth/auth-context'
 import {gaTrackingID} from 'constants/site'
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher'
-
-const queryConfig = {}
 
 export const initGA = () => {
   ReactGA.initialize(gaTrackingID)
@@ -30,19 +28,17 @@ const AppProviders: React.FC = ({children}) => {
   }, [])
 
   return (
-    <ReactQueryConfigProvider config={queryConfig}>
-      <BrowserRouter>
-        <CookiesProvider>
-          <ThemeSwitcherProvider
-            themeMap={themes}
-            insertionPoint={'theme-insertion-point'}
-            defaultTheme="light"
-          >
-            <AuthProvider>{children}</AuthProvider>
-          </ThemeSwitcherProvider>
-        </CookiesProvider>
-      </BrowserRouter>
-    </ReactQueryConfigProvider>
+    <BrowserRouter>
+      <CookiesProvider>
+        <ThemeSwitcherProvider
+          themeMap={themes}
+          insertionPoint={'theme-insertion-point'}
+          defaultTheme="light"
+        >
+          <AuthProvider>{children}</AuthProvider>
+        </ThemeSwitcherProvider>
+      </CookiesProvider>
+    </BrowserRouter>
   )
 }
 

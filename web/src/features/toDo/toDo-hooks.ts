@@ -11,13 +11,15 @@ export function useToDo() {
 
   const edit = useMutation(toDoService.edit, {
     onSuccess: (data, {index}) => {
-      queryCache.setQueryData(['user'], (previous: IUser) => {
-        const newToDos = [...previous.toDos]
-        newToDos[index] = data
+      queryCache.setQueryData<IUser>(['user'], previous => {
+        if (previous) {
+          const newToDos = [...previous.toDos]
+          newToDos[index] = data
 
-        return {
-          ...previous,
-          toDos: newToDos,
+          return {
+            ...previous,
+            toDos: newToDos,
+          }
         }
       })
 
@@ -30,12 +32,14 @@ export function useToDo() {
 
   const add = useMutation(toDoService.add, {
     onSuccess: data => {
-      queryCache.setQueryData(['user'], (previous: IUser) => {
-        const newToDos = [...previous.toDos, data]
+      queryCache.setQueryData<IUser>(['user'], previous => {
+        if (previous) {
+          const newToDos = [...previous.toDos, data]
 
-        return {
-          ...previous,
-          toDos: newToDos,
+          return {
+            ...previous,
+            toDos: newToDos,
+          }
         }
       })
 
@@ -48,13 +52,15 @@ export function useToDo() {
 
   const remove = useMutation(toDoService.remove, {
     onSuccess: (data, {index}) => {
-      queryCache.setQueryData(['user'], (previous: IUser) => {
-        const newToDos = [...previous.toDos]
-        newToDos.splice(index, 1)
+      queryCache.setQueryData<IUser>(['user'], previous => {
+        if (previous) {
+          const newToDos = [...previous.toDos]
+          newToDos.splice(index, 1)
 
-        return {
-          ...previous,
-          toDos: newToDos,
+          return {
+            ...previous,
+            toDos: newToDos,
+          }
         }
       })
 

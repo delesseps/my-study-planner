@@ -11,18 +11,22 @@ export function useEvaluations() {
 
   const edit = useMutation(evaluationService.edit, {
     onSuccess: (data, {index}) => {
-      queryCache.setQueryData(['user'], (previous: IUser) => {
-        const newEvaluations = [...previous.evaluations]
+      queryCache.setQueryData<IUser>(['user'], previous => {
+        if (previous) {
+          const newEvaluations = [...previous.evaluations]
 
-        if (!index) {
-          index = previous.evaluations.findIndex(elem => data._id === elem._id)
-        }
+          if (!index) {
+            index = previous.evaluations.findIndex(
+              elem => data._id === elem._id,
+            )
+          }
 
-        newEvaluations[index] = data
+          newEvaluations[index] = data
 
-        return {
-          ...previous,
-          evaluations: newEvaluations,
+          return {
+            ...previous,
+            evaluations: newEvaluations,
+          }
         }
       })
 
@@ -35,16 +39,18 @@ export function useEvaluations() {
 
   const add = useMutation(evaluationService.add, {
     onSuccess: data => {
-      queryCache.setQueryData(['user'], (previous: IUser) => {
-        const newEvaluations = [...previous.evaluations, data]
-        newEvaluations.sort(
-          (a: any, b: any) =>
-            new Date(a.date).getTime() - new Date(b.date).getTime(),
-        )
+      queryCache.setQueryData<IUser>(['user'], previous => {
+        if (previous) {
+          const newEvaluations = [...previous.evaluations, data]
+          newEvaluations.sort(
+            (a: any, b: any) =>
+              new Date(a.date).getTime() - new Date(b.date).getTime(),
+          )
 
-        return {
-          ...previous,
-          evaluations: newEvaluations,
+          return {
+            ...previous,
+            evaluations: newEvaluations,
+          }
         }
       })
 
@@ -57,13 +63,15 @@ export function useEvaluations() {
 
   const remove = useMutation(evaluationService.remove, {
     onSuccess: (data, {index}) => {
-      queryCache.setQueryData(['user'], (previous: IUser) => {
-        const newEvaluations = [...previous.evaluations]
-        newEvaluations.splice(index, 1)
+      queryCache.setQueryData<IUser>(['user'], previous => {
+        if (previous) {
+          const newEvaluations = [...previous.evaluations]
+          newEvaluations.splice(index, 1)
 
-        return {
-          ...previous,
-          evaluations: newEvaluations,
+          return {
+            ...previous,
+            evaluations: newEvaluations,
+          }
         }
       })
 
@@ -82,18 +90,22 @@ export function useEvaluations() {
 export function useEvaluationMarkAsDone() {
   return useMutation(evaluationService.markAsDone, {
     onSuccess: (data, {index}) => {
-      queryCache.setQueryData(['user'], (previous: IUser) => {
-        const newEvaluations = [...previous.evaluations]
+      queryCache.setQueryData<IUser>(['user'], previous => {
+        if (previous) {
+          const newEvaluations = [...previous.evaluations]
 
-        if (!index) {
-          index = previous.evaluations.findIndex(elem => data._id === elem._id)
-        }
+          if (!index) {
+            index = previous.evaluations.findIndex(
+              elem => data._id === elem._id,
+            )
+          }
 
-        newEvaluations[index] = data
+          newEvaluations[index] = data
 
-        return {
-          ...previous,
-          evaluations: newEvaluations,
+          return {
+            ...previous,
+            evaluations: newEvaluations,
+          }
         }
       })
 

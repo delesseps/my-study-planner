@@ -13,16 +13,20 @@ export function useProfilePicture() {
     onMutate: image => {
       const previousUserData = queryCache.getQueryData('user') as IUser
 
-      queryCache.setQueryData('user', (previous: IUser) => ({
-        ...previous,
-        picture: image,
-      }))
+      queryCache.setQueryData<IUser>('user', previous => {
+        if (previous) {
+          return {
+            ...previous,
+            picture: image,
+          }
+        }
+      })
 
       return () => queryCache.setQueryData('user', previousUserData)
     },
     onError: (err, previousUserData, rollback: any) => rollback(),
     onSettled: () => {
-      queryCache.refetchQueries('user')
+      queryCache.invalidateQueries('user')
     },
   })
 
@@ -38,16 +42,20 @@ export function useConfig() {
     onMutate: config => {
       const previousUserData = queryCache.getQueryData('user') as IUser
 
-      queryCache.setQueryData('user', (previous: IUser) => ({
-        ...previous,
-        configuration: config,
-      }))
+      queryCache.setQueryData<IUser>('user', previous => {
+        if (previous) {
+          return {
+            ...previous,
+            configuration: config,
+          }
+        }
+      })
 
       return () => queryCache.setQueryData('user', previousUserData)
     },
     onError: (err, previousUserData, rollback: any) => rollback(),
     onSettled: () => {
-      queryCache.refetchQueries('user')
+      queryCache.invalidateQueries('user')
     },
   })
 
@@ -63,16 +71,20 @@ export function useUserModal() {
     onMutate: config => {
       const previousUserData = queryCache.getQueryData('user') as IUser
 
-      queryCache.setQueryData('user', (previous: IUser) => ({
-        ...previous,
-        firstSignIn: false,
-      }))
+      queryCache.setQueryData<IUser>('user', previous => {
+        if (previous) {
+          return {
+            ...previous,
+            firstSignIn: false,
+          }
+        }
+      })
 
       return () => queryCache.setQueryData('user', previousUserData)
     },
     onError: (err, previousUserData, rollback: any) => rollback(),
     onSettled: () => {
-      queryCache.refetchQueries('user')
+      queryCache.invalidateQueries('user')
     },
   })
 

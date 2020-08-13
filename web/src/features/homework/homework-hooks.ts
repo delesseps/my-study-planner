@@ -11,20 +11,22 @@ export function useHomework() {
 
   const edit = useMutation(homeworkService.edit, {
     onSuccess: (data, {index}) => {
-      queryCache.setQueryData(['user'], (previous: IUser) => {
-        const newHomework = [...previous.homework]
+      queryCache.setQueryData<IUser>(['user'], previous => {
+        if (previous) {
+          const newHomework = [...previous.homework]
 
-        if (!index) {
-          index = previous.homework.findIndex(
-            homework => data._id === homework._id,
-          )
-        }
+          if (!index) {
+            index = previous.homework.findIndex(
+              homework => data._id === homework._id,
+            )
+          }
 
-        newHomework[index] = data
+          newHomework[index] = data
 
-        return {
-          ...previous,
-          homework: newHomework,
+          return {
+            ...previous,
+            homework: newHomework,
+          }
         }
       })
 
@@ -37,16 +39,18 @@ export function useHomework() {
 
   const add = useMutation(homeworkService.add, {
     onSuccess: data => {
-      queryCache.setQueryData(['user'], (previous: IUser) => {
-        const newHomework = [...previous.homework, data]
-        newHomework.sort(
-          (a: any, b: any) =>
-            new Date(a.date).getTime() - new Date(b.date).getTime(),
-        )
+      queryCache.setQueryData<IUser>(['user'], previous => {
+        if (previous) {
+          const newHomework = [...previous.homework, data]
+          newHomework.sort(
+            (a: any, b: any) =>
+              new Date(a.date).getTime() - new Date(b.date).getTime(),
+          )
 
-        return {
-          ...previous,
-          homework: newHomework,
+          return {
+            ...previous,
+            homework: newHomework,
+          }
         }
       })
 
@@ -59,13 +63,15 @@ export function useHomework() {
 
   const remove = useMutation(homeworkService.remove, {
     onSuccess: (data, {index}) => {
-      queryCache.setQueryData(['user'], (previous: IUser) => {
-        const newHomework = [...previous.homework]
-        newHomework.splice(index, 1)
+      queryCache.setQueryData<IUser>(['user'], previous => {
+        if (previous) {
+          const newHomework = [...previous.homework]
+          newHomework.splice(index, 1)
 
-        return {
-          ...previous,
-          homework: newHomework,
+          return {
+            ...previous,
+            homework: newHomework,
+          }
         }
       })
 
@@ -84,20 +90,22 @@ export function useHomework() {
 export function useHomeworkMarkAsDone() {
   return useMutation(homeworkService.markAsDone, {
     onSuccess: (data, {index}) => {
-      queryCache.setQueryData(['user'], (previous: IUser) => {
-        const newHomework = [...previous.homework]
+      queryCache.setQueryData<IUser>(['user'], previous => {
+        if (previous) {
+          const newHomework = [...previous.homework]
 
-        if (!index) {
-          index = previous.homework.findIndex(
-            homework => data._id === homework._id,
-          )
-        }
+          if (!index) {
+            index = previous.homework.findIndex(
+              homework => data._id === homework._id,
+            )
+          }
 
-        newHomework[index] = data
+          newHomework[index] = data
 
-        return {
-          ...previous,
-          homework: newHomework,
+          return {
+            ...previous,
+            homework: newHomework,
+          }
         }
       })
 

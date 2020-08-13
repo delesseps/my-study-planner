@@ -83,7 +83,7 @@ const CalendarPanel: React.FC = () => {
               key={item.subject}
             >
               <Badge
-                data-testId={`ant-picker-date-urgency-${item.urgency}`}
+                data-testid={`ant-picker-date-urgency-${item.urgency}`}
                 status={status}
                 text={
                   <BadgeTitle>
@@ -101,7 +101,7 @@ const CalendarPanel: React.FC = () => {
       return (
         <Popover content={popoverContent}>
           <div
-            data-testId={`ant-picker-date-day-${date.date()}`}
+            data-testid={`ant-picker-date-day-${date.date()}`}
             className="ant-picker-cell-inner ant-picker-calendar-date"
           >
             <div
@@ -120,7 +120,7 @@ const CalendarPanel: React.FC = () => {
 
     return (
       <div
-        data-testId={`ant-picker-date-day-${date.date()}`}
+        data-testid={`ant-picker-date-day-${date.date()}`}
         className="ant-picker-cell-inner ant-picker-calendar-date"
       >
         <div className="ant-picker-calendar-date-value">{date.date()}</div>

@@ -1,5 +1,5 @@
 import {buildHomework} from '../support/generate'
-import {yyyymmdd, determinePriority} from '../support/utils'
+import {determinePriority} from '../support/utils'
 
 describe('Homework', () => {
   before(() => {
@@ -24,10 +24,11 @@ describe('Homework', () => {
       })
       cy.findByLabelText(/description/i).type(homework.description)
       cy.findByTestId(/date-picker/i).click()
-      cy.findAllByRole('cell', {name: yyyymmdd(new Date())}).click({
+      cy.findAllByText(new Date().getDate().toString()).click({
         multiple: true,
         force: true,
       })
+
       cy.findByRole('button', {name: /add homework/i}).click()
 
       cy.findByTestId('homework-cards').within(() => {

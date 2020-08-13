@@ -30,7 +30,7 @@ describe('Evaluation', () => {
 
       cy.findByLabelText(/description/i).type(evaluation.description)
       cy.findByTestId(/date-picker/i).click()
-      cy.findAllByRole('cell', {name: yyyymmdd(new Date())}).click({
+      cy.findAllByText(new Date().getDate().toString()).click({
         multiple: true,
         force: true,
       })

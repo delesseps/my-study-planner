@@ -37,29 +37,26 @@ export function AuthProvider(props: any) {
     'IS_LOGGED_IN',
   ])
 
-  const {data, status, error} = useQuery(
-    isLoggedIn ? 'user' : null,
-    authService.getUser,
-    {
-      staleTime: 1000 * 60,
-      cacheTime: 1000 * 60 * 60,
-      retry: (failureCount, error) => {
-        const errorCode = (error as AxiosError)?.response?.status
+  const {data, status, error} = useQuery('user', authService.getUser, {
+    enabled: isLoggedIn,
+    staleTime: 1000 * 60,
+    cacheTime: 1000 * 60 * 60,
+    retry: (failureCount, error) => {
+      const errorCode = (error as AxiosError)?.response?.status
 
-        if (errorCode === 401) {
-          logout().then(() =>
-            window.location.assign((window.location as unknown) as any),
-          )
-        }
+      if (errorCode === 401) {
+        logout().then(() =>
+          window.location.assign((window.location as unknown) as any),
+        )
+      }
 
-        if (failureCount < 3) {
-          return true // Keep trying
-        }
+      if (failureCount < 3) {
+        return true // Keep trying
+      }
 
-        return false
-      },
+      return false
     },
-  )
+  })
 
   const login = useMutation(authService.login, {
     onSuccess: (data, {remember}) => {
