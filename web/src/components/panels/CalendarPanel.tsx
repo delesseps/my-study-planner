@@ -1,10 +1,10 @@
 import React from 'react'
 import {Calendar, Badge, Popover} from 'antd'
-import {Moment} from 'moment'
 import styled from 'styled-components'
 
 import {useHomework} from 'features/homework/homework-hooks'
 import {useEvaluations} from 'features/evaluation/evaluation-hooks'
+import {useAuth} from 'features/auth/auth-context'
 import {toTitleCase} from 'utils'
 import IHomework from 'constants/interfaces/IHomework'
 import IEvaluation from 'constants/interfaces/IEvaluation'
@@ -12,25 +12,26 @@ import IEvaluation from 'constants/interfaces/IEvaluation'
 const CalendarPanel: React.FC = () => {
   const {homework} = useHomework()
   const {evaluations} = useEvaluations()
+  const {user} = useAuth()
 
-  const getListData = (value: Moment) => {
+  const getListData = (value: moment.Moment) => {
     //Get the evaluations of a specific day in a month
     const filteredEvaluations = evaluations.filter(evaluation => {
-      let evaluationDate = new Date(evaluation.date)
+      const evaluationDate = new Date(evaluation.date)
       return (
         evaluationDate.getDate() === value.date() &&
         evaluationDate.getMonth() === value.month() &&
-        !evaluation.done
+        !evaluation.done.includes(user._id)
       )
     })
 
     //Get the homework of a specific day in a month
-    const filteredHomework = homework.filter(currHomework => {
-      let homeworkDate = new Date(currHomework.date)
+    const filteredHomework = homework.filter(homework => {
+      const homeworkDate = new Date(homework.date)
       return (
         homeworkDate.getDate() === value.date() &&
         homeworkDate.getMonth() === value.month() &&
-        !currHomework.done
+        !homework.done.includes(user._id)
       )
     })
 
@@ -43,8 +44,8 @@ const CalendarPanel: React.FC = () => {
     return assignments || []
   }
 
-  const dateFullCellRender = (value: Moment) => {
-    const listData = getListData(value)
+  const dateFullCellRender = (date: moment.Moment): React.ReactNode => {
+    const listData = getListData(date)
 
     const popoverContent = (
       <ul>
@@ -82,6 +83,7 @@ const CalendarPanel: React.FC = () => {
               key={item.subject}
             >
               <Badge
+                data-testId={`ant-picker-date-urgency-${item.urgency}`}
                 status={status}
                 text={
                   <BadgeTitle>
@@ -95,26 +97,33 @@ const CalendarPanel: React.FC = () => {
       </ul>
     )
 
-    if (listData.length > 0)
+    if (listData.length > 0) {
       return (
         <Popover content={popoverContent}>
-          <div className="ant-picker-cell-inner ant-picker-calendar-date">
+          <div
+            data-testId={`ant-picker-date-day-${date.date()}`}
+            className="ant-picker-cell-inner ant-picker-calendar-date"
+          >
             <div
               style={{
                 boxShadow: '0 0 0 1px #f9ca24 inset',
               }}
               className="ant-picker-calendar-date-value"
             >
-              {value.date()}
+              {date.date()}
             </div>
             <div className="ant-picker-calendar-date-content" />
           </div>
         </Popover>
       )
+    }
 
     return (
-      <div className="ant-picker-cell-inner ant-picker-calendar-date">
-        <div className="ant-picker-calendar-date-value">{value.date()}</div>
+      <div
+        data-testId={`ant-picker-date-day-${date.date()}`}
+        className="ant-picker-cell-inner ant-picker-calendar-date"
+      >
+        <div className="ant-picker-calendar-date-value">{date.date()}</div>
         <div className="ant-picker-calendar-date-content" />
       </div>
     )

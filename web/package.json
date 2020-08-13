@@ -16,11 +16,11 @@
     "generate:styles": "gulp less"
   },
   "dependencies": {
-    "antd": "4.3.3",
+    "antd": "4.5.4",
     "axios": "0.19.2",
-    "firebase": "7.15.0",
-    "history": "4.10.1",
-    "moment": "2.26.0",
+    "firebase": "7.17.2",
+    "history": "5.0.0",
+    "moment": "2.27.0",
     "polished": "^3.6.5",
     "rc-queue-anim": "^1.8.5",
     "react": "16.13.1",
@@ -29,16 +29,16 @@
     "react-cookie": "4.0.3",
     "react-css-theme-switcher": "^0.1.6",
     "react-dom": "16.13.1",
-    "react-error-boundary": "^2.2.2",
-    "react-ga": "^3.0.0",
+    "react-error-boundary": "^2.3.1",
+    "react-ga": "^3.1.2",
     "react-query": "1.2.9",
     "react-query-devtools": "^1.1.17",
     "react-router": "^6.0.0-alpha.5",
     "react-router-dom": "^6.0.0-alpha.5",
-    "react-scripts": "3.4.1",
-    "react-use": "^15.2.2",
+    "react-scripts": "3.4.3",
+    "react-use": "^15.3.3",
     "styled-components": "5.1.1",
-    "throttle-debounce": "2.2.1"
+    "throttle-debounce": "2.3.0"
   },
   "eslintConfig": {
     "extends": "react-app"

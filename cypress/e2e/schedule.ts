@@ -46,7 +46,9 @@ describe('Schedule', () => {
         cy.wrap(el).find('input').last().click({force: true})
         await selectTime(classSchedule!.end)
 
-        cy.findAllByText(/ok/i).click({force: true, multiple: true})
+        cy.findAllByText(/ok/i)
+          .filter(i => i === index)
+          .click()
       })
 
       cy.document()
@@ -122,7 +124,9 @@ describe('Schedule', () => {
           cy.wrap(el).find('input').last().click({force: true})
           await selectTime(classSchedule!.end)
 
-          cy.findAllByText(/ok/i).click({force: true, multiple: true})
+          cy.findAllByText(/ok/i)
+            .filter(i => i === index)
+            .click()
         })
 
         cy.document()
