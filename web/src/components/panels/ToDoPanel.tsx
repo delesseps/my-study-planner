@@ -16,7 +16,7 @@ const ToDo: React.FC = () => {
   }
 
   return (
-    <React.Fragment>
+    <section>
       <Header>
         <Title>To-Dos</Title>
         <Button onClick={handleClick} type="primary">
@@ -34,11 +34,11 @@ const ToDo: React.FC = () => {
           <StyledEmpty description="No To-Dos" />
         )}
       </Content>
-    </React.Fragment>
+    </section>
   )
 }
 
-const Header = styled.div`
+const Header = styled.header`
   padding: 1.5rem 2rem;
   display: flex;
   justify-content: space-between;

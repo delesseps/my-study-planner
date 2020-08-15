@@ -35,7 +35,7 @@ const RecommendedActionsPanel: React.FC = () => {
   }, [evaluations, homework, user._id])
 
   return (
-    <React.Fragment>
+    <section>
       <Header>
         <Title>Recommended Actions</Title>
       </Header>
@@ -51,11 +51,11 @@ const RecommendedActionsPanel: React.FC = () => {
           <StyledEmpty description="No Recomendations" />
         )}
       </Content>
-    </React.Fragment>
+    </section>
   )
 }
 
-const Header = styled.div`
+const Header = styled.header`
   padding: 1.5rem 2rem;
   display: flex;
   justify-content: space-between;

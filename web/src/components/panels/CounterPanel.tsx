@@ -30,7 +30,7 @@ const Counter: React.FC<ICounterProps> = ({user, homework}) => {
   }, [user.homework, user.evaluations, user._id])
 
   return (
-    <>
+    <section>
       <Header>
         <Title>{homework ? 'Homework' : 'Evaluations'}</Title>
         <Subtitle>This week</Subtitle>
@@ -38,11 +38,11 @@ const Counter: React.FC<ICounterProps> = ({user, homework}) => {
       <Count data-testid={homework ? 'homework-count' : 'evaluation-count'}>
         {homework ? homeworkCount : evaluationCount}
       </Count>
-    </>
+    </section>
   )
 }
 
-const Header = styled.div`
+const Header = styled.header`
   display: flex;
   flex-direction: column;
 `

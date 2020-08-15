@@ -30,6 +30,7 @@ export default class CourseService {
         // @ts-ignore
         .findOne({_id: id, members: userId})
         .select('name schedule members homework evaluations createdBy')
+        .populate({path: 'members', select: '_id name picture'})
 
       if (!courseRecord) {
         throw new Error('Cannot get course')

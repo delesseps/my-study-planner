@@ -1,6 +1,5 @@
 import * as React from 'react'
 import {CookiesProvider} from 'react-cookie'
-import {ReactQueryConfigProvider, ReactQueryProviderConfig} from 'react-query'
 import {BrowserRouter} from 'react-router-dom'
 import ReactGA from 'react-ga'
 

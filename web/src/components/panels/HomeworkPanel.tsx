@@ -25,7 +25,7 @@ const Homework: React.FC = () => {
   }, [homework, user._id])
 
   return (
-    <React.Fragment>
+    <section>
       <Header>
         <Title>Homework</Title>
         <Button onClick={handleClick} type="primary">
@@ -42,7 +42,7 @@ const Homework: React.FC = () => {
           <StyledEmpty description="No Homework" />
         )}
       </Content>
-    </React.Fragment>
+    </section>
   )
 }
 

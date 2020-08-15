@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, {keyframes, css} from 'styled-components'
+import styled from 'styled-components'
 import {HomeOutlined, CalendarOutlined, BookOutlined} from '@ant-design/icons'
 import {NavLink, Link} from 'react-router-dom'
 

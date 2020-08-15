@@ -85,7 +85,7 @@ const Styles = {
     margin-top: 4rem;
   `,
   AddCourse: styled(Button)`
-    margin-top: 2rem;
+    margin-top: 4rem;
   `,
   Courses: styled(QueueAnim)`
     width: 100%;
