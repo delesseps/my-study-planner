@@ -30,20 +30,25 @@ const CourseDetails = (props: Props) => {
   return (
     <Styles.Wrapper>
       <Styles.Main>
+        <Details.Background bgColor={getColorByText({text: data.name})}>
+          &nbsp;
+        </Details.Background>
         <Details.Header bgColor={getColorByText({text: data.name})}>
           <Details.Title>{data.name}</Details.Title>
         </Details.Header>
-        <Tabs defaultActiveKey="1">
-          <Tabs.TabPane tab="Activity" key="1">
-            Activity
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Homework" key="2">
-            Homework
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Evaluations" key="3">
-            Evaluations
-          </Tabs.TabPane>
-        </Tabs>
+        <Details.Body>
+          <Tabs defaultActiveKey="1">
+            <Tabs.TabPane tab="Activity" key="1">
+              Activity
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Homework" key="2">
+              Homework
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Evaluations" key="3">
+              Evaluations
+            </Tabs.TabPane>
+          </Tabs>
+        </Details.Body>
       </Styles.Main>
 
       <Styles.Aside>
@@ -152,8 +157,14 @@ const Styles = {
 }
 
 const Details = {
+  Background: styled.div<{bgColor: string}>`
+    background-color: ${({bgColor}) => bgColor};
+    border-top-left-radius: ${({theme}) => theme.borderRadius};
+    border-top-right-radius: ${({theme}) => theme.borderRadius};
+
+    height: 150px;
+  `,
   Header: styled.header<{bgColor: string}>`
-    position: relative;
     color: ${({bgColor}) => {
       const luminance = getLuminance(bgColor)
 
@@ -162,14 +173,15 @@ const Details = {
       else return '#fff'
     }};
 
-    background-color: ${({bgColor}) => bgColor};
-
-    padding: 2rem;
+    padding: 0 2rem;
   `,
   Title: styled.p`
-    font-size: 3rem;
+    font-size: 6rem;
     font-weight: 900;
     margin: 0;
+  `,
+  Body: styled.div`
+    padding: 0 2rem;
   `,
 }
 
