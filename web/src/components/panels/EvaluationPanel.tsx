@@ -30,7 +30,7 @@ const Evaluation: React.FC<IEvaluationProps> = () => {
   }, [evaluations, user._id])
 
   return (
-    <section>
+    <Styles.Wrapper>
       <Header>
         <Title>Evaluations</Title>
         <Button onClick={handleClick} type="primary">
@@ -51,8 +51,17 @@ const Evaluation: React.FC<IEvaluationProps> = () => {
           <StyledEmpty description="No Evaluations" />
         )}
       </Content>
-    </section>
+    </Styles.Wrapper>
   )
+}
+
+const Styles = {
+  Wrapper: styled.section`
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+  `,
 }
 
 const Header = styled.header`

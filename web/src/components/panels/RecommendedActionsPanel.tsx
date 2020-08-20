@@ -35,7 +35,7 @@ const RecommendedActionsPanel: React.FC = () => {
   }, [evaluations, homework, user._id])
 
   return (
-    <section>
+    <Styles.Wrapper>
       <Header>
         <Title>Recommended Actions</Title>
       </Header>
@@ -51,8 +51,17 @@ const RecommendedActionsPanel: React.FC = () => {
           <StyledEmpty description="No Recomendations" />
         )}
       </Content>
-    </section>
+    </Styles.Wrapper>
   )
+}
+
+const Styles = {
+  Wrapper: styled.section`
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+  `,
 }
 
 const Header = styled.header`

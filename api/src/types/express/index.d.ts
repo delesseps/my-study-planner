@@ -23,7 +23,7 @@ declare global {
   namespace Models {
     export type UserModel = Model<IUser & Document>
     export type CourseModel = Model<ICourse & Document>
-    export type homeworkModel = Model<IHomework & Document>
+    export type HomeworkModel = Model<IHomework & Document>
     export type evaluationModel = Model<IEvaluation & Document>
   }
 }

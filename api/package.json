@@ -19,9 +19,15 @@
     "start:docker": "run-script-os",
     "start:docker:win32": "docker-compose up -d",
     "start:docker:default": "sudo docker-compose up -d",
+    "poststart:docker": "run-script-os",
+    "poststart:docker:win32": "docker exec api_database_1 mongo localhost --eval \"rs.initiate();\"",
+    "poststart:docker:default": "sudo docker exec api_database_1 mongo localhost --eval \"rs.initiate();\"",
     "build:docker": "run-script-os",
     "build:docker:win32": "docker-compose up --build -d",
     "build:docker:default": "sudo docker-compose up --build -d",
+    "postbuild:docker": "run-script-os",
+    "postbuild:docker:win32": "docker exec api_database_1 mongo localhost --eval \"rs.initiate();\"",
+    "postbuild:docker:default": "sudo docker exec api_database_1 mongo localhost --eval \"rs.initiate();\"",
     "stop:docker": "run-script-os",
     "stop:docker:win32": "docker-compose down",
     "stop:docker:default": "sudo docker-compose down",
@@ -86,8 +92,8 @@
     "@types/jest": "26.0.0",
     "@types/joi": "14.3.4",
     "@types/lodash": "4.14.155",
-    "@types/mongoose": "5.7.23",
-    "@types/node": "14.0.13",
+    "@types/mongoose": "5.7.36",
+    "@types/node": "14.6.0",
     "@types/nodemailer": "6.4.0",
     "@types/redis": "2.8.22",
     "@typescript-eslint/eslint-plugin": "3.2.0",
@@ -106,7 +112,7 @@
     "ts-jest": "26.1.0",
     "ts-node": "8.10.2",
     "tslint": "6.1.2",
-    "typescript": "3.9.5"
+    "typescript": "3.9.7"
   },
   "snyk": true
 }

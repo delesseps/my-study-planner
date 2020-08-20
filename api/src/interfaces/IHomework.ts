@@ -8,4 +8,5 @@ export default interface IHomework {
   description: string
   done: string[]
   createdBy: Partial<IUser>
+  courseId: string
 }

@@ -57,7 +57,7 @@ describe('Evaluation', () => {
       .addEvaluation()
       .then(evaluation => {
         const newEvaluation = buildEvaluation()
-        console.log(evaluation)
+
         cy.visit('/').closeWelcome()
         cy.findByRole('button', {name: /Open edit evaluation drawer/i}).click()
 

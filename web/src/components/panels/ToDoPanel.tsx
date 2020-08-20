@@ -16,7 +16,7 @@ const ToDo: React.FC = () => {
   }
 
   return (
-    <section>
+    <Styles.Wrapper>
       <Header>
         <Title>To-Dos</Title>
         <Button onClick={handleClick} type="primary">
@@ -34,8 +34,17 @@ const ToDo: React.FC = () => {
           <StyledEmpty description="No To-Dos" />
         )}
       </Content>
-    </section>
+    </Styles.Wrapper>
   )
+}
+
+const Styles = {
+  Wrapper: styled.section`
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+  `,
 }
 
 const Header = styled.header`

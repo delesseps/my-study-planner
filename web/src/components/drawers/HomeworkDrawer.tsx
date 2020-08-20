@@ -31,14 +31,29 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
     ],
   } = useHomework()
 
+  const [availableCourses, setAvailableCourses] = React.useState<
+    Record<string, string>
+  >({})
+  const [showAddToCourse, setShowAddToCourse] = React.useState(false)
+
   const status = homework ? editHomeworkStatus : addHomeworkStatus
+  const isEdit = !!homework
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
-      const newHomework: IHomework = {...values} as any
+      values.courseId =
+        values.shouldAddToCourse === 'yes'
+          ? availableCourses[values.subject]
+          : ''
+      values.shouldAddToCourse = undefined
+
+      const newHomework: IHomework = {
+        ...values,
+      } as any
 
       if (homework && typeof index === 'number') {
         newHomework._id = homework._id
+
         return editHomework({homework: newHomework, index})
       }
 
@@ -49,6 +64,7 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
   const onClose = useCallback(() => {
     addHomeworkReset()
     editHomeworkReset()
+    setShowAddToCourse(false)
     form.resetFields()
     setVisible(false)
   }, [addHomeworkReset, editHomeworkReset, setVisible, form])
@@ -61,6 +77,20 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
   const disabledDate = (current: any) => {
     // Can not select days before today and today
     return current < moment().startOf('day')
+  }
+
+  const handleFieldChange = (changedFields: any) => {
+    const fieldName = changedFields[0]?.name[0]
+
+    if (fieldName === 'subject') {
+      const subject = form.getFieldValue('subject')
+
+      if (availableCourses[subject]) {
+        setShowAddToCourse(true)
+      } else {
+        setShowAddToCourse(false)
+      }
+    }
   }
 
   return (
@@ -79,8 +109,10 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
           urgency: homework?.urgency,
           description: homework?.description,
           date: homework && moment(homework.date),
+          shouldAddToCourse: 'yes',
         }}
         layout="vertical"
+        onFieldsChange={handleFieldChange}
       >
         <Form.Item
           name="subject"
@@ -93,8 +125,16 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
           ]}
           label={<span>Course name</span>}
         >
-          <CourseAutocomplete />
+          <CourseAutocomplete setAvailableCourses={setAvailableCourses} />
         </Form.Item>
+        {!isEdit && showAddToCourse && (
+          <Form.Item name="shouldAddToCourse" label="Public to Course Members">
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value={'yes'}>Yes</Radio.Button>
+              <Radio.Button value={'no'}>No</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+        )}
         <Form.Item
           label={
             <span>

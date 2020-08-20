@@ -34,6 +34,7 @@ export function buildHomework(overrides?: Record<string, any>): IHomework {
     urgency: Urgency.normal,
     description: faker.name.jobDescriptor(),
     done: [],
+    courseId: '',
     createdBy: {
       _id: faker.random.uuid(),
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,

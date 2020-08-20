@@ -1,3 +1,4 @@
+import express from 'express'
 import expressLoader from './express'
 import dependencyInjectorLoader from './dependencyInjector'
 import mongooseLoader from './mongoose'
@@ -8,7 +9,7 @@ import './events'
 export default async ({
   expressApp,
 }: {
-  expressApp: Express.Application
+  expressApp: express.Application
 }): Promise<void> => {
   const mongoConnection = await mongooseLoader()
   Logger.info('✌️ DB loaded and connected!')

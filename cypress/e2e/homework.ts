@@ -114,4 +114,43 @@ describe('Homework', () => {
         ).should('not.exist')
       })
   })
+
+  it.only('should allow homework to be added to course', () => {
+    cy.createUser().then(user => {
+      cy.addCourse().then(course => {
+        const homework = buildHomework()
+
+        cy.visit('/').closeWelcome()
+        cy.findByRole('button', {name: /new homework/i}).click()
+        cy.findByLabelText(/course name/i).type(course.name)
+        cy.findByRole('radio', {name: new RegExp(homework.urgency, 'i')}).click(
+          {
+            force: true,
+          },
+        )
+        cy.findByLabelText(/description/i).type(homework.description)
+        cy.findByTestId(/date-picker/i).click()
+        cy.findAllByText(new Date().getDate().toString()).click({
+          multiple: true,
+          force: true,
+        })
+
+        cy.findByRole('button', {name: /add homework/i}).click()
+
+        // cy.findByTestId('homework-cards').within(() => {
+        //   cy.findByText(user.name)
+        //   cy.findByText(/today/i)
+        //   cy.findByRole('heading', {
+        //     name: homework.subject,
+        //   })
+        //   cy.findByText(
+        //     new RegExp(determinePriority(homework.urgency) as string),
+        //   )
+        // })
+
+        // cy.findByTestId(/homework-count/i).should('have.text', 1)
+        // cy.findByText(new RegExp(`start working on ${homework.subject}`, 'i'))
+      })
+    })
+  })
 })

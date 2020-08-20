@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback} from 'react'
+import React from 'react'
 import {QuestionCircleOutlined} from '@ant-design/icons'
 import {Drawer, DatePicker, Input, Tooltip, Button, Radio, Form} from 'antd'
 import moment from 'moment'
@@ -34,6 +34,11 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
     ],
   } = useEvaluations()
 
+  const [availableCourses, setAvailableCourses] = React.useState<
+    Record<string, string>
+  >({})
+  const [showAddToCourse, setShowAddToCourse] = React.useState(false)
+
   const status = evaluation ? editEvaluationStatus : addEvaluationStatus
 
   const handleSubmit = () => {
@@ -49,17 +54,32 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
     })
   }
 
-  const onClose = useCallback(() => {
+  const onClose = React.useCallback(() => {
     addEvaluationReset()
     editEvaluationReset()
+    setShowAddToCourse(false)
     form.resetFields()
     setVisible(false)
   }, [addEvaluationReset, editEvaluationReset, setVisible, form])
 
-  useEffect(() => {
+  React.useEffect(() => {
     // Close drawer after successful operation
     if (status === 'success') onClose()
   }, [status, onClose])
+
+  const handleFieldChange = (changedFields: any) => {
+    const fieldName = changedFields[0]?.name[0]
+
+    if (fieldName === 'subject') {
+      const subject = form.getFieldValue('subject')
+
+      if (availableCourses[subject]) {
+        setShowAddToCourse(true)
+      } else {
+        setShowAddToCourse(false)
+      }
+    }
+  }
 
   const disabledDate = (current: any) => {
     // Can not select days before today and today
@@ -83,8 +103,10 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           urgency: evaluation?.urgency,
           description: evaluation?.description,
           date: evaluation && moment(evaluation.date),
+          shouldAddToCourse: 'yes',
         }}
         layout="vertical"
+        onFieldsChange={handleFieldChange}
       >
         <Form.Item
           name="subject"
@@ -97,8 +119,16 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           ]}
           label={<span>Course name</span>}
         >
-          <CourseAutocomplete />
+          <CourseAutocomplete setAvailableCourses={setAvailableCourses} />
         </Form.Item>
+        {showAddToCourse && (
+          <Form.Item name="shouldAddToCourse" label="Public to Course Members">
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value={'yes'}>Yes</Radio.Button>
+              <Radio.Button value={'no'}>No</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+        )}
         <Form.Item
           label="Evaluation"
           name="evaluationType"

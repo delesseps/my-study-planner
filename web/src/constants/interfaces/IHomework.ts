@@ -7,6 +7,7 @@ export default interface IHomework {
   urgency: Urgency
   description: string
   done: string[]
+  courseId: string
   createdBy: {
     _id: string
     name: string

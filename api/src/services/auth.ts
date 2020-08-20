@@ -188,7 +188,7 @@ export default class AuthService {
         },
       },
     ])
-    console.log(userRecord)
+
     if (!userRecord) throw new Error('User not found')
 
     userRecord.evaluations = userRecord.evaluations.sort(

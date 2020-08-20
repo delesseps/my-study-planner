@@ -5,6 +5,7 @@ export const homeworkDTOJoi = {
   urgency: Joi.string().valid('chill', 'normal', 'important').required(),
   description: Joi.string().allow(''),
   date: Joi.date().required(),
+  courseId: Joi.string().allow(''),
 }
 
 export const homeworkJoi = {

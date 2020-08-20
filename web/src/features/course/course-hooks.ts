@@ -5,7 +5,6 @@ import * as courseService from './course-service'
 import {ICourse} from 'constants/interfaces'
 
 const courseQueryConfig = {
-  staleTime: 1000 * 60 * 60,
   cacheTime: 1000 * 60 * 60,
   useErrorBoundary: true,
 }

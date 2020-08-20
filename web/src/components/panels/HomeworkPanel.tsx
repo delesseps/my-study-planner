@@ -25,7 +25,7 @@ const Homework: React.FC = () => {
   }, [homework, user._id])
 
   return (
-    <section>
+    <Styles.Wrapper>
       <Header>
         <Title>Homework</Title>
         <Button onClick={handleClick} type="primary">
@@ -42,8 +42,17 @@ const Homework: React.FC = () => {
           <StyledEmpty description="No Homework" />
         )}
       </Content>
-    </section>
+    </Styles.Wrapper>
   )
+}
+
+const Styles = {
+  Wrapper: styled.section`
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+  `,
 }
 
 const Header = styled.div`
