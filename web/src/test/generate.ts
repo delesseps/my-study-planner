@@ -29,12 +29,14 @@ export function buildUser(overrides?: Record<string, any>): IUser {
 export function buildHomework(overrides?: Record<string, any>): IHomework {
   return {
     _id: faker.random.uuid(),
-    subject: faker.name.jobTitle(),
+    name: faker.name.jobTitle(),
     date: new Date().toISOString(),
     urgency: Urgency.normal,
     description: faker.name.jobDescriptor(),
     done: [],
-    courseId: '',
+    course: {
+      name: faker.name.jobTitle(),
+    },
     createdBy: {
       _id: faker.random.uuid(),
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,
@@ -55,6 +57,7 @@ export function buildEvaluation(
     urgency: Urgency.normal,
     description: faker.name.jobDescriptor(),
     done: [],
+    courseId: '',
     createdBy: {
       _id: faker.random.uuid(),
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,

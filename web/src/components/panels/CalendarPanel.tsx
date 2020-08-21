@@ -77,17 +77,13 @@ const CalendarPanel: React.FC = () => {
           }
 
           return (
-            <li
-              className="events"
-              style={{listStyle: 'none'}}
-              key={item.subject}
-            >
+            <li className="events" style={{listStyle: 'none'}} key={item.name}>
               <Badge
                 data-testid={`ant-picker-date-urgency-${item.urgency}`}
                 status={status}
                 text={
                   <BadgeTitle>
-                    {assignmentType}: {item.subject}
+                    {assignmentType}: {item.name}
                   </BadgeTitle>
                 }
               />

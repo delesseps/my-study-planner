@@ -52,7 +52,7 @@ const RecommendedActionCard: React.FC<IRecommendedActionCardProps> = ({
       <RowWrapper>
         <Badge color={determineColor(assignment.urgency)} />
         <RecommendationTitle>
-          {recommendedAction + assignment.subject}
+          {recommendedAction + assignment.name}
         </RecommendationTitle>
       </RowWrapper>
 

@@ -5,7 +5,9 @@
     "api_url": "http://localhost:3001/api"
   },
   "chromeWebSecurity": false,
-  "retries": 2,
+  "retries": {
+    "runMode": 2
+  },
   "viewportWidth": 1366,
   "viewportHeight": 768
 }

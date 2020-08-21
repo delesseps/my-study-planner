@@ -13,7 +13,7 @@ const HomeworkDescriptionModal = (homework: IHomework) => {
     width: 450,
     title: (
       <ModalTitleWrapper>
-        <ModalTitle>{homework.subject}</ModalTitle>
+        <ModalTitle>{homework.name}</ModalTitle>
         <ModalTime>
           <ClockIcon />
           {setDate(moment(homework.date))}

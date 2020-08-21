@@ -8,6 +8,7 @@ export default interface IEvaluation {
   urgency: Urgency
   description: string
   done: string[]
+  courseId: string
   createdBy: {
     _id: string
     name: string

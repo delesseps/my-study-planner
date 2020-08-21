@@ -9,4 +9,5 @@ export default interface IEvaluation {
   description: string
   done: string[]
   createdBy: Partial<IUser>
+  courseId: string
 }

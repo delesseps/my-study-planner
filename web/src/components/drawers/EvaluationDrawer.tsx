@@ -43,6 +43,12 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
+      values.courseId =
+        values.shouldAddToCourse === 'yes'
+          ? availableCourses[values.subject]
+          : ''
+      values.shouldAddToCourse = undefined
+
       const newEvaluation: IEvaluation = {...values} as any
 
       if (evaluation && typeof index === 'number') {

@@ -65,7 +65,12 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
       />
       <MainInfo>
         <Assignment>
-          <AssignmentTitle>{homework.subject}</AssignmentTitle>
+          <AssignmentTitle>{homework.name}</AssignmentTitle>
+          <AssignmentCourse>
+            {typeof homework.course.details === 'object'
+              ? homework.course.details.name
+              : homework.course.name}
+          </AssignmentCourse>
           <AssignmentPriority>
             <Badge color={determineColor(homework.urgency)} />
             {determinePriority(homework.urgency)}
@@ -144,14 +149,22 @@ const Assignment = styled.div`
   flex-direction: column;
 `
 
-const AssignmentTitle = styled.h3`
+const AssignmentTitle = styled.h1`
   letter-spacing: 0.5px;
   font-weight: 500;
   font-size: 1.7rem;
+  margin: 0;
   color: ${props => props.theme.fontColors.textRgba(0.8)};
 `
 
-const AssignmentPriority = styled.h5`
+const AssignmentCourse = styled.h3`
+  letter-spacing: 0.5px;
+  font-weight: 900;
+  font-size: 1.3rem;
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
+`
+
+const AssignmentPriority = styled.p`
   display: flex;
   align-items: center;
   color: ${props => props.theme.fontColors.textRgba(0.5)};

@@ -8,6 +8,7 @@ import {
   EventDispatcherInterface,
 } from '../decorators/eventDispatcher'
 import redisClient from '../loaders/redis'
+import {Document} from 'mongoose'
 
 @Service()
 export default class AuthService {
@@ -68,17 +69,33 @@ export default class AuthService {
     }
   }
 
-  public async SignIn(email: string, password: string): Promise<{user: IUser}> {
-    const userRecord = await this.userModel.findOne({email}).populate([
+  private async getUserByEmail(email: string): Promise<IUser & Document> {
+    return this.userModel.findOne({email}).populate([
       {
-        path: 'evaluations.createdBy',
-        select: '_id name picture',
+        path: 'evaluations',
+        populate: {
+          path: 'createdBy',
+          select: '_id name picture',
+        },
       },
       {
-        path: 'homework.createdBy',
-        select: '_id name picture',
+        path: 'homework',
+        populate: [
+          {
+            path: 'createdBy',
+            select: '_id name picture',
+          },
+          {
+            path: 'course.details',
+            select: '_id name',
+          },
+        ],
       },
     ])
+  }
+
+  public async SignIn(email: string, password: string): Promise<{user: IUser}> {
+    const userRecord = await this.getUserByEmail(email)
 
     if (!userRecord) {
       const err = new Error('User not registered')
@@ -112,24 +129,7 @@ export default class AuthService {
     profile: Record<any, any>,
   ): Promise<IUser | string> {
     try {
-      let userRecord = await this.userModel
-        .findOne({email: profile.email})
-        .populate([
-          {
-            path: 'evaluations',
-            populate: {
-              path: 'createdBy',
-              select: '_id name picture',
-            },
-          },
-          {
-            path: 'homework',
-            populate: {
-              path: 'createdBy',
-              select: '_id name picture',
-            },
-          },
-        ])
+      let userRecord = await this.getUserByEmail(profile.email)
 
       if (!userRecord) {
         const userInfo = {
@@ -172,22 +172,7 @@ export default class AuthService {
   }
 
   public async deserializeUser(email: string): Promise<IUser> {
-    const userRecord = await this.userModel.findOne({email}).populate([
-      {
-        path: 'evaluations',
-        populate: {
-          path: 'createdBy',
-          select: '_id name picture',
-        },
-      },
-      {
-        path: 'homework',
-        populate: {
-          path: 'createdBy',
-          select: '_id name picture',
-        },
-      },
-    ])
+    const userRecord = await this.getUserByEmail(email)
 
     if (!userRecord) throw new Error('User not found')
 

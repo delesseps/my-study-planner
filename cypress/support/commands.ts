@@ -23,16 +23,21 @@ Cypress.Commands.add('createUser', (overrides: Partial<IUser> = {}) => {
 Cypress.Commands.add('addHomework', (overrides: Partial<IHomework> = {}) => {
   //@ts-ignore
   const homework = buildHomework({overrides})
+
   cy.request({
     url: `${Cypress.env('api_url')}/homework/add`,
     method: 'POST',
     body: {
       date: homework.date,
       description: homework.description,
-      subject: homework.subject,
+      name: homework.name,
       urgency: homework.urgency,
+      course: {
+        name: homework.course.name,
+        details: homework.course.details?._id,
+      },
     },
-  }).then(res => ({...res.body.homework, ...homework}))
+  }).then(res => ({...homework, ...res.body.homework}))
 })
 
 Cypress.Commands.add(
@@ -57,6 +62,7 @@ Cypress.Commands.add(
 Cypress.Commands.add('addCourse', (overrides: Partial<ICourse> = {}) => {
   //@ts-ignore
   const course = buildCourse({overrides})
+
   cy.request({
     url: `${Cypress.env('api_url')}/course/add`,
     method: 'POST',
@@ -64,7 +70,7 @@ Cypress.Commands.add('addCourse', (overrides: Partial<ICourse> = {}) => {
       name: course.name,
       schedule: course.schedule,
     },
-  }).then(res => ({...res.body.course, ...course}))
+  }).then(res => ({...course, ...res.body.course}))
 })
 
 Cypress.Commands.add('changeToCourseDay', (day: string) => {

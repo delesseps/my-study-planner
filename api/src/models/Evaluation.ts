@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose'
 import Container from 'typedi'
 
 const Evaluation = new mongoose.Schema({
+  name: {type: String, required: true},
   subject: {type: String, required: true},
   evaluationType: {type: String, required: true},
   date: {type: Date, required: true},
@@ -13,6 +14,15 @@ const Evaluation = new mongoose.Schema({
   },
   description: {type: String, default: ''},
   done: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+  course: {
+    _id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Course',
+    },
+    name: {
+      type: String,
+    },
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

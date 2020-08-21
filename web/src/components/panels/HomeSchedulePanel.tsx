@@ -60,7 +60,7 @@ const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = () => {
     const filteredHomework: IScheduleEvent[] = homework
       .filter(({done}) => !done.includes(user._id))
       .map(homework => ({
-        title: 'HW: ' + homework.subject,
+        title: 'HW: ' + homework.name,
         start: new Date(homework.date),
         end: new Date(homework.date),
         allDay: true,

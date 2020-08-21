@@ -2,44 +2,55 @@ import {Service, Inject} from 'typedi'
 import {IUser} from '../interfaces/IUser'
 import IEvaluation from '../interfaces/IEvaluation'
 import winston from 'winston'
+import {startSession, Document} from 'mongoose'
 
 @Service()
 export default class EvaluationService {
   constructor(
     @Inject('userModel') private userModel: Models.UserModel,
     @Inject('evaluationModel') private evaluationModel: Models.evaluationModel,
+    @Inject('courseModel') private CourseModel: Models.CourseModel,
     @Inject('logger') private logger: winston.Logger,
   ) {}
 
   public async Add(user: IUser, evaluation: IEvaluation): Promise<IEvaluation> {
+    const session = await startSession()
+
     try {
       evaluation.createdBy = {
         _id: user._id,
-        name: user.name,
-        picture: user.picture,
       }
 
-      const evaluationRecord = await (
-        await this.evaluationModel.create(evaluation)
-      )
-        .populate({path: 'createdBy', select: '_id name picture'})
-        .execPopulate()
+      let evaluationRecord: IEvaluation & Document
 
-      const userRecord: IUser = await this.userModel.findByIdAndUpdate(
-        user._id,
-        {
+      await session.withTransaction(async () => {
+        evaluationRecord = await (
+          await this.evaluationModel.create([evaluation], {session})
+        )[0]
+          .populate({path: 'createdBy', select: '_id name picture'})
+          .execPopulate()
+
+        await this.userModel.findByIdAndUpdate(user._id, {
           $push: {evaluations: evaluationRecord._id},
-        },
-      )
+        })
 
-      if (!userRecord || !evaluationRecord) {
-        throw new Error('Could not add evaluation')
+        if (evaluation.courseId) {
+          await this.CourseModel.findByIdAndUpdate(evaluation.courseId, {
+            $push: {evaluations: evaluationRecord._id},
+          })
+        }
+      })
+
+      if (!evaluationRecord) {
+        throw new Error('Could not add homework')
       }
 
       return evaluationRecord
     } catch (e) {
       this.logger.error(e)
       throw e
+    } finally {
+      await session.endSession()
     }
   }
 

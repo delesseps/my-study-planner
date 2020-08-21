@@ -12,10 +12,16 @@ interface Props {
   setAvailableCourses: React.Dispatch<
     React.SetStateAction<Record<string, string>>
   >
+
+  disabled?: boolean
   [x: string]: any
 }
 
-const CourseAutoComplete = ({setAvailableCourses, ...rest}: Props) => {
+const CourseAutoComplete = ({
+  setAvailableCourses,
+  disabled,
+  ...rest
+}: Props) => {
   const {data: courses} = useCourses()
   const [coursesObject, setCoursesObject] = React.useState<
     Record<string, string>
@@ -55,6 +61,7 @@ const CourseAutoComplete = ({setAvailableCourses, ...rest}: Props) => {
 
   return (
     <AutoComplete
+      disabled={disabled}
       options={autocompleteCourses}
       filterOption={(inputValue, option) => {
         if (option?.value) {

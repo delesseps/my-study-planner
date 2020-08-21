@@ -18,7 +18,9 @@ describe('Homework', () => {
 
       cy.visit('/').closeWelcome()
       cy.findByRole('button', {name: /new homework/i}).click()
-      cy.findByLabelText(/course name/i).type(homework.subject)
+
+      cy.findByLabelText(/Name/).type(homework.name)
+      cy.findByLabelText(/course name/i).type(homework.course.name)
       cy.findByRole('radio', {name: new RegExp(homework.urgency, 'i')}).click({
         force: true,
       })
@@ -35,17 +37,70 @@ describe('Homework', () => {
         cy.findByText(user.name)
         cy.findByText(/today/i)
         cy.findByRole('heading', {
-          name: homework.subject,
+          name: homework.name,
+        })
+        cy.findByRole('heading', {
+          name: homework.course.name,
         })
         cy.findByText(new RegExp(determinePriority(homework.urgency) as string))
       })
 
       cy.findByTestId(/homework-count/i).should('have.text', 1)
-      cy.findByText(new RegExp(`start working on ${homework.subject}`, 'i'))
+      cy.findByText(new RegExp(`start working on ${homework.name}`, 'i'))
     })
   })
 
-  it('should edit homework', () => {
+  it('should allow homework to be added to course', () => {
+    cy.createUser().then(user => {
+      cy.addCourse().then(course => {
+        const homework = buildHomework()
+
+        cy.visit('/').closeWelcome()
+        cy.findByRole('button', {name: /new homework/i}).click()
+
+        cy.findByLabelText(/Name/).type(homework.name)
+        cy.findByLabelText(/course name/i).type(course.name)
+        cy.findByRole('radio', {name: new RegExp(homework.urgency, 'i')}).click(
+          {
+            force: true,
+          },
+        )
+        cy.findByLabelText(/description/i).type(homework.description)
+        cy.findByTestId(/date-picker/i).click()
+        cy.findAllByText(new Date().getDate().toString()).click({
+          multiple: true,
+          force: true,
+        })
+
+        cy.findByRole('button', {name: /add homework/i}).click()
+
+        cy.findByTestId('homework-cards').within(() => {
+          cy.findByText(user.name)
+          cy.findByText(/today/i)
+          cy.findByRole('heading', {
+            name: homework.name,
+          })
+          cy.findByRole('heading', {
+            name: course.name,
+          })
+          cy.findByText(
+            new RegExp(determinePriority(homework.urgency) as string),
+          )
+        })
+
+        cy.visit('/courses')
+        cy.findByText(/view course/i).click()
+
+        cy.findByTestId('feature-homework').within(() => {
+          cy.findByText(/1/).should('exist')
+        })
+
+        // TODO: test for homework in tab
+      })
+    })
+  })
+
+  it('should edit homework with non-linked course', () => {
     cy.createUser()
       .addHomework()
       .then(homework => {
@@ -54,9 +109,10 @@ describe('Homework', () => {
         cy.visit('/').closeWelcome()
         cy.findByRole('button', {name: /Open edit homework drawer/i}).click()
 
+        cy.findByLabelText(/Name/).clear().type(newHomework.name)
         cy.findByLabelText(/course name/i)
           .clear()
-          .type(newHomework.subject)
+          .type(newHomework.course.name)
 
         cy.findByRole('radio', {
           name: new RegExp(newHomework.urgency, 'i'),
@@ -74,12 +130,30 @@ describe('Homework', () => {
           cy.findByText(homework.createdBy.name)
           cy.findByText(/today/i)
           cy.findByRole('heading', {
-            name: newHomework.subject,
+            name: newHomework.name,
+          })
+          cy.findByRole('heading', {
+            name: newHomework.course.name,
           })
           cy.findByText(
             new RegExp(determinePriority(newHomework.urgency) as string),
           )
         })
+      })
+  })
+
+  it('should edit linked homework', () => {})
+
+  it('should disable "Course Name" input when homework is linked', () => {
+    cy.createUser()
+      .addCourse()
+      .then(course => {
+        cy.addHomework({course: {name: '', details: course}})
+
+        cy.visit('/').closeWelcome()
+        cy.findByRole('button', {name: /Open edit homework drawer/i}).click()
+
+        cy.findByLabelText(/course name/i).should('be.disabled')
       })
   })
 
@@ -90,7 +164,7 @@ describe('Homework', () => {
         cy.visit('/').closeWelcome()
         cy.findByLabelText(/mark .* as done/i).click()
         cy.findByText(/great job/i)
-        cy.findByText(new RegExp(homework.subject, 'g')).should('not.exist')
+        cy.findByText(new RegExp(homework.name, 'g')).should('not.exist')
         cy.findByText(/no.* homework/i)
         cy.findByTestId(/user-dropdown/i).trigger('mouseover')
         cy.findByRole('menuitem', {name: /profile/i}).click()
@@ -105,52 +179,13 @@ describe('Homework', () => {
         cy.visit('/').closeWelcome()
         cy.findByLabelText(/delete homework/i).click()
         cy.findByRole('button', {name: /yes/i}).click()
-        cy.findByText(new RegExp(homework.subject, 'g')).should('not.exist')
+        cy.findByText(new RegExp(homework.name, 'g')).should('not.exist')
         cy.findByText(/no.* homework/i)
 
         cy.findByTestId(/homework-count/i).should('have.text', 0)
         cy.findByText(
-          new RegExp(`start working on ${homework.subject}`, 'i'),
+          new RegExp(`start working on ${homework.name}`, 'i'),
         ).should('not.exist')
       })
-  })
-
-  it.only('should allow homework to be added to course', () => {
-    cy.createUser().then(user => {
-      cy.addCourse().then(course => {
-        const homework = buildHomework()
-
-        cy.visit('/').closeWelcome()
-        cy.findByRole('button', {name: /new homework/i}).click()
-        cy.findByLabelText(/course name/i).type(course.name)
-        cy.findByRole('radio', {name: new RegExp(homework.urgency, 'i')}).click(
-          {
-            force: true,
-          },
-        )
-        cy.findByLabelText(/description/i).type(homework.description)
-        cy.findByTestId(/date-picker/i).click()
-        cy.findAllByText(new Date().getDate().toString()).click({
-          multiple: true,
-          force: true,
-        })
-
-        cy.findByRole('button', {name: /add homework/i}).click()
-
-        // cy.findByTestId('homework-cards').within(() => {
-        //   cy.findByText(user.name)
-        //   cy.findByText(/today/i)
-        //   cy.findByRole('heading', {
-        //     name: homework.subject,
-        //   })
-        //   cy.findByText(
-        //     new RegExp(determinePriority(homework.urgency) as string),
-        //   )
-        // })
-
-        // cy.findByTestId(/homework-count/i).should('have.text', 1)
-        // cy.findByText(new RegExp(`start working on ${homework.subject}`, 'i'))
-      })
-    })
   })
 })

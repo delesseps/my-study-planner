@@ -29,10 +29,13 @@ export const buildUser = build<IUser>('User', {
 export const buildHomework = build<Omit<IHomework, 'createdBy'>>('Homework', {
   fields: {
     _id: fake(f => f.random.uuid()),
-    subject: fake(f => f.name.jobTitle()),
+    name: fake(f => f.name.jobTitle()),
     date: new Date().toISOString(),
     urgency: oneOf('chill', 'normal', 'important'),
     description: fake(f => f.name.jobDescriptor()),
+    course: {
+      name: fake(f => f.name.jobTitle()),
+    },
     done: [],
   },
 })
@@ -46,6 +49,7 @@ export const buildEvaluation = build<Omit<IEvaluation, 'createdBy'>>(
       date: new Date().toISOString(),
       urgency: oneOf('chill', 'normal', 'important'),
       description: fake(f => f.name.jobDescriptor()),
+      courseId: '',
       done: [],
       evaluationType: oneOf('quiz', 'test'),
     },

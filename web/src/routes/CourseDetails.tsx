@@ -57,7 +57,7 @@ const CourseDetails = (props: Props) => {
             <Panel.Title>Summary</Panel.Title>
           </Panel.Header>
           <Panel.Body>
-            <Feature.Wrapper>
+            <Feature.Wrapper data-testid="feature-homework">
               <Icon.Wrapper>
                 <SnippetsOutlined style={{fontSize: '24px'}} />
                 <Icon.Title>Homework</Icon.Title>
@@ -65,7 +65,7 @@ const CourseDetails = (props: Props) => {
               <Feature.Value>{data.homework.length}</Feature.Value>
             </Feature.Wrapper>
 
-            <Feature.Wrapper>
+            <Feature.Wrapper data-testid="feature-evaluations">
               <Icon.Wrapper>
                 <CalculatorOutlined style={{fontSize: '24px'}} />
                 <Icon.Title>Evaluations</Icon.Title>
@@ -91,7 +91,11 @@ const CourseDetails = (props: Props) => {
             {data.members.map(({_id, picture, name}) => {
               return (
                 <User.Wrapper key={_id}>
-                  <User.Picture src={picture} />
+                  {picture ? (
+                    <User.Picture src={picture} />
+                  ) : (
+                    <User.Avatar name={name}>&nbsp;</User.Avatar>
+                  )}
                   <User.Name>{name}</User.Name>
                 </User.Wrapper>
               )
@@ -275,6 +279,23 @@ const User = {
     max-width: 30px;
     min-width: 20px;
     height: auto;
+  `,
+  Avatar: styled.div<{name: string | undefined}>`
+    border-radius: 100%; 
+    background-color: lightgray;
+    position: relative;
+
+    width: 30px;
+    height: 30px;
+
+    &::after {
+      content: "${({name}) => name && name[0]}";
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   `,
   Name: styled.p`
     font-size: 1.6rem;

@@ -1,6 +1,7 @@
 import {Service, Inject} from 'typedi'
 import {IUser} from '../interfaces/IUser'
 import {ICourse} from '../interfaces'
+import evaluation from '../api/routes/evaluation'
 
 @Service()
 export default class CourseService {
@@ -30,7 +31,11 @@ export default class CourseService {
         // @ts-ignore
         .findOne({_id: id, members: userId})
         .select('name schedule members homework evaluations createdBy')
-        .populate({path: 'members', select: '_id name picture'})
+        .populate([
+          {path: 'members', select: '_id name picture'},
+          'evaluations',
+          'homework',
+        ])
 
       if (!courseRecord) {
         throw new Error('Cannot get course')

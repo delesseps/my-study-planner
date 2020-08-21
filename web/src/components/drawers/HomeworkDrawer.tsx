@@ -41,15 +41,24 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
-      values.courseId =
-        values.shouldAddToCourse === 'yes'
-          ? availableCourses[values.subject]
-          : ''
+      const isExistingCourse = values.shouldAddToCourse === 'yes'
+
+      values.course = {
+        details: isExistingCourse
+          ? availableCourses[values.courseName]
+          : undefined,
+        name: isExistingCourse ? '' : values.courseName,
+      }
       values.shouldAddToCourse = undefined
 
       const newHomework: IHomework = {
         ...values,
+        name: values.homeworkName,
+        homeworkName: undefined,
+        courseName: undefined,
       } as any
+
+      console.log(newHomework, availableCourses)
 
       if (homework && typeof index === 'number') {
         newHomework._id = homework._id
@@ -82,17 +91,16 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
   const handleFieldChange = (changedFields: any) => {
     const fieldName = changedFields[0]?.name[0]
 
-    if (fieldName === 'subject') {
-      const subject = form.getFieldValue('subject')
+    if (fieldName === 'courseName') {
+      const courseName = form.getFieldValue('courseName')
 
-      if (availableCourses[subject]) {
+      if (availableCourses[courseName]) {
         setShowAddToCourse(true)
       } else {
         setShowAddToCourse(false)
       }
     }
   }
-
   return (
     <Drawer
       destroyOnClose={true}
@@ -105,7 +113,8 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
         form={form}
         onFinish={handleSubmit}
         initialValues={{
-          subject: homework?.subject,
+          homeworkName: homework?.name,
+          courseName: homework?.course.name || homework?.course.details?.name,
           urgency: homework?.urgency,
           description: homework?.description,
           date: homework && moment(homework.date),
@@ -115,7 +124,20 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
         onFieldsChange={handleFieldChange}
       >
         <Form.Item
-          name="subject"
+          name="homeworkName"
+          rules={[
+            {
+              required: true,
+              message: 'Please input the name of the homework!',
+              whitespace: true,
+            },
+          ]}
+          label={<span>Name</span>}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="courseName"
           rules={[
             {
               required: true,
@@ -125,7 +147,10 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
           ]}
           label={<span>Course name</span>}
         >
-          <CourseAutocomplete setAvailableCourses={setAvailableCourses} />
+          <CourseAutocomplete
+            disabled={!!homework?.course.details?.name}
+            setAvailableCourses={setAvailableCourses}
+          />
         </Form.Item>
         {!isEdit && showAddToCourse && (
           <Form.Item name="shouldAddToCourse" label="Public to Course Members">

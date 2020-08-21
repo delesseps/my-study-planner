@@ -6,7 +6,7 @@ export const evaluationDTOJoi = {
   urgency: Joi.string().valid('chill', 'normal', 'important').required(),
   description: Joi.string().allow(''),
   date: Joi.date().required(),
-  shouldAddToCourse: Joi.boolean(),
+  courseId: Joi.string().allow(''),
 }
 
 export const evaluationJoi = {
