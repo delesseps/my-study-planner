@@ -9,6 +9,7 @@ export default interface IHomework {
   description: string
   done: string[]
   createdBy: Partial<IUser>
+  linked: boolean
   course: {
     details?: ICourse
     name: string

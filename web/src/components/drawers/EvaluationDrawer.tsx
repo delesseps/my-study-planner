@@ -40,16 +40,21 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
   const [showAddToCourse, setShowAddToCourse] = React.useState(false)
 
   const status = evaluation ? editEvaluationStatus : addEvaluationStatus
+  const canLink = (!evaluation || !evaluation.linked) && showAddToCourse
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
-      values.courseId =
+      values.course =
         values.shouldAddToCourse === 'yes'
-          ? availableCourses[values.subject]
-          : ''
+          ? availableCourses[values.courseName]
+          : undefined
       values.shouldAddToCourse = undefined
 
-      const newEvaluation: IEvaluation = {...values} as any
+      const newEvaluation: IEvaluation = {
+        ...values,
+        name: values.courseName,
+        courseName: undefined,
+      } as any
 
       if (evaluation && typeof index === 'number') {
         newEvaluation._id = evaluation._id
@@ -73,11 +78,16 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
     if (status === 'success') onClose()
   }, [status, onClose])
 
+  const disabledDate = (current: any) => {
+    // Can not select days before today and today
+    return current < moment().startOf('day')
+  }
+
   const handleFieldChange = (changedFields: any) => {
     const fieldName = changedFields[0]?.name[0]
 
-    if (fieldName === 'subject') {
-      const subject = form.getFieldValue('subject')
+    if (fieldName === 'courseName') {
+      const subject = form.getFieldValue('courseName')
 
       if (availableCourses[subject]) {
         setShowAddToCourse(true)
@@ -85,11 +95,6 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
         setShowAddToCourse(false)
       }
     }
-  }
-
-  const disabledDate = (current: any) => {
-    // Can not select days before today and today
-    return current < moment().startOf('day')
   }
 
   return (
@@ -104,7 +109,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
         form={form}
         onFinish={handleSubmit}
         initialValues={{
-          subject: evaluation?.subject,
+          courseName: evaluation?.name,
           evaluationType: evaluation?.evaluationType,
           urgency: evaluation?.urgency,
           description: evaluation?.description,
@@ -115,7 +120,7 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
         onFieldsChange={handleFieldChange}
       >
         <Form.Item
-          name="subject"
+          name="courseName"
           rules={[
             {
               required: true,
@@ -125,10 +130,23 @@ const EvaluationDrawer: React.FC<IEvaluationDrawerProps> = ({
           ]}
           label={<span>Course name</span>}
         >
-          <CourseAutocomplete setAvailableCourses={setAvailableCourses} />
+          <CourseAutocomplete
+            disabled={evaluation?.linked}
+            setAvailableCourses={setAvailableCourses}
+          />
         </Form.Item>
-        {showAddToCourse && (
-          <Form.Item name="shouldAddToCourse" label="Public to Course Members">
+        {canLink && (
+          <Form.Item
+            name="shouldAddToCourse"
+            label={
+              <span>
+                Add to Course &nbsp;
+                <Tooltip title="Add the evaluation to the course. If there are course members, it will be public for them.">
+                  <QuestionCircleOutlined />
+                </Tooltip>
+              </span>
+            }
+          >
             <Radio.Group buttonStyle="solid">
               <Radio.Button value={'yes'}>Yes</Radio.Button>
               <Radio.Button value={'no'}>No</Radio.Button>

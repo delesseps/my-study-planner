@@ -51,11 +51,12 @@ Cypress.Commands.add(
       body: {
         date: evaluation.date,
         description: evaluation.description,
-        subject: evaluation.subject,
+        name: evaluation.name,
         urgency: evaluation.urgency,
         evaluationType: evaluation.evaluationType,
+        course: evaluation.course._id,
       },
-    }).then(res => ({...res.body.evaluation, ...evaluation}))
+    }).then(res => ({...evaluation, ...res.body.evaluation}))
   },
 )
 

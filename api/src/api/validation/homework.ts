@@ -18,7 +18,7 @@ export const homeworkJoi = {
   description: Joi.string().allow(''),
   date: Joi.date().required(),
   course: Joi.object({
-    details: Joi.string().allow(''),
+    details: Joi.string(),
     name: Joi.string().allow(''),
   }),
   createdBy: Joi.object({

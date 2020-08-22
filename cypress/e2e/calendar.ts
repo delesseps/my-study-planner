@@ -22,9 +22,7 @@ describe('Calendar', () => {
       })
   })
 
-  // TODO: Fix evaluation 'name' property
-
-  it.skip('should show evaluation in calendar', () => {
+  it('should show evaluation in calendar', () => {
     const tommorrowDate = new Date()
     tommorrowDate.setDate(tommorrowDate.getDate() + 1)
 

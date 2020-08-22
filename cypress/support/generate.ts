@@ -33,6 +33,7 @@ export const buildHomework = build<Omit<IHomework, 'createdBy'>>('Homework', {
     date: new Date().toISOString(),
     urgency: oneOf('chill', 'normal', 'important'),
     description: fake(f => f.name.jobDescriptor()),
+    linked: perBuild(() => false),
     course: {
       name: fake(f => f.name.jobTitle()),
     },
@@ -45,11 +46,14 @@ export const buildEvaluation = build<Omit<IEvaluation, 'createdBy'>>(
   {
     fields: {
       _id: fake(f => f.random.uuid()),
-      subject: fake(f => f.name.jobTitle()),
+      name: fake(f => f.name.jobTitle()),
       date: new Date().toISOString(),
       urgency: oneOf('chill', 'normal', 'important'),
       description: fake(f => f.name.jobDescriptor()),
-      courseId: '',
+      linked: perBuild(() => false),
+      course: {
+        name: fake(f => f.name.jobTitle()),
+      },
       done: [],
       evaluationType: oneOf('quiz', 'test'),
     },

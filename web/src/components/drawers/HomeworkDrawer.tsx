@@ -6,6 +6,7 @@ import moment from 'moment'
 import IHomework from 'constants/interfaces/IHomework'
 import {useHomework} from 'features/homework/homework-hooks'
 import {CourseAutocomplete} from 'components'
+import {isDictionary} from 'utils'
 
 interface IHomeworkDrawerProps {
   visible: boolean
@@ -37,7 +38,7 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
   const [showAddToCourse, setShowAddToCourse] = React.useState(false)
 
   const status = homework ? editHomeworkStatus : addHomeworkStatus
-  const isEdit = !!homework
+  const canLink = (!homework || !homework.linked) && showAddToCourse
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
@@ -57,8 +58,6 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
         homeworkName: undefined,
         courseName: undefined,
       } as any
-
-      console.log(newHomework, availableCourses)
 
       if (homework && typeof index === 'number') {
         newHomework._id = homework._id
@@ -101,6 +100,7 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
       }
     }
   }
+
   return (
     <Drawer
       destroyOnClose={true}
@@ -152,8 +152,18 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
             setAvailableCourses={setAvailableCourses}
           />
         </Form.Item>
-        {!isEdit && showAddToCourse && (
-          <Form.Item name="shouldAddToCourse" label="Public to Course Members">
+        {canLink && (
+          <Form.Item
+            name="shouldAddToCourse"
+            label={
+              <span>
+                Add to Course &nbsp;
+                <Tooltip title="Add the homework to the course. If there are course members, it will be public for them.">
+                  <QuestionCircleOutlined />
+                </Tooltip>
+              </span>
+            }
+          >
             <Radio.Group buttonStyle="solid">
               <Radio.Button value={'yes'}>Yes</Radio.Button>
               <Radio.Button value={'no'}>No</Radio.Button>

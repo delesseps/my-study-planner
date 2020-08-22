@@ -21,10 +21,24 @@ export default class HomeworkService {
         _id: user._id,
       }
 
+      if (homework.course.details) {
+        const courseRecord = await this.CourseModel.findById(
+          homework.course.details,
+          'name',
+        )
+
+        if (!courseRecord) {
+          const err = new Error('Provided course does not exist.')
+          err['status'] = 400
+          throw err
+        }
+
+        homework.linked = true
+      }
+
       let homeworkRecord: IHomework & Document
 
-      await session.withTransaction(async () => {
-        console.log(homework)
+      const transactionResult: any = await session.withTransaction(async () => {
         homeworkRecord = (
           await this.HomeworkModel.create([homework], {
             session,
@@ -41,7 +55,7 @@ export default class HomeworkService {
             {
               $push: {homework: homeworkRecord._id},
             },
-            {session: session},
+            {session},
           )
 
           homeworkRecord = homeworkRecord.populate([
@@ -61,7 +75,7 @@ export default class HomeworkService {
         )
       })
 
-      if (!homeworkRecord) {
+      if (!transactionResult) {
         throw new Error('Could not add homework')
       }
 
@@ -107,30 +121,78 @@ export default class HomeworkService {
   }
 
   public async Update(user: IUser, homework: IHomework): Promise<IHomework> {
+    const session = await startSession()
+
     try {
-      const homeworkRecord = await this.HomeworkModel.findOneAndUpdate(
-        {
-          createdBy: {_id: user._id},
-          _id: homework._id,
-        },
-        {
-          $set: {
+      let homeworkRecord: IHomework & Document
+
+      const transactionResult: any = await session.withTransaction(async () => {
+        const homeworkToUpdate = await this.HomeworkModel.findOne(
+          {
+            createdBy: {_id: user._id},
+            _id: homework._id,
+          },
+          null,
+          {session},
+        )
+
+        if (homeworkToUpdate.linked && homework.course.details) {
+          await session.abortTransaction()
+          const err = new Error(
+            'Cannot Link homework that has already been linked.',
+          )
+          err['status'] = 400
+          throw err
+        }
+
+        let updateObject: Record<any, any> = {
+          name: homework.name,
+          date: homework.date,
+          urgency: homework.urgency,
+          description: homework.description,
+          course: {
+            name: homework.course.name,
+          },
+        }
+
+        if (!homeworkToUpdate.linked && homework.course.details) {
+          updateObject = {
             name: homework.name,
             date: homework.date,
             urgency: homework.urgency,
             description: homework.description,
+            linked: true,
             course: {
+              details: homework.course.details,
               name: homework.course.name,
             },
-          },
-        },
-        {new: true},
-      ).populate([
-        {path: 'createdBy', select: '_id name picture'},
-        {path: 'course.details', select: '_id name'},
-      ])
+          }
 
-      if (!homeworkRecord) {
+          await this.CourseModel.findByIdAndUpdate(
+            homework.course.details,
+            {
+              $push: {homework: homeworkToUpdate._id},
+            },
+            {session},
+          )
+        }
+
+        homeworkRecord = await this.HomeworkModel.findOneAndUpdate(
+          {
+            createdBy: {_id: user._id},
+            _id: homework._id,
+          },
+          {
+            $set: updateObject,
+          },
+          {new: true, session},
+        ).populate([
+          {path: 'createdBy', select: '_id name picture'},
+          {path: 'course.details', select: '_id name'},
+        ])
+      })
+
+      if (!transactionResult) {
         throw new Error('Could not update homework')
       }
 
@@ -138,6 +200,8 @@ export default class HomeworkService {
     } catch (e) {
       this.logger.error(e)
       throw e
+    } finally {
+      await session.endSession()
     }
   }
 
@@ -147,13 +211,13 @@ export default class HomeworkService {
     try {
       let deletedRecord: IHomework & Document
 
-      await session.withTransaction(async () => {
+      const transactionResult: any = await session.withTransaction(async () => {
         deletedRecord = await this.HomeworkModel.findOneAndRemove(
           {
             _id: homeworkId,
             createdBy: {_id: userId},
           },
-          {session: session},
+          {session},
         )
 
         await this.userModel.findByIdAndUpdate(
@@ -162,11 +226,11 @@ export default class HomeworkService {
             // @ts-ignore
             $pull: {homework: homeworkId},
           },
-          {new: true},
+          {session},
         )
       })
 
-      if (!deletedRecord) {
+      if (!transactionResult) {
         throw new Error('Could not delete evaluation')
       }
 
@@ -174,6 +238,8 @@ export default class HomeworkService {
     } catch (e) {
       this.logger.error(e)
       throw e
+    } finally {
+      await session.endSession()
     }
   }
 }

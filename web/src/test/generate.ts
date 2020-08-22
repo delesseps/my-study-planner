@@ -34,6 +34,7 @@ export function buildHomework(overrides?: Record<string, any>): IHomework {
     urgency: Urgency.normal,
     description: faker.name.jobDescriptor(),
     done: [],
+    linked: false,
     course: {
       name: faker.name.jobTitle(),
     },
@@ -51,13 +52,14 @@ export function buildEvaluation(
 ): IEvaluation {
   return {
     _id: faker.random.uuid(),
-    subject: faker.name.jobTitle(),
+    name: faker.name.jobTitle(),
     date: new Date().toISOString(),
     evaluationType: 'quiz',
     urgency: Urgency.normal,
     description: faker.name.jobDescriptor(),
     done: [],
-    courseId: '',
+    course: buildCourse(),
+    linked: false,
     createdBy: {
       _id: faker.random.uuid(),
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,

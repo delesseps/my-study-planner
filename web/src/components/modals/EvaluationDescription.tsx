@@ -15,7 +15,7 @@ const EvaluationDescriptionModal = (evaluation: IEvaluation) => {
       <ModalTitleWrapper>
         <ModalTitle data-testid="pizza">
           <Capitalize>{evaluation.evaluationType}</Capitalize>:{' '}
-          {evaluation.subject}
+          {evaluation.name}
         </ModalTitle>
         <ModalTime>
           <ClockIcon />

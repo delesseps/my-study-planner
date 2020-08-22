@@ -73,10 +73,16 @@ export default class AuthService {
     return this.userModel.findOne({email}).populate([
       {
         path: 'evaluations',
-        populate: {
-          path: 'createdBy',
-          select: '_id name picture',
-        },
+        populate: [
+          {
+            path: 'createdBy',
+            select: '_id name picture',
+          },
+          {
+            path: 'course',
+            select: '_id name',
+          },
+        ],
       },
       {
         path: 'homework',

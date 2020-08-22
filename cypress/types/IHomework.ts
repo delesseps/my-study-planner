@@ -12,6 +12,7 @@ export default interface IHomework {
     details?: ICourse
     name: string
   }
+  linked: boolean
   createdBy: {
     _id: string
     name: string

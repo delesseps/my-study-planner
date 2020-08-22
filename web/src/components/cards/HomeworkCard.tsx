@@ -11,7 +11,7 @@ import {Badge, Avatar, Divider, Popconfirm, Tooltip} from 'antd'
 import moment from 'moment'
 import {useToggle} from 'react-use'
 
-import {setDate, determinePriority, determineColor} from 'utils'
+import {setDate, determinePriority, determineColor, isDictionary} from 'utils'
 import IHomework from 'constants/interfaces/IHomework'
 import HomeworkDescriptionModal from 'components/modals/HomeworkDescription'
 import {
@@ -67,8 +67,8 @@ const HomeworkCard: React.FunctionComponent<IHomeworkCardProps> = ({
         <Assignment>
           <AssignmentTitle>{homework.name}</AssignmentTitle>
           <AssignmentCourse>
-            {typeof homework.course.details === 'object'
-              ? homework.course.details.name
+            {isDictionary(homework.course.details)
+              ? homework.course.details!.name
               : homework.course.name}
           </AssignmentCourse>
           <AssignmentPriority>
@@ -160,7 +160,7 @@ const AssignmentTitle = styled.h1`
 const AssignmentCourse = styled.h3`
   letter-spacing: 0.5px;
   font-weight: 900;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: ${props => props.theme.fontColors.textRgba(0.8)};
 `
 

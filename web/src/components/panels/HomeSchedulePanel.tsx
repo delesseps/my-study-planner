@@ -45,9 +45,7 @@ const HomeSchedulePanel: React.FC<IHomeSchedulePanelProps> = () => {
     const filteredEvaluations: IScheduleEvent[] = evaluations
       .filter(({done}) => !done.includes(user._id))
       .map(evaluation => ({
-        title: `${toTitleCase(evaluation.evaluationType)}: ${
-          evaluation.subject
-        }`,
+        title: `${toTitleCase(evaluation.evaluationType)}: ${evaluation.name}`,
         start: new Date(evaluation.date),
         end: new Date(evaluation.date),
         allDay: true,

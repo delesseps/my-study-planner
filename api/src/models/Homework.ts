@@ -21,6 +21,10 @@ const Homework = new mongoose.Schema({
       type: String,
     },
   },
+  linked: {
+    type: Boolean,
+    default: false,
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

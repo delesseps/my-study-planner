@@ -66,9 +66,9 @@ const EvaluationCard: React.FunctionComponent<IEvaluationCardProps> = ({
       <MainInfo>
         <Assignment>
           <AssignmentTitle>
-            <Capitalize>{evaluation.evaluationType}</Capitalize>:{' '}
-            {evaluation.subject}
+            <Capitalize>{evaluation.evaluationType}</Capitalize>
           </AssignmentTitle>
+          <AssignmentCourse>{evaluation.name}</AssignmentCourse>
           <AssignmentPriority>
             <Badge color={determineColor(evaluation.urgency)} />
             {determinePriority(evaluation.urgency)}
@@ -152,6 +152,13 @@ const AssignmentTitle = styled.h3`
   letter-spacing: 0.5px;
   font-weight: 500;
   font-size: 1.7rem;
+  color: ${props => props.theme.fontColors.textRgba(0.8)};
+`
+
+const AssignmentCourse = styled.h3`
+  letter-spacing: 0.5px;
+  font-weight: 900;
+  font-size: 1.2rem;
   color: ${props => props.theme.fontColors.textRgba(0.8)};
 `
 

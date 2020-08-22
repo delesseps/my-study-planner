@@ -146,3 +146,7 @@ export function getColorByText({
   const index = textCode % (customColors.length - 1)
   return customColors[index]
 }
+
+export function isDictionary(item: any) {
+  return typeof item === 'object' && item !== null
+}

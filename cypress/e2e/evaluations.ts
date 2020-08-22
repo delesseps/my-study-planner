@@ -1,5 +1,5 @@
 import {buildEvaluation} from '../support/generate'
-import {yyyymmdd, determinePriority} from '../support/utils'
+import {determinePriority} from '../support/utils'
 
 describe('Evaluation', () => {
   before(() => {
@@ -8,8 +8,6 @@ describe('Evaluation', () => {
     })
   })
 
-  // TODO: Fix 'name' property change
-
   it('should add evaluations', () => {
     cy.createUser().then(user => {
       const evaluation = buildEvaluation()
@@ -17,7 +15,7 @@ describe('Evaluation', () => {
       cy.visit('/').closeWelcome()
 
       cy.findByRole('button', {name: /new evaluation/i}).click()
-      cy.findByLabelText(/course name/i).type(evaluation.subject)
+      cy.findByLabelText(/course name/i).type(evaluation.name)
 
       cy.findByRole('radio', {
         name: new RegExp(evaluation.evaluationType, 'i'),
@@ -42,7 +40,10 @@ describe('Evaluation', () => {
         cy.findByText(user.name)
         cy.findByText(/today/i)
         cy.findByRole('heading', {
-          name: `${evaluation.evaluationType}: ${evaluation.subject}`,
+          name: evaluation.evaluationType,
+        })
+        cy.findByRole('heading', {
+          name: evaluation.name,
         })
         cy.findByText(
           new RegExp(determinePriority(evaluation.urgency) as string),
@@ -50,7 +51,7 @@ describe('Evaluation', () => {
       })
 
       cy.findByTestId(/evaluation-count/i).should('have.text', 1)
-      cy.findByText(new RegExp(`start studying for ${evaluation.subject}`, 'i'))
+      cy.findByText(new RegExp(`start studying for ${evaluation.name}`, 'i'))
     })
   })
 
@@ -65,7 +66,7 @@ describe('Evaluation', () => {
 
         cy.findByLabelText(/course name/i)
           .clear()
-          .type(newEvaluation.subject)
+          .type(newEvaluation.name)
 
         cy.findByRole('radio', {
           name: new RegExp(newEvaluation.evaluationType, 'i'),
@@ -88,7 +89,10 @@ describe('Evaluation', () => {
           cy.findByText(evaluation.createdBy.name)
           cy.findByText(/today/i)
           cy.findByRole('heading', {
-            name: `${newEvaluation.evaluationType}: ${newEvaluation.subject}`,
+            name: newEvaluation.evaluationType,
+          })
+          cy.findByRole('heading', {
+            name: newEvaluation.name,
           })
           cy.findByText(
             new RegExp(determinePriority(newEvaluation.urgency) as string),
@@ -105,7 +109,10 @@ describe('Evaluation', () => {
         cy.findByLabelText(/mark .* as done/i).click()
         cy.findByText(/great job/i)
         cy.findByRole('heading', {
-          name: `${evaluation.evaluationType} : ${evaluation.subject}`,
+          name: evaluation.evaluationType,
+        }).should('not.exist')
+        cy.findByRole('heading', {
+          name: evaluation.name,
         }).should('not.exist')
         cy.findByText(/no.* evaluations/i)
         cy.findByTestId(/user-dropdown/i).trigger('mouseover')
@@ -122,18 +129,23 @@ describe('Evaluation', () => {
         cy.findByLabelText(/delete evaluation/i).click()
         cy.findByRole('button', {name: /yes/i}).click()
         cy.findByRole('heading', {
-          name: `${evaluation.evaluationType} : ${evaluation.subject}`,
+          name: evaluation.evaluationType,
+        }).should('not.exist')
+        cy.findByRole('heading', {
+          name: evaluation.name,
         }).should('not.exist')
         cy.findByText(/no.* evaluations/i)
 
         cy.findByTestId(/evaluation-count/i).should('have.text', 0)
         cy.findByText(
-          new RegExp(`start studying for ${evaluation.subject}`, 'i'),
+          new RegExp(`start studying for ${evaluation.name}`, 'i'),
         ).should('not.exist')
       })
   })
+})
 
-  it('should allow evaluations to be added to course', () => {
+describe('Linked Evaluations', () => {
+  it('should allow evaluations to be linked to course and be displayed in course details route', () => {
     cy.createUser().then(user => {
       cy.addCourse().then(course => {
         const evaluation = buildEvaluation()
@@ -166,7 +178,10 @@ describe('Evaluation', () => {
           cy.findByText(user.name)
           cy.findByText(/today/i)
           cy.findByRole('heading', {
-            name: `${evaluation.evaluationType}: ${course.name}`,
+            name: evaluation.evaluationType,
+          })
+          cy.findByRole('heading', {
+            name: course.name,
           })
           cy.findByText(
             new RegExp(determinePriority(evaluation.urgency) as string),
@@ -183,5 +198,118 @@ describe('Evaluation', () => {
         // TODO: test for evaluation in tab
       })
     })
+  })
+
+  it('should edit linked evaluation', () => {
+    cy.createUser()
+      .addCourse()
+      .then(course => {
+        cy.addEvaluation({name: course.name, course}).then(evaluation => {
+          const newEvaluation = buildEvaluation()
+
+          cy.visit('/').closeWelcome()
+          cy.findByRole('button', {
+            name: /Open edit evaluation drawer/i,
+          }).click()
+
+          cy.findByRole('radio', {
+            name: new RegExp(newEvaluation.evaluationType, 'i'),
+          }).click({
+            force: true,
+          })
+
+          cy.findByRole('radio', {
+            name: new RegExp(newEvaluation.urgency, 'i'),
+          }).click({
+            force: true,
+          })
+
+          cy.findByLabelText(/description/i)
+            .clear()
+            .type(newEvaluation.description)
+
+          cy.findByRole('button', {name: /^edit evaluation$/i}).click()
+
+          cy.findByTestId('evaluations-cards').within(() => {
+            cy.findByText(evaluation.createdBy.name).should('exist')
+
+            cy.findByText(/today/i).should('exist')
+
+            cy.findByRole('heading', {
+              name: newEvaluation.evaluationType,
+            }).should('exist')
+
+            cy.findByRole('heading', {
+              name: course.name,
+            }).should('exist')
+
+            cy.findByText(
+              new RegExp(determinePriority(newEvaluation.urgency) as string),
+            ).should('exist')
+          })
+        })
+      })
+  })
+
+  it('should allow to link an evaluation to a course on edit', () => {
+    cy.createUser()
+      .addCourse()
+      .then(course => {
+        cy.addEvaluation().then(evaluation => {
+          cy.visit('/').closeWelcome()
+          cy.findByRole('button', {
+            name: /Open edit evaluation drawer/i,
+          }).click()
+
+          cy.findByLabelText(/course name/i)
+            .clear()
+            .type(course.name)
+
+          cy.findByRole('button', {name: /^edit evaluation$/i}).click()
+
+          cy.findByTestId('evaluations-cards').within(() => {
+            cy.findByText(evaluation.createdBy.name).should('exist')
+
+            cy.findByText(/today/i).should('exist')
+
+            cy.findByRole('heading', {
+              name: evaluation.evaluationType,
+            }).should('exist')
+
+            cy.findByRole('heading', {
+              name: course.name,
+            }).should('exist')
+
+            cy.findByText(
+              new RegExp(determinePriority(evaluation.urgency) as string),
+            ).should('exist')
+          })
+
+          cy.findByRole('button', {
+            name: /Open edit evaluation drawer/i,
+          }).click()
+          cy.findByLabelText(/course name/i).should('be.disabled')
+
+          cy.visit('/courses')
+          cy.findByText(/view course/i).click()
+
+          cy.findByTestId('feature-evaluations').within(() => {
+            cy.findByText(/1/).should('exist')
+          })
+        })
+      })
+  })
+
+  it('should disable "Course Name" input when course is linked', () => {
+    cy.createUser()
+      .addCourse()
+      .then(course => {
+        cy.addEvaluation({name: course.name, course: course})
+
+        cy.visit('/').closeWelcome()
+        cy.findByRole('button', {name: /Open edit evaluation drawer/i}).click()
+
+        cy.findByLabelText(/course name/i).should('be.disabled')
+      })
   })
 })

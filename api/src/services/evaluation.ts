@@ -3,6 +3,7 @@ import {IUser} from '../interfaces/IUser'
 import IEvaluation from '../interfaces/IEvaluation'
 import winston from 'winston'
 import {startSession, Document} from 'mongoose'
+import {update} from 'lodash'
 
 @Service()
 export default class EvaluationService {
@@ -21,28 +22,67 @@ export default class EvaluationService {
         _id: user._id,
       }
 
+      if (evaluation.course) {
+        const courseRecord = await this.CourseModel.findById(
+          evaluation.course,
+          'name',
+        )
+
+        if (!courseRecord) {
+          const err = new Error('Provided course does not exist.')
+          err['status'] = 400
+          throw err
+        }
+
+        if (courseRecord.name !== evaluation.name) {
+          const err = new Error('Provided name does not match course name.')
+          err['status'] = 400
+          throw err
+        }
+
+        evaluation.linked = true
+      }
+
       let evaluationRecord: IEvaluation & Document
 
-      await session.withTransaction(async () => {
-        evaluationRecord = await (
+      const transactionResult: any = await session.withTransaction(async () => {
+        evaluationRecord = (
           await this.evaluationModel.create([evaluation], {session})
         )[0]
-          .populate({path: 'createdBy', select: '_id name picture'})
-          .execPopulate()
 
-        await this.userModel.findByIdAndUpdate(user._id, {
-          $push: {evaluations: evaluationRecord._id},
+        evaluationRecord = evaluationRecord.populate({
+          path: 'createdBy',
+          select: '_id name picture',
         })
 
-        if (evaluation.courseId) {
-          await this.CourseModel.findByIdAndUpdate(evaluation.courseId, {
-            $push: {evaluations: evaluationRecord._id},
-          })
+        if (evaluation.course) {
+          await this.CourseModel.findByIdAndUpdate(
+            evaluation.course,
+            {
+              $push: {evaluations: evaluationRecord._id},
+            },
+            {session},
+          )
+
+          evaluationRecord = evaluationRecord.populate([
+            {path: 'createdBy', select: '_id name picture'},
+            {path: 'course', select: '_id name'},
+          ])
         }
+
+        evaluationRecord = await evaluationRecord.execPopulate()
+
+        await this.userModel.findByIdAndUpdate(
+          user._id,
+          {
+            $push: {evaluations: evaluationRecord._id},
+          },
+          {session},
+        )
       })
 
-      if (!evaluationRecord) {
-        throw new Error('Could not add homework')
+      if (!transactionResult) {
+        throw new Error('Could not add evaluation')
       }
 
       return evaluationRecord
@@ -72,7 +112,10 @@ export default class EvaluationService {
           },
           {new: true},
         )
-        .populate({path: 'createdBy', select: '_id name picture'})
+        .populate([
+          {path: 'createdBy', select: '_id name picture'},
+          {path: 'course', select: '_id name'},
+        ])
 
       if (!evaluationRecord) {
         throw new Error('Could not mark evaluation as done')
@@ -89,27 +132,76 @@ export default class EvaluationService {
     user: IUser,
     evaluation: IEvaluation,
   ): Promise<IEvaluation> {
+    const session = await startSession()
+
     try {
-      const evaluationRecord = await this.evaluationModel
-        .findOneAndUpdate(
+      let evaluationRecord: IEvaluation & Document
+
+      const transactionResult: any = await session.withTransaction(async () => {
+        const evaluationToUpdate = await this.evaluationModel.findOne(
           {
             createdBy: {_id: user._id},
             _id: evaluation._id,
           },
-          {
-            $set: {
-              subject: evaluation.subject,
-              evaluationType: evaluation.evaluationType,
-              date: evaluation.date,
-              urgency: evaluation.urgency,
-              description: evaluation.description,
-            },
-          },
-          {new: true},
+          null,
+          {session},
         )
-        .populate({path: 'createdBy', select: '_id name picture'})
 
-      if (!evaluationRecord) {
+        if (evaluationToUpdate.linked && evaluation.course) {
+          await session.abortTransaction()
+          const err = new Error(
+            'Cannot Link evaluation that has already been linked.',
+          )
+          err['status'] = 400
+          throw err
+        }
+
+        let updateObject: Record<any, any> = {
+          name: evaluation.name,
+          evaluationType: evaluation.evaluationType,
+          date: evaluation.date,
+          urgency: evaluation.urgency,
+          description: evaluation.description,
+        }
+
+        if (!evaluationToUpdate.linked && evaluation.course) {
+          updateObject = {
+            name: evaluation.name,
+            evaluationType: evaluation.evaluationType,
+            date: evaluation.date,
+            urgency: evaluation.urgency,
+            description: evaluation.description,
+            course: evaluation.course,
+            linked: true,
+          }
+
+          await this.CourseModel.findByIdAndUpdate(
+            evaluation.course,
+            {
+              $push: {evaluations: evaluationToUpdate._id},
+            },
+            {session},
+          )
+        }
+
+        evaluationRecord = await this.evaluationModel
+          .findOneAndUpdate(
+            {
+              createdBy: {_id: user._id},
+              _id: evaluation._id,
+            },
+            {
+              $set: updateObject,
+            },
+            {new: true, session},
+          )
+          .populate([
+            {path: 'createdBy', select: '_id name picture'},
+            {path: 'course', select: '_id name'},
+          ])
+      })
+
+      if (!transactionResult) {
         throw new Error('Could not update evaluation')
       }
 
@@ -117,6 +209,8 @@ export default class EvaluationService {
     } catch (e) {
       this.logger.error(e)
       throw e
+    } finally {
+      await session.endSession()
     }
   }
 
@@ -124,13 +218,31 @@ export default class EvaluationService {
     userId: string,
     evaluationId: string,
   ): Promise<IEvaluation> {
+    const session = await startSession()
+
     try {
-      const deletedRecord = await this.evaluationModel.findOneAndRemove({
-        _id: evaluationId,
-        createdBy: {_id: userId},
+      let deletedRecord: IEvaluation & Document
+
+      const transactionResult: any = await session.withTransaction(async () => {
+        deletedRecord = await this.evaluationModel.findOneAndRemove(
+          {
+            _id: evaluationId,
+            createdBy: {_id: userId},
+          },
+          {session},
+        )
+
+        await this.userModel.findByIdAndUpdate(
+          userId,
+          {
+            // @ts-ignore
+            $pull: {evaluations: evaluationId},
+          },
+          {session},
+        )
       })
 
-      if (!deletedRecord) {
+      if (!transactionResult) {
         throw new Error('Could not delete evaluation')
       }
 
@@ -138,6 +250,8 @@ export default class EvaluationService {
     } catch (e) {
       this.logger.error(e)
       throw e
+    } finally {
+      await session.endSession()
     }
   }
 }
