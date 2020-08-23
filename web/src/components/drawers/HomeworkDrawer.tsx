@@ -6,7 +6,6 @@ import moment from 'moment'
 import IHomework from 'constants/interfaces/IHomework'
 import {useHomework} from 'features/homework/homework-hooks'
 import {CourseAutocomplete} from 'components'
-import {isDictionary} from 'utils'
 
 interface IHomeworkDrawerProps {
   visible: boolean
@@ -148,7 +147,7 @@ const HomeworkDrawer: React.FC<IHomeworkDrawerProps> = ({
           label={<span>Course name</span>}
         >
           <CourseAutocomplete
-            disabled={!!homework?.course.details?.name}
+            disabled={homework?.linked}
             setAvailableCourses={setAvailableCourses}
           />
         </Form.Item>
