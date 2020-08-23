@@ -32,6 +32,10 @@ export default async ({
       model: require('../models/Course').default,
     },
     {
+      name: 'activityModel',
+      model: require('../models/Activity').default,
+    },
+    {
       name: 'notificationModel',
       model: require('../models/Notification').default,
     },

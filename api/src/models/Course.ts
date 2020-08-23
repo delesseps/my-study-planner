@@ -36,7 +36,8 @@ const Course = new mongoose.Schema(
     ],
     activity: [
       {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Activity',
       },
     ],
     createdBy: {

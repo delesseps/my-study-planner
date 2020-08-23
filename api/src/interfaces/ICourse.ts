@@ -1,4 +1,5 @@
 import {IEvaluation, IHomework, ISchedule, IUser} from '.'
+import {IActivity} from './IActivity'
 
 export default interface ICourse {
   _id: string
@@ -8,4 +9,5 @@ export default interface ICourse {
   homework?: IHomework[]
   members: Partial<IUser>[]
   createdBy: Partial<IUser>
+  activity: IActivity[]
 }

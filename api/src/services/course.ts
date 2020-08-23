@@ -1,11 +1,15 @@
 import {Service, Inject} from 'typedi'
 import {IUser} from '../interfaces/IUser'
-import {ICourse} from '../interfaces'
+import {ICourse, ActivityType, IActivity} from '../interfaces'
 import evaluation from '../api/routes/evaluation'
+import {startSession, Document} from 'mongoose'
 
 @Service()
 export default class CourseService {
-  constructor(@Inject('courseModel') private courseModel: Models.CourseModel) {}
+  constructor(
+    @Inject('courseModel') private courseModel: Models.CourseModel,
+    @Inject('activityModel') private activityModel: Models.ActivityModel,
+  ) {}
 
   public async get(user: IUser): Promise<ICourse[]> {
     try {
@@ -49,17 +53,35 @@ export default class CourseService {
   }
 
   public async Add(user: IUser, course: ICourse): Promise<ICourse> {
+    const session = await startSession()
+
     try {
-      course.createdBy = {
-        _id: user._id,
-        name: user.name,
-        picture: user.picture,
-      }
-      course.members = [course.createdBy]
+      let courseRecord: ICourse & Document
 
-      const courseRecord = await this.courseModel.create(course)
+      const transactionResult: any = await session.withTransaction(async () => {
+        const activity: IActivity = {
+          type: ActivityType.createCourse,
+          actor: {_id: user._id},
+        }
 
-      if (!courseRecord) {
+        const activityRecord = (
+          await this.activityModel.create([activity], {
+            session,
+          })
+        )[0]
+
+        course.createdBy = {
+          _id: user._id,
+          name: user.name,
+          picture: user.picture,
+        }
+        course.members = [course.createdBy]
+        course.activity = [activityRecord]
+
+        courseRecord = (await this.courseModel.create([course], {session}))[0]
+      })
+
+      if (!transactionResult) {
         throw new Error('Course cannot be created')
       }
 
@@ -73,6 +95,8 @@ export default class CourseService {
     } catch (e) {
       console.log(e)
       throw e
+    } finally {
+      await session.endSession()
     }
   }
 

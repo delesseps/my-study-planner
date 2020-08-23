@@ -5,3 +5,4 @@ export {default as ICourse} from './ICourse'
 export {default as ISchedule} from './ISchedule'
 
 export * from './IUser'
+export * from './IActivity'

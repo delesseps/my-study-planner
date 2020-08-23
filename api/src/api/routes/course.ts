@@ -1,4 +1,4 @@
-import {Router, Request, Response} from 'express'
+import {Router, Request, Response, NextFunction} from 'express'
 import {isAuthorized} from '../middlewares'
 import {celebrate, Joi} from 'celebrate'
 import {Container} from 'typedi'
@@ -12,17 +12,21 @@ const route = Router()
 export default (app: Router): void => {
   app.use('/course', route)
 
-  route.get('/', isAuthorized, async (req: Request, res: Response) => {
-    try {
-      const courseServiceInstance = Container.get(CourseService)
-      const course = await courseServiceInstance.get(req.user as IUser)
+  route.get(
+    '/',
+    isAuthorized,
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const courseServiceInstance = Container.get(CourseService)
+        const course = await courseServiceInstance.get(req.user as IUser)
 
-      res.json({course}).status(200)
-    } catch (e) {
-      console.log(e)
-      throw e
-    }
-  })
+        res.json({course}).status(200)
+      } catch (e) {
+        console.log(e)
+        next(e)
+      }
+    },
+  )
 
   route.get(
     '/:id',
@@ -32,7 +36,7 @@ export default (app: Router): void => {
       }),
     }),
     isAuthorized,
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const {id} = req.params
         const userId: string = req.user._id
@@ -43,7 +47,7 @@ export default (app: Router): void => {
         res.json({course}).status(200)
       } catch (e) {
         console.log(e)
-        throw e
+        next(e)
       }
     },
   )
@@ -66,7 +70,7 @@ export default (app: Router): void => {
       }),
     }),
     isAuthorized,
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const courseServiceInstance = Container.get(CourseService)
         const course = await courseServiceInstance.Add(
@@ -77,7 +81,7 @@ export default (app: Router): void => {
         res.json({course}).status(200)
       } catch (e) {
         console.log(e)
-        throw e
+        next(e)
       }
     },
   )
@@ -105,7 +109,7 @@ export default (app: Router): void => {
       }),
     }),
     isAuthorized,
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const courseServiceInstance = Container.get(CourseService)
         const course = await courseServiceInstance.Update(
@@ -116,7 +120,7 @@ export default (app: Router): void => {
         res.json({course}).status(200)
       } catch (e) {
         console.log(e)
-        throw e
+        next(e)
       }
     },
   )
@@ -129,7 +133,7 @@ export default (app: Router): void => {
       }),
     }),
     isAuthorized,
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const courseServiceInstance = Container.get(CourseService)
         await courseServiceInstance.Delete(req.user._id, req.body._id)
@@ -137,7 +141,7 @@ export default (app: Router): void => {
         res.json('done').status(200)
       } catch (e) {
         console.log(e)
-        throw e
+        next(e)
       }
     },
   )

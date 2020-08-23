@@ -182,6 +182,8 @@ const Details = {
   Title: styled.p`
     font-size: 6rem;
     font-weight: 900;
+    padding: 1rem 0;
+    line-height: 1.3;
     margin: 0;
   `,
   Body: styled.div`

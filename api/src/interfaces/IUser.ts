@@ -5,6 +5,7 @@ export enum Urgency {
   moderate = 'normal',
   chill = 'chill',
 }
+
 export interface IUserConfig {
   darkMode: boolean
 }

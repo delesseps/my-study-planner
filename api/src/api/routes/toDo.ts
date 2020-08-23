@@ -1,4 +1,4 @@
-import {Router, Request, Response} from 'express'
+import {Router, Request, Response, NextFunction} from 'express'
 import {isAuthorized} from '../middlewares'
 import {celebrate, Joi} from 'celebrate'
 import {Container} from 'typedi'
@@ -20,7 +20,7 @@ export default (app: Router) => {
       }),
     }),
     isAuthorized,
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const toDoServiceInstance = Container.get(ToDoService)
         const toDo = await toDoServiceInstance.Add(
@@ -31,7 +31,7 @@ export default (app: Router) => {
         res.json({toDo}).status(200)
       } catch (e) {
         console.log(e)
-        throw e
+        next(e)
       }
     },
   )
@@ -47,7 +47,7 @@ export default (app: Router) => {
       }),
     }),
     isAuthorized,
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const toDoServiceInstance = Container.get(ToDoService)
         const toDo = await toDoServiceInstance.Update(
@@ -58,7 +58,7 @@ export default (app: Router) => {
         res.json({toDo}).status(200)
       } catch (e) {
         console.log(e)
-        throw e
+        next(e)
       }
     },
   )
@@ -71,7 +71,7 @@ export default (app: Router) => {
       }),
     }),
     isAuthorized,
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const toDoServiceInstance = Container.get(ToDoService)
         await toDoServiceInstance.Delete(req.user._id, req.body._id)
@@ -79,7 +79,7 @@ export default (app: Router) => {
         res.json('done').status(200)
       } catch (e) {
         console.log(e)
-        throw e
+        next(e)
       }
     },
   )

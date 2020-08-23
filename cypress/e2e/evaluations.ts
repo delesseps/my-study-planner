@@ -1,5 +1,4 @@
 import {buildEvaluation} from '../support/generate'
-import {determinePriority} from '../support/utils'
 
 describe('Evaluation', () => {
   before(() => {
@@ -182,6 +181,62 @@ describe('Linked Evaluations', () => {
 
           cy.findByTestId('feature-evaluations').within(() => {
             cy.findByText(/1/).should('exist')
+          })
+        })
+      })
+  })
+
+  it('should not link evaluation when addToCourse is "no" in add course', () => {
+    cy.createUser().then(user => {
+      cy.addCourse().then(course => {
+        const evaluation = buildEvaluation()
+        cy.visit('/').closeWelcome()
+
+        cy.fillAddEvaluationDrawer({...evaluation, name: course.name}, () => {
+          cy.findByRole('radio', {
+            name: /^no$/i,
+          }).click({force: true})
+        })
+
+        cy.assertEvaluationCard(
+          {name: user.name},
+          {...evaluation, name: course.name},
+        )
+
+        cy.visit('/courses')
+        cy.findByText(/view course/i).click()
+
+        cy.findByTestId('feature-evaluations').within(() => {
+          cy.findByText(/0/).should('exist')
+        })
+      })
+    })
+  })
+
+  it('should not link evaluation when addToCourse is "no" in edit course', () => {
+    cy.createUser()
+      .addCourse()
+      .then(course => {
+        cy.addEvaluation().then(evaluation => {
+          cy.visit('/').closeWelcome()
+
+          cy.fillEditEvaluationDrawer(
+            {...evaluation, name: course.name},
+            () => {
+              cy.findByRole('radio', {
+                name: /^no$/i,
+              }).click({force: true})
+            },
+          )
+          cy.assertEvaluationCard(
+            {name: evaluation.createdBy.name},
+            {...evaluation, name: course.name},
+          )
+          cy.visit('/courses')
+          cy.findByText(/view course/i).click()
+
+          cy.findByTestId('feature-evaluations').within(() => {
+            cy.findByText(/0/).should('exist')
           })
         })
       })

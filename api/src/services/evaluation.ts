@@ -9,7 +9,7 @@ import {update} from 'lodash'
 export default class EvaluationService {
   constructor(
     @Inject('userModel') private userModel: Models.UserModel,
-    @Inject('evaluationModel') private evaluationModel: Models.evaluationModel,
+    @Inject('evaluationModel') private evaluationModel: Models.EvaluationModel,
     @Inject('courseModel') private CourseModel: Models.CourseModel,
     @Inject('logger') private logger: winston.Logger,
   ) {}

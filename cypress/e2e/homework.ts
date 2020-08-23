@@ -162,6 +162,65 @@ describe('Linked Homework', () => {
       })
   })
 
+  it('should not link evaluation when addToCourse is "no" in add course', () => {
+    cy.createUser().then(user => {
+      cy.addCourse().then(course => {
+        const homework = buildHomework()
+        cy.visit('/').closeWelcome()
+
+        cy.fillAddHomeworkDrawer(
+          {...homework, course: {name: course.name}},
+          () => {
+            cy.findByRole('radio', {
+              name: /^no$/i,
+            }).click({force: true})
+          },
+        )
+
+        cy.assertHomeworkCard(
+          {name: user.name},
+          {...homework, course: {name: course.name}},
+        )
+
+        cy.visit('/courses')
+        cy.findByText(/view course/i).click()
+
+        cy.findByTestId('feature-homework').within(() => {
+          cy.findByText(/0/).should('exist')
+        })
+      })
+    })
+  })
+
+  it('should not link evaluation when addToCourse is "no" in edit course', () => {
+    cy.createUser()
+      .addCourse()
+      .then(course => {
+        cy.addHomework().then(homework => {
+          cy.visit('/').closeWelcome()
+
+          cy.fillEditHomeworkDrawer(
+            {...homework, course: {name: course.name}},
+            () => {
+              cy.findByRole('radio', {
+                name: /^no$/i,
+              }).click({force: true})
+            },
+          )
+          cy.assertHomeworkCard(
+            {name: homework.createdBy.name},
+            {...homework, course: {name: course.name}},
+          )
+          cy.visit('/courses')
+          cy.findByText(/view course/i).click()
+
+          cy.findByTestId('feature-homework').within(() => {
+            cy.findByText(/0/).should('exist')
+          })
+        })
+      })
+  })
+
   it('should disable "Course Name" input when homework is linked', () => {
     cy.createUser()
       .addCourse()
